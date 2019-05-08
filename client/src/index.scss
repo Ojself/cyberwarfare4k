@@ -1,0 +1,101 @@
+// --------------------
+// Definition of variables
+$primary: #32c3ff;
+
+
+// ----------------------------------------
+// To install Boostrap:
+// 1) Run in the client folder: $ npm i bootstrap
+// 2) Import bootstrap with the following line
+// @import '../node_modules/bootstrap/scss/bootstrap.scss';
+// 
+// To install Reactstrap:
+// 1) Run in the client folder: $ npm i reactstrap
+// 2) Go to the official documentation and take some examples: https://reactstrap.github.io/
+// import { Button } from 'reactstrap';
+// <Button color="danger">Danger!</Button>
+// ----------------------------------------
+
+
+// --------------------
+// Style reusable for all components
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.info {
+  margin: 20px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+  background-color: #5776e9;
+  color: white;
+}
+
+.info.info-danger {
+  background-color: #e73f3f;
+}
+
+// --------------------
+// Style for App component
+.App {
+  text-align: center;
+
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+  }
+
+  .App-header {
+    background-color: $primary;
+    padding: 20px;
+    color: white;
+
+    a {
+      color: white;
+      padding: 0 5px;
+      text-decoration: unset;
+    }
+
+    a.active {
+      font-weight: bold;
+    }
+  }
+
+  .App-title {
+    font-size: 1.5em;
+  }
+
+  .App-intro {
+    font-size: large;
+  }
+
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+// --------------------
+// Style for Home component
+.Home {
+  p {
+    font-size: 1.2em;
+  }
+}
+
+// --------------------
+// Style for Secret component
+.Secret {
+  .result {
+    font-size: 1.2em;
+    color: $primary;
+  }
+}

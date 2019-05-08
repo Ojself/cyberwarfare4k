@@ -1,0 +1,14 @@
+{
+  "name": "mern-boilerplate",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "preinstall": "echo --- preinstall --- && cd server && npm install && cd ../client && npm install && npm run build && cd ..",
+    "start": "echo --- start --- && cd server && npm start",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run start"
+  },
+  "engines": {
+    "node": "8.9.4"
+  }
+}
