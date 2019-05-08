@@ -1,6 +1,8 @@
 Work in progress. including the readme
 
-# CYBERWARFARE4K | .. now in React!
+# CYBERWARFARE4K
+
+_.. now in React!_
 
 - [Setups and execution of the project](#setups-and-execution-of-the-project)
 - [Directory structure](#directory-structure)
@@ -17,16 +19,16 @@ Cyberwarfare4k is not a .....
 
 **M**ongoDB
 **E**xpress
-**R**eact
+**R**eact and
 **N**ode
 
-# I want to contribute!
+## Contributing!
 
-##
+Feel free to contribute to this repository.
+Issues, feedback etc can be sent to:
+tormod.flesjo-gmail
 
 # Setups and execution of the project
-
-**I want to run this locally on my computer**
 
 (replace `<my-project>` and `<https://github.com/user/my-project.git>` by what you want, without `<` and `>`).
 
@@ -97,8 +99,6 @@ So now you can go to
 - http://localhost:5000/api/: A simple API call
 - http://localhost:5000/: The website based on client/build (that you can update with `$ (cd client && npm run build)`)
 - http://localhost:3000/: The last version of your React application that is calling your API with the base url "http://localhost:5000/api/"
-
-## Global information
 
 ## Directory structure
 

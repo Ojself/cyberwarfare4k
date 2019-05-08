@@ -58,7 +58,7 @@ export default class App extends Component {
           {!api.isLoggedIn() && <NavLink to='/login'>Login</NavLink>}
           {api.isLoggedIn() && (
             <Link to='/' onClick={e => this.handleLogoutClick(e)}>
-              Logout
+              logout
             </Link>
           )}
           <NavLink to='/secret'>Admin menu</NavLink>
