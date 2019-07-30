@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Route, Link, NavLink, Switch } from 'react-router-dom';
 
 import Home from './pages/Home';
-/* import Countries from "./pages/Countries";
-import AddCountry from "./pages/AddCountry"; */
 
 /* Hacker specific imports */
 import MyProfile from './pages/MyProfile';
@@ -16,6 +14,7 @@ import Marketplace from './pages/Marketplace';
 import Information from './pages/Information';
 import Ladder from './pages/Ladder';
 import Arcade from './pages/Arcade';
+import CreateHacker from './pages/CreateHacker';
 
 import Secret from './pages/Secret';
 import Login from './pages/Login';
@@ -45,6 +44,7 @@ export default class App extends Component {
             Home
           </NavLink>
           <NavLink to='/my-profile'>My profile</NavLink>
+          <NavLink to='/create-hacker'>Create</NavLink>
           <NavLink to='/hack-crimes'>Hack Crimes</NavLink>
           <NavLink to='/hack-player'>Hack Player</NavLink>
           <NavLink to='/wanted-list'>Wanted List</NavLink>
@@ -70,10 +70,8 @@ export default class App extends Component {
         </header>
         <Switch>
           <Route path='/' exact component={Home} />
-          {/* <Route path='/countries' component={Countries} />
-          <Route path='/add-country' component={AddCountry} /> */}
-          {/* Hacker specific */}
           <Route path='/my-profile' component={MyProfile} />
+          <Route path='/create-hacker' component={CreateHacker} />
           <Route path='/hack-crimes' component={HackCrimes} />
           <Route path='/hack-player' component={HackPlayer} />
           <Route path='/wanted-list' component={WantedList} />
@@ -83,7 +81,6 @@ export default class App extends Component {
           <Route path='/ladder' component={Ladder} />
           <Route path='/information' component={Information} />
           <Route path='/arcade' component={Arcade} />
-          {/* Hacker specific end */}
           <Route path='/signup' component={Signup} />
           <Route path='/login' component={Login} />
           <Route path='/secret' component={Secret} />

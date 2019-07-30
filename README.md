@@ -22,11 +22,16 @@ Cyberwarfare4k is not a .....
 **R**eact and
 **N**ode
 
-## Contributing!
+## Contributing
 
 Feel free to contribute to this repository.
-Issues, feedback etc can be sent to:
-tormod.flesjo-gmail
+Issues, feedback etc. can be sent to:
+tormod.flesjo[at]gmail
+
+## Acknowledgments
+
+This wouldn't be possible without my teachers, [Maxence](https://github.com/mc100s) and [Lukas](https://github.com/gisderdube).
+[Markus](https://github.com/fenrew) for basicaly writing all of the original code and [Haakon](https://www.linkedin.com/in/haakon-foyen/) for his authentication skills!
 
 # Setups and execution of the project
 
@@ -118,7 +123,7 @@ server/
     passport/
     routes/
     app.js
-    middlewares.js
+    middlewaresAuth.js
     package.json
 .gitignore
 package.json
