@@ -106,5 +106,15 @@ export default {
       .get('/marketplace')
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  /* ATTACK */
+
+  pettyHack() {
+    console.log('hello from api, pettyhack()');
+    return service
+      .post('/hack/pettyCrime')
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };

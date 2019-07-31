@@ -15,6 +15,7 @@ import Information from './pages/Information';
 import Ladder from './pages/Ladder';
 import Arcade from './pages/Arcade';
 import CreateHacker from './pages/CreateHacker';
+import Petty from './pages/Petty';
 
 import Secret from './pages/Secret';
 import Login from './pages/Login';
@@ -45,6 +46,7 @@ export default class App extends Component {
           </NavLink>
           <NavLink to='/my-profile'>My profile</NavLink>
           <NavLink to='/create-hacker'>Create</NavLink>
+          <NavLink to='/petty-hacker'>Petty </NavLink>
           <NavLink to='/hack-crimes'>Hack Crimes</NavLink>
           <NavLink to='/hack-player'>Hack Player</NavLink>
           <NavLink to='/wanted-list'>Wanted List</NavLink>
@@ -72,6 +74,7 @@ export default class App extends Component {
           <Route path='/' exact component={Home} />
           <Route path='/my-profile' component={MyProfile} />
           <Route path='/create-hacker' component={CreateHacker} />
+          <Route path='/petty-hacker' component={Petty} />
           <Route path='/hack-crimes' component={HackCrimes} />
           <Route path='/hack-player' component={HackPlayer} />
           <Route path='/wanted-list' component={WantedList} />

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Stash = require('../models/Stash');
+const Rank = require('../models/Rank');
 
 const userSchema = new Schema(
   {
@@ -383,28 +385,30 @@ userSchema.methods.newRank = function() {
   Rank.findOne({ rank: this.rank }).then(newRank => {
     this.rankName = newRank.name;
     this.expToLevel = newRank.expToNewRank;
-    this.save();
   });
+  this.save();
 };
 
-userSchema.methods.giveItem = function(itemName = 'Cables') {
-  console.log('give item method triggered');
-  Stash.findOne({ name: itemName }).then(newStash => {
+userSchema.methods.giveStash = function(stashName = 'Cables') {
+  console.log('give stash method triggered', stashName);
+  Stash.findOne({ name: stashName }).then(newStash => {
+    console.log(newStash._id, 'newstash');
+    console.log(this.stash);
     this.stash.push(newStash._id);
-    this.save();
   });
+  this.save();
 };
 
-userSchema.methods.giveMoney = function(money = 1) {
-  console.log('give money method triggered');
-  this.bitCoins += money;
-  this.networth += money;
+userSchema.methods.giveBitcoins = function(bitcoins = 1) {
+  console.log('give bitcoins method triggered', bitcoins);
+  this.playerStats.bitCoins += bitcoins;
+  this.playerStats.networth += bitcoins;
   this.save();
 };
 
 userSchema.methods.giveExp = function(exp = 1) {
-  console.log('give exp method triggered');
-  this.exp += exp;
+  console.log('give exp method triggered', exp);
+  this.playerStats.exp += exp;
   this.save();
 };
 
@@ -415,14 +419,15 @@ userSchema.methods.giveLegendary = function(itemName = 'emp') {
 };
 
 userSchema.methods.giveSkill = function(skill = 'technical') {
-  console.log('give technical skill triggered', skill);
-  this.crimeskill[skill]++;
+  console.log('give crimeskill triggered', skill);
+  console.log(this.crimeSkill, 'this.crimeSkill');
+  this.crimeSkill[skill]++;
   this.save();
 };
 
 userSchema.methods.batteryDrain = function(battery = 5) {
   console.log('batterydrain triggered', battery);
-  this.battery -= battery;
+  this.playerStats.battery -= battery;
   this.save();
 };
 

@@ -8,13 +8,14 @@ export default class CreateHacker extends Component {
       loading: true,
       message: null,
       user: null,
-      success: true
+      success: true,
+      hacking: false
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.startHack = this.startHack.bind(this);
+    this.toggleHack = this.toggleHack.bind(this);
   }
 
   componentDidMount() {
-    console.log('mountng');
     api
       .getUser()
       .then(result => {
@@ -29,43 +30,42 @@ export default class CreateHacker extends Component {
           });
         }, 2000);
       })
-
       .catch(err => console.log(err));
-    console.log(this.state);
   }
 
-  handleInputChange(event) {
+  toggleHack() {
     this.setState({
-      [event.target.name]: event.target.value
+      hacking: !this.state.hacking
     });
+    setTimeout(() => {
+      this.startHack();
+    }, 100);
   }
 
-  handleHack(e) {
-    e.preventDefault();
-    console.log('start hacking');
-
-    api
-      .upgradeStats()
-      .then(result => {
-        console.log('SUCCESS!', result);
-        /* make screen blink green? */
-        this.setState({
-          message: `${result.message}`
-        });
-        setTimeout(() => {
-          this.setState({
-            message: null
-          });
-        }, 2000);
-      })
-      .catch(err => this.setState({ message: err.toString() }));
+  startHack() {
+    console.log('start hack', this.state.hacking);
+    if (this.state.hacking) {
+      let pettyHackInterval = setInterval(() => {
+        console.log('interval');
+        if (!this.state.hacking) {
+          console.log('clearing');
+          clearInterval(pettyHackInterval);
+        }
+        api
+          .pettyHack()
+          .then(result => {
+            console.log(result);
+          })
+          .catch(err => console.log(err));
+      }, 4000);
+    }
   }
 
   render() {
     return (
       <div className='CreateHacker'>
         <h2>Petty hackr</h2>
-        <button>Start hacking</button>
+        <button onClick={this.toggleHack}>Start hacking</button>
         {this.state.message && <div className='info'>{this.state.message}</div>}
       </div>
     );

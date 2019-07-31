@@ -1,3 +1,8 @@
+const {
+  crimeSkillDropChance,
+  stashDropChance
+} = require('../middlewares/middleHelpers');
+
 function pettyCrime(user) {
   let crimeSkills = user.crimeSkill;
   let values = Object.values(crimeSkills);
@@ -6,33 +11,38 @@ function pettyCrime(user) {
   let pettyResult = {
     bitcoins: 0,
     exp: 0,
-    crimeSkillGained: '',
-    stashGained: ''
+    stashGained: '',
+    crimeSkillGained: ''
   };
-
+  console.log(values, 'values pre');
   /* Grabs the two lowest values from crimeskill  */
   values = values.sort();
+  console.log(values, 'sorted');
   values = values[0] + values[1];
+
+  console.log(values, 'values post');
 
   /* Good overall skills give you 90% chance of success of petty crime*/
   if (values > 30) {
     probabiltiy = 0.9;
   } else {
-    probabiltiy = values / 100 + Math.random() / 2;
+    probabiltiy = values / 50 + Math.random();
   }
 
+  console.log(probabiltiy, 'probabiltiy', decider, 'decider');
   /* Checking for success */
   if (probabiltiy > decider) {
     /* Success */
-    console.log('probability HIGHER than decider');
+    console.log('probabiltiy HIGHER than decider');
     pettyResult.bitcoins = pettyWinBitcoins(user);
     pettyResult.exp = pettyWinExp(user);
-    if (probability > decider + 0.2) {
-      /* bonus success */
-      console.log('probability HIGHER than decider + 0.15');
-      pettyResult.stashGained = stashDropChance(user);
+    if (probabiltiy > decider) {
+      /* bonus success +0,2*/
+      console.log('probabiltiy HIGHER than decider + 0.2');
+      pettyResult.stashGained = stashDropChance(user, values * 100);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
     }
+    //call user.method something something
   }
   return pettyResult;
 }
@@ -40,13 +50,19 @@ function pettyCrime(user) {
 function pettyWinBitcoins(user) {
   console.log('pettyWinBitcoins condition');
   let bitcoins = 10;
+  user.giveBitcoins(bitcoins);
   return bitcoins;
 }
 
 function pettyWinExp(user) {
   console.log('pettyWinExp condition');
   let exp = 20;
+  user.giveExp(exp);
   return exp;
 }
 
-module.exports = {};
+module.exports = {
+  pettyCrime,
+  pettyWinBitcoins,
+  pettyWinExp
+};

@@ -1,15 +1,13 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// To execute this seed, run from the root of the project
-// $ node bin/seeds.js
+// $ node bin/stashSeeds.js
 
 const mongoose = require('mongoose');
 const Stash = require('../models/Stash');
 
 require('../configs/database');
 
-/* CHANGE CHANGE CHANGE */
 let stash = [
   {
     name: 'Cables',
@@ -85,7 +83,7 @@ let stash = [
 
 Stash.deleteMany()
   .then(() => {
-    return DataCenter.create(dataCenters);
+    return Stash.create(stash);
   })
   .then(stashCreated => {
     console.log(`${stashCreated.length} stash created with the following id:`);

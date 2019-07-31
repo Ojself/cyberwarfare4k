@@ -1,5 +1,7 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
+const { pettyCrime } = require('../middlewares/middlePettyHack');
+const { batteryCheck } = require('../middlewares/middleHelpers');
 const router = express.Router();
 const User = require('../models/User');
 const Item = require('../models/Item');
@@ -12,7 +14,12 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   let userId = req.user._id;
   let user = await User.findById(userId);
 
-  batteryCheck(res, user, 5);
+  if (batteryCheck(user, 5) == false) {
+    return res.status(400).json({
+      success: false,
+      message: 'insufficent battery'
+    });
+  }
   const results = await pettyCrime(user);
 
   res.status(200).json({

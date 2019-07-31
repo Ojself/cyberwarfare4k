@@ -107,8 +107,12 @@ export default class CreateHacker extends Component {
           <button name='cpu' onClick={this.handleUpgrade}>
             CPU
           </button>
-          Antivirus: <button>ANTIVIRUS</button>
-          Encryption: <button>ENCRYPTION</button>
+          <button name='Antivirus' onClick={this.handleUpgrade}>
+            AVS
+          </button>
+          <button name='Encryption' onClick={this.handleUpgrade}>
+            Encryption
+          </button>
           <br />
           city:{' '}
           <input
