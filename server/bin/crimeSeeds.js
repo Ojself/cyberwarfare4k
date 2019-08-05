@@ -7,7 +7,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // $ node bin/seeds.js
 
 /* Suggestions */
-/* Spoof rfid to office doors */
 /* Open car doors */
 /* Set up fake public  wifi */
 
@@ -17,9 +16,159 @@ const Crime = require('../models/Crime');
 
 require('../configs/database');
 
-let crimes = [
+// very easy 10 - 30
+//  easy 30-50
+//  medium 50-70
+//  hard 70-90
+//  impossible 90-100
+/* technical, forensics, socialengineering, cryptography */
 
-/* 
+let crimes = [
+  // SE
+  {
+    name: 'Internet trolling',
+    description: 'Create online havoc by trolling online',
+    available: 3,
+    crimeType: 'socialEngineering',
+    difficulty: 1,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  {
+    name: 'Piggyback',
+    description:
+      'Follow a businessman into his office and steal valuable information',
+    available: 3,
+    crimeType: 'socialEngineering',
+    difficulty: 2,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  {
+    name: 'Spoof RFID',
+    description: 'Enter an office buildning by brute forcing their door',
+    available: 3,
+    crimeType: 'socialEngineering',
+    difficulty: 3,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  {
+    name: 'ID theft',
+    description: 'Be someone else, who wants to be you anyway..',
+    available: 3,
+    crimeType: 'socialEngineering',
+    difficulty: 4,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  {
+    name: 'Ransomware',
+    description: 'Use ransomware to blackmail businesses for money',
+    available: 3,
+    crimeType: 'socialEngineering',
+    difficulty: 5,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  // forensics
+  {
+    name: 'Wipe HDD',
+    description: 'Microwave peoples harddrive for money',
+    available: 3,
+    crimeType: 'forensics',
+    difficulty: 1,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  {
+    name: 'Hide data',
+    description: 'Hide your neighbours data and blackmail them!',
+    available: 3,
+    crimeType: 'forensics',
+    difficulty: 2,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+  {
+    name: 'Retrieve data',
+    description: 'Help desperate souls to retrieve their lost data',
+    available: 3,
+    crimeType: 'forensics',
+    difficulty: 3,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  // technical
+  {
+    name: 'Guess password',
+    description: 'Guess your friends social login password',
+    available: 3,
+    crimeType: 'technical',
+    difficulty: 1,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+  {
+    name: 'Change grades',
+    description: 'Change university grades for money',
+    available: 3,
+    crimeType: 'technical',
+    difficulty: 2,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+  {
+    name: 'Web scrapping',
+    description: 'Scrap the web for data and sell profitable patterns',
+    available: 3,
+    crimeType: 'technical',
+    difficulty: 3,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+
+  // cryptography
+  {
+    name: 'Crack consoles',
+    description: 'Sell cracked gaming consoles',
+    available: 3,
+    crimeType: 'cryptography',
+    difficulty: 1,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  },
+  {
+    name: 'Crypto currency',
+    description: 'Speculate in Virtual currency',
+    available: 3,
+    crimeType: 'cryptography',
+    difficulty: 2,
+    encryption: 1,
+    currentFirewall: 10,
+    maxFirewall: 10
+  }
+
+  /* 
 Hack adobe
 Hack Sony
 Hack Equifax
@@ -31,8 +180,30 @@ Home Depot
 VISA 
 MasterCard
 
- */
+Online bank heist organized
+Rewards points transfer
+Hack social network
+Hijack corporate email
+Ex girlfriend
+Break into cellphone 
 
+Steal credit cards
+
+gain access to gym
+free apps
+free pornhub account
+Web shells
+payloads
+Logic bombs
+backdoors
+exploits
+screen scrapers
+Ransomware
+SQL injection
+
+
+
+ */
 ];
 
 Crime.deleteMany()

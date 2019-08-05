@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Stash = require('../models/Stash');
 const Rank = require('../models/Rank');
+const City = require('../models/City');
 
 const userSchema = new Schema(
   {
@@ -87,10 +88,18 @@ const userSchema = new Schema(
         default: 1
       }
     },
+    // currencies
+    currencies: {
+      Litecoin: Number,
+      Ethereum: Number,
+      Ripple: Number,
+      Monero: Number,
+      Zcash: Number
+    },
 
     //Player stats
     playerStats: {
-      city: Schema.Types.ObjectId,
+      city: { type: Schema.Types.ObjectId, ref: 'City' },
       statPoints: {
         type: Number,
         default: 5
@@ -428,6 +437,70 @@ userSchema.methods.giveSkill = function(skill = 'technical') {
 userSchema.methods.batteryDrain = function(battery = 5) {
   console.log('batterydrain triggered', battery);
   this.playerStats.battery -= battery;
+  this.save();
+};
+
+userSchema.methods.batteryGain = function(battery = 5) {
+  console.log('batteryGain triggered', battery);
+  this.playerStats.battery += battery;
+  if (this.playerStats.battery > 100) {
+    this.playerStats.battery = 100;
+  }
+  this.save();
+};
+
+userSchema.methods.pettyCrimeGains = async function(result) {
+  console.log('pettyCrimeGains triggered', result);
+  this.playerStats.battery -= result.battery;
+  this.playerStats.bitcoins += result.bitcoins;
+  this.playerStats.networth += result.bitcoins;
+  this.playerStats.exp += result.exp;
+
+  if (result.stashGained) {
+    let newStash = await Stash.findOne({ name: result.stashGained });
+    console.log(newStash, 'newstash');
+    this.stash.push(newStash._id);
+  }
+  if (result.crimeSkillGained) {
+    this.crimeSkill[result.crimeSkillGained]++;
+  }
+  if (result.legendaryGained) {
+    this[result.legendaryGained]++;
+  }
+  this.save();
+};
+
+userSchema.methods.purchaseCurrency = function(
+  currency,
+  amount,
+  batteryCost,
+  totalPrice
+) {
+  console.log('purchaseCurrency triggered', arguments);
+  this.playerStats.battery -= batteryCost;
+  this.playerStats.bitCoins -= totalPrice;
+  this.currencies[currency.name] += amount;
+  this.save();
+};
+
+userSchema.methods.sellCurrency = function(
+  currency,
+  amount,
+  batteryCost,
+  totalPrice
+) {
+  console.log('sellCurrency triggered', arguments);
+  this.battery -= batteryCost;
+  this.currencies[currency.name] -= amount;
+  this.playerStats.bitCoins += totalPrice;
+  this.playerStats.networth += totalPrice;
+  this.save();
+};
+
+userSchema.methods.changeCity = function(city, batteryCost) {
+  console.log('changeCity triggered', battery);
+  this.playerStats.battery -= battery;
+  this.playerStats.city = city._id;
   this.save();
 };
 

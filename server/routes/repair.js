@@ -16,19 +16,17 @@ router.post('/partial', isLoggedin, async (req, res, next) => {
   let user = await User.findById({ userId });
 
   if (user.bitCoins < 3000) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: 'Insufficient funds'
     });
-    return null;
   }
 
   if (user.currentFirewall === user.maxFireWall) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: 'Your computer is already working just fine!'
     });
-    return null;
   }
 
   user.partialRepair();

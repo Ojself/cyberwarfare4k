@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const priceInterval = require('../intervals/priceInterval');
+const stashPriceInterval = require('../intervals/stashPriceInterval');
 const batteryInterval = require('../intervals/batteryInterval');
 
 // Don't forget to set "MONGODB_URI" in ~/server/.env
@@ -21,8 +21,8 @@ mongoose
   })
   .then(() => {
     /* Changes the stash price every 30 minute */
-    console.log('SERVER: price interval started');
-    setInterval(priceInterval, 60 * 60 * 1000);
+    console.log('SERVER: stash price interval started');
+    setInterval(stashPriceInterval, 60 * 60 * 1000);
   })
   .catch(err => {
     console.error('Error connecting to mongo', err);

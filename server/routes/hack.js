@@ -1,12 +1,10 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
 const { pettyCrime } = require('../middlewares/middlePettyHack');
-const { batteryCheck } = require('../middlewares/middleHelpers');
+const { batteryCheck, existingValue } = require('../middlewares/middleHelpers');
 const router = express.Router();
 const User = require('../models/User');
-const Item = require('../models/Item');
 const Crime = require('../models/Crime');
-const Stash = require('../models/Stash');
 
 /* User can click and this will run every 3-4 second until user stops it */
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
@@ -14,14 +12,19 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   let userId = req.user._id;
   let user = await User.findById(userId);
 
-  if (batteryCheck(user, 5) == false) {
+  let batteryCost = 5
+// todo, create criteria 
+  let message = ''
+
+  if (!batteryCheck(user, batteryCost)) {
     return res.status(400).json({
       success: false,
       message: 'insufficent battery'
     });
   }
-  const results = await pettyCrime(user);
 
+  // calculates if user gets exp, bitcoins, stash, crimeskills etc
+  const results = await pettyCrime(user);
   res.status(200).json({
     success: true,
     message: 'pettyCrime commited',
@@ -31,39 +34,41 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
 
 router.get('/crimes', async (req, res, next) => {
   console.log('hack/crimes route');
-  try {
-    const crimes = await Crime.find();
-    res.status(200).json({
-      crimes,
-      success: true,
-      message: 'Crimes loaded'
-    });
-  } catch (err) {
-    next(err);
-  }
+
+  const crimes = await Crime.find();
+  res.status(200).json({
+    success: true,
+    message: 'Crimes loaded',
+    crimes
+  });
 });
 
 router.post('/crimes', async (req, res, next) => {
   console.log('hack/crimes route ID');
   const userId = req.user._id;
-  const { crimeId } = req;
-  const crime = await Crime.findById(req.params.id);
+  const { crimeId } = req.body;
+  const crime = await Crime.findById(crimeId);
   const user = await User.findById(userId);
 
-  // batterycheck see midware
-  if (userId.battery < 7) {
-    res.status(400).json({
+  if (!batteryCheck(user, 7)) {
+    return res.status(400).json({
       success: false,
-      message: 'Insufficent battery'
+      message: 'insufficent battery'
     });
-    return null;
+  }
+
+  if (!existingValue(crime)) {
+    return res.status(400).json({
+      success: false,
+      message: 'no such crime'
+    });
   }
 
   fightCrime(user, crime);
 
   function fightCrime(user, crime) {
     console.log('fighting crime');
-    user.batteryDrain(5);
+    //user.batteryDrain(5);
 
     let result = {
       roundResult: [],
@@ -79,9 +84,10 @@ router.post('/crimes', async (req, res, next) => {
 
   const fightBattle = (user, opponent, result) => {
     // battle over, lost
+    // if user has been blocked (encryption) 4 times, battle is over
     if (checkOccuranceLimit(result.roundResult, 'encryption', 4)) {
       console.log('you lost');
-      user.batteryDrain(5);
+      //user.batteryDrain(5);
       result.gains[batteryDrained] = -10;
       return result;
     }

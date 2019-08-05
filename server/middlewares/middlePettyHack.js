@@ -1,6 +1,7 @@
 const {
   crimeSkillDropChance,
-  stashDropChance
+  stashDropChance,
+  legendaryDropChance
 } = require('../middlewares/middleHelpers');
 
 function pettyCrime(user) {
@@ -11,8 +12,10 @@ function pettyCrime(user) {
   let pettyResult = {
     bitcoins: 0,
     exp: 0,
+    battery: 5,
     stashGained: '',
-    crimeSkillGained: ''
+    crimeSkillGained: '',
+    legendaryGained: ''
   };
   console.log(values, 'values pre');
   /* Grabs the two lowest values from crimeskill  */
@@ -37,27 +40,29 @@ function pettyCrime(user) {
     pettyResult.bitcoins = pettyWinBitcoins(user);
     pettyResult.exp = pettyWinExp(user);
     if (probabiltiy > decider) {
-      /* bonus success +0,2*/
+      /* bonus success +0.2*/
       console.log('probabiltiy HIGHER than decider + 0.2');
       pettyResult.stashGained = stashDropChance(user, values * 100);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
+      pettyResult.legendaryGained = legendaryDropChance(user);
     }
     //call user.method something something
   }
+  user.pettyCrimeGains(pettyResult);
   return pettyResult;
 }
 
 function pettyWinBitcoins(user) {
   console.log('pettyWinBitcoins condition');
   let bitcoins = 10;
-  user.giveBitcoins(bitcoins);
+  //user.giveBitcoins(bitcoins);
   return bitcoins;
 }
 
 function pettyWinExp(user) {
   console.log('pettyWinExp condition');
   let exp = 20;
-  user.giveExp(exp);
+  //user.giveExp(exp);
   return exp;
 }
 

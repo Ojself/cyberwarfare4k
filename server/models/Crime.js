@@ -3,9 +3,16 @@ const Schema = mongoose.Schema;
 
 const crimeSchema = new Schema({
   name: String,
-  type: String,
-  batteryCost: Number,
-  difficulty: Number,
+  descrjption: String,
+  available: Number,
+  crimeType: {
+    type: String,
+    enum: ['technical', 'socialEngineering', 'forensics', 'cryptography']
+  },
+  difficulty: {
+    type: Number,
+    enum: [1, 2, 3, 4, 5]
+  },
   encryption: Number,
   currentFirewall: Number,
   maxFirewall: Number

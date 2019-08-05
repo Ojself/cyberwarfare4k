@@ -2,11 +2,10 @@ router.get('/wantedList', async (req, res, next) => {
   let users = await User.find({});
 
   if (!users) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: 'no hackers found, try again later'
     });
-    return null;
   }
 
   let bountyUsers = users.filter(user => user.bounty > 0);

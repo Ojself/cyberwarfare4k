@@ -12,15 +12,13 @@ RETRIVES ALL ITEMS
 
 router.get('/', isLoggedin, async (req, res, next) => {
   console.log('you are now in marketplace route');
-  try {
+  
     const items = await Item.find();
     res.status(200).json({
       success: true,
       message: "items loaded"
       items});
-  } catch (err) {
-    next(err);
-  }
+  
 });
 
 /* 
@@ -35,11 +33,11 @@ router.post("/:id", async (req, res) => {
   let item = await Item.findById(itemId)
   let user = await User.findById(userId)
   if (user.bitcoins < item.price){
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: 'Insufficent funds'
     })
-    return null;
+    
   }
 
   if (user.items.name === item.name){
@@ -47,9 +45,10 @@ router.post("/:id", async (req, res) => {
       success: false,
       message: 'you already own this item'
     })
-    return null;
   }
       user.bitCoins -= item.price;
       return user.addItem(item);
     
 });
+
+module.exports = router;

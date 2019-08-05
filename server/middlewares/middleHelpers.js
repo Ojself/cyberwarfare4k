@@ -1,4 +1,5 @@
-// multiplier is for later use. default is 1
+const Stash = require('../models/Stash');
+
 function stashDropChance(user, multiplier = 1) {
   console.log('stashDropChance');
   const commonStash = [
@@ -17,14 +18,11 @@ function stashDropChance(user, multiplier = 1) {
     'Proxmark3 Kit'
   ];
   const ultraStash = ['Computer', 'HackRf One'];
-  const legendary = ['emp', 'geostorm', 'medusa'];
+
   let givenStash = '';
 
   let decider = Math.round(Math.random() * 1000) + multiplier;
-  if (decider - multiplier > 998) {
-    /* Give legendary item */
-    user.giveLegendary(legendary[Math.floor(Math.random() * legendary.length)]);
-  } else if (decider > 750) {
+  if (decider > 750) {
     /* Give ultra  item */
     givenStash = ultraStash[Math.floor(Math.random() * ultraStash.length)];
   } else if (decider > 450) {
@@ -34,7 +32,8 @@ function stashDropChance(user, multiplier = 1) {
     /* give common item */
     givenStash = commonStash[Math.floor(Math.random() * commonStash.length)];
   }
-  user.giveStash(givenStash);
+
+  console.log('givenStash', givenStash, typeof givenStash);
   return givenStash;
 }
 
@@ -63,20 +62,47 @@ function crimeSkillDropChance(user) {
     /* give cryptography skill */
     givenCrimeSkill = crimeSkills[3];
   }
-  user.giveSkill(givenCrimeSkill);
+  //user.giveSkill(givenCrimeSkill);
+  console.log(givenCrimeSkill, 'givenskill crime');
   return givenCrimeSkill;
 }
 
-function batteryCheck(user, x) {
-  console.log('batterycheck triggered');
-  if (user.playerStats.battery < x) {
-    console.log('batterycheck triggered condition met');
-    return false;
+function legendaryDropChance(user) {
+  console.log('legendaryDropChance');
+  const legendary = ['emp', 'geostorm', 'medusa'];
+  let givenLegendary;
+
+  let decider = Math.random() * 1000;
+
+  if (decider > 998) {
+    /* Give legendary skill */
+    givenLegendary = legendary[Math.floor(Math.random() * legendary.length)];
   }
-  return user.batteryDrain(x);
+
+  return givenLegendary;
 }
+
+function batteryCheck(user, x) {
+  console.log('batterycheck triggered', user.playerStats.battery, x);
+  return user.playerStats.battery > x;
+}
+
+function existingValue(value) {
+  console.log('existing value triggered', arguments);
+  return !!value;
+}
+
+// eg. user.playerStats.bitCoins >= item.price
+function checkFunds(x, y) {
+  console.log('checkFunds triggered', arguments);
+  return x >= y;
+}
+
 module.exports = {
   stashDropChance,
   crimeSkillDropChance,
-  batteryCheck
+  batteryCheck,
+  legendaryDropChance,
+  existingValue,
+  checkEnoughFunds
 };
