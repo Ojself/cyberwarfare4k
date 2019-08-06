@@ -1,7 +1,9 @@
 const {
   crimeSkillDropChance,
   stashDropChance,
-  legendaryDropChance
+  legendaryDropChance,
+  batteryCheck,
+  existingValue
 } = require('../middlewares/middleHelpers');
 
 function pettyCrime(user) {
@@ -48,7 +50,7 @@ function pettyCrime(user) {
     }
     //call user.method something something
   }
-  user.pettyCrimeGains(pettyResult);
+  user.handlePettyCrime(pettyResult);
   return pettyResult;
 }
 
@@ -66,8 +68,19 @@ function pettyWinExp(user) {
   return exp;
 }
 
+function pettyHackRouteCriterias(user, batteryCost) {
+  if (!batteryCheck(user.playerStats.battery, batteryCost)) {
+    return 'insufficent battery';
+  }
+  if (!existingValue(user)) {
+    return "User  doesn't exist";
+  }
+  return null;
+}
+
 module.exports = {
   pettyCrime,
   pettyWinBitcoins,
-  pettyWinExp
+  pettyWinExp,
+  pettyHackRouteCriterias
 };

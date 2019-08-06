@@ -4,6 +4,13 @@ const {
   checkFunds
 } = require('../middlewares/middleHelpers');
 
+function changeCityRouteCriterias(cities) {
+  if (!existingValue(cities)) {
+    return "Cities doesn't exist";
+  }
+  return null;
+}
+
 // one function to run them all
 function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
   console.log('changeCityRouteCriterias');
@@ -39,4 +46,4 @@ function checkSameCity(currentCity, newCity) {
   return currentCity !== newCity;
 }
 
-module.exports = {};
+module.exports = { changeCityRouteCriterias, changeCityRouteCriterias };

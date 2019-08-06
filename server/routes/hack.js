@@ -1,30 +1,37 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { pettyCrime } = require('../middlewares/middlePettyHack');
-const { batteryCheck, existingValue } = require('../middlewares/middleHelpers');
+const {
+  pettyCrime,
+  pettyHackRouteCriterias
+} = require('../middlewares/middlePettyHack');
+const {
+  crimeRouteCriterias,
+  fightCrime
+} = require('../middlewares/middleCrime');
 const router = express.Router();
 const User = require('../models/User');
 const Crime = require('../models/Crime');
 
-/* User can click and this will run every 3-4 second until user stops it */
+// this route is being ran on a interval of 4sec
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   console.log('hack/pettyCrime route');
   let userId = req.user._id;
   let user = await User.findById(userId);
 
-  let batteryCost = 5
-// todo, create criteria 
-  let message = ''
+  let batteryCost = 5;
 
-  if (!batteryCheck(user, batteryCost)) {
+  // checks if everything is in order to perform petty hack
+  let message = pettyHackRouteCriterias(user, batteryCost);
+
+  if (message) {
     return res.status(400).json({
       success: false,
-      message: 'insufficent battery'
+      message
     });
   }
-
   // calculates if user gets exp, bitcoins, stash, crimeskills etc
   const results = await pettyCrime(user);
+
   res.status(200).json({
     success: true,
     message: 'pettyCrime commited',
@@ -50,85 +57,27 @@ router.post('/crimes', async (req, res, next) => {
   const crime = await Crime.findById(crimeId);
   const user = await User.findById(userId);
 
-  if (!batteryCheck(user, 7)) {
+  //todo set variables to const
+  const batteryCost = 7;
+
+  // Checks if everything is ok in order to commit crime
+  let message = crimeRouteCriterias(crime, user, batteryCost);
+
+  if (message) {
     return res.status(400).json({
       success: false,
-      message: 'insufficent battery'
+      message
     });
   }
 
-  if (!existingValue(crime)) {
-    return res.status(400).json({
-      success: false,
-      message: 'no such crime'
-    });
-  }
+  // commits crime and returns result
+  let finalResult = await fightCrime(user, crime, batteryCost);
 
-  fightCrime(user, crime);
-
-  function fightCrime(user, crime) {
-    console.log('fighting crime');
-    //user.batteryDrain(5);
-
-    let result = {
-      roundResult: [],
-      currentHp: [],
-      maxHp: opponent.maxFireWall,
-      won: false,
-      newRank: false,
-      gains: {}
-    };
-
-    const finalResult = fightBattle(user, crime, result);
-  }
-
-  const fightBattle = (user, opponent, result) => {
-    // battle over, lost
-    // if user has been blocked (encryption) 4 times, battle is over
-    if (checkOccuranceLimit(result.roundResult, 'encryption', 4)) {
-      console.log('you lost');
-      //user.batteryDrain(5);
-      result.gains[batteryDrained] = -10;
-      return result;
-    }
-
-    // battle over, won
-    if (opponent.currentFirewall <= 0) {
-      console.log('you won');
-      result.won = true;
-      // function calculate reward
-      result.gains = calculateReward(result, opponent.difficulty);
-      user.giveMoney(result.gains.bitCoins);
-      user.giveExp(result.gains.exp);
-      return result;
-    }
-
-    // fight blocked by opponent, battle not over
-    if (encryptionOccurance >= 1 + this.crimeSkill[opponent.crimeType] / 100) {
-      console.log('encryption too high, blocked');
-      result.roundResult.push('encryption');
-    } else {
-      // fight won, battle not over
-      results.rounds.push('hit');
-    }
-
-    result.currentHp.push(opponent.currentFirewall);
-    // recursive
-    return fightBattle(user, opponent, result);
-  };
-
-  // checks for number of occurance is over
-  function checkOccuranceLimit(array, value, x) {
-    const result = array.filter(el => el === value);
-    return result.length >= x;
-  }
-
-  function calculateReward(result, difficulty, multiplier = 1) {
-    // Write some amth random stuff here
-    result.gains[exp] = 10;
-    result.gains[bitCoins] = 10;
-  }
-  return result.gains;
+  res.status(200).json({
+    success: true,
+    message: 'Crime commited',
+    finalResult
+  });
 });
 
 router.get('/hackPlayer', async (req, res, next) => {

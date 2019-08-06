@@ -1,10 +1,14 @@
 const City = require('../models/User');
+const {
+  changeCityRouteCriterias,
+  getCityRouteCriterias
+} = require('../middlewares/middleCity.js');
 
 router.get('/', async (req, res, next) => {
   let cities = await City.find({});
 
   // check everthing criteria
-  let message = '';
+  let message = getCityRouteCriterias(cities);
 
   if (message) {
     return res.status(400).json({
@@ -30,16 +34,9 @@ router.post('/', async (req, res, next) => {
   let oldCityId = user.playerStats.city;
   let oldCity = await City.findById({ oldCityId });
 
-  let batteryCost = 5
+  let batteryCost = 5;
 
-  // check everthing criteria
-  /*
-  - battery
-  - not already in city you're traveling to
-  - enough money
-  */
-
-  let message = changeCityRouteCriterias(user,newCity,oldCity,batteryCost);
+  let message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -52,7 +49,7 @@ router.post('/', async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: ``
+    message: `You changed your VPN from ${oldCity} to ${newCity}`
   });
 });
 

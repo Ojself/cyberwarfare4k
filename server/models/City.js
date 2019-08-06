@@ -24,5 +24,3 @@ citySchema.methods.departure = function(user) {
   this.residents.pop(user._id);
   this.save();
 };
-
-// new york - berlin

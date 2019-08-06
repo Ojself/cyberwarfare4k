@@ -117,7 +117,6 @@ const userSchema = new Schema(
         default: 100
       },
 
-      //Player possessions
       bitCoins: {
         type: Number,
         default: 1000
@@ -209,11 +208,6 @@ const userSchema = new Schema(
         default: false
       },
 
-      failedAttempts: {
-        type: Number,
-        default: 0
-      },
-
       gracePeriod: {
         type: Boolean,
         default: false
@@ -229,8 +223,6 @@ const userSchema = new Schema(
 );
 
 // from marketplace
-// 'this' refers to userschema
-// eg. 'this.items[item.type]
 // this probably doesn't work. test it
 userSchema.methods.addItem = function(item) {
   const currentItem = this.items[item.type];
@@ -278,122 +270,13 @@ userSchema.methods.addItem = function(item) {
   return this.save();
 };
 
-userSchema.methods.fightCrime = function(opponent) {
-  console.log('fight crime user method');
-  console.log(opponent, 'opponent information');
-
-  this.battery -= 7;
-
-  let results = {
-    rounds: [],
-    currentHp: [],
-    maxHp: opponent.maxFirewall,
-    won: false,
-    levelUp: false,
-    gains: {
-      exp: 0,
-      bitCoins: 0,
-      battery: 0,
-      crime: 0,
-      expToLevel: this.expToLevel
-    }
-  };
-
-  let endResult = this.fightCrimeBattle(opponent, results);
-
-  // If user levels up.
-  if (this.exp >= this.expToLevel) {
-    this.newRank();
-    endResult.levelUp = true;
-  }
-  /* sends endResult to client and handles result */
-  return endResult;
-};
-
-/* Recursive function that runs max 4 times */
-/* Numbers needs to be tweaked */
-userSchema.methods.fightCrimeBattle = function(opponent, results) {
-  /* Figures outs how often encryption/block will effect */
-  let different = (opponent.encryption / this.encryption) * 0.4;
-  let encryptionOccurance =
-    Math.random() + (opponent.encryption / this.encryption) * 0.4;
-  if (different > 0.35) {
-    encryptionOccurance = Math.random() + 0.35;
-  } else if (different < 0.1) {
-    encryptionOccurance = Math.random() + 0.1;
-  }
-
-  // Battle lost
-  if (this.failedAttempts === 4) {
-    results.gains.battery = -14;
-    this.battery -= 7;
-    this.roundNumber = 0;
-    this.failedAttempts = 0;
-    this.save();
-    return results;
-  }
-
-  //Battle won:
-  if (opponent.currentFirewall <= 0) {
-    results.won = true;
-
-    /* Figures out how much bitcoin user will get for winning */
-    let moneyChange =
-      Math.floor(Math.random() * (opponent.difficulty * 1000)) +
-      opponent.difficulty * 500;
-
-    /* Figures out how much exp user will get for winning */
-    let expChange =
-      Math.floor(Math.random() * 300) + opponent.difficulty * 200 + 100;
-
-    /* Figures out how much crimeSkill user will get for winning */
-    let crimeChange = Math.floor(Math.random() * opponent.difficulty) + 1;
-
-    this.bitCoins += moneyChange;
-    this.networth += moneyChange;
-    this.exp += expChange;
-    this.crimeSkill += crimeChange;
-
-    if (this.crimeSkill > 1000) {
-      this.crimeSkill = 1000;
-    }
-    results.gains.exp = expChange;
-    results.gains.bitCoins = moneyChange;
-    results.gains.battery = -7;
-    results.gains.crime = crimeChange;
-    this.failedAttempts = 0;
-    this.save();
-    return results;
-  }
-  /* if combat lost, but battle not over  */
-  /* ENCRYPTION TOO HIGH, **BLOCKED** */
-  /* Starts recursive */
-  if (encryptionOccurance >= 1 + this.crimeSkill / 100) {
-    this.failedAttempts += 1;
-    results.rounds.push('encryption');
-    results.currentHp.push(opponent.currentFirewall);
-    return this.fightCrimeBattle(opponent, results);
-  }
-
-  /* if if combat won, but battle not over */
-  opponent.currentFirewall -= this.cpu + this.crimeSkill / 10;
-  results.rounds.push('hit');
-
-  /* ensures no minus */
-  if (opponent.currentFirewall < 0) {
-    opponent.currentFirewall = 0;
-  }
-  results.currentHp.push(opponent.currentFirewall);
-  return this.fightCrimeBattle(opponent, results);
-};
-
 userSchema.methods.newRank = function() {
   console.log('new rank method triggered');
-  this.statPoints += 5;
-  this.rank++;
+  this.playerStats.statPoints += 5;
+  this.playerStats.rank++;
   Rank.findOne({ rank: this.rank }).then(newRank => {
-    this.rankName = newRank.name;
-    this.expToLevel = newRank.expToNewRank;
+    this.playerStats.rankName = newRank.name;
+    this.playerStats.expToLevel = newRank.expToNewRank;
   });
   this.save();
 };
@@ -449,8 +332,8 @@ userSchema.methods.batteryGain = function(battery = 5) {
   this.save();
 };
 
-userSchema.methods.pettyCrimeGains = async function(result) {
-  console.log('pettyCrimeGains triggered', result);
+userSchema.methods.handlePettyCrime = async function(result) {
+  console.log('handlePettyCrime triggered', result);
   this.playerStats.battery -= result.battery;
   this.playerStats.bitcoins += result.bitcoins;
   this.playerStats.networth += result.bitcoins;
@@ -501,6 +384,24 @@ userSchema.methods.changeCity = function(city, batteryCost) {
   console.log('changeCity triggered', battery);
   this.playerStats.battery -= battery;
   this.playerStats.city = city._id;
+  this.save();
+};
+
+userSchema.methods.handleCrime = function(finalResult) {
+  console.log('handleCrime triggered', finalResult);
+  this.playerStats.battery -= finalResult.playerGains.batteryCost;
+  this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
+  this.playerStats.networth += finalResult.playerGains.bitCoins;
+  this.playerStats.exp += finalResult.playerGains.exp;
+
+  this.crimeSkill[finalResult.crimeType]++;
+
+  if (finalResult.playerGains.stashGained) {
+    this.stash.push(finalResult.playerGains.stashGained);
+  }
+  if (finalResult.playerGains.legendaryGained) {
+    this.legendaryGained[finalResult.playerGains.legendaryGained]++;
+  }
   this.save();
 };
 

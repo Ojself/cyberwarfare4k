@@ -98,11 +98,18 @@ function checkFunds(x, y) {
   return x >= y;
 }
 
+// checks for number of occurance is over
+function checkOccuranceLimit(array, value, x) {
+  const result = array.filter(el => el === value);
+  return result.length >= x;
+}
+
 module.exports = {
   stashDropChance,
   crimeSkillDropChance,
   batteryCheck,
   legendaryDropChance,
   existingValue,
-  checkEnoughFunds
+  checkEnoughFunds,
+  checkOccuranceLimit
 };
