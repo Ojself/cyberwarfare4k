@@ -30,6 +30,7 @@ router.post('/partial', isLoggedin, async (req, res, next) => {
   }
 
   user.partialRepair();
+
   res.status(200).json({
     success: true,
     message:

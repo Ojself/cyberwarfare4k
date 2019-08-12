@@ -80,7 +80,7 @@ Rank.deleteMany()
   })
   .then(ranksCreated => {
     console.log(`${ranksCreated.length} ranks created with the following id:`);
-    console.log(itemsCreated.map(u => u._id));
+    console.log(ranksCreated.map(u => u._id));
   })
   .then(() => {
     // Close properly the connection to Mongoose

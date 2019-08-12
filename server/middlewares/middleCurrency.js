@@ -77,7 +77,7 @@ function buyRouteCriterias(user, batteryCost, currency, amount) {
     return "Currency doesn't exist";
   }
 
-  if (!batteryCheck(user.playerStats.battery, batteryCost)) {
+  if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
 

@@ -109,7 +109,7 @@ let currency = [
 
 Currency.deleteMany()
   .then(() => {
-    return Stash.create(currency);
+    return Currency.create(currency);
   })
   .then(currencyCreated => {
     console.log(

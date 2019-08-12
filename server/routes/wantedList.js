@@ -1,5 +1,5 @@
 router.get('/wantedList', async (req, res, next) => {
-  let users = await User.find({});
+  const users = await User.find({});
 
   if (!users) {
     return res.status(400).json({
@@ -8,7 +8,7 @@ router.get('/wantedList', async (req, res, next) => {
     });
   }
 
-  let bountyUsers = users.filter(user => user.bounty > 0);
+  const bountyUsers = users.filter(user => user.bounty > 0);
 
   res.status(200).json({
     success: true,
@@ -19,8 +19,8 @@ router.get('/wantedList', async (req, res, next) => {
 
 /* adds bounty to opponent */
 router.post('/wantedList', async (req, res, next) => {
-  let { name, bounty } = req.body;
-  let userId = req.user._id;
+  const { name, bounty } = req.body;
+  const userId = req.user._id;
   const user = await User.findById(userId);
   const opponent = await User.findOne({ name });
   Promise.all([user, opponent]).then(result => {

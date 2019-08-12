@@ -4,15 +4,15 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // Seeds file that remove all crimes and create XXX new crimes
 
 // To execute this seed, run from the root of the project
-// $ node bin/crimeSeeds.js
+// $ node bin/orgCrimeSeeds.js
 
 const mongoose = require('mongoose');
 const User = require('../models/User');
-const Crime = require('../models/Crime');
+const OrgCrime = require('../models/OrgCrime');
 
 require('../configs/database');
 
-let crimes = [
+let orgCrimes = [
   // SE
   {
     name: 'Internet trolling',

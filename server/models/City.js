@@ -3,9 +3,8 @@ const Schema = mongoose.Schema;
 
 const citySchema = new Schema({
   name: String,
-  price: { type: Number, default: 200 },
+  price: { type: Number, default: 2000 },
   residents: { type: [Schema.Types.ObjectId], ref: 'User' },
-  dataCenters: { type: [Schema.Types.ObjectId], ref: 'DataCenter' },
   allianceBase: { type: Schema.Types.ObjectId, ref: 'Alliance' }
 });
 

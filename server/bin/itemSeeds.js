@@ -133,28 +133,28 @@ let items = [
     name: 'Bcrypt npm node',
     type: 'encryption',
     price: 50000,
-    bonus: 5
+    bonus: 10
   },
 
   {
     name: 'IVeraCrypt',
     type: 'encryption',
     price: 120000,
-    bonus: 7
+    bonus: 20
   },
 
   {
     name: 'CertainSafe',
     type: 'encryption',
     price: 300000,
-    bonus: 10
+    bonus: 50
   },
 
   {
     name: 'Vernam Cipher',
     type: 'encryption',
     price: 1000000,
-    bonus: 15
+    bonus: 100
   }
 ];
 

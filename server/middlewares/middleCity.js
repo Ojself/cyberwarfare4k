@@ -27,7 +27,7 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
     return "Departure city doesn't exist";
   }
 
-  if (!batteryCheck(user.playerStats.battery, batteryCost)) {
+  if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
 

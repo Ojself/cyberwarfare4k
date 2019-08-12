@@ -1,4 +1,4 @@
-const City = require('../models/User');
+const City = require('../models/City');
 const {
   changeCityRouteCriterias,
   getCityRouteCriterias

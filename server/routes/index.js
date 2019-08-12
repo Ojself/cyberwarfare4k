@@ -5,6 +5,25 @@ const User = require('../models/User');
 const Item = require('../models/Item');
 const City = require('../models/City');
 
+// might be written wrongly TODO
+// Ensures that email confirmation is been made
+function ensureIsSetup(req, res, next) {
+  if (req.user.account.status === 'Active') {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
+
+//isSetup === true?
+function ensureIsSetup(req, res, next) {
+  if (req.user.isSetup()) {
+    return next();
+  } else {
+    res.redirect('/');
+  }
+}
+
 /* 
 GET
 PRIVATE+

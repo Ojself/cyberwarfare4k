@@ -12,15 +12,18 @@ function crimeRouteCriterias(crime, user, batteryCost) {
   if (!existingValue(crime)) {
     return "Crime doesn't exist";
   }
-  if (!batteryCheck(user.playerStats.battery, batteryCost)) {
+  if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
+  }
+  if (!crime.available) {
+    return 'This crime is not available at the moment';
   }
   return null;
 }
 
 function fightCrime(user, crime, batteryCost) {
   const result = {
-    crimeType = crime.crimeType
+    crimeType: crime.crimeType,
     roundResult: [],
     roundCrimeRemainingHp: [],
     crimeHp: crime.currentFirewall,
@@ -40,12 +43,12 @@ function fightCrime(user, crime, batteryCost) {
   // sees if player leveled up
   if (user.playerStats.exp >= user.playerStats.expToLevel) {
     finalResult.playerGains.levelUp = true;
-    user.newRank()
+    user.newRank();
   }
   // send to user and crime thing here
   // need for asyn await here?
-   crime.handleCrime(finalResult);
-   user.handleCrime(finalResult);
+  crime.handleCrime(finalResult);
+  user.handleCrime(finalResult);
 
   return finalResult;
 }
@@ -103,7 +106,7 @@ function damageCalulator(user, crime) {
   let hackSkillDamage =
     Object.values(user.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
-  return Math.floor(x + y);
+  return Math.floor(crimeTypeDamage + hackSkillDamage);
 }
 
 function roundWin(result, damage) {

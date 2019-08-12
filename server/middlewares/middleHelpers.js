@@ -89,10 +89,11 @@ function batteryCheck(user, x) {
 
 function existingValue(value) {
   console.log('existing value triggered', arguments);
+  console.log(!!value);
   return !!value;
 }
 
-// eg. user.playerStats.bitCoins >= item.price
+// e.g. user.playerStats.bitCoins >= item.price
 function checkFunds(x, y) {
   console.log('checkFunds triggered', arguments);
   return x >= y;
@@ -110,6 +111,5 @@ module.exports = {
   batteryCheck,
   legendaryDropChance,
   existingValue,
-  checkEnoughFunds,
   checkOccuranceLimit
 };

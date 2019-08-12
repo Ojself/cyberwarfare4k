@@ -69,7 +69,7 @@ function pettyWinExp(user) {
 }
 
 function pettyHackRouteCriterias(user, batteryCost) {
-  if (!batteryCheck(user.playerStats.battery, batteryCost)) {
+  if (!batteryCheck(user, batteryCost)) {
     return 'insufficent battery';
   }
   if (!existingValue(user)) {

@@ -10,6 +10,12 @@ const userSchema = new Schema(
     account: {
       password: String,
       ip: [String],
+      status: {
+        type: String,
+        enum: ['Pending Confirmation', 'Active'],
+        default: 'Pending Confirmation'
+      },
+      confirmationCode: String,
       subscription: {
         type: String,
         enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
@@ -27,13 +33,13 @@ const userSchema = new Schema(
       notifications: {
         type: Object,
         default: {
-          '0': { '0': 'Hey man, welcome to CH4K', seen: false }
+          '0': ['Hey man, welcome to CH4K', false]
         }
       },
       messages: {
         type: Object,
         default: {
-          '0': { '0': 'Hey man, welcome to CH4K', seen: false }
+          '0': ['Hey man, welcome to CH4K', false]
         }
       },
       banned: {
@@ -59,11 +65,11 @@ const userSchema = new Schema(
     hackSkill: {
       cpu: {
         type: Number,
-        default: 2
+        default: 1
       },
       antiVirus: {
         type: Number,
-        default: 1
+        default: 2
       },
       encryption: {
         type: Number,
@@ -125,7 +131,6 @@ const userSchema = new Schema(
         type: Number,
         default: 0
       },
-
       bounty: {
         type: Number,
         default: 0
@@ -180,6 +185,10 @@ const userSchema = new Schema(
     },
     /* Special weapons */
     specialWeapons: {
+      equipped: {
+        type: String,
+        default: ''
+      },
       emp: {
         type: Number,
         default: 0
@@ -388,7 +397,7 @@ userSchema.methods.changeCity = function(city, batteryCost) {
 };
 
 userSchema.methods.handleCrime = function(finalResult) {
-  console.log('handleCrime triggered', finalResult);
+  console.log('userschema handleCrime triggered', finalResult);
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
   this.playerStats.networth += finalResult.playerGains.bitCoins;
@@ -402,6 +411,62 @@ userSchema.methods.handleCrime = function(finalResult) {
   if (finalResult.playerGains.legendaryGained) {
     this.legendaryGained[finalResult.playerGains.legendaryGained]++;
   }
+  this.save();
+};
+
+userSchema.methods.handleAttack = function(finalResult) {
+  console.log('userschema handleAttack', finalResult);
+
+  this.playerStats.battery -= finalResult.playerGains.batteryCost;
+  this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
+  this.playerStats.networth += finalResult.playerGains.bitCoins;
+  this.playerStats.exp += finalResult.playerGains.exp;
+
+  // TODO finish this
+
+  this.account.messages[finalResult.date] = [
+    `You attacked ${finalResult.opponent.name} ${new Date(
+      finalResult.date
+    ).toString()} and dealt ${XXXX} damage`,
+    true
+  ];
+
+  // adds currencies
+  for (let i in finalResult.playerGains.currencies) {
+    this.currencies[i] += finalResult.playerGains.currencies[i];
+  }
+  this.shutdowns++;
+
+  this.save();
+};
+
+userSchema.methods.handleAttackDefense = function(finalResult) {
+  console.log('userschema handleAttackDefense', finalResult);
+  // todo, graceperiod
+  this.account.messages[finalResult.date] = [
+    `${user.name} attacked you at ${new Date(finalResult.date).toString()}`,
+    false
+  ];
+
+  this.playerStats.bitCoins -= finalResult.playerGains.bitCoins;
+  this.playerStats.currentFirewall -= 10; // TODO figure out what number to put here
+
+  // if the player is dead
+  if (this.playerStats.currentFirewall <= 0) {
+    // empties his current currency
+    Object.keys(this.currencies).forEach(el => (this.currencies[el] = 0));
+
+    // if user rank 8, he is now 4. if user rank 9, he is now 5
+    let newRank = Math.ceil(this.rank / 2);
+    Rank.findOne({ rank: newRank }).then(newRank => {
+      this.playerStats.rankName = newRank.name;
+      this.playerStats.expToLevel = newRank.expToNewRank;
+      this.playerStats.exp = this.playerStats.expToLevel - 20000;
+    });
+  }
+
+  // TODO finish this
+
   this.save();
 };
 

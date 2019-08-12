@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User');
+const { sendConfirmation } = require('../config/nodemailer');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require('bcrypt');
@@ -10,11 +11,19 @@ const bcryptSalt = 10;
 // TODO: Change email to email.
 router.post('/signup', (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
   if (!email || !password) {
     res.status(400).json({ message: 'Indicate email and password' });
     return;
   }
+
+  const characters =
+    '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let confirmationCode = '';
+  for (let i = 0; i < 25; i++) {
+    confirmationCode +=
+      characters[Math.floor(Math.random() * characters.length)];
+  }
+
   User.findOne({ email })
     .then(userDoc => {
       if (userDoc !== null) {
@@ -23,10 +32,11 @@ router.post('/signup', (req, res, next) => {
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = new User({ email, password: hashPass });
+      const newUser = new User({ email, password: hashPass, confirmationCode });
       return newUser.save();
     })
     .then(userSaved => {
+      // send
       // LOG IN THIS USER
       // "req.logIn()" is a Passport method that calls "serializeUser()"
       // (that saves the USER ID in the session)
@@ -59,7 +69,7 @@ router.post('/login', (req, res, next) => {
         next(new Error('Password is wrong'));
         return;
       }
-
+      // sendConfirmation(email, confirmationCode, username)
       // LOG IN THIS USER
       // "req.logIn()" is a Passport method that calls "serializeUser()"
       // (that saves the USER ID in the session)
@@ -99,6 +109,30 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
 router.get('/logout', (req, res) => {
   req.logout();
   res.json({ message: 'You are out!' });
+});
+
+// todo, what to render
+router.get('/confirm/:confirmCode', (req, res) => {
+  User.findOneAndUpdate(
+    { confirmationCode: req.params.confirmCode },
+    { $set: { status: 'Active' } }
+  )
+    .then(user => {
+      // don't render. do something else. redirect to setup?
+      res.render('auth/confirmed', user);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.post('/forgot', function(req, res) {
+  const email = req.body.email;
+  // forgot password
+});
+
+app.post('/reset', function(req, res) {
+  // reset password
 });
 
 module.exports = router;

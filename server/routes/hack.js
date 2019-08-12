@@ -12,9 +12,11 @@ const router = express.Router();
 const User = require('../models/User');
 const Crime = require('../models/Crime');
 
+//todo, make a function that undefines a bunch of input
 // this route is being ran on a interval of 4sec
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   console.log('hack/pettyCrime route');
+
   let userId = req.user._id;
   let user = await User.findById(userId);
 
@@ -29,6 +31,7 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
       message
     });
   }
+
   // calculates if user gets exp, bitcoins, stash, crimeskills etc
   const results = await pettyCrime(user);
 
@@ -70,37 +73,26 @@ router.post('/crimes', async (req, res, next) => {
     });
   }
 
-  // commits crime and returns result
+  // commits crime and returns result object
   let finalResult = await fightCrime(user, crime, batteryCost);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: 'Crime commited',
     finalResult
   });
 });
 
-router.get('/hackPlayer', async (req, res, next) => {
-  let users = await User.find();
-  if (!users) {
-    res.status(400).json({
-      success: false,
-      message: 'no hackers found, try again later'
-    });
-    return null;
-    res.status(200).json({
-      success: true,
-      message: 'users loaded',
-      users
-    });
-  }
-});
-
-router.get('/hack/hack-player/:id', async (req, res, next) => {
+router.get('/attack', async (req, res, next) => {
   let userId = req.user._id;
-  let slicedId = req.params.id.slice(1);
-  let userInformation = await User.findById(req.user._id);
-  let opponentInformation = User.findById(slicedId);
+  let user = await User.findById(userId);
+  let { opponentId } = req.body;
+  // findname?
+  let opponent = await User.findById(opponentId);
+
+  let batteryCost = 10;
+
+  let message = attackRouteCriterias(user, opponent, batteryCost);
 
   Promise.all([userInformation, opponentInformation]).then(result => {
     if (result[0].name === result[1].name) {
