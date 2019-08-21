@@ -29,7 +29,7 @@ export default class SystemRepair extends Component {
   render() {
     return (
       <div>
-        <h2>CHIP CHOP SHOP</h2>
+        <h2>System Repair</h2>
         <div>
           <div>
             <img src='/pics/partialrepair.jpg' alt='Partial Repari' />

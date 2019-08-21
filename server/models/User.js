@@ -390,8 +390,8 @@ userSchema.methods.sellCurrency = function(
 };
 
 userSchema.methods.changeCity = function(city, batteryCost) {
-  console.log('changeCity triggered', battery);
-  this.playerStats.battery -= battery;
+  console.log('changeCity triggered', batteryCost);
+  this.playerStats.battery -= batteryCost;
   this.playerStats.city = city._id;
   this.save();
 };

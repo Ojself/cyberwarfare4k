@@ -32,7 +32,11 @@ router.post('/signup', (req, res, next) => {
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashPass = bcrypt.hashSync(password, salt);
-      const newUser = new User({ email, password: hashPass, confirmationCode });
+      const account = {
+        password: hashPass
+      };
+      const name = `unconfirmedplayer${Math.floor(Math.random() * 1000)}`;
+      const newUser = new User({ email, account, confirmationCode, name });
       return newUser.save();
     })
     .then(userSaved => {

@@ -45,10 +45,10 @@ export default {
       .catch(errHandler);
   },
 
-  login(username, password) {
+  login(email, password) {
     return service
       .post('/login', {
-        username,
+        email,
         password
       })
       .then(res => {
@@ -175,6 +175,21 @@ export default {
   repairFull() {
     return service
       .post('/repair/full')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  // VPN CITIES
+  getCities() {
+    return service
+      .get('/city')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  changeCity(body) {
+    return service
+      .post('/city', body)
       .then(res => res.data)
       .catch(errHandler);
   }

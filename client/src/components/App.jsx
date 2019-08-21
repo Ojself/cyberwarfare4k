@@ -17,6 +17,7 @@ import Arcade from './pages/Arcade';
 import CreateHacker from './pages/CreateHacker';
 import Petty from './pages/Petty';
 import CryptoCurrency from './pages/CryptoCurrency';
+import VPN from './pages/VPN';
 
 import Secret from './pages/Secret';
 import Login from './pages/Login';
@@ -175,6 +176,7 @@ export default class App extends Component {
             <NavLinkRR to='/wanted-list'>Wanted List</NavLinkRR>
             <NavLinkRR to='/alliance'>Alliance</NavLinkRR>
             <NavLinkRR to='/marketplace'>Marketplace</NavLinkRR>
+            <NavLinkRR to='/vpn'>VPN</NavLinkRR>
             <NavLinkRR
               to={{ pathname: '/cryptocurrency', state: { foo: 'bar' } }}
             >
@@ -197,6 +199,7 @@ export default class App extends Component {
             <Route path='/' exact component={Home} />
             <Route path='/my-profile' component={MyProfile} />
             <Route path='/create-hacker' component={CreateHacker} />
+
             <Route path='/petty-hacker' component={Petty} />
             <Route path='/hack-crimes' component={HackCrimes} />
             <Route path='/hack-player' component={HackPlayer} />
@@ -211,6 +214,11 @@ export default class App extends Component {
                   propsuser={this.state.user}
                 />
               )}
+            />
+
+            <Route
+              path='/vpn'
+              render={() => <VPN propsuser={this.state.user} />}
             />
 
             <Route path='/system-repair' component={SystemRepair} />
