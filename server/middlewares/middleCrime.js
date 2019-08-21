@@ -23,6 +23,7 @@ function crimeRouteCriterias(crime, user, batteryCost) {
 
 function fightCrime(user, crime, batteryCost) {
   const result = {
+    user,
     crimeType: crime.crimeType,
     roundResult: [],
     roundCrimeRemainingHp: [],
@@ -45,11 +46,11 @@ function fightCrime(user, crime, batteryCost) {
     finalResult.playerGains.levelUp = true;
     user.newRank();
   }
-  // send to user and crime thing here
-  // need for asyn await here?
+
   crime.handleCrime(finalResult);
   user.handleCrime(finalResult);
 
+  // todo undefine / null out values. make gen function
   return finalResult;
 }
 
@@ -60,7 +61,7 @@ function crimeRecursiveBattle(user, crime, result) {
 
   // calculates the 'damage' the user inflicts on the crime
   let damage = damageCalulator(user, crime);
-
+  console.log(damage, 'damage');
   // the number that decides the success, lower is better
   let decider = Math.random();
 
@@ -68,7 +69,7 @@ function crimeRecursiveBattle(user, crime, result) {
   // if user has lost 4 times, the crime is considered lost
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
     console.log('CRIME LOST!');
-    result.playerGains[batteryCost] += 10;
+    result.playerGains.batteryCost += 10;
     return result;
   }
 
@@ -87,7 +88,7 @@ function crimeRecursiveBattle(user, crime, result) {
 
   // round lost
   if (probability < decider) {
-    console.log('ROUND LOST!');
+    console.log(probability, decider, 'ROUND LOST!');
     roundLost(result);
   }
 
@@ -98,9 +99,11 @@ function crimeRecursiveBattle(user, crime, result) {
 function damageCalulator(user, crime) {
   // generates randomNumber, higher is worse
   let randomNumber = Math.floor(Math.random() * 6) + 3;
+  console.log('randomnumber', randomNumber);
 
   // crimeSkill that matches crimetype, higher is better
-  let crimeTypeDamage = user.playerStats[crime.crimeType];
+  let crimeTypeDamage = user.crimeSkill[crime.crimeType];
+  console.log(crimeTypeDamage, 'ctd');
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
   let hackSkillDamage =
@@ -125,18 +128,12 @@ function roundLost(result) {
 function chanceCalculator(user, crime) {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
-
-  // if user tried to do crimes way over his means
-  if (crimeSkillNumber - userSkillNumber < 30) {
+  // if user tried to do crimes way over his level
+  if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
   }
   let probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
-  console.log(probability, 'probability');
   return probability;
-  // 200 - 150 + Math.random() / 100 ≈ 0.5 ~ 1.5
-  // 100 - 30 + Math.random() / 100 ≈ 0.7 ~ 1.7
-  // 30 - 90 + Math.random() / 100 ≈ -0.6 ~ 0.6
-  // 60 - 60 + Math.random() / 100 ≈ 0 ~ 1
 }
 
 function crimeWin(result, crime, user) {
@@ -145,10 +142,10 @@ function crimeWin(result, crime, user) {
   // stash and legendary
   result.won = true;
   result.playerGains.exp = 10;
-  result.gains.bitCoins = 20;
-  result.gains.skillGained = crime.crimeType;
-  result.gains.skillGained = ''; // function
-  result.gains.legendaryGained = ''; // function
+  result.playerGains.bitCoins = 20;
+  result.playerGains.skillGained = crime.crimeType;
+  result.playerGains.skillGained = ''; // function here
+  result.playerGains.legendaryGained = ''; // function here
   return result;
 }
 

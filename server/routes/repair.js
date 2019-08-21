@@ -1,68 +1,68 @@
 const express = require('express');
-const { isLoggedIn } = require('../middlewaresAuth');
+const { isLoggedIn } = require('../middlewares/middleAuth');
 const router = express.Router();
 const User = require('../models/User');
-const Item = require('../models/Item');
+const { repairRouteCriterias } = require('../middlewares/middleRepair');
+/* todo isloggedin for routes */
+/* 
+POST
+PRIVATE
+Partially repairs the users HP/Firewall with 20%
+*/
+
+router.post('/partial', async (req, res, next) => {
+  console.log('you are now in partial repair route');
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  // const batteryCost = 5
+  // base repair cost on level, networth, how many times repair has been done etc?
+  const repairCost = 10000;
+
+  let message = repairRouteCriterias(user, repairCost);
+
+  if (message) {
+    return res.status(400).json({
+      success: false,
+      message
+    });
+  }
+
+  user.partialRepair(repairCost);
+
+  res.status(200).json({
+    success: true,
+    message: `You successfully glued together some loose parts from your computer`
+  });
+});
 
 /* 
 POST
 PRIVATE
-Partially repairs the users HP/Firewall
+Fully repairs the users HP/Firewall with 20%
 */
 
-router.post('/partial', isLoggedin, async (req, res, next) => {
-  console.log('you are now in partial repair route');
-  let userId = req.user._id;
-  let user = await User.findById({ userId });
-
-  if (user.bitCoins < 3000) {
-    return res.status(400).json({
-      success: false,
-      message: 'Insufficient funds'
-    });
-  }
-
-  if (user.currentFirewall === user.maxFireWall) {
-    return res.status(400).json({
-      success: false,
-      message: 'Your computer is already working just fine!'
-    });
-  }
-
-  user.partialRepair();
-
-  res.status(200).json({
-    success: true,
-    message:
-      'You successfully glued together some loose parts from your computer'
-  });
-});
-
-router.post('/full', isLoggedin, async (req, res, next) => {
+router.post('/full', async (req, res, next) => {
   console.log('you are now in full repair route');
   let userId = req.user._id;
-  let user = await User.findById({ userId });
+  let user = await User.findById(userId);
 
-  if (user.bitCoins < 12000) {
-    res.status(400).json({
+  const repairCost = 40000;
+
+  let message = repairRouteCriterias(user, repairCost);
+
+  if (message) {
+    return res.status(400).json({
       success: false,
-      message: 'Insufficient funds'
+      message
     });
-    return null;
   }
 
-  if (user.currentFirewall === user.maxFireWall) {
-    res.status(400).json({
-      success: false,
-      message: 'Your computer is already working just fine!'
-    });
-    return null;
-  }
-
-  user.systemFullRepair();
+  user.fullRepair(repairCost);
   res.status(200).json({
     success: true,
-    message:
-      'You successfully glued together some loose parts from your computer'
+    message: `You successfully glued together some loose parts from your computer`
   });
 });
+
+module.exports = router;

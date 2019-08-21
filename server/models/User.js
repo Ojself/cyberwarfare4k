@@ -77,30 +77,30 @@ const userSchema = new Schema(
       }
     },
     crimeSkill: {
-      technical: {
+      Technical: {
         type: Number,
         default: 2
       },
-      socialEngineering: {
+      'Social Engineering': {
         type: Number,
         default: 1
       },
-      forensics: {
+      Forensics: {
         type: Number,
         default: 1
       },
-      cryptography: {
+      Cryptography: {
         type: Number,
         default: 1
       }
     },
     // currencies
     currencies: {
-      Litecoin: Number,
-      Ethereum: Number,
-      Ripple: Number,
-      Monero: Number,
-      Zcash: Number
+      Litecoin: { type: Number, default: 0 },
+      Ethereum: { type: Number, default: 0 },
+      Ripple: { type: Number, default: 0 },
+      Monero: { type: Number, default: 0 },
+      Zcash: { type: Number, default: 0 }
     },
 
     //Player stats
@@ -467,6 +467,29 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
 
   // TODO finish this
 
+  this.save();
+};
+
+// REPAIR
+// REPAIR
+
+userSchema.methods.partialRepair = function(repairCost, batteryCost) {
+  console.log('partialRepair triggered');
+  // this.playerStats.battery -= battery;
+  this.playerStats.bitCoins -= repairCost;
+  this.playerStats.currentFirewall += (20 * this.playerStats.maxFirewall) / 100;
+
+  if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
+    this.playerStats.currentFirewall = this.playerStats.maxFirewall;
+  }
+  this.save();
+};
+
+userSchema.methods.fullRepair = function(repairCost, batteryCost) {
+  console.log('fullRepair triggered');
+  // this.playerStats.battery -= battery;
+  this.playerStats.bitCoins -= repairCost;
+  this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   this.save();
 };
 

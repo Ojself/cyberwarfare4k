@@ -8,7 +8,7 @@ const crimeSchema = new Schema({
   available: { type: Boolean, default: true },
   crimeType: {
     type: String,
-    enum: ['technical', 'socialEngineering', 'forensics', 'cryptography']
+    enum: ['Technical', 'Social Engineering', 'Forensics', 'Cryptography']
   },
   description: String,
   difficulty: {
@@ -27,10 +27,12 @@ crimeSchema.methods.handleCrime = function(finalResult) {
   console.log('crimeSchema handleCrime triggered', finalResult);
 
   this.available = false;
-  // makes the crime unavailable for a short period < 3 minutes
 
+  // makes the crime unavailable for a short period < 3 minutes
   setTimeout(() => {
     this.available = true;
+    console.log(100 * this.difficulty, 'save()');
+    this.save();
   }, 1000 * this.difficulty);
 
   if (finalResult.won) {

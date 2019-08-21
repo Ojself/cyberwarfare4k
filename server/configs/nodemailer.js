@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SGPASS
   }
 });
-// todo, write a nice email
+// TODO, write a nice email
 exports.sendConfirmation = (email, confirmationCode) => {
   return transporter.sendMail({
     from: 'Hacker',

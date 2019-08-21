@@ -4,6 +4,7 @@ const User = require('../models/User');
 
 const currencySchema = new Schema({
   name: String,
+  color: String,
   initials: String,
   lowerPrice: Number,
   higherPrice: Number,
@@ -15,7 +16,7 @@ const currencySchema = new Schema({
   maxAmountHold: { type: Number, default: 10 },
   available: Number,
   marketCap: Number,
-  lastPurchasedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+  lastPurchasedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   online: {
     type: Boolean,
     default: true

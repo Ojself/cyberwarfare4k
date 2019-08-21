@@ -3,13 +3,13 @@ const { batteryCheck, existingValue } = require('../middlewares/middleHelpers');
 //checks if level requirement for purchasing is met
 function checkCurrencyRequiredLevel(user, currency) {
   console.log('checkCurrencyRequiredLevel check');
-  return user.playerStats.rank >= currency.levelreq;
+  return user.playerStats.rank >= currency.levelReq;
 }
 
 //checks if user has enough money
 function checkCurrencyfund(user, currency, amount) {
   console.log('checkCurrencyfund check');
-  return user.playerStats.bitcoins >= currency.price * amount;
+  return user.playerStats.bitCoins >= currency.price * amount;
 }
 
 //checks if there's enough available currency to purchase
@@ -38,7 +38,7 @@ function purchaseCurrency(user, currency, amount, batteryCost, totalPrice) {
 // makes the actual sale in User and Currency model
 function sellCurrency(user, currency, amount, batteryCost, totalPrice) {
   console.log('sell Currency');
-  user.purchaseCurrency(currency, amount, batteryCost, totalPrice);
+  user.sellCurrency(currency, amount, batteryCost, totalPrice);
   currency.sellHandle(amount);
 }
 

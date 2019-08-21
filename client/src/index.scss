@@ -1,15 +1,12 @@
 // --------------------
-// Definition of variables
-$primary: #32c3ff;
-
-// --------------------
 // Style reusable for all components
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto Mono', monospace;
 }
 
+// for the state.message
 .info {
   margin: 20px;
   padding: 10px 20px;
@@ -34,7 +31,7 @@ body {
   }
 
   .App-header {
-    background-color: $primary;
+    background-color: black;
     padding: 20px;
     color: white;
 

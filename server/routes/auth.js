@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const User = require('../models/User');
-const { sendConfirmation } = require('../config/nodemailer');
+const { sendConfirmation } = require('../configs/nodemailer');
 
 // Bcrypt to encrypt passwords
 const bcrypt = require('bcrypt');
@@ -126,12 +126,12 @@ router.get('/confirm/:confirmCode', (req, res) => {
     });
 });
 
-app.post('/forgot', function(req, res) {
+router.post('/forgot', function(req, res) {
   const email = req.body.email;
   // forgot password
 });
 
-app.post('/reset', function(req, res) {
+router.post('/reset', function(req, res) {
   // reset password
 });
 

@@ -185,4 +185,19 @@ router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
   });
 });
 
+router.get('/get-nav-user', async (req, res, next) => {
+  const userId = req.user._id;
+  try {
+    const user = await User.findById(userId);
+    res.status(200).json({
+      success: true,
+      message: 'nav user loaded',
+      user
+    });
+  } catch (err) {
+    next(err);
+  }
+  /* todo, too much information is being passsed */
+});
+
 module.exports = router;

@@ -54,9 +54,9 @@ router.get('/crimes', async (req, res, next) => {
 });
 
 router.post('/crimes', async (req, res, next) => {
-  console.log('hack/crimes route ID');
-  const userId = req.user._id;
+  const userId = req.user;
   const { crimeId } = req.body;
+  console.log('hack/crimes route ID', crimeId);
   const crime = await Crime.findById(crimeId);
   const user = await User.findById(userId);
 

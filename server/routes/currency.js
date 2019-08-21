@@ -15,7 +15,9 @@ const Currency = require('../models/Currency');
 router.get('/', isLoggedIn, async (req, res, next) => {
   console.log('you are now in currency route');
 
-  let currency = await Currency.find({});
+  let currency = await Currency.find().populate('lastPurchasedBy', 'name');
+
+  console.log(currency, 'currency');
 
   return res.status(200).json({
     success: true,
@@ -25,14 +27,14 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 });
 
 router.post('/buy', isLoggedIn, async (req, res, next) => {
-  console.log('you are now buying currency route');
-  let userId = req.user._id;
-  let user = await User.findById({ userId });
+  const userId = req.user._id;
+  const user = await User.findById(userId);
 
-  let batteryCost = 5;
+  const batteryCost = 5;
 
-  let { currencyName, amount } = req.body;
-  let currency = await Currency.findOne({ name: currencyName });
+  const { name, amount } = req.body;
+
+  const currency = await Currency.findOne({ name });
   let totalPrice;
 
   // Checking if everything is in order for a purchase
@@ -57,13 +59,13 @@ router.post('/buy', isLoggedIn, async (req, res, next) => {
 
 router.post('/sell', isLoggedIn, async (req, res, next) => {
   console.log('you are now sell currency route');
-  let userId = req.user._id;
-  let user = await User.findById({ userId });
+  const userId = req.user._id;
+  const user = await User.findById(userId);
 
-  let batteryCost = 5;
+  const batteryCost = 5;
 
-  let { currencyName, amount } = req.body;
-  let currency = await Currency.findOne({ name: currencyName });
+  const { name, amount } = req.body;
+  const currency = await Currency.findOne({ name });
   let totalPrice;
 
   // Checking if everything is in order for a sale

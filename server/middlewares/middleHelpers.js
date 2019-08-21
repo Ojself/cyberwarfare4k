@@ -40,26 +40,26 @@ function stashDropChance(user, multiplier = 1) {
 function crimeSkillDropChance(user) {
   console.log('crimeSkillDropChance');
   let crimeSkills = [
-    'technical',
-    'socialEngineering',
-    'forensics',
-    'cryptography'
+    'Technical',
+    'Social Engineering',
+    'Forensics',
+    'Cryptography'
   ];
   let givenCrimeSkill;
 
   let decider = Math.random() * 1000;
 
   if (decider > 750) {
-    /* Give technical skill */
+    /* Give Technical skill */
     givenCrimeSkill = crimeSkills[0];
   } else if (decider > 500) {
-    /* Give socialEngineering skill */
+    /* Give 'Social Engineering' skill */
     givenCrimeSkill = crimeSkills[1];
   } else if (decider > 250) {
-    /* Give forensics skill */
+    /* Give Forensics skill */
     givenCrimeSkill = crimeSkills[2];
   } else {
-    /* give cryptography skill */
+    /* give Cryptography skill */
     givenCrimeSkill = crimeSkills[3];
   }
   //user.giveSkill(givenCrimeSkill);
@@ -88,14 +88,14 @@ function batteryCheck(user, x) {
 }
 
 function existingValue(value) {
-  console.log('existing value triggered', arguments);
+  console.log('existing value triggered', ...arguments);
   console.log(!!value);
   return !!value;
 }
 
 // e.g. user.playerStats.bitCoins >= item.price
 function checkFunds(x, y) {
-  console.log('checkFunds triggered', arguments);
+  console.log('checkFunds triggered', ...arguments);
   return x >= y;
 }
 
@@ -106,6 +106,7 @@ function checkOccuranceLimit(array, value, x) {
 }
 
 module.exports = {
+  checkFunds,
   stashDropChance,
   crimeSkillDropChance,
   batteryCheck,

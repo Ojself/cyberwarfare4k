@@ -12,6 +12,7 @@ require('../configs/database');
 let currency = [
   {
     name: 'Litecoin',
+    color: 'hsl(255, 70%, 75%)',
     initials: 'LTC',
     lowerPrice: 35,
     higherPrice: 55,
@@ -22,6 +23,7 @@ let currency = [
   },
   {
     name: 'Ethereum',
+    color: 'hsl(197, 75%, 69%)',
     initials: 'ETH',
     lowerPrice: 120,
     higherPrice: 150,
@@ -32,6 +34,7 @@ let currency = [
   },
   {
     name: 'Ripple',
+    color: 'hsl(350, 100%, 77%)',
     initials: 'XRP',
     lowerPrice: 0.3,
     higherPrice: 0.7,
@@ -42,6 +45,7 @@ let currency = [
   },
   {
     name: 'Monero',
+    color: 'hsl(214, 98%, 75%)',
     initials: 'XMR',
     lowerPrice: 50,
     higherPrice: 70,
@@ -52,6 +56,7 @@ let currency = [
   },
   {
     name: 'Zcash',
+    color: 'hsl(25, 94%, 72%)',
     initials: 'ZEC',
     lowerPrice: 10,
     higherPrice: 15,
@@ -62,6 +67,7 @@ let currency = [
   }
   /* {
     name: 'Dash',
+    color: '',
     initials: 'DASH'
     lowerPrice: 3,
     higherPrice: 0,
@@ -71,6 +77,7 @@ let currency = [
   },
   {
     name: 'Bitcoin Cash',
+    color: '',
     initials: 'BCH',
     lowerPrice: 3,
     higherPrice: 0,
@@ -80,6 +87,7 @@ let currency = [
   },
   {
     name: 'NEO',
+    color: '',
     initials: 'NEO',
     lowerPrice: 3,
     higherPrice: 0,
@@ -89,6 +97,7 @@ let currency = [
   },
   {
     name: 'Cardano',
+    color: '',
     initials: 'ADA',
     lowerPrice: 3,
     higherPrice: 0,
@@ -98,6 +107,7 @@ let currency = [
   },
   {
     name: 'EOS',
+    color: '',
     initials: 'EOS',
     lowerPrice: 3,
     higherPrice: 0,

@@ -17,7 +17,7 @@ let crimes = [
   {
     name: 'Internet trolling',
     description: 'Create online havoc by trolling online',
-    crimeType: 'socialEngineering',
+    crimeType: 'Social Engineering',
     difficulty: 30,
     currentFirewall: 90,
     maxFirewall: 90
@@ -27,7 +27,7 @@ let crimes = [
     name: 'Piggyback',
     description:
       'Follow a businessman into his office and steal valuable information',
-    crimeType: 'socialEngineering',
+    crimeType: 'Social Engineering',
     difficulty: 50,
     currentFirewall: 150,
     maxFirewall: 150
@@ -36,7 +36,7 @@ let crimes = [
   {
     name: 'Spoof RFID',
     description: 'Enter an office buildning by brute forcing their door',
-    crimeType: 'socialEngineering',
+    crimeType: 'Social Engineering',
     difficulty: 70,
     currentFirewall: 210,
     maxFirewall: 210
@@ -45,7 +45,7 @@ let crimes = [
   {
     name: 'ID theft',
     description: 'Be someone else, who wants to be you anyway..',
-    crimeType: 'socialEngineering',
+    crimeType: 'Social Engineering',
     difficulty: 90,
     currentFirewall: 270,
     maxFirewall: 270
@@ -54,17 +54,17 @@ let crimes = [
   {
     name: 'Ransomware',
     description: 'Use ransomware to blackmail businesses for money',
-    crimeType: 'socialEngineering',
+    crimeType: 'Social Engineering',
     difficulty: 150,
     currentFirewall: 450,
     maxFirewall: 450
   },
 
-  // forensics
+  // Forensics
   {
     name: 'Wipe HDD',
     description: 'Microwave peoples harddrive for money',
-    crimeType: 'forensics',
+    crimeType: 'Forensics',
     difficulty: 30,
     currentFirewall: 90,
     maxFirewall: 90
@@ -73,7 +73,7 @@ let crimes = [
   {
     name: 'Hide data',
     description: 'Hide your neighbours data and blackmail them!',
-    crimeType: 'forensics',
+    crimeType: 'Forensics',
     difficulty: 50,
     currentFirewall: 150,
     maxFirewall: 150
@@ -81,7 +81,7 @@ let crimes = [
   {
     name: 'Retrieve data',
     description: 'Help desperate souls to retrieve their lost data',
-    crimeType: 'forensics',
+    crimeType: 'Forensics',
     difficulty: 70,
     currentFirewall: 210,
     maxFirewall: 210
@@ -89,7 +89,7 @@ let crimes = [
   {
     name: 'Cross-Site Scripting',
     description: 'Drop malicious code in a comment blog ',
-    crimeType: 'forensics',
+    crimeType: 'Forensics',
     difficulty: 90,
     currentFirewall: 270,
     maxFirewall: 270
@@ -97,17 +97,17 @@ let crimes = [
   {
     name: 'Cookie theft',
     description: 'Steal precious information from the cookie',
-    crimeType: 'forensics',
+    crimeType: 'Forensics',
     difficulty: 150,
     currentFirewall: 450,
     maxFirewall: 450
   },
 
-  // technical
+  // Technical
   {
     name: 'Guess password',
     description: 'Guess your friends social login password',
-    crimeType: 'technical',
+    crimeType: 'Technical',
     difficulty: 30,
     currentFirewall: 90,
     maxFirewall: 90
@@ -115,7 +115,7 @@ let crimes = [
   {
     name: 'Change grades',
     description: 'Change university grades for money',
-    crimeType: 'technical',
+    crimeType: 'Technical',
     difficulty: 50,
     currentFirewall: 150,
     maxFirewall: 150
@@ -123,7 +123,7 @@ let crimes = [
   {
     name: 'Web scrapping',
     description: 'Scrap the web for data and sell profitable patterns',
-    crimeType: 'technical',
+    crimeType: 'Technical',
     difficulty: 70,
     currentFirewall: 210,
     maxFirewall: 210
@@ -131,7 +131,7 @@ let crimes = [
   {
     name: 'SQL injection',
     description: 'Look for credit card information in company databases',
-    crimeType: 'technical',
+    crimeType: 'Technical',
     difficulty: 90,
     currentFirewall: 270,
     maxFirewall: 270
@@ -139,17 +139,17 @@ let crimes = [
   {
     name: 'GPS jamming',
     description: 'Jam GPS signals in 3rd world countries',
-    crimeType: 'technical',
+    crimeType: 'Technical',
     difficulty: 150,
     currentFirewall: 450,
     maxFirewall: 450
   },
 
-  // cryptography
+  // Cryptography
   {
     name: 'Crack consoles',
     description: 'Sell cracked gaming consoles',
-    crimeType: 'cryptography',
+    crimeType: 'Cryptography',
     difficulty: 30,
     currentFirewall: 90,
     maxFirewall: 90
@@ -157,7 +157,7 @@ let crimes = [
   {
     name: 'Crypto currency',
     description: 'Speculate in Virtual currency',
-    crimeType: 'cryptography',
+    crimeType: 'Cryptography',
     difficulty: 50,
     currentFirewall: 150,
     maxFirewall: 150
@@ -165,7 +165,7 @@ let crimes = [
   {
     name: 'Fake Public-key',
     description: "Who's really signing those certificates?",
-    crimeType: 'cryptography',
+    crimeType: 'Cryptography',
     difficulty: 70,
     currentFirewall: 210,
     maxFirewall: 210
@@ -173,7 +173,7 @@ let crimes = [
   {
     name: 'Spoof TLS Handshake',
     description: 'Much easier to handshake online than irl',
-    crimeType: 'cryptography',
+    crimeType: 'Cryptography',
     difficulty: 90,
     currentFirewall: 270,
     maxFirewall: 270
@@ -181,7 +181,7 @@ let crimes = [
   {
     name: 'SSL sniffing',
     description: 'The s in HTTPS is only indicative',
-    crimeType: 'cryptography',
+    crimeType: 'Cryptography',
     difficulty: 150,
     currentFirewall: 450,
     maxFirewall: 450

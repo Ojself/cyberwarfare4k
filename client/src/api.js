@@ -116,5 +116,66 @@ export default {
       .post('/hack/pettyCrime')
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  /* CRIMES */
+
+  getCrimes() {
+    return service
+      .get('/hack/crimes')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  commitCrimes(crimeId) {
+    return service
+      .post('/hack/crimes', { crimeId })
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  // CRYPTOCURRENCY
+  // CRYPTOCURRENCY
+  getCrypto() {
+    return service
+      .get('/currency/')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  buyCrypto(body) {
+    return service
+      .post('/currency/buy', body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  sellCrypto(body) {
+    return service
+      .post('/currency/sell', body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  getNavUser() {
+    return service
+      .get('/get-nav-user')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  // REPAIR
+  repairPartial() {
+    return service
+      .post('/repair/partial')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  repairFull() {
+    return service
+      .post('/repair/full')
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };
