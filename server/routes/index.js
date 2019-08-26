@@ -200,4 +200,14 @@ router.get('/get-nav-user', async (req, res, next) => {
   /* todo, too much information is being passsed */
 });
 
+router.get('/profile/:profileId', async (req, res, next) => {
+  const { profileId } = req.params;
+  const user = await User.findById(profileId);
+  res.status(200).json({
+    success: true,
+    message: 'nav user loaded',
+    user
+  });
+});
+
 module.exports = router;

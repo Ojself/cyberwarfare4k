@@ -2,18 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const City = require('./City');
+const Stash = require('./Stash');
 
 const dataCenterSchema = new Schema({
   name: String,
   status: {
     type: String,
-    enum: ['Available', 'Under Attack', 'Malfunctioning', 'Owned'],
+    enum: ['Available', 'Malfunctioning', 'Resetting', 'Owned'],
     default: 'Available'
   },
   price: {
     type: Number,
     default: 1000000
   },
+  requiredStash: [{ type: Schema.Types.ObjectId, ref: 'Stash' }],
   difficulty: Number,
   currentFirewall: {
     type: Number,
@@ -29,10 +31,83 @@ const dataCenterSchema = new Schema({
   ownerAlliance: { type: Schema.Types.ObjectId, ref: 'Alliance' },
   minutlyrevenue: Number,
   timeToAvailable: Number,
-  avaialble: {
+  gracePeriod: {
     type: Boolean,
-    default: true
+    default: false
   }
 });
+
+dataCenterSchema.methods.handlePurchase = function(user) {
+  console.log('handlePurchase method triggered');
+  this.owner = user._id;
+  this.status = 'Owned';
+  this.attacker = null; /* might not work because only allows objectId. maybe set to same as owner */
+  // gracePeriod for x minutes to let user enjoy some revenue?
+  this.save();
+};
+
+dataCenterSchema.methods.handleAttack = async function(
+  attackerId,
+  dataCenterOwner,
+  result
+) {
+  console.log('handleAttack method triggered');
+  this.gracePeriod = true;
+  // graces the datacentre for a minute so the user can't attack too quick
+  let gracePeriodTimeOut = setTimeout(() => {
+    this.gracePeriod = false;
+    this.save();
+  }, 1000 * 60);
+  if (result.won) {
+    this.currentFirewall -= result.damageDealt;
+
+    // resets the required stash
+    // todo repeating, write function
+    this.requiredStash = [];
+    const stashes = await Stash.find();
+    for (let i = 0; i < 3; i++) {
+      this.requiredStash.push(
+        stashes[Math.floor(Math.random() * stashes.length)]._id
+      );
+    }
+  }
+  this.attacker = attackerId;
+  this.save();
+};
+
+// Makes it unavaiable for attack or purchase for between 15-18 minutes
+// First 'malfunction' and then 'resetting'
+// resets required stash and removes owner and attacker id
+// heals up the datacentre
+userSchema.methods.handleDestroyed = function(dataCentre, result) {
+  console.log('handleDataCentreAttack triggered');
+  this.gracePeriod = true;
+  this.requiredStash = [];
+  this.owner = null;
+  this.status = 'Malfunctioning';
+  this.currentFirewall = this.maxFirewall;
+
+  let randomNumber = Math.ceil(Math.random() * 3);
+
+  setTimeout(() => {
+    this.status = 'Resetting';
+    this.save()
+  }, 1000 * 60 * 15);
+
+  setTimeout(() => {
+    this.status = 'Available';
+    this.gracePeriod = false;
+    this.attacker = null;
+    this.currentFirewall = this.maxFirewall;
+    const stashes = await Stash.find();
+    for (let i = 0; i < 3; i++) {
+      this.requiredStash.push(
+        stashes[Math.floor(Math.random() * stashes.length)]._id
+      );
+    }
+  }, 1000 * 60 * 15 + randomNumber);
+
+  this.save();
+};
 
 module.exports = mongoose.model('dataCenter', dataCenterSchema);

@@ -34,7 +34,6 @@ export default {
 
   // This method signs up and logs in the user
   signup(userInfo) {
-    console.log('signup', userInfo);
     return service
       .post('/signup', userInfo)
       .then(res => {
@@ -78,13 +77,6 @@ export default {
       .catch(errHandler);
   },
 
-  getSecret() {
-    return service
-      .get('/secret')
-      .then(res => res.data)
-      .catch(errHandler);
-  },
-
   getUser() {
     return service
       .get('/my-profile')
@@ -93,7 +85,6 @@ export default {
   },
 
   getAllUsers() {
-    console.log('hello from api, getAllUsers()');
     return service
       .get('/ladder')
       .then(res => res.data)
@@ -101,7 +92,6 @@ export default {
   },
 
   getAllItems() {
-    console.log('hello from api, getAllItems()');
     return service
       .get('/marketplace')
       .then(res => res.data)
@@ -111,7 +101,6 @@ export default {
   /* ATTACK */
 
   pettyHack() {
-    console.log('hello from api, pettyhack()');
     return service
       .post('/hack/pettyCrime')
       .then(res => res.data)

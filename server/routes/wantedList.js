@@ -23,21 +23,31 @@ router.post('/wantedList', async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const opponent = await User.findOne({ name });
+
+  let message = addBountyCriteria(user, opponent);
+
+  function addBountyCriteria(user, opponent, bounty) {
+    // check user
+    // check opponent
+    // check money
+  }
+
+  if (message) {
+    return res.status(400).json({
+      success: false,
+      message
+    });
+  }
+
+  user.drainMoney(bounty);
+  opponent.addBounty(user, bounty);
+
+  res.status(200).json({
+    success: true,
+    message: `${bounty} added to ${target}s bounty`
+  });
+
   Promise.all([user, opponent]).then(result => {
-    if (!result[1]) {
-      res.status(400).json({
-        success: false,
-        message: 'no hacker with that name'
-      });
-      return null;
-    }
-    if (result[0].bitCoins < bounty) {
-      res.status(400).json({
-        success: false,
-        message: 'You dont have that many bitcoins!'
-      });
-      return null;
-    }
     result[0].bitCoins -= parseInt(bounty);
     result[1].bounty += parseInt(bounty);
     if (!result[1].bountyDonors.includes(userId)) {
@@ -45,9 +55,5 @@ router.post('/wantedList', async (req, res, next) => {
     }
     result[0].save();
     result[1].save();
-    res.status(200).json({
-      success: true,
-      message: `${bounty} added to ${target}s bounty`
-    });
   });
 });

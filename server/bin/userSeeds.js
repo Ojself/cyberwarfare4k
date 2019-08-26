@@ -43,7 +43,7 @@ User.deleteMany()
           rankName: 'Script kiddie'
         },
         name: 'npc_alice_level1',
-        alliance: 'White'
+        alliance: 'Black'
       },
       {
         email: 'bob@email.com',
@@ -60,12 +60,12 @@ User.deleteMany()
           rankName: 'Family IT-Support'
         },
         name: 'npc_bob_level2',
-        alliance: 'White'
+        alliance: 'Grey'
       },
       {
-        email: 'charlie@email.com',
+        email: 'chuck@email.com',
         account: {
-          password: bcrypt.hashSync('charlie', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('chuck', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -76,13 +76,13 @@ User.deleteMany()
           rank: 2,
           rankName: 'Blog Writer'
         },
-        name: 'npc_charlie_level3',
-        alliance: 'White'
+        name: 'npc_chuck_level3',
+        alliance: 'Red'
       },
       {
-        email: 'david@email.com',
+        email: 'craig@email.com',
         account: {
-          password: bcrypt.hashSync('david', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('craig', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -93,13 +93,13 @@ User.deleteMany()
           rank: 3,
           rankName: "HTML 'programmer'"
         },
-        name: 'npc_david_level4',
-        alliance: 'White'
+        name: 'npc_craig_level4',
+        alliance: 'Black'
       },
       {
-        email: 'edward@email.com',
+        email: 'eve@email.com',
         account: {
-          password: bcrypt.hashSync('edward', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('eve', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -110,13 +110,13 @@ User.deleteMany()
           rank: 4,
           rankName: 'Jr. Web Dev'
         },
-        name: 'npc_edward_level5',
+        name: 'npc_eve_level5',
         alliance: 'White'
       },
       {
-        email: 'frederic@email.com',
+        email: 'faythe@email.com',
         account: {
-          password: bcrypt.hashSync('frederic', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('faythe', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -127,13 +127,13 @@ User.deleteMany()
           rank: 5,
           rankName: 'Sr. Web Dev'
         },
-        name: 'npc_frederic_level6',
-        alliance: 'White'
+        name: 'npc_faythe_level6',
+        alliance: 'Brown'
       },
       {
-        email: 'gary@email.com',
+        email: 'mallory@email.com',
         account: {
-          password: bcrypt.hashSync('gary', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('mallory', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -144,13 +144,13 @@ User.deleteMany()
           rank: 6,
           rankName: 'System Dev'
         },
-        name: 'npc_gary_level7',
-        alliance: 'White'
+        name: 'npc_mallory_level7',
+        alliance: 'Grey'
       },
       {
-        email: 'ian@email.com',
+        email: 'sybil@email.com',
         account: {
-          password: bcrypt.hashSync('ian', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('sybil', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -161,13 +161,13 @@ User.deleteMany()
           rank: 7,
           rankName: 'Cyber Security Dev'
         },
-        name: 'npc_ian_level8',
-        alliance: 'White'
+        name: 'npc_sybil_level8',
+        alliance: 'Red'
       },
       {
-        email: 'jacob@email.com',
+        email: 'trudy@email.com',
         account: {
-          password: bcrypt.hashSync('jacob', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('trudy', bcrypt.genSaltSync(bcryptSalt)),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -178,8 +178,8 @@ User.deleteMany()
           rank: 8,
           rankName: 'Basement Dweller'
         },
-        name: 'npc_jacob_level9',
-        alliance: 'White'
+        name: 'npc_trudy_level9',
+        alliance: 'Black'
       },
       {
         email: 'gerald@email.com',

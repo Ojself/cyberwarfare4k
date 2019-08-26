@@ -105,6 +105,12 @@ function checkOccuranceLimit(array, value, x) {
   return result.length >= x;
 }
 
+// Checks for two values being the same incl. type
+function checkSameValue(currentCityName, newCityName) {
+  console.log('checkSameValue triggered', ...arguments);
+  return currentCityName !== newCityName;
+}
+
 module.exports = {
   checkFunds,
   stashDropChance,
@@ -112,5 +118,6 @@ module.exports = {
   batteryCheck,
   legendaryDropChance,
   existingValue,
-  checkOccuranceLimit
+  checkOccuranceLimit,
+  checkSameValue
 };

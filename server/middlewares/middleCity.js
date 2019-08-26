@@ -1,7 +1,8 @@
 const {
   batteryCheck,
   existingValue,
-  checkFunds
+  checkFunds,
+  checkSameValue
 } = require('../middlewares/middleHelpers');
 
 function getCityRouteCriterias(cities) {
@@ -38,15 +39,20 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
     return 'Insufficent money';
   }
 
-  if (!checkSameCity(oldCity.name, newCity.name)) {
+  if (!checkSameValue(oldCity.name, newCity.name)) {
     return 'Your VPN is already set to this city';
   }
   return null;
 }
 
-function checkSameCity(currentCityName, newCityName) {
-  console.log('checkSameCity triggered', ...arguments);
-  return currentCityName !== newCityName;
+function changeCity(user, newCity, oldCity, batteryCost) {
+  newCity.arrival(user._id);
+  user.changeCity(newCity, batteryCost);
+  oldCity.departure(user._id);
 }
 
-module.exports = { getCityRouteCriterias, changeCityRouteCriterias };
+module.exports = {
+  getCityRouteCriterias,
+  changeCityRouteCriterias,
+  changeCity
+};

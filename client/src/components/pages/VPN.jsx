@@ -7,7 +7,8 @@ export default class VPN extends Component {
     super(props);
     this.state = {
       cities: null,
-      selectedCity: 'Phoenix',
+      selectedCity: null,
+      cityPrice: null,
       loading: true,
       message: null
     };
@@ -22,8 +23,12 @@ export default class VPN extends Component {
   }
 
   handleChange(event) {
-    console.log(event.target.value, 'target');
-    this.setState({ selectedCity: event.target.value });
+    let selectedCity = event.target.value;
+    let cityObject = this.state.cities.filter(
+      city => city.name === selectedCity
+    );
+    let cityPrice = cityObject[0].price;
+    this.setState({ selectedCity, cityPrice });
   }
 
   handleTravel() {
@@ -36,6 +41,7 @@ export default class VPN extends Component {
 
   render() {
     console.log(this.state, 'state vpn');
+
     return (
       <div>
         <h2>VPN</h2>
@@ -45,7 +51,7 @@ export default class VPN extends Component {
             <Input
               /* todo either set value to user.city OR disable user.city */
               onChange={this.handleChange}
-              value={this.state.selectedCity}
+              value={this.state.selectedCity && 'none'}
               type='select'
               name='select'
               id='exampleSelect'

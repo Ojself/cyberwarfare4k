@@ -11,7 +11,6 @@ const citySchema = new Schema({
 // pushes userId into residents so server (and client) knows which hacker is in which city
 citySchema.methods.arrival = function(userId) {
   console.log('arrival triggered', userId);
-
   this.residents.addToSet({ _id: userId });
   this.save();
 };

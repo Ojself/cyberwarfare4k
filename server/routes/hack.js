@@ -15,12 +15,10 @@ const Crime = require('../models/Crime');
 //todo, make a function that undefines a bunch of input
 // this route is being ran on a interval of 4sec
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
-  console.log('hack/pettyCrime route');
+  const userId = req.user._id;
+  const user = await User.findById(userId);
 
-  let userId = req.user._id;
-  let user = await User.findById(userId);
-
-  let batteryCost = 5;
+  const batteryCost = 5;
 
   // checks if everything is in order to perform petty hack
   let message = pettyHackRouteCriterias(user, batteryCost);
@@ -32,7 +30,6 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
     });
   }
 
-  // calculates if user gets exp, bitcoins, stash, crimeskills etc
   const results = await pettyCrime(user);
 
   res.status(200).json({
@@ -43,8 +40,6 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
 });
 
 router.get('/crimes', async (req, res, next) => {
-  console.log('hack/crimes route');
-
   const crimes = await Crime.find();
   res.status(200).json({
     success: true,
@@ -56,7 +51,7 @@ router.get('/crimes', async (req, res, next) => {
 router.post('/crimes', async (req, res, next) => {
   const userId = req.user;
   const { crimeId } = req.body;
-  console.log('hack/crimes route ID', crimeId);
+
   const crime = await Crime.findById(crimeId);
   const user = await User.findById(userId);
 
@@ -83,6 +78,7 @@ router.post('/crimes', async (req, res, next) => {
   });
 });
 
+/* change to another .js? */
 router.get('/attack', async (req, res, next) => {
   let userId = req.user._id;
   let user = await User.findById(userId);

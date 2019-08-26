@@ -4,7 +4,8 @@ const User = require('../models/User');
 const City = require('../models/City');
 const {
   changeCityRouteCriterias,
-  getCityRouteCriterias
+  getCityRouteCriterias,
+  changeCity
 } = require('../middlewares/middleCity.js');
 
 router.get('/', async (req, res, next) => {
@@ -55,11 +56,5 @@ router.post('/', async (req, res, next) => {
     message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`
   });
 });
-
-function changeCity(user, newCity, oldCity, batteryCost) {
-  newCity.arrival(user._id);
-  user.changeCity(newCity, batteryCost);
-  oldCity.departure(user._id);
-}
 
 module.exports = router;

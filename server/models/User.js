@@ -233,7 +233,8 @@ const userSchema = new Schema(
 
 // from marketplace
 // this probably doesn't work. test it
-userSchema.methods.addItem = function(item) {
+userSchema.methods.handleItemPurchase = function(item) {
+  console.log('handleItemPurchase triggered', item);
   const currentItem = this.items[item.type];
   console.log(currentItem, 'currentitem');
   if (currentItem) {
@@ -341,6 +342,18 @@ userSchema.methods.batteryGain = function(battery = 5) {
   this.save();
 };
 
+userSchema.methods.bitcoinDrain = function(bitcoins = 5) {
+  console.log('bitcoinsdrain triggered', bitcoins);
+  this.playerStats.bitcoins -= bitcoins;
+  this.save();
+};
+
+userSchema.methods.bitcoinGain = function(bitcoins = 5) {
+  console.log('bitcoinsGain triggered', bitcoins);
+  this.playerStats.bitcoins += bitcoins;
+  this.save();
+};
+
 userSchema.methods.handlePettyCrime = async function(result) {
   console.log('handlePettyCrime triggered', result);
   this.playerStats.battery -= result.battery;
@@ -424,7 +437,7 @@ userSchema.methods.handleAttack = function(finalResult) {
 
   // TODO finish this
 
-  this.account.messages[finalResult.date] = [
+  this.account.notifications[finalResult.date] = [
     `You attacked ${finalResult.opponent.name} ${new Date(
       finalResult.date
     ).toString()} and dealt ${XXXX} damage`,
@@ -443,7 +456,7 @@ userSchema.methods.handleAttack = function(finalResult) {
 userSchema.methods.handleAttackDefense = function(finalResult) {
   console.log('userschema handleAttackDefense', finalResult);
   // todo, graceperiod
-  this.account.messages[finalResult.date] = [
+  this.account.notifications[finalResult.date] = [
     `${user.name} attacked you at ${new Date(finalResult.date).toString()}`,
     false
   ];
@@ -490,6 +503,37 @@ userSchema.methods.fullRepair = function(repairCost, batteryCost) {
   // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
   this.playerStats.currentFirewall = this.playerStats.maxFirewall;
+  this.save();
+};
+
+// DATACENTRE
+// DATACENTRE
+
+userSchema.methods.handleDataCentrePurchase = function(
+  dataCentre,
+  batteryCost
+) {
+  console.log('handlePurchase triggered');
+  // this.playerStats.battery -= batteryCost;
+  this.playerStats.bitCoins -= dataCentre.price;
+  this.save();
+};
+
+userSchema.methods.handleDataCentreAttack = function(dataCentre, result) {
+  console.log('handleDataCentreAttack triggered');
+  this.playerStats.battery -= result.batteryCost;
+  dataCentre.requiredStash.forEach(el => {
+    this.stash.pop(el);
+  });
+  this.save();
+};
+
+userSchema.methods.giveNotification = function(message) {
+  let date = Date.now();
+  this.account.notifications[date] = [
+    `${message} ${new Date(date).toString()}`,
+    true
+  ];
   this.save();
 };
 

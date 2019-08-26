@@ -3,27 +3,42 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 // To execute this seed, run from the root of the project
 // $ node bin/seeds.js
+// todo, fix the requriedstash function so it's not as repetative
 
 const mongoose = require('mongoose');
 const DataCenter = require('../models/DataCenter');
 const City = require('../models/City');
+const Stash = require('../models/Stash');
 
 require('../configs/database');
 
 const cityIds = [];
+const stashesIds = [];
 
 async function getCities() {
-  let cities = await City.find();
+  const cities = await City.find();
   cities.forEach(element => {
     cityIds.push(element._id);
   });
 }
 
-/* CHANGE CHANGE CHANGE */
+async function getStashes() {
+  const stashes = await Stash.find();
+  stashes.forEach(element => {
+    stashesIds.push(element._id);
+  });
+}
+
+function randomArrayNumber(arrayLength) {
+  return Math.floor(Math.random() * arrayLength);
+}
 
 DataCenter.deleteMany()
   .then(() => {
     return getCities();
+  })
+  .then(() => {
+    return getStashes();
   })
   .then(() => {
     let dataCenters = [
@@ -37,7 +52,12 @@ DataCenter.deleteMany()
         maxFirewall: 90,
         price: 1000000,
         minutlyrevenue: 180,
-        city: cityIds[0]
+        city: cityIds[0],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)] /* wet code  */,
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'China Unicom',
@@ -46,7 +66,12 @@ DataCenter.deleteMany()
         maxFirewall: 150,
         price: 1500000,
         minutlyrevenue: 200,
-        city: cityIds[0]
+        city: cityIds[0],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'China Mobile Hohot',
@@ -55,7 +80,12 @@ DataCenter.deleteMany()
         maxFirewall: 210,
         price: 2000000,
         minutlyrevenue: 220,
-        city: cityIds[0]
+        city: cityIds[0],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Harbin Data Centre',
@@ -64,7 +94,12 @@ DataCenter.deleteMany()
         maxFirewall: 270,
         price: 3000000,
         minutlyrevenue: 260,
-        city: cityIds[0]
+        city: cityIds[0],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Range International Data Centre',
@@ -73,7 +108,12 @@ DataCenter.deleteMany()
         maxFirewall: 450,
         price: 5000000,
         minutlyrevenue: 500,
-        city: cityIds[0]
+        city: cityIds[0],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       // HANOI
       // HANOI
@@ -85,7 +125,12 @@ DataCenter.deleteMany()
         maxFirewall: 90,
         price: 1000000,
         minutlyrevenue: 180,
-        city: cityIds[1]
+        city: cityIds[1],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'NTT Communications',
@@ -94,7 +139,12 @@ DataCenter.deleteMany()
         maxFirewall: 150,
         price: 1500000,
         minutlyrevenue: 200,
-        city: cityIds[1]
+        city: cityIds[1],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'GDS Hanoi Thanglong',
@@ -103,7 +153,12 @@ DataCenter.deleteMany()
         maxFirewall: 210,
         price: 2000000,
         minutlyrevenue: 220,
-        city: cityIds[1]
+        city: cityIds[1],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Tulip Data Centre ',
@@ -112,7 +167,12 @@ DataCenter.deleteMany()
         maxFirewall: 270,
         price: 3000000,
         minutlyrevenue: 260,
-        city: cityIds[1]
+        city: cityIds[1],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'TELEHOUSE Hanoi',
@@ -121,7 +181,12 @@ DataCenter.deleteMany()
         maxFirewall: 450,
         price: 5000000,
         minutlyrevenue: 500,
-        city: cityIds[1]
+        city: cityIds[1],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
 
       // STAVANGER
@@ -133,7 +198,12 @@ DataCenter.deleteMany()
         maxFirewall: 90,
         price: 1000000,
         minutlyrevenue: 180,
-        city: cityIds[2]
+        city: cityIds[2],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Next Generation Data',
@@ -142,7 +212,12 @@ DataCenter.deleteMany()
         maxFirewall: 150,
         price: 1500000,
         minutlyrevenue: 200,
-        city: cityIds[2]
+        city: cityIds[2],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Global Switch',
@@ -151,7 +226,12 @@ DataCenter.deleteMany()
         maxFirewall: 210,
         price: 2000000,
         minutlyrevenue: 220,
-        city: cityIds[2]
+        city: cityIds[2],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Kao Data Campus',
@@ -160,7 +240,12 @@ DataCenter.deleteMany()
         maxFirewall: 270,
         price: 3000000,
         minutlyrevenue: 260,
-        city: cityIds[2]
+        city: cityIds[2],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Kolos Data Centre',
@@ -169,7 +254,12 @@ DataCenter.deleteMany()
         maxFirewall: 450,
         price: 5000000,
         minutlyrevenue: 500,
-        city: cityIds[2]
+        city: cityIds[2],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
 
       // PHOENIX
@@ -182,7 +272,12 @@ DataCenter.deleteMany()
         maxFirewall: 90,
         price: 1000000,
         minutlyrevenue: 180,
-        city: cityIds[3]
+        city: cityIds[3],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'DuPont Fabros Technology',
@@ -191,7 +286,12 @@ DataCenter.deleteMany()
         maxFirewall: 150,
         price: 1500000,
         minutlyrevenue: 200,
-        city: cityIds[3]
+        city: cityIds[3],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Lakeside Technology Centre',
@@ -200,7 +300,12 @@ DataCenter.deleteMany()
         maxFirewall: 210,
         price: 2000000,
         minutlyrevenue: 220,
-        city: cityIds[3]
+        city: cityIds[3],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Switch SUPERNAP',
@@ -209,7 +314,12 @@ DataCenter.deleteMany()
         maxFirewall: 270,
         price: 3000000,
         minutlyrevenue: 260,
-        city: cityIds[3]
+        city: cityIds[3],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'The Citadel',
@@ -218,7 +328,12 @@ DataCenter.deleteMany()
         maxFirewall: 450,
         price: 5000000,
         minutlyrevenue: 500,
-        city: cityIds[3]
+        city: cityIds[3],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
 
       // NOVOSIBIRSK
@@ -231,7 +346,12 @@ DataCenter.deleteMany()
         maxFirewall: 90,
         price: 1000000,
         minutlyrevenue: 180,
-        city: cityIds[4]
+        city: cityIds[4],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Rostelecom',
@@ -240,7 +360,12 @@ DataCenter.deleteMany()
         maxFirewall: 150,
         price: 1500000,
         minutlyrevenue: 200,
-        city: cityIds[4]
+        city: cityIds[4],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Datahouse',
@@ -249,7 +374,12 @@ DataCenter.deleteMany()
         maxFirewall: 210,
         price: 2000000,
         minutlyrevenue: 220,
-        city: cityIds[4]
+        city: cityIds[4],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'Data Harbour',
@@ -258,7 +388,12 @@ DataCenter.deleteMany()
         maxFirewall: 270,
         price: 3000000,
         minutlyrevenue: 260,
-        city: cityIds[4]
+        city: cityIds[4],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       },
       {
         name: 'RTCOMM',
@@ -267,7 +402,12 @@ DataCenter.deleteMany()
         maxFirewall: 450,
         price: 5000000,
         minutlyrevenue: 500,
-        city: cityIds[4]
+        city: cityIds[4],
+        requiredStash: [
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)],
+          stashesIds[randomArrayNumber(stashesIds.length)]
+        ]
       }
     ];
     return DataCenter.create(dataCenters);

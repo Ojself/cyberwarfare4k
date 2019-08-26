@@ -12,43 +12,42 @@ RETRIVES ALL ITEMS
 
 router.get('/', isLoggedin, async (req, res, next) => {
   console.log('you are now in marketplace route');
-  
-    const items = await Item.find();
-    res.status(200).json({
-      success: true,
-      message: "items loaded"
-      items});
-  
+
+  const items = await Item.find();
+  res.status(200).json({
+    success: true,
+    message: 'items loaded',
+    items
+  });
 });
 
 /* 
-GET
+POST
 PRIVATE
-LETS USER BUY NEW ITEM -- see usermodel for addItem() 
+LETS USER BUY NEW ITEM 
 */
 
-router.post("/:id", async (req, res) => {
-  let userId = req.user._id
-  let itemId = req.params.id
-  let item = await Item.findById(itemId)
-  let user = await User.findById(userId)
-  if (user.bitcoins < item.price){
+router.post('/buy', async (req, res) => {
+  const userId = req.user._id;
+  const { itemId } = req.body;
+  const item = await Item.findById(itemId);
+  const user = await User.findById(userId);
+
+  let message = marketPlaceCriteria(item, user);
+
+  if (messge) {
     return res.status(400).json({
       success: false,
-      message: 'Insufficent funds'
-    })
-    
+      message
+    });
   }
 
-  if (user.items.name === item.name){
-    res.status(400).json({
-      success: false,
-      message: 'you already own this item'
-    })
-  }
-      user.bitCoins -= item.price;
-      return user.addItem(item);
-    
+  user.handleItemPurchase(item);
+
+  res.status(200).json({
+    success: true,
+    message: `You successfuly purchased ${item.name} for ${item.price}`
+  });
 });
-
+// todo check if if messages actually return the res.json
 module.exports = router;

@@ -19,13 +19,11 @@ function pettyCrime(user) {
     crimeSkillGained: '',
     legendaryGained: ''
   };
-  console.log(values, 'values pre');
+
   /* Grabs the two lowest values from crimeskill  */
   values = values.sort();
-  console.log(values, 'sorted');
-  values = values[0] + values[1];
 
-  console.log(values, 'values post');
+  values = values[0] + values[1];
 
   /* Good overall skills give you 90% chance of success of petty crime*/
   if (values > 30) {
@@ -41,7 +39,7 @@ function pettyCrime(user) {
     console.log('probabiltiy HIGHER than decider');
     pettyResult.bitcoins = pettyWinBitcoins(user);
     pettyResult.exp = pettyWinExp(user);
-    if (probabiltiy > decider) {
+    if (probabiltiy > decider + 0.2) {
       /* bonus success +0.2*/
       console.log('probabiltiy HIGHER than decider + 0.2');
       pettyResult.stashGained = stashDropChance(user, values * 100);
