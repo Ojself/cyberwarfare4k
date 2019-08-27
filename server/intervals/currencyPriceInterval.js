@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Currency = require('../models/Currency');
 
-// todo make sure date hets pushed
+// todo make sure date hets pushed@
+// change model to fit react chart?
 
 function currencyPriceInterval() {
   const currentHour = new Date().getMinutes();

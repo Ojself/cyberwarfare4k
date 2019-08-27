@@ -17,7 +17,7 @@ function repairRouteCriterias(user, repairCost) {
   } */
 
   if (!checkFunds(user.playerStats.bitCoins, repairCost)) {
-    return 'Insufficent money';
+    return 'Insufficient funds';
   }
 
   if (!checkFullHealth(user)) {

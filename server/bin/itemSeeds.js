@@ -4,7 +4,7 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // Seeds file that remove all items and create all items for marketplace
 
 // To execute this seed, run from the root of the project
-// $ node bin/seeds.js
+// $ node bin/itemSeeds.js
 
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');

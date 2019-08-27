@@ -24,7 +24,7 @@ function purchaseDataCentreCriterias(user, dataCentre, batteryCost) {
   }
 
   if (!checkFunds(user.playerStats.bitCoins, dataCentre.price)) {
-    return 'Insufficent money';
+    return 'Insufficient funds';
   }
 
   return null;

@@ -3,7 +3,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 // To execute this seed, run from the root of the project
 // $ node bin/seeds.js
-// todo, fix the requriedstash function so it's not as repetative
 
 const mongoose = require('mongoose');
 const DataCenter = require('../models/DataCenter');
@@ -33,6 +32,14 @@ function randomArrayNumber(arrayLength) {
   return Math.floor(Math.random() * arrayLength);
 }
 
+function getThreeRequiredStash() {
+  return [
+    stashesIds[randomArrayNumber(stashesIds.length)],
+    stashesIds[randomArrayNumber(stashesIds.length)],
+    stashesIds[randomArrayNumber(stashesIds.length)]
+  ];
+}
+
 DataCenter.deleteMany()
   .then(() => {
     return getCities();
@@ -53,11 +60,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[0],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)] /* wet code  */,
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'China Unicom',
@@ -67,11 +70,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[0],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'China Mobile Hohot',
@@ -81,11 +80,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[0],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Harbin Data Centre',
@@ -95,11 +90,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[0],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Range International Data Centre',
@@ -109,11 +100,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[0],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       // HANOI
       // HANOI
@@ -126,11 +113,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[1],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'NTT Communications',
@@ -140,11 +123,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[1],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'GDS Hanoi Thanglong',
@@ -154,11 +133,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[1],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Tulip Data Centre ',
@@ -168,11 +143,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[1],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'TELEHOUSE Hanoi',
@@ -182,11 +153,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[1],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
 
       // STAVANGER
@@ -199,11 +166,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[2],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Next Generation Data',
@@ -213,11 +176,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[2],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Global Switch',
@@ -227,11 +186,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[2],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Kao Data Campus',
@@ -241,11 +196,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[2],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Kolos Data Centre',
@@ -255,11 +206,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[2],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
 
       // PHOENIX
@@ -273,11 +220,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[3],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'DuPont Fabros Technology',
@@ -287,11 +230,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[3],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Lakeside Technology Centre',
@@ -301,11 +240,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[3],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Switch SUPERNAP',
@@ -315,11 +250,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[3],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'The Citadel',
@@ -329,11 +260,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[3],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
 
       // NOVOSIBIRSK
@@ -347,11 +274,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[4],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Rostelecom',
@@ -361,11 +284,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[4],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Datahouse',
@@ -375,11 +294,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[4],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'Data Harbour',
@@ -389,11 +304,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[4],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       },
       {
         name: 'RTCOMM',
@@ -403,11 +314,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[4],
-        requiredStash: [
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)],
-          stashesIds[randomArrayNumber(stashesIds.length)]
-        ]
+        requiredStash: getThreeRequiredStash()
       }
     ];
     return DataCenter.create(dataCenters);

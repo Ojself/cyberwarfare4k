@@ -181,5 +181,21 @@ export default {
       .post('/city', body)
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  // WANTED
+
+  getWantedUsers() {
+    return service
+      .get('/wanted/')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  addBounty(body) {
+    return service
+      .post('/wanted/add-bounty', body)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };

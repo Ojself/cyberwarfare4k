@@ -294,17 +294,8 @@ userSchema.methods.newRank = function() {
 userSchema.methods.giveStash = function(stashName = 'Cables') {
   console.log('give stash method triggered', stashName);
   Stash.findOne({ name: stashName }).then(newStash => {
-    console.log(newStash._id, 'newstash');
-    console.log(this.stash);
     this.stash.push(newStash._id);
   });
-  this.save();
-};
-
-userSchema.methods.giveBitcoins = function(bitcoins = 1) {
-  console.log('give bitcoins method triggered', bitcoins);
-  this.playerStats.bitCoins += bitcoins;
-  this.playerStats.networth += bitcoins;
   this.save();
 };
 
@@ -351,6 +342,7 @@ userSchema.methods.bitcoinDrain = function(bitcoins = 5) {
 userSchema.methods.bitcoinGain = function(bitcoins = 5) {
   console.log('bitcoinsGain triggered', bitcoins);
   this.playerStats.bitcoins += bitcoins;
+  // this.playerStats.networth += bitcoins;
   this.save();
 };
 
@@ -534,6 +526,18 @@ userSchema.methods.giveNotification = function(message) {
     `${message} ${new Date(date).toString()}`,
     true
   ];
+  this.save();
+};
+
+// WANTEDLIST
+/* todo, erase bounty and  if killed */
+
+userSchema.methods.addBounty = function(bountyDonor, bounty) {
+  // todo, change array to set to fix this issue?
+  if (!this.playerStats.bountyDonors.some(el => el.equals(bountyDonor._id))) {
+    this.playerStats.bountyDonors.push(bountyDonor._id);
+  }
+  this.playerStats.bounty += parseInt(bounty);
   this.save();
 };
 

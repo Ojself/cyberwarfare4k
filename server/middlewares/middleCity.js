@@ -36,7 +36,7 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
   }
 
   if (!checkFunds(user.playerStats.bitCoins, newCity.price)) {
-    return 'Insufficent money';
+    return 'Insufficient funds';
   }
 
   if (!checkSameValue(oldCity.name, newCity.name)) {

@@ -79,7 +79,7 @@ dataCenterSchema.methods.handleAttack = async function(
 // First 'malfunction' and then 'resetting'
 // resets required stash and removes owner and attacker id
 // heals up the datacentre
-userSchema.methods.handleDestroyed = function(dataCentre, result) {
+dataCenterSchema.methods.handleDestroyed = async function(dataCentre, result) {
   console.log('handleDataCentreAttack triggered');
   this.gracePeriod = true;
   this.requiredStash = [];
@@ -88,10 +88,11 @@ userSchema.methods.handleDestroyed = function(dataCentre, result) {
   this.currentFirewall = this.maxFirewall;
 
   let randomNumber = Math.ceil(Math.random() * 3);
+  const stashes = await Stash.find();
 
   setTimeout(() => {
     this.status = 'Resetting';
-    this.save()
+    this.save();
   }, 1000 * 60 * 15);
 
   setTimeout(() => {
@@ -99,7 +100,7 @@ userSchema.methods.handleDestroyed = function(dataCentre, result) {
     this.gracePeriod = false;
     this.attacker = null;
     this.currentFirewall = this.maxFirewall;
-    const stashes = await Stash.find();
+
     for (let i = 0; i < 3; i++) {
       this.requiredStash.push(
         stashes[Math.floor(Math.random() * stashes.length)]._id

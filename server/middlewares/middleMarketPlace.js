@@ -1,16 +1,16 @@
 // todo, export and require functions for this and datacentre
-
-function marketPlaceCriteria(item, user) {
+// todo you messed up here check routes
+function marketPlaceCriterias(user, opponent) {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
 
-  if (!existingValue(item)) {
-    return "Item doesn't exist";
+  if (!existingValue(opponent)) {
+    return "Opponent doesn't exist";
   }
 
-  if (!checkFunds(user.playerStats.bitCoins, item.price)) {
-    return 'Insufficent money';
+  if (!checkFunds(user.playerStats.bitCoins, bounty)) {
+    return 'Insufficient funds';
   }
 
   if (
@@ -24,3 +24,5 @@ function marketPlaceCriteria(item, user) {
 
   return null;
 }
+
+module.exports = { addBountyCriteria };

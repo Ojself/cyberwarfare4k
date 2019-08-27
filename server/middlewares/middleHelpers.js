@@ -111,6 +111,16 @@ function checkSameValue(currentCityName, newCityName) {
   return currentCityName !== newCityName;
 }
 
+// Nullifies values in obj so unnecessary data is left behind
+function nullifyValues(obj, valuesArray) {
+  for (key in obj) {
+    if (valuesArray.includes(key)) {
+      obj[key] = null;
+    }
+  }
+  return obj;
+}
+
 module.exports = {
   checkFunds,
   stashDropChance,
@@ -119,5 +129,6 @@ module.exports = {
   legendaryDropChance,
   existingValue,
   checkOccuranceLimit,
-  checkSameValue
+  checkSameValue,
+  nullifyValues
 };
