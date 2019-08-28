@@ -36,7 +36,7 @@ router.get('/', async (req, res, next) => {
     bountyUsers
   });
 });
-// consistency in route url. camelCase or dash?
+// todo consistency in route url. camelCase or dash?
 /* adds bounty to opponent */
 router.post('/add-bounty', async (req, res, next) => {
   console.log(req.body, 'body');
@@ -53,7 +53,7 @@ router.post('/add-bounty', async (req, res, next) => {
       message
     });
   }
-
+  /* todo. return values? */
   user.bitcoinDrain(bounty);
   opponent.addBounty(user, bounty);
 

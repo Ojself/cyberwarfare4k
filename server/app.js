@@ -54,10 +54,11 @@ require('./passport')(app);
 
 app.use('/api', require('./routes/index'));
 app.use('/api', require('./routes/auth'));
-app.use('/api/hack', require('./routes/hack'));
-app.use('/api/repair', require('./routes/repair'));
 app.use('/api/city', require('./routes/city'));
 app.use('/api/currency', require('./routes/currency'));
+app.use('/api/datacenter', require('./routes/datacenter'));
+app.use('/api/hack', require('./routes/hack'));
+app.use('/api/repair', require('./routes/repair'));
 app.use('/api/wanted', require('./routes/wanted'));
 
 // For any routes that starts with "/api", catch 404 and forward to error handler

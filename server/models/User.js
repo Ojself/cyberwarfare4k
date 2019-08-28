@@ -498,23 +498,23 @@ userSchema.methods.fullRepair = function(repairCost, batteryCost) {
   this.save();
 };
 
-// DATACENTRE
-// DATACENTRE
+// DATACENTER
+// DATACENTER
 
-userSchema.methods.handleDataCentrePurchase = function(
-  dataCentre,
+userSchema.methods.handleDataCenterPurchase = function(
+  dataCenter,
   batteryCost
 ) {
   console.log('handlePurchase triggered');
   // this.playerStats.battery -= batteryCost;
-  this.playerStats.bitCoins -= dataCentre.price;
+  this.playerStats.bitCoins -= dataCenter.price;
   this.save();
 };
 
-userSchema.methods.handleDataCentreAttack = function(dataCentre, result) {
-  console.log('handleDataCentreAttack triggered');
+userSchema.methods.handleDataCenterAttack = function(dataCenter, result) {
+  console.log('handleDataCenterAttack triggered');
   this.playerStats.battery -= result.batteryCost;
-  dataCentre.requiredStash.forEach(el => {
+  dataCenter.requiredStash.forEach(el => {
     this.stash.pop(el);
   });
   this.save();

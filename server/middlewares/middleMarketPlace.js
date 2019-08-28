@@ -1,4 +1,4 @@
-// todo, export and require functions for this and datacentre
+// todo, export and require functions for this and datacenter
 // todo you messed up here check routes
 function marketPlaceCriterias(user, opponent) {
   if (!existingValue(user)) {

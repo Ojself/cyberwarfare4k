@@ -188,7 +188,10 @@ router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
 router.get('/get-nav-user', async (req, res, next) => {
   const userId = req.user._id;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate(
+      'playerStats.city',
+      'name'
+    );
     res.status(200).json({
       success: true,
       message: 'nav user loaded',

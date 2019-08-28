@@ -53,7 +53,7 @@ dataCenterSchema.methods.handleAttack = async function(
 ) {
   console.log('handleAttack method triggered');
   this.gracePeriod = true;
-  // graces the datacentre for a minute so the user can't attack too quick
+  // graces the datacenter for a minute so the user can't attack too quick
   let gracePeriodTimeOut = setTimeout(() => {
     this.gracePeriod = false;
     this.save();
@@ -78,9 +78,9 @@ dataCenterSchema.methods.handleAttack = async function(
 // Makes it unavaiable for attack or purchase for between 15-18 minutes
 // First 'malfunction' and then 'resetting'
 // resets required stash and removes owner and attacker id
-// heals up the datacentre
-dataCenterSchema.methods.handleDestroyed = async function(dataCentre, result) {
-  console.log('handleDataCentreAttack triggered');
+// heals up the datacenter
+dataCenterSchema.methods.handleDestroyed = async function(dataCenter, result) {
+  console.log('handleDataCenterAttack triggered');
   this.gracePeriod = true;
   this.requiredStash = [];
   this.owner = null;

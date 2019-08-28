@@ -1,36 +1,51 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
 const {
-  purchaseDataCentreCriterias,
-  purchaseDataCentre,
-  attackDataCentreCriterias,
-  attackDataCentre
-} = require('../middlewares/middleDataCentre');
+  purchaseDataCenterCriterias,
+  purchaseDataCenter,
+  attackDataCenterCriterias,
+  attackDataCenter
+} = require('../middlewares/middleDataCenter');
 const router = express.Router();
-const DataCentre = require('../models/DataCenter');
+const DataCenter = require('../models/DataCenter');
 const User = require('../models/User');
 
-/* todo, allow alliance member to heal eachother datacentre or grace it?*/
+/* todo, allow alliance member to heal eachother datacenter or grace it?*/
 
 router.get('/', async (req, res, next) => {
-  const dataCentres = await Datacentre.find();
+  const userId = req.user._id;
+  let dataCenters = await DataCenter.find()
+    .populate('requiredStash', ['name', 'price'])
+    .populate('city', ['name', 'residents']);
+
+  dataCenters = dataCenters.filter(el => {
+    const stringifiedObjectId = JSON.stringify(el.city.residents);
+    return stringifiedObjectId.includes(userId.toString());
+  });
+  console.log(req.user._id.toString(), 'userid');
+  console.log(dataCenters.length);
+  console.log(dataCenters);
+
   res.status(200).json({
-    dataCentres,
-    message: 'dataceners loaded..',
+    dataCenters,
+    message: 'datacenters loaded..',
     success: true
   });
+
+  // todo nullify values
 });
 
 router.post('/purchase', async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const { dataCentreName } = req.body;
-  const dataCentre = await DataCentre.findOne({ name: dataCentreName });
+  const { dataCenterName } = req.body;
+
+  const dataCenter = await DataCenter.findOne({ name: dataCenterName });
 
   const batteryCost = 0;
 
-  let message = purchaseDataCentreCriterias(user, dataCentre, batteryCost);
+  let message = purchaseDataCenterCriterias(user, dataCenter, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -39,11 +54,11 @@ router.post('/purchase', async (req, res, next) => {
     });
   }
 
-  purchaseDataCentre(user, dataCentre, batteryCost);
+  purchaseDataCenter(user, dataCenter, batteryCost);
 
   res.status(200).json({
     success: true,
-    message: `You purchased ${dataCentre.name} for ${dataCentre.price}`
+    message: `You purchased ${dataCenter.name} for ${dataCenter.price}`
   });
 });
 
@@ -51,15 +66,15 @@ router.post('/attack', async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const { dataCentreName } = req.body;
-  const dataCentre = await DataCentre.findOne({ name: dataCentreName });
+  const { dataCenterName } = req.body;
+  const dataCenter = await DataCenter.findOne({ name: dataCenterName });
 
-  const dataCentreOwnerId = dataCentre.owner;
-  const dataCentreOwner = await User.findById(dataCentreOwnerId);
+  const dataCenterOwnerId = dataCenter.owner;
+  const dataCenterOwner = await User.findById(dataCenterOwnerId);
 
   const batteryCost = 5;
 
-  let message = attackDataCentreCriterias(user, dataCentre, batteryCost);
+  let message = attackDataCenterCriterias(user, dataCenter, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -68,18 +83,16 @@ router.post('/attack', async (req, res, next) => {
     });
   }
 
-  let finalResult = await attackDataCentre(
+  let finalResult = await attackDataCenter(
     user,
-    dataCentre,
-    dataCentreOwner,
+    dataCenter,
+    dataCenterOwner,
     batteryCost
   );
 
   res.status(200).json({
     success: true,
-    message: `You attacked ${
-      dataCentre.name
-    } for ${batteryCost} battery and dealt ${finalResult.damageDealt} damage`,
+    message: `You attacked ${dataCenter.name} for ${batteryCost} battery and dealt ${finalResult.damageDealt} damage`,
     finalResult
   });
 });
