@@ -18,6 +18,7 @@ import CreateHacker from './pages/CreateHacker';
 import Petty from './pages/Petty';
 import CryptoCurrency from './pages/CryptoCurrency';
 import VPN from './pages/VPN';
+import DataCenters from './pages/DataCenters';
 
 import Secret from './pages/Secret';
 import Login from './pages/Login';
@@ -60,6 +61,7 @@ export default class App extends Component {
     api
       .getNavUser()
       .then(result => {
+        console.log(result, 'result');
         this.setState({ user: result.user, loading: false });
       })
       .catch(err => this.setState({ message: err.toString() }));
@@ -70,6 +72,11 @@ export default class App extends Component {
   }
 
   render() {
+    const currentCity = this.state.loading ? (
+      <p>City</p>
+    ) : (
+      this.state.user.playerStats.city.name
+    );
     return (
       <div>
         <div className='App '>
@@ -112,7 +119,7 @@ export default class App extends Component {
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
-                    Hanoi {/* this.state.user.city.name  */}
+                    {currentCity}
                   </DropdownToggle>
                   <DropdownMenu right>
                     <DropdownItem>Locals</DropdownItem>
@@ -177,6 +184,7 @@ export default class App extends Component {
             <NavLinkRR to='/alliance'>Alliance</NavLinkRR>
             <NavLinkRR to='/marketplace'>Marketplace</NavLinkRR>
             <NavLinkRR to='/vpn'>VPN</NavLinkRR>
+            <NavLinkRR to='/datacenters'>Datacenters</NavLinkRR>
             <NavLinkRR
               to={{ pathname: '/cryptocurrency', state: { foo: 'bar' } }}
             >
@@ -223,6 +231,7 @@ export default class App extends Component {
 
             <Route path='/system-repair' component={SystemRepair} />
             <Route path='/ladder' component={Ladder} />
+            <Route path='/datacenters' component={DataCenters} />
             <Route path='/information' component={Information} />
             <Route path='/arcade' component={Arcade} />
             <Route path='/signup' component={Signup} />

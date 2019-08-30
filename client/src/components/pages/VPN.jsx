@@ -13,6 +13,7 @@ export default class VPN extends Component {
       message: null
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleTravel = this.handleTravel.bind(this);
   }
 
   componentDidMount() {
@@ -23,11 +24,12 @@ export default class VPN extends Component {
   }
 
   handleChange(event) {
-    let selectedCity = event.target.value;
-    let cityObject = this.state.cities.filter(
+    const selectedCity = event.target.value;
+    const cityObject = this.state.cities.filter(
       city => city.name === selectedCity
     );
-    let cityPrice = cityObject[0].price;
+    const cityPrice = cityObject[0].price;
+    console.log('THIS', selectedCity);
     this.setState({ selectedCity, cityPrice });
   }
 
@@ -45,13 +47,14 @@ export default class VPN extends Component {
     return (
       <div>
         <h2>VPN</h2>
+
         <Form>
           <FormGroup>
             <Label for='exampleSelect'>Select</Label>
             <Input
               /* todo either set value to user.city OR disable user.city */
               onChange={this.handleChange}
-              value={this.state.selectedCity && 'none'}
+              value={this.state.selectedCity}
               type='select'
               name='select'
               id='exampleSelect'

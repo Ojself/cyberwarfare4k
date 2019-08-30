@@ -58,6 +58,7 @@ app.use('/api/city', require('./routes/city'));
 app.use('/api/currency', require('./routes/currency'));
 app.use('/api/datacenter', require('./routes/datacenter'));
 app.use('/api/hack', require('./routes/hack'));
+app.use('/api/marketplace', require('./routes/marketplace'));
 app.use('/api/repair', require('./routes/repair'));
 app.use('/api/wanted', require('./routes/wanted'));
 

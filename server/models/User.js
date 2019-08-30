@@ -235,46 +235,43 @@ const userSchema = new Schema(
 // this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function(item) {
   console.log('handleItemPurchase triggered', item);
-  const currentItem = this.items[item.type];
-  console.log(currentItem, 'currentitem');
+  const currentItem = this.marketPlaceItems[item.type];
   if (currentItem) {
     // lower the stats so items doesn't stack
     switch (currentItem.type) {
       case 'cpu':
-        this.cpu -= currentItem.bonus;
+        this.hackSkill.cpu -= currentItem.bonus;
         break;
       case 'avs':
-        this.antiVirus -= currentItem.bonus;
+        this.hackSkill.antiVirus -= currentItem.bonus;
         break;
       case 'firewall':
-        this.maxFirewall -= currentItem.bonus;
-        this.currentFirewall -= currentItem.bonus;
+        this.playerStats.maxFirewall -= currentItem.bonus;
+        this.playerStats.currentFirewall -= currentItem.bonus;
         break;
       case 'encryption':
-        this.encryption -= currentItem.bonus;
+        this.hackSkill.encryption -= currentItem.bonus;
         break;
     }
   }
 
   // gives the user the item
 
-  this.items[item.type] = item;
-  console.log(this.items, 'all items');
-  console.log(this.items[item.type], 'this should be the new item');
+  this.marketPlaceItems[item.type] = item;
   // adds the bonus to user
   switch (item.type) {
     case 'cpu':
-      this.cpu += item.bonus;
+      this.hackSkill.cpu += item.bonus;
       break;
     case 'avs':
-      this.antiVirus += item.bonus;
+      this.hackSkill.antiVirus += item.bonus;
       break;
     case 'firewall':
-      this.maxFirewall += item.bonus;
-      this.currentFirewall += item.bonus;
+      this.playerStats.maxFirewall += item.bonus;
+      this.playerStats.currentFirewall += item.bonus;
       break;
     case 'encryption':
-      this.encryption += item.bonus;
+      this.hackSkill.encryption += item.bonus;
       break;
   }
   return this.save();

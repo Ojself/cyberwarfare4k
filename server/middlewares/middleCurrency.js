@@ -1,8 +1,48 @@
 const { batteryCheck, existingValue } = require('../middlewares/middleHelpers');
 
+// Sees if everything is in order to sell currency
+function soldRouteCriterias(user, batteryCost, currency, amount) {
+  if (!existingValue(user)) {
+    return "User doesn't exist";
+  }
+  if (!batteryCheck(user, batteryCost)) {
+    return 'Insufficent battery';
+  }
+  if (!existingValue(currency)) {
+    return "Currency doesn't exist";
+  }
+  if (!checkUserStock(user, currency, amount)) {
+    return "You don't have that much to sell";
+  }
+  return null;
+}
+
+// Sees if everything is in order to buy currency
+function buyRouteCriterias(user, batteryCost, currency, amount) {
+  if (!existingValue(currency)) {
+    return "Currency doesn't exist";
+  }
+  if (!batteryCheck(user, batteryCost)) {
+    return 'Insufficent battery';
+  }
+  if (!checkCurrencyRequiredLevel(user, currency)) {
+    return 'You need to be a higher level to buy this currency';
+  }
+  if (!checkCurrencyfund(user, currency, amount)) {
+    return 'Insufficent funds';
+  }
+  if (!checkCurrencyMarketCap(user, currency, amount)) {
+    return;
+    ("You can't hold more than 10% of the marketshare of this currency");
+  }
+  if (!checkCurrencyAvailablitiy(currency, amount)) {
+    return "You're can't buy more than what is available in the market";
+  }
+  return null;
+}
+
 //checks if level requirement for purchasing is met
 function checkCurrencyRequiredLevel(user, currency) {
-  console.log('checkCurrencyRequiredLevel check');
   return user.playerStats.rank >= currency.levelReq;
 }
 
@@ -46,58 +86,6 @@ function sellCurrency(user, currency, amount, batteryCost, totalPrice) {
 function checkUserStock(user, currency, amount) {
   console.log('checkUserStock');
   return user.currencies[currency.name] >= amount;
-}
-
-// one function to run them all
-function soldRouteCriterias(user, batteryCost, currency, amount) {
-  console.log('sellRouteCriterias');
-
-  if (!existingValue(user)) {
-    return "User doesn't exist";
-  }
-  if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
-  }
-
-  if (!existingValue(currency)) {
-    return "Currency doesn't exist";
-  }
-
-  if (!checkUserStock(user, currency, amount)) {
-    return "You don't have that much to sell";
-  }
-  return null;
-}
-
-// one function to run them all
-function buyRouteCriterias(user, batteryCost, currency, amount) {
-  console.log('buyRouteCriterias');
-
-  if (!existingValue(currency)) {
-    return "Currency doesn't exist";
-  }
-
-  if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
-  }
-
-  if (!checkCurrencyRequiredLevel(user, currency)) {
-    return 'You need to be a higher level to buy this currency';
-  }
-
-  if (!checkCurrencyfund(user, currency, amount)) {
-    return 'Insufficent funds';
-  }
-
-  if (!checkCurrencyMarketCap(user, currency, amount)) {
-    return;
-    ("You can't hold more than 10% of the marketshare of this currency");
-  }
-
-  if (!checkCurrencyAvailablitiy(currency, amount)) {
-    return "You're can't buy more than what is available in the market";
-  }
-  return null;
 }
 
 module.exports = {

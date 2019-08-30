@@ -66,6 +66,7 @@ function pettyWinExp(user) {
   return exp;
 }
 
+// Sees if everything is in order to perform petty crime
 function pettyHackRouteCriterias(user, batteryCost) {
   if (!batteryCheck(user, batteryCost)) {
     return 'insufficent battery';

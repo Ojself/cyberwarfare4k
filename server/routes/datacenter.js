@@ -10,7 +10,16 @@ const router = express.Router();
 const DataCenter = require('../models/DataCenter');
 const User = require('../models/User');
 
-/* todo, allow alliance member to heal eachother datacenter or grace it?*/
+/* todo, one of the special weapons allows anonymousiy */
+/* todo several feedback messages for res.json? */
+/* todo see if models follow same structure on schema.type.objectid and arrays around or nested */
+/* todo see if checkroutescriterias follow the same pattern */
+
+// @GET
+// PRIVATE
+// Retrieve all datacenters and populate which stash is required to hack them and which city they belong to
+
+// todo, allow alliance member to heal eachother datacenter or grace it?
 
 router.get('/', async (req, res, next) => {
   const userId = req.user._id;
@@ -18,22 +27,22 @@ router.get('/', async (req, res, next) => {
     .populate('requiredStash', ['name', 'price'])
     .populate('city', ['name', 'residents']);
 
+  // filter out the datacenters that don't belong to the city the user is in
   dataCenters = dataCenters.filter(el => {
     const stringifiedObjectId = JSON.stringify(el.city.residents);
     return stringifiedObjectId.includes(userId.toString());
   });
-  console.log(req.user._id.toString(), 'userid');
-  console.log(dataCenters.length);
-  console.log(dataCenters);
 
   res.status(200).json({
     dataCenters,
     message: 'datacenters loaded..',
     success: true
   });
-
-  // todo nullify values
 });
+
+// @POST
+// PRIVATE
+// User purchase a datacenter
 
 router.post('/purchase', async (req, res, next) => {
   const userId = req.user._id;
@@ -61,6 +70,10 @@ router.post('/purchase', async (req, res, next) => {
     message: `You purchased ${dataCenter.name} for ${dataCenter.price}`
   });
 });
+
+// @POST
+// PRIVATE
+// User can attack and lower the health of a datacenter he doesnt owe in order to overtake it
 
 router.post('/attack', async (req, res, next) => {
   const userId = req.user._id;
@@ -97,8 +110,4 @@ router.post('/attack', async (req, res, next) => {
   });
 });
 
-/* todo, one of the special weapons allows anonymousiy */
-/* todo several feedback messages for res.json? */
-/* todo see if models follow same structure on schema.type.objectid and arrays around or nested */
-/* todo see if checkroutescriterias follow the same pattern */
 module.exports = router;

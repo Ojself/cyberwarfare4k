@@ -10,14 +10,12 @@ const router = express.Router();
 const User = require('../models/User');
 const Currency = require('../models/Currency');
 
-//todo move all functions to middleware
+// @GET
+// PRIVATE
+// Retrives all currencies
 
 router.get('/', isLoggedIn, async (req, res, next) => {
-  console.log('you are now in currency route');
-
   let currency = await Currency.find().populate('lastPurchasedBy', 'name');
-
-  console.log(currency, 'currency');
 
   return res.status(200).json({
     success: true,
@@ -26,20 +24,23 @@ router.get('/', isLoggedIn, async (req, res, next) => {
   });
 });
 
+// @POST
+// PRIVATE
+// Purchases a currency
+
+// todo, let user purchase more than one currency at the time.
+
 router.post('/buy', isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
   const batteryCost = 5;
-
   const { name, amount } = req.body;
 
   const currency = await Currency.findOne({ name });
   let totalPrice;
 
-  // Checking if everything is in order for a purchase
   let message = buyRouteCriterias(user, batteryCost, currency, amount);
-  console.log(message, 'message');
   if (message) {
     return res.status(400).json({
       success: false,
@@ -57,8 +58,13 @@ router.post('/buy', isLoggedIn, async (req, res, next) => {
   });
 });
 
+// @POST
+// PRIVATE
+// Sell a currency
+
+// todo, let user sell more than one currency at the time.
+
 router.post('/sell', isLoggedIn, async (req, res, next) => {
-  console.log('you are now sell currency route');
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -68,9 +74,8 @@ router.post('/sell', isLoggedIn, async (req, res, next) => {
   const currency = await Currency.findOne({ name });
   let totalPrice;
 
-  // Checking if everything is in order for a sale
   let message = soldRouteCriterias(user, batteryCost, currency, amount);
-  console.log(message, 'message');
+
   if (message) {
     return res.status(400).json({
       success: false,

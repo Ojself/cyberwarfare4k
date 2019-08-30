@@ -5,6 +5,7 @@ const {
   existingValue
 } = require('../middlewares/middleHelpers');
 
+// Sees if everything is in order to buy dataCenter
 function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
   if (!existingValue(user)) {
     return "User doesn't exist";
@@ -15,51 +16,43 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-
   if (
     checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
   ) {
     return `You can't purchase a datacenter outside your city`;
   }
-
   if (dataCenter.owner) {
     return 'This datacenter already has an owner';
   }
-
   if (dataCenter.gracePeriod) {
     return 'This datacenter is not available at the moment';
   }
-
   if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
     return 'Insufficient funds';
   }
-
   return null;
 }
 
+// Sees if everything is in order to attack datacenter
 function attackDataCenterCriterias() {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
-
   if (!existingValue(dataCenter)) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-
   if (!existingValue(dataCenter.gracePeriod)) {
     return 'This datacenterd is graced at the moment';
   }
-
   if (checkSameValue(user._id.toString(), dataCenter.owner._id.toString())) {
     return `You can't attack your own datacenter`;
   }
   if (dataCenter.currentFirewall <= 0) {
     return `This datacenter is down for maintance and might be available for purchase soon`;
   }
-
   if (!checkRequiredStash(user, dataCenter)) {
     return `You don't have the required items to hack this datacenter`;
   }

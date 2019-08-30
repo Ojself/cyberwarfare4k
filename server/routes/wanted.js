@@ -5,8 +5,12 @@ const User = require('../models/User');
 const { addBountyCriteria } = require('../middlewares/middleWanted.js');
 const { nullifyValues } = require('../middlewares/middleHelpers.js');
 
+// @GET
+// PRIVATE
+// Retrives all users and all users with a bounty
+
 router.get('/', async (req, res, next) => {
-  const users = await User.find().populate('playerStats.bountyDonors', 'name');
+  let users = await User.find().populate('playerStats.bountyDonors', 'name');
 
   if (!users) {
     return res.status(400).json({
@@ -14,32 +18,34 @@ router.get('/', async (req, res, next) => {
       message: 'no hackers found, try again later'
     });
   }
-  const bountyUsers = users
-    .filter(user => user.playerStats.bounty > 0)
-    .map(user =>
-      nullifyValues(user, [
-        'account',
-        'hackSkill',
-        'crimeSkill',
-        'marketPlaceItems',
-        'specialWeapons',
-        'fightInformation',
-        'stash',
-        'currencies',
-        'email'
-      ])
-    );
+  users = users.map(user =>
+    nullifyValues(user, [
+      'account',
+      'hackSkill',
+      'crimeSkill',
+      'marketPlaceItems',
+      'specialWeapons',
+      'fightInformation',
+      'stash',
+      'currencies',
+      'email'
+    ])
+  );
+  const bountyUsers = users.filter(user => user.playerStats.bounty > 0);
 
   res.status(200).json({
     success: true,
     message: 'wanted hackers loaded',
-    bountyUsers
+    bountyUsers,
+    users
   });
 });
-// todo consistency in route url. camelCase or dash?
-/* adds bounty to opponent */
+
+// @POST
+// PRIVATE
+// Adds bounty to a user
+
 router.post('/add-bounty', async (req, res, next) => {
-  console.log(req.body, 'body');
   const { name, bounty } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
@@ -53,7 +59,7 @@ router.post('/add-bounty', async (req, res, next) => {
       message
     });
   }
-  /* todo. return values? */
+
   user.bitcoinDrain(bounty);
   opponent.addBounty(user, bounty);
 

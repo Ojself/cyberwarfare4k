@@ -8,10 +8,13 @@ const {
   changeCity
 } = require('../middlewares/middleCity.js');
 
+// @GET
+// PRIVATE
+// Retrives all cities
+
 router.get('/', async (req, res, next) => {
   const cities = await City.find();
 
-  // check everthing criteria
   let message = getCityRouteCriterias(cities);
 
   if (message) {
@@ -27,6 +30,10 @@ router.get('/', async (req, res, next) => {
     cities
   });
 });
+
+// @POST
+// PRIVATE
+// Changes the user city
 
 router.post('/', async (req, res, next) => {
   const userId = req.user._id;

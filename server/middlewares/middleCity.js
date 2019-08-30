@@ -6,19 +6,14 @@ const {
 } = require('../middlewares/middleHelpers');
 
 function getCityRouteCriterias(cities) {
-  console.log('getCityRouteCriterias');
-
   if (!existingValue(cities)) {
     return "Cities doesn't exist";
   }
-
   return null;
 }
 
-// one function to run them all
+// Sees if everything is in order to perform attack
 function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
-  console.log('changeCityRouteCriterias');
-
   if (!existingValue(user)) {
     return "User doesn't exist";
   }

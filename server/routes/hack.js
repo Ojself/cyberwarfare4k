@@ -12,15 +12,16 @@ const router = express.Router();
 const User = require('../models/User');
 const Crime = require('../models/Crime');
 
-//todo, make a function that undefines a bunch of input
-// this route is being ran on a interval of 4sec
+// @POST
+// PRIVATE
+// User starts interval that calls this route every 4 sec and commit petty crime
+
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
   const batteryCost = 5;
 
-  // checks if everything is in order to perform petty hack
   let message = pettyHackRouteCriterias(user, batteryCost);
 
   if (message) {
@@ -39,6 +40,12 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   });
 });
 
+// @GET
+// PRIVATE
+// Retrieves all crimes that are available
+
+// todo, filter out the unavialble crimes
+
 router.get('/crimes', async (req, res, next) => {
   const crimes = await Crime.find();
   res.status(200).json({
@@ -48,6 +55,10 @@ router.get('/crimes', async (req, res, next) => {
   });
 });
 
+// @POST
+// PRIVATE
+// Commit crime route.
+
 router.post('/crimes', async (req, res, next) => {
   const userId = req.user;
   const { crimeId } = req.body;
@@ -55,10 +66,8 @@ router.post('/crimes', async (req, res, next) => {
   const crime = await Crime.findById(crimeId);
   const user = await User.findById(userId);
 
-  //todo set variables to const
   const batteryCost = 7;
 
-  // Checks if everything is ok in order to commit crime
   let message = crimeRouteCriterias(crime, user, batteryCost);
 
   if (message) {
@@ -78,15 +87,23 @@ router.post('/crimes', async (req, res, next) => {
   });
 });
 
-/* change to another .js? */
-router.get('/attack', async (req, res, next) => {
-  let userId = req.user._id;
-  let user = await User.findById(userId);
-  let { opponentId } = req.body;
-  // findname?
-  let opponent = await User.findById(opponentId);
+// @POST
+// PRIVATE
+// User can hack another plater.
 
-  let batteryCost = 10;
+// TODO
+// move out the attackroute criterias
+// add params for attack
+// create user method in model
+
+router.post('/attack', async (req, res, next) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  const { opponentId } = req.body;
+  // findname?
+  const opponent = await User.findById(opponentId);
+
+  const batteryCost = 10;
 
   let message = attackRouteCriterias(user, opponent, batteryCost);
 

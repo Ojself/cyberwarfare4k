@@ -4,7 +4,7 @@ const {
   checkOccuranceLimit
 } = require('../middlewares/middleHelpers');
 
-// one function to run them all
+// Sees if everything is in order to perform attack
 function attackRouteCriterias(user, opponent, batteryCost) {
   if (!existingValue(user)) {
     return "User doesn't exist";
@@ -16,9 +16,7 @@ function attackRouteCriterias(user, opponent, batteryCost) {
     return 'Insufficent battery';
   }
   if (!checkCityandLevel(user, opponent)) {
-    return `All traffic from ${
-      user.playerStats.city
-    } is blocked. Try changing VPN or level up!`;
+    return `All traffic from ${user.playerStats.city} is blocked. Try changing VPN or level up!`;
   }
   if (!checkSuicide(user, opponent)) {
     return `You can't hack yourself..`;
@@ -29,11 +27,9 @@ function attackRouteCriterias(user, opponent, batteryCost) {
   if (!checkHealth(user)) {
     return `You need a firewall in order to attack others`;
   }
-
   if (!checkHealth(opponent)) {
     return `You can't kill what is already dead`;
   }
-
   return null;
 }
 
@@ -202,6 +198,7 @@ function checkHealth(player) {
 }
 
 // checks if you're attacking yourself
+// todo this function exist somewhere else
 function checkSuicide(user, opponent) {
   return user.name === opponent.name;
 }

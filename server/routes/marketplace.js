@@ -1,18 +1,15 @@
 const express = require('express');
-const { isLoggedIn } = require('../middlewaresAuth');
+const { isLoggedIn } = require('../middlewares/middleAuth');
+const { marketPlaceCriterias } = require('../middlewares/middleMarketPlace');
 const router = express.Router();
 const User = require('../models/User');
 const Item = require('../models/Item');
 
-/* 
-GET
-PRIVATE
-RETRIVES ALL ITEMS
-*/
+// @GET
+// PRIVATE
+// Retrived all items from marketplace
 
-router.get('/', isLoggedin, async (req, res, next) => {
-  console.log('you are now in marketplace route');
-
+router.get('/', async (req, res, next) => {
   const items = await Item.find();
   res.status(200).json({
     success: true,
@@ -21,11 +18,11 @@ router.get('/', isLoggedin, async (req, res, next) => {
   });
 });
 
-/* 
-POST
-PRIVATE
-LETS USER BUY NEW ITEM 
-*/
+// @POST
+// PRIVATE
+// User purchase item from marketplace
+
+// todo check same value is not working
 
 router.post('/buy', async (req, res) => {
   const userId = req.user._id;
@@ -33,9 +30,9 @@ router.post('/buy', async (req, res) => {
   const item = await Item.findById(itemId);
   const user = await User.findById(userId);
 
-  let message = marketPlaceCriteria(item, user);
+  let message = marketPlaceCriterias(user, item);
 
-  if (messge) {
+  if (message) {
     return res.status(400).json({
       success: false,
       message

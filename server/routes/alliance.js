@@ -4,6 +4,8 @@ const router = express.Router();
 const User = require('../models/User');
 const Forum = require('../models/forum');
 
+// TODO: route for creating, leaving, deleting, rearranging alliance
+
 router.get('/forum', async (req, res, next) => {
   const forums = await Forum.find();
   return res.status(200).json({
@@ -18,7 +20,7 @@ router.post('/forum', async (req, res, next) => {
   const { comment } = req.body;
   const date = new Date();
 
-  // TODO make sure the string is not including <script>, mroe than 250 char,
+  // TODO make sure the string is not including <script>, more than 250 char,
 
   const newMessage = Forum({
     user: userId,

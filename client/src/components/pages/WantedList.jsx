@@ -7,6 +7,7 @@ export default class WantedList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      users: [],
       bountyUsers: [],
       loading: true,
       message: null
@@ -14,11 +15,12 @@ export default class WantedList extends Component {
     this.handleAddBounty = this.handleAddBounty.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
-
+  /* todo. make searchable form so donations can be added to new players */
   componentDidMount() {
     console.log('mounting');
     api.getWantedUsers().then(result => {
       this.setState({
+        users: result.users,
         bountyUsers: result.bountyUsers,
         message: result.message,
         loading: false
@@ -39,7 +41,7 @@ export default class WantedList extends Component {
   handleAddBounty(e) {
     const { name } = e.target;
     const bounty = this.state[name];
-    
+
     api.addBounty({ name, bounty }).then(result => {
       console.log(result, 'result');
       this.setState({
@@ -99,7 +101,7 @@ export default class WantedList extends Component {
 
     return (
       <div>
-        <h2>Wanted list</h2>
+        <h2>Datacenters</h2>
         {this.state.loading ? <p>a</p> : bountyUsersTable}
       </div>
     );

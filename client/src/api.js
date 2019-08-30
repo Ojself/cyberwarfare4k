@@ -197,5 +197,36 @@ export default {
       .post('/wanted/add-bounty', body)
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  getDataCenters() {
+    return service
+      .get('/datacenter/')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  purchaseDataCenter(body) {
+    return service
+      .post('/datacenter/purchase', body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  // MARKETPLACE
+  // MARKETPLACE
+
+  getMarketPlaceItems() {
+    return service
+      .get('/marketplace')
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  purchaseMarketPlaceItem(body) {
+    return service
+      .post('/marketplace/buy', body)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };

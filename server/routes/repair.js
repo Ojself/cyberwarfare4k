@@ -3,15 +3,12 @@ const { isLoggedIn } = require('../middlewares/middleAuth');
 const router = express.Router();
 const User = require('../models/User');
 const { repairRouteCriterias } = require('../middlewares/middleRepair');
-/* todo isloggedin for routes */
-/* 
-POST
-PRIVATE
-Partially repairs the users HP/Firewall with 20%
-*/
+
+// @POST
+// PRIVATE
+// Lets user repair his firewall partialy
 
 router.post('/partial', async (req, res, next) => {
-  console.log('you are now in partial repair route');
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -36,16 +33,13 @@ router.post('/partial', async (req, res, next) => {
   });
 });
 
-/* 
-POST
-PRIVATE
-Fully repairs the users HP/Firewall with 20%
-*/
+// @POST
+// PRIVATE
+// Lets user repair his firewall fully
 
 router.post('/full', async (req, res, next) => {
-  console.log('you are now in full repair route');
-  let userId = req.user._id;
-  let user = await User.findById(userId);
+  const userId = req.user._id;
+  const user = await User.findById(userId);
 
   const repairCost = 40000;
 

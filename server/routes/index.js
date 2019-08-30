@@ -1,5 +1,6 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
+const { nullifyValues } = require('../middlewares/middleHelpers');
 const router = express.Router();
 const User = require('../models/User');
 const Item = require('../models/Item');
@@ -24,35 +25,21 @@ function ensureIsSetup(req, res, next) {
   }
 }
 
-/* 
-GET
-PRIVATE+
-ADMIN SITE
-*/
+// @POST
+// PRIVATE
+// User setup. User is being sent here in order to put in name, set stats and city
 
-router.get('/secret', isLoggedIn, (req, res, next) => {
-  /* if (user.role != 'admin'){return} */
-  res.json({
-    secret: 42,
-    user: req.user
-  });
-});
+// todo
+// create default names, city and alliance
+// force user here if !user.isSetup
+// create route criterias
 
-/* 
-POST
-PRIVATE
-CREATES USER
-*/
-
-/* todo, create default names, city and alliance */
 router.post('/createUser', isLoggedIn, async (req, res, next) => {
   console.log('you are now in the create user route');
 
   let userId = req.user._id;
   let user = await User.findById(userId);
   let { name, cityString } = req.body;
-
-  console.log(req.body, 'body');
 
   if (user.account.isSetup) {
     console.log('user is already setup');
@@ -72,10 +59,7 @@ router.post('/createUser', isLoggedIn, async (req, res, next) => {
   let city = await City.findOne({ cityString });
   let allUsers = await User.find();
 
-  /* Ensures already existing name */
-  /* Also taken care of in User model */
   if (allUsers.find(name => allUsers.name)) {
-    console.log('name already exists');
     return res.status(400).json({
       success: false,
       message: 'name already exists'
@@ -90,6 +74,7 @@ router.post('/createUser', isLoggedIn, async (req, res, next) => {
   });
 });
 
+// todo extract this to somewhere else
 function setupPlayer(user, name, city) {
   user.name = name;
   user.playerStats.city = city;
@@ -97,11 +82,10 @@ function setupPlayer(user, name, city) {
   user.save();
 }
 
-/* 
-GET
-PRIVATE
-RETRIVES USER INFORMATION
-*/
+// @GET
+// PRIVATE
+// Retrives player profile
+
 router.get('/my-profile', isLoggedIn, async (req, res, next) => {
   let userId = req.user._id;
   try {
@@ -116,39 +100,47 @@ router.get('/my-profile', isLoggedIn, async (req, res, next) => {
   }
 });
 
-/* 
-GET
-PRIVATE
-RETRIVES ALL USERS
-*/
+// @GET
+// PRIVATE
+// Gets all user
+
+// todo add query to sort differently. by income, rank, kills etc
 router.get('/ladder', isLoggedIn, async (req, res, next) => {
   console.log('you are now in ladder route');
-  try {
-    const users = await User.find();
-    res.status(200).json({
-      success: true,
-      message: 'users loaded',
-      users
-    });
-  } catch (err) {
-    next(err);
-  }
+
+  let users = await User.find();
+
+  users = users.map(user =>
+    nullifyValues(user, [
+      'account',
+      'hackSkill',
+      'crimeSkill',
+      'marketPlaceItems',
+      'specialWeapons',
+      'fightInformation',
+      'stash',
+      'currencies',
+      'email'
+    ])
+  );
+
+  res.status(200).json({
+    success: true,
+    message: 'users loaded',
+    users
+  });
 });
 
-/* 
-POST
-PRIVATE
-UPGRADES THE STATS OF THE USER
-*/
+// @POST
+// PRIVATE
+// Lets user upgrade his own stats whenever he levels up
+
+// extract route criterias and functionality
 
 router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
-  console.log('you are now upgrading stats');
-  let userId = req.user._id;
-  let user = await User.findById(userId);
-  console.log(req.body, 'req.body');
-  let { statPoint } = req.body;
-  //let statPoint = Object.keys(req.body);
-  console.log(statPoint, typeof statPoint, 'statpoint');
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  const { statPoint } = req.body;
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
@@ -159,24 +151,21 @@ router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
   user.playerStats.statPoints -= 1;
   switch (statPoint) {
     case 'firewall':
-      console.log('firewall improved');
       user.playerStats.maxFirewall += 5;
       user.playerStats.currentFirewall += 5;
       break;
     case 'cpu':
-      console.log('cpu improved');
       user.hackSkill.cpu += 1;
       break;
     case 'antivirus':
-      console.log('anticirus improved');
       user.hackSkill.antivirus += 1;
       break;
     case 'encryption':
-      console.log('encryption improved');
       user.hackSkill.encryption += 1;
       break;
     default:
-      console.log("you tried to improve something that doesn't exist");
+      // gives back statpoints if something went wrong
+      user.playerStats.statPoints += 1;
   }
   user.save();
   return res.status(200).json({
@@ -185,6 +174,9 @@ router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
   });
 });
 
+// @GET
+// PRIVATE
+// Same as my profile. being used in the navbar for stats
 router.get('/get-nav-user', async (req, res, next) => {
   const userId = req.user._id;
   try {
@@ -203,6 +195,9 @@ router.get('/get-nav-user', async (req, res, next) => {
   /* todo, too much information is being passsed */
 });
 
+// @GET
+// PRIVATE
+// Gets profile for other user
 router.get('/profile/:profileId', async (req, res, next) => {
   const { profileId } = req.params;
   const user = await User.findById(profileId);
