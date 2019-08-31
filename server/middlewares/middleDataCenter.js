@@ -102,9 +102,10 @@ function attackDataCenter(user, dataCenter, dataCenterOwner, batteryCost) {
   return result;
 }
 
+// checks if user has the required stash in order to attack a datacenter
 function checkRequiredStash(user, dataCenter) {
   const requiredItems = dataCenter.requiredStash;
-  const userStash = ['cat', 'dog', 'dog', 'dog', 'idiot'];
+  const userStash = user.stash;
   const intersection = requiredItems.filter(
     el => userStash.indexOf(el.toString()) !== -1
   );

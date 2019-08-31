@@ -212,11 +212,6 @@ const userSchema = new Schema(
 
     //Figth accessories
     fightInformation: {
-      inCombat: {
-        type: Boolean,
-        default: false
-      },
-
       gracePeriod: {
         type: Boolean,
         default: false
@@ -424,20 +419,22 @@ userSchema.methods.handleAttack = function(finalResult) {
   this.playerStats.networth += finalResult.playerGains.bitCoins;
   this.playerStats.exp += finalResult.playerGains.exp;
 
-  // TODO finish this
+  // adds currencies if victim died
+  if (this.finalResult.victimDead) {
+    for (let i in finalResult.playerGains.currencies) {
+      this.currencies[i] += finalResult.playerGains.currencies[i];
+    }
+    this.playerStats.shutdowns++;
+  }
 
   this.account.notifications[finalResult.date] = [
     `You attacked ${finalResult.opponent.name} ${new Date(
       finalResult.date
-    ).toString()} and dealt ${XXXX} damage`,
+    ).toString()} and dealt ${XXXX} damage${
+      finalResult.victimDead ? ` and he was shutdown!` : `!`
+    }`,
     true
   ];
-
-  // adds currencies
-  for (let i in finalResult.playerGains.currencies) {
-    this.currencies[i] += finalResult.playerGains.currencies[i];
-  }
-  this.shutdowns++;
 
   this.save();
 };
@@ -454,7 +451,7 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
   this.playerStats.currentFirewall -= 10; // TODO figure out what number to put here
 
   // if the player is dead
-  if (this.playerStats.currentFirewall <= 0) {
+  if (this.finalResult.victimDead) {
     // empties his current currency
     Object.keys(this.currencies).forEach(el => (this.currencies[el] = 0));
 

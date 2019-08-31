@@ -19,7 +19,7 @@ const User = require('../models/User');
 // PRIVATE
 // Retrieve all datacenters and populate which stash is required to hack them and which city they belong to
 
-// todo, allow alliance member to heal eachother datacenter or grace it?
+// todo, allow alliance member to heal eachother datacenter?
 
 router.get('/', async (req, res, next) => {
   const userId = req.user._id;

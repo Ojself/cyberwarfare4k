@@ -59,7 +59,6 @@ router.post('/add-bounty', async (req, res, next) => {
       message
     });
   }
-
   user.bitcoinDrain(bounty);
   opponent.addBounty(user, bounty);
 

@@ -4,7 +4,7 @@ const {
   checkOccuranceLimit
 } = require('../middlewares/middleHelpers');
 
-// one function to run them all
+// Sees if everything is in order to perform crime
 function crimeRouteCriterias(crime, user, batteryCost) {
   if (!existingValue(user)) {
     return "User doesn't exist";
@@ -50,45 +50,39 @@ function fightCrime(user, crime, batteryCost) {
   crime.handleCrime(finalResult);
   user.handleCrime(finalResult);
 
-  // todo undefine / null out values. make gen function
   return finalResult;
 }
 
-/*  TODO explanation here!! */
+// recursive function that runs until the hp of the crime is 0 or the user has lost 4 times
 function crimeRecursiveBattle(user, crime, result) {
-  // sets the probability to succeed, higher is better
   let probability = chanceCalculator(user, crime);
 
-  // calculates the 'damage' the user inflicts on the crime
   let damage = damageCalulator(user, crime);
-  console.log(damage, 'damage');
+
   // the number that decides the success, lower is better
   let decider = Math.random();
 
   // crime lost
-  // if user has lost 4 times, the crime is considered lost
+  // if user has lost 4 times, the crime is considered 'lost'
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
-    console.log('CRIME LOST!');
     result.playerGains.batteryCost += 10;
     return result;
   }
 
   // crime win
+  // the health of the crime is 0 or below and the crime is 'won'
   // todo, calculate reward
   if (result.crimeHp <= 0) {
-    console.log('CRIME WIN!');
     return crimeWin(result, crime, user);
   }
 
   // round win
   if (probability >= decider) {
-    console.log('ROUND WIN!');
     roundWin(result, damage);
   }
 
   // round lost
   if (probability < decider) {
-    console.log(probability, decider, 'ROUND LOST!');
     roundLost(result);
   }
 
@@ -96,17 +90,29 @@ function crimeRecursiveBattle(user, crime, result) {
 }
 // end of recursive
 
+// sets the probability to succeed, higher is better
+function chanceCalculator(user, crime) {
+  const userSkillNumber = user.crimeSkill[crime.crimeType];
+  const crimeSkillNumber = crime.difficulty;
+  // if user tried to do crimes way over his level, give him low chance for success
+  if (crimeSkillNumber - userSkillNumber > 30) {
+    return 0.05;
+  }
+  const probability =
+    (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
+  return probability;
+}
+
+// calculates the 'damage' the user inflicts on the crime
 function damageCalulator(user, crime) {
   // generates randomNumber, higher is worse
-  let randomNumber = Math.floor(Math.random() * 6) + 3;
-  console.log('randomnumber', randomNumber);
+  const randomNumber = Math.floor(Math.random() * 6) + 3;
 
   // crimeSkill that matches crimetype, higher is better
-  let crimeTypeDamage = user.crimeSkill[crime.crimeType];
-  console.log(crimeTypeDamage, 'ctd');
+  const crimeTypeDamage = user.crimeSkill[crime.crimeType];
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  let hackSkillDamage =
+  const hackSkillDamage =
     Object.values(user.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   return Math.floor(crimeTypeDamage + hackSkillDamage);
@@ -123,17 +129,6 @@ function roundLost(result) {
   result.roundResult.push('lost');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
-}
-
-function chanceCalculator(user, crime) {
-  const userSkillNumber = user.crimeSkill[crime.crimeType];
-  const crimeSkillNumber = crime.difficulty;
-  // if user tried to do crimes way over his level
-  if (crimeSkillNumber - userSkillNumber > 30) {
-    return 0.05;
-  }
-  let probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
-  return probability;
 }
 
 function crimeWin(result, crime, user) {

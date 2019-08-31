@@ -1,7 +1,6 @@
 const Stash = require('../models/Stash');
 
 function stashDropChance(user, multiplier = 1) {
-  console.log('stashDropChance');
   const commonStash = [
     'Raspberry Pi',
     'Ubertooth One',
@@ -32,13 +31,10 @@ function stashDropChance(user, multiplier = 1) {
     /* give common item */
     givenStash = commonStash[Math.floor(Math.random() * commonStash.length)];
   }
-
-  console.log('givenStash', givenStash, typeof givenStash);
   return givenStash;
 }
 
 function crimeSkillDropChance(user) {
-  console.log('crimeSkillDropChance');
   let crimeSkills = [
     'Technical',
     'Social Engineering',
@@ -63,12 +59,11 @@ function crimeSkillDropChance(user) {
     givenCrimeSkill = crimeSkills[3];
   }
   //user.giveSkill(givenCrimeSkill);
-  console.log(givenCrimeSkill, 'givenskill crime');
   return givenCrimeSkill;
 }
 
+// not been implemented yet
 function legendaryDropChance(user) {
-  console.log('legendaryDropChance');
   const legendary = ['emp', 'geostorm', 'medusa'];
   let givenLegendary;
 
@@ -83,19 +78,15 @@ function legendaryDropChance(user) {
 }
 
 function batteryCheck(user, x) {
-  console.log('batterycheck triggered', user.playerStats.battery, x);
   return user.playerStats.battery > x;
 }
 
 function existingValue(value) {
-  console.log('existing value triggered', ...arguments);
-  console.log(!!value);
   return !!value;
 }
 
 // e.g. user.playerStats.bitCoins >= item.price
 function checkFunds(x, y) {
-  console.log('checkFunds triggered', ...arguments);
   return x >= y;
 }
 

@@ -33,16 +33,41 @@ function attackRouteCriterias(user, opponent, batteryCost) {
   return null;
 }
 
+// checks if user is in same city, and if not, at least level 5
+function checkCityandLevel(user, opponent) {
+  return (
+    user.playerStats.city === opponent.playerStats.city ||
+    opponent.playerStats.rank >= 5
+  );
+}
+
+// checks if you're attacking yourself
+function checkSuicide(user, opponent) {
+  return user.name === opponent.name;
+}
+
+// checks if opponent is graced and therefor invincible
+function graceCheck(opponent) {
+  return !opponent.attackInformation.gracePeriod;
+}
+
+function checkHealth(player) {
+  return !!player.playerStats.currentFirewall;
+}
+
 function fightHacker(user, opponent, batteryCost) {
   const result = {
     user,
     opponent,
     date: Date.now(),
     roundResult: [],
-    roundopponentRemainingHp: [],
-    hackerHp: opponent.currentFirewall,
+    roundVictimRemainingHp: [],
+    roundHackerRemainingHp: [],
+    victimHp: opponent.currentFirewall,
+    hackerHp: user.currentFirewall,
+    damageDealt: 0,
     won: false,
-    opponentDead: false,
+    victimDead: false,
     playerGains: {
       levelUp: false,
       batteryCost: batteryCost,
@@ -51,10 +76,9 @@ function fightHacker(user, opponent, batteryCost) {
       opponentCurrency: opponent.currencies
     }
   };
-  const finalResult = attackRecursiveBattle(user, crime, result);
+  const finalResult = attackRecursiveBattle(result);
 
   // sees if player leveled up
-  //TODO check if this is the same in other middleware
   if (
     user.playerStats.exp + finalResult.playerGains.exp >=
     user.playerStats.expToLevel
@@ -63,7 +87,10 @@ function fightHacker(user, opponent, batteryCost) {
     user.newRank();
   }
 
-  /* if won, do this, else do something else? */
+  // check if opponent is dead
+  if (opponent.hackerStats.currentFirewall - finalResult.damageDealt <= 0) {
+    finalResult.victimDead = true;
+  }
 
   opponent.handleAttackDefense(finalResult);
   user.handleAttack(finalResult);
@@ -71,78 +98,88 @@ function fightHacker(user, opponent, batteryCost) {
   return finalResult;
 }
 
-/*  TODO explanation here!! */
-function attackRecursiveBattle(user, opponent, result) {
-  // crime lost
-  // if user has lost 4 times, the crime is considered lost
+function attackRecursiveBattle(result) {
+  // hack lost
+  // if user has lost 4 times, the hack is considered lost
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
-    console.log('ATTACK LOST!');
     result.playerGains.batteryCost += 10;
     return result;
   }
 
-  // crime win
-  // todo, calculate reward
+  // hack lost
+  // if user has been encrypted/blocked 4 times, the hack is considered lost
+  if (checkOccuranceLimit(result.roundResult, 'encrypted', 4)) {
+    result.playerGains.batteryCost += 10;
+    return result;
+  }
+
+  // hack lost
+  // attacker is dead
   if (result.hackerHp <= 0) {
-    console.log('ATTACK WIN!');
-    // WRITE ATTACK WIN
-    return attackWin(result, opponent, user);
+    result.playerGains.batteryCost += 10;
+    return result;
+  }
+
+  // hack win
+  // victim is dead
+  if (result.victimHp <= 0) {
+    result.damageDealt = attackCalulator(user);
+    return attackWin(result);
   }
 
   // Encryption / blocked
+  // attacker got blocked
   if (encryptionChecker(user)) {
-    console.log('ROUND LOST! ENCRYPTED');
-    roundLost(result);
+    roundLost(result, 'encrypted');
+    return attackRecursiveBattle(user, opponent, result);
   }
 
   let attackNumber = attackCalulator(user);
   let defenseNumber = defenseCalulator(opponent);
 
-  if (attackNumber < defenseNumber) {
-    console.log('ROUND LOST!');
+  if (attackNumber <= defenseNumber) {
+    roundLost(result, 'lost', defenseNumber);
     return attackRecursiveBattle(user, opponent, result);
   }
 
   // round win
   if (attackNumber > defenseNumber) {
-    console.log('ROUND WIN!');
-    //TODO attacknumber instead?
-    roundWin(result, defenseNumber);
+    roundWin(result, attackNumber);
   }
 
   return crimeRecursiveBattle(user, crime, result);
 }
 // end of recursive
 
-function attackCalulator(opponent) {
+function attackCalulator(hacker) {
   // generates randomNumber, higher is worse
-  let randomNumber = Math.floor(Math.random() * 6) + 3;
+  const randomNumber = Math.floor(Math.random() * 6) + 3;
 
-  // cpu skill of attacker
-  let cpuDamage = attacker.hackSkill.cpu;
+  // cpu skill of hacker/attacker
+  const cpuDamage = hacker.hackSkill.cpu;
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  let hackSkillDamage =
-    Object.values(attacker.hackSkill).reduce((a, b) => a + b) / randomNumber;
+  const hackSkillDamage =
+    Object.values(hacker.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   return Math.floor(cpuDamage + hackSkillDamage);
 }
 
 function defenseCalulator(defender) {
   // generates randomNumber, higher is worse
-  let randomNumber = Math.floor(Math.random() * 6) + 3;
+  const randomNumber = Math.floor(Math.random() * 6) + 3;
 
   // avs skill of defender
-  let avsDefense = defender.hackSkill.antiVirus;
+  const avsDefense = defender.hackSkill.antiVirus;
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  let hackSkillDamage =
+  const hackSkillDamage =
     Object.values(defender.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   return Math.floor(avsDefense + hackSkillDamage);
 }
 
-// returns Boolean to see if attacker was encrypted / blocked by the attack
+// returns Boolean to see if hacker was encrypted / blocked by the attack
 function encryptionChecker(attacker, defender) {
   let randomNumber = Math.random();
   let decider;
@@ -153,54 +190,33 @@ function encryptionChecker(attacker, defender) {
 
   // If attacker has high encryption, gives him 75% of success
   encryptionAttacker > encryptionDefender ? (decider = 0.25) : (decider = 0.75);
-  console.log(decider, randomNumber, decider > randomNumber, 'encryptioncheck');
   return randomNumber > decider;
 }
 
 function roundWin(result, damage) {
-  result.hackerHp -= damage;
+  result.victimHp -= damage;
   result.roundResult.push('win');
-  result.roundopponentRemainingHp.push(result.crimeHp);
+  result.roundVictimRemainingHp.push(result.victimHp);
+  result.roundHackerRemainingHp.push(result.hackerHp);
   return result;
 }
 
-function roundLost(result) {
-  result.roundResult.push('lost');
-  result.hackerHp.push(result.hackerHp);
+function roundLost(result, instance, damage = 0) {
+  result.hackerHp -= damage;
+  result.roundResult.push(instance);
+  result.roundVictimRemainingHp.push(result.victimHp);
+  result.roundHackerRemainingHp.push(result.hackerHp);
   return result;
 }
 
-function attackWin(result, crime, user) {
+function attackWin(result) {
   // TODO
-  // Write some math random stuff here
+  // calculate gains
   result.won = true;
   result.playerGains.exp = 10;
   result.gains.bitCoins = 20;
 
   return result;
-}
-
-// checks if opponent is graced and therefor invincible
-function graceCheck(opponent) {
-  return !opponent.attackInformation.gracePeriod;
-}
-
-// checks if user is in same city, and if not, at least level 5
-function checkCityandLevel(user, opponent) {
-  return (
-    user.playerStats.city === opponent.playerStats.city ||
-    opponent.playerStats.rank >= 5
-  );
-}
-
-function checkHealth(player) {
-  return !!player.playerStats.currentFirewall;
-}
-
-// checks if you're attacking yourself
-// todo this function exist somewhere else
-function checkSuicide(user, opponent) {
-  return user.name === opponent.name;
 }
 
 module.exports = { crimeRouteCriterias, fightCrime };

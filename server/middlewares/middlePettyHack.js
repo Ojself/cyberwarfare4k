@@ -6,12 +6,23 @@ const {
   existingValue
 } = require('../middlewares/middleHelpers');
 
+// Sees if everything is in order to perform petty crime
+function pettyHackRouteCriterias(user, batteryCost) {
+  if (!batteryCheck(user, batteryCost)) {
+    return 'insufficent battery';
+  }
+  if (!existingValue(user)) {
+    return "User  doesn't exist";
+  }
+  return null;
+}
+
 function pettyCrime(user) {
-  let crimeSkills = user.crimeSkill;
+  const crimeSkills = user.crimeSkill;
+  const decider = Math.random();
   let values = Object.values(crimeSkills);
-  let decider = Math.random();
   let probabiltiy;
-  let pettyResult = {
+  const pettyResult = {
     bitcoins: 0,
     exp: 0,
     battery: 5,
@@ -32,16 +43,13 @@ function pettyCrime(user) {
     probabiltiy = values / 50 + Math.random();
   }
 
-  console.log(probabiltiy, 'probabiltiy', decider, 'decider');
   /* Checking for success */
   if (probabiltiy > decider) {
     /* Success */
-    console.log('probabiltiy HIGHER than decider');
+
     pettyResult.bitcoins = pettyWinBitcoins(user);
     pettyResult.exp = pettyWinExp(user);
     if (probabiltiy > decider + 0.2) {
-      /* bonus success +0.2*/
-      console.log('probabiltiy HIGHER than decider + 0.2');
       pettyResult.stashGained = stashDropChance(user, values * 100);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);
@@ -53,28 +61,13 @@ function pettyCrime(user) {
 }
 
 function pettyWinBitcoins(user) {
-  console.log('pettyWinBitcoins condition');
-  let bitcoins = 10;
-  //user.giveBitcoins(bitcoins);
+  const bitcoins = Math.floor(Math.random * 1000);
   return bitcoins;
 }
 
 function pettyWinExp(user) {
-  console.log('pettyWinExp condition');
-  let exp = 20;
-  //user.giveExp(exp);
+  const exp = Math.floor(Math.random * 100);
   return exp;
-}
-
-// Sees if everything is in order to perform petty crime
-function pettyHackRouteCriterias(user, batteryCost) {
-  if (!batteryCheck(user, batteryCost)) {
-    return 'insufficent battery';
-  }
-  if (!existingValue(user)) {
-    return "User  doesn't exist";
-  }
-  return null;
 }
 
 module.exports = {
