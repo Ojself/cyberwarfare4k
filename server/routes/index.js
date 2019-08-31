@@ -193,6 +193,7 @@ router.get('/get-nav-user', async (req, res, next) => {
     next(err);
   }
   /* todo, too much information is being passsed */
+  // use nullify values to null out some info
 });
 
 // @GET

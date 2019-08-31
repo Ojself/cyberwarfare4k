@@ -10,17 +10,14 @@ _.. now in React!_
 ## Introduction
 
 **What is it?**
-Cyberwarfare4k is a multiplayer .....
-
-**What is it not?**
-Cyberwarfare4k is not a .....
+Cyberwarfare4k is a multiplayer role playing game playable in browser. It has minimal visuals and you can play it with only, almost, mouse clicks.
 
 ## Technologies
 
-**M**ongoDB
-**E**xpress
-**R**eact and
-**N**ode
+MongoDB
+Express
+React
+Node
 
 ## Contributing
 
@@ -57,9 +54,6 @@ You should have a `server/.env` file, with for example the following values:
 PORT=5000
 SESSION_SECRET=anyValue
 MONGODB_URI=......
-CLOUDINARY_CLOUD_NAME=......
-CLOUDINARY_API_KEY=......
-CLOUDINARY_API_SECRET=......
 ```
 
 **To install all the packages**
