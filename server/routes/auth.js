@@ -32,10 +32,13 @@ router.post('/signup', (req, res, next) => {
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashPass = bcrypt.hashSync(password, salt);
+      const ip = req.ip;
       const account = {
-        password: hashPass
+        password: hashPass,
+        ip: [ip]
       };
       const name = `unconfirmedplayer${Math.floor(Math.random() * 1000)}`;
+
       const newUser = new User({ email, account, confirmationCode, name });
       return newUser.save();
     })
@@ -85,7 +88,7 @@ router.post('/login', (req, res, next) => {
     })
     .catch(err => next(err));
 });
-
+// todo add ip when logging in. req.ip
 router.post('/login-with-passport-local-strategy', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     if (err) {
