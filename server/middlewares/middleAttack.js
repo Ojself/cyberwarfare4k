@@ -16,7 +16,8 @@ function attackRouteCriterias(user, opponent, batteryCost) {
     return 'Insufficent battery';
   }
   if (!checkCityandLevel(user, opponent)) {
-    return `All traffic from ${user.playerStats.city} is blocked. Try changing VPN or level up!`;
+    // name doesn't show
+    return `All traffic from ${user.playerStats.city.name} is blocked. Try changing VPN or level up!`;
   }
   if (!checkSuicide(user, opponent)) {
     return `You can't hack yourself..`;
@@ -35,20 +36,19 @@ function attackRouteCriterias(user, opponent, batteryCost) {
 
 // checks if user is in same city, and if not, at least level 5
 function checkCityandLevel(user, opponent) {
-  return (
-    user.playerStats.city === opponent.playerStats.city ||
-    opponent.playerStats.rank >= 5
-  );
+  const userCity = JSON.stringify(user.playerStats.city);
+  const opponentCity = JSON.stringify(opponent.playerStats.city);
+  return userCity === opponentCity || opponent.playerStats.rank >= 5;
 }
 
 // checks if you're attacking yourself
 function checkSuicide(user, opponent) {
-  return user.name === opponent.name;
+  return user.name !== opponent.name;
 }
 
 // checks if opponent is graced and therefor invincible
 function graceCheck(opponent) {
-  return !opponent.attackInformation.gracePeriod;
+  return !opponent.fightInformation.gracePeriod;
 }
 
 function checkHealth(player) {
@@ -63,16 +63,16 @@ function fightHacker(user, opponent, batteryCost) {
     roundResult: [],
     roundVictimRemainingHp: [],
     roundHackerRemainingHp: [],
-    victimHp: opponent.currentFirewall,
-    hackerHp: user.currentFirewall,
+    victimHp: opponent.playerStats.currentFirewall,
+    hackerHp: user.playerStats.currentFirewall,
     damageDealt: 0,
     won: false,
     victimDead: false,
     playerGains: {
       levelUp: false,
       batteryCost: batteryCost,
-      exp: 0,
-      bitcoins: 0,
+      exp: 10,
+      bitCoins: 10,
       opponentCurrency: opponent.currencies
     }
   };
@@ -88,7 +88,7 @@ function fightHacker(user, opponent, batteryCost) {
   }
 
   // check if opponent is dead
-  if (opponent.hackerStats.currentFirewall - finalResult.damageDealt <= 0) {
+  if (opponent.playerStats.currentFirewall - finalResult.damageDealt <= 0) {
     finalResult.victimDead = true;
   }
 
@@ -123,23 +123,23 @@ function attackRecursiveBattle(result) {
   // hack win
   // victim is dead
   if (result.victimHp <= 0) {
-    result.damageDealt = attackCalulator(user);
+    result.damageDealt = attackCalulator(result.user);
     return attackWin(result);
   }
 
   // Encryption / blocked
   // attacker got blocked
-  if (encryptionChecker(user)) {
+  if (encryptionChecker(result.user, result.opponent)) {
     roundLost(result, 'encrypted');
-    return attackRecursiveBattle(user, opponent, result);
+    return attackRecursiveBattle(result);
   }
 
-  let attackNumber = attackCalulator(user);
-  let defenseNumber = defenseCalulator(opponent);
+  let attackNumber = attackCalulator(result.user);
+  let defenseNumber = defenseCalulator(result.opponent);
 
   if (attackNumber <= defenseNumber) {
     roundLost(result, 'lost', defenseNumber);
-    return attackRecursiveBattle(user, opponent, result);
+    return attackRecursiveBattle(result);
   }
 
   // round win
@@ -147,7 +147,7 @@ function attackRecursiveBattle(result) {
     roundWin(result, attackNumber);
   }
 
-  return crimeRecursiveBattle(user, crime, result);
+  return attackRecursiveBattle(result);
 }
 // end of recursive
 
@@ -162,35 +162,38 @@ function attackCalulator(hacker) {
   const hackSkillDamage =
     Object.values(hacker.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
-  return Math.floor(cpuDamage + hackSkillDamage);
+  let damageNumber = cpuDamage + hackSkillDamage;
+  if (damageNumber > 30) {
+    damageNumber = 30;
+  }
+
+  return Math.floor(damageNumber);
 }
 
-function defenseCalulator(defender) {
+function defenseCalulator(victim) {
   // generates randomNumber, higher is worse
   const randomNumber = Math.floor(Math.random() * 6) + 3;
 
-  // avs skill of defender
-  const avsDefense = defender.hackSkill.antiVirus;
+  // avs skill of victim
+  const avsDefense = victim.hackSkill.antiVirus;
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
   const hackSkillDamage =
-    Object.values(defender.hackSkill).reduce((a, b) => a + b) / randomNumber;
+    Object.values(victim.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   return Math.floor(avsDefense + hackSkillDamage);
 }
 
 // returns Boolean to see if hacker was encrypted / blocked by the attack
-function encryptionChecker(attacker, defender) {
-  let randomNumber = Math.random();
-  let decider;
-
+function encryptionChecker(attacker, victim) {
   // encryption skills for both players
-  let encryptionAttacker = attacker.hackSkill.encryption;
-  let encryptionDefender = defender.hackSkill.encryption;
+  const encryptionAttacker =
+    attacker.hackSkill.encryption / 1000 + Math.random();
+  const encryptionVictim = victim.hackSkill.encryption / 1000 + Math.random();
 
-  // If attacker has high encryption, gives him 75% of success
-  encryptionAttacker > encryptionDefender ? (decider = 0.25) : (decider = 0.75);
-  return randomNumber > decider;
+  console.log(encryptionAttacker, encryptionVictim, 'jarle');
+
+  return encryptionAttacker < encryptionVictim;
 }
 
 function roundWin(result, damage) {
@@ -214,9 +217,9 @@ function attackWin(result) {
   // calculate gains
   result.won = true;
   result.playerGains.exp = 10;
-  result.gains.bitCoins = 20;
+  result.playerGains.bitCoins = 20;
 
   return result;
 }
 
-module.exports = { crimeRouteCriterias, fightCrime };
+module.exports = { attackRouteCriterias, fightHacker };

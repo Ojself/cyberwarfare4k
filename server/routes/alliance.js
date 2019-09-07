@@ -1,78 +1,67 @@
+/* todo
+-create alliance
+-leave alliance
+-create model for alliance
+
+boss
+undesboss
+consigliere
+cpt1
+cpt2
+soldier1
+soldier2
+
+captains can:
+post forum
+invite players
+
+consig can:
+delete post:
+
+underboss can:
+set position of people
+kick people
+
+boss can:
+shutdown people and kick
+
+ */
+
 const express = require('express');
-const { isLoggedIn } = require('../middlewaresAuthAuth');
 const router = express.Router();
 const User = require('../models/User');
-const Forum = require('../models/forum');
+const Alliance = require('../models/Alliance');
 
-// TODO: route for creating, leaving, deleting, rearranging alliance
+// @GET
+// PRIVATE
+// Retrives all alliances
 
-router.get('/forum', async (req, res, next) => {
-  const forums = await Forum.find();
-  return res.status(200).json({
+router.get('/', async (req, res, next) => {
+  const alliances = await alliance.find();
+
+  res.status(200).json({
     success: true,
-    message: 'Forum loaded..',
-    forums
+    message: `alliances loaded`,
+    alliances
   });
 });
 
-router.post('/forum', async (req, res, next) => {
-  const userId = req.user._id;
-  const { comment } = req.body;
-  const date = new Date();
+router.post('/create', async (req, res, next) => {});
 
-  // TODO make sure the string is not including <script>, more than 250 char,
+router.post('/join', async (req, res, next) => {});
 
-  const newMessage = Forum({
-    user: userId,
-    comment,
-    date
-  });
-  newMessage.save();
-
-  return res.status(200).json({
-    success: true,
-    message: `Message posted`
-  });
+router.post('/leave', async (req, res, next) => {
+  // everyone
 });
 
-router.delete('/forum', async (req, res, next) => {
-  const userId = req.user._id;
-  const { commentId } = req.body;
-  const forumPost = await Forum.findById({ commentId });
+router.post('/kick', async (req, res, next) => {});
 
-  //ensure the user is trying to delete his own post
-  if (forumPost.user !== userId) {
-    return res.status(400).json({
-      success: false,
-      message: `You can't edit other peoples post..`
-    });
-  }
-
-  Forum.deleteOne({ commentId });
-
-  return res.status(200).json({
-    success: true,
-    message: `Message deleted`
-  });
+router.put('/change-position', async (req, res, next) => {
+  // everyone
 });
 
-router.patch('/forum', async (req, res, next) => {
-  const userId = req.user._id;
-  const { commentId } = req.body;
-  const forumPost = await Forum.findById({ commentId });
-
-  //Ensure that the user is not trying to edit someone elses post
-  if (forumPost.user !== userId) {
-    return res.status(400).json({
-      success: false,
-      message: `You can't edit other peoples post..`
-    });
-  }
-  // edit post
-  forumPost.editPost(comment, date);
-
-  return res.status(200).json({
-    success: true,
-    message: `Message successfuly edited`
-  });
+router.delete('/dissolve', async (req, res, next) => {
+  // only boss
 });
+
+module.exports = router;

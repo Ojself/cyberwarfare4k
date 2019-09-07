@@ -8,6 +8,10 @@ const {
   crimeRouteCriterias,
   fightCrime
 } = require('../middlewares/middleCrime');
+const {
+  attackRouteCriterias,
+  fightHacker
+} = require('../middlewares/middleAttack');
 const router = express.Router();
 const User = require('../models/User');
 const Crime = require('../models/Crime');
@@ -18,7 +22,7 @@ const Crime = require('../models/Crime');
 
 router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).populate('playerStats.city', 'name');
 
   const batteryCost = 5;
 
@@ -90,9 +94,11 @@ router.post('/crimes', async (req, res, next) => {
 // @POST
 // PRIVATE
 // User can hack another plater.
-
-router.post('/profile/:opponentId/attack', async (req, res, next) => {
-  const userId = req.user._id;
+// /opponentId/attack
+router.post('/:opponentId', async (req, res, next) => {
+  console.log('attack route', req.body);
+  // const userId = req.user._id;
+  const userId = req.body.pmuser;
   const user = await User.findById(userId);
 
   const { opponentId } = req.params;

@@ -420,7 +420,7 @@ userSchema.methods.handleAttack = function(finalResult) {
   this.playerStats.exp += finalResult.playerGains.exp;
 
   // adds currencies if victim died
-  if (this.finalResult.victimDead) {
+  if (finalResult.victimDead) {
     for (let i in finalResult.playerGains.currencies) {
       this.currencies[i] += finalResult.playerGains.currencies[i];
     }
@@ -430,7 +430,7 @@ userSchema.methods.handleAttack = function(finalResult) {
   this.account.notifications[finalResult.date] = [
     `You attacked ${finalResult.opponent.name} ${new Date(
       finalResult.date
-    ).toString()} and dealt ${XXXX} damage${
+    ).toString()} and dealt ${finalResult.damageDealt} damage${
       finalResult.victimDead ? ` and he was shutdown!` : `!`
     }`,
     true
@@ -443,7 +443,9 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
   console.log('userschema handleAttackDefense', finalResult);
   // todo, graceperiod
   this.account.notifications[finalResult.date] = [
-    `${user.name} attacked you at ${new Date(finalResult.date).toString()}`,
+    `${finalResult.user.name} attacked you at ${new Date(
+      finalResult.date
+    ).toString()}`,
     false
   ];
 
@@ -451,7 +453,7 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
   this.playerStats.currentFirewall -= 10; // TODO figure out what number to put here
 
   // if the player is dead
-  if (this.finalResult.victimDead) {
+  if (finalResult.victimDead) {
     // empties his current currency
     Object.keys(this.currencies).forEach(el => (this.currencies[el] = 0));
 

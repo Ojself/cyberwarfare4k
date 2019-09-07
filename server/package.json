@@ -5,10 +5,11 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "debug": "DEBUG=server:* nodemon ./bin/www"
+    "debug": "DEBUG=server:* nodemon ./bin/www",
+    "test": "mocha"
   },
   "dependencies": {
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.4",
