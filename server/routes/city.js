@@ -1,11 +1,12 @@
 const express = require('express');
+
 const router = express.Router();
 const User = require('../models/User');
 const City = require('../models/City');
 const {
   changeCityRouteCriterias,
   getCityRouteCriterias,
-  changeCity
+  changeCity,
 } = require('../middlewares/middleCity.js');
 
 // @GET
@@ -15,19 +16,19 @@ const {
 router.get('/', async (req, res, next) => {
   const cities = await City.find();
 
-  let message = getCityRouteCriterias(cities);
+  const message = getCityRouteCriterias(cities);
 
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
 
   res.status(200).json({
     success: true,
-    message: `cities loaded`,
-    cities
+    message: 'cities loaded',
+    cities,
   });
 });
 
@@ -47,12 +48,12 @@ router.post('/', async (req, res, next) => {
 
   const batteryCost = 5;
 
-  let message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
+  const message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
 
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
 
@@ -60,7 +61,7 @@ router.post('/', async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`
+    message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,
   });
 });
 

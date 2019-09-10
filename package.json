@@ -1,6 +1,10 @@
 {
-  "name": "mern-boilerplate",
-  "version": "2.0.0",
+  "name": "cyberwarfare4k",
+  "version": "1.0.0",
+  "description": "Work in progress. including the readme",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
   "private": true,
   "scripts": {
     "preinstall": "echo --- preinstall --- && cd server && npm install && cd ../client && npm install && npm run build && cd ..",
@@ -10,5 +14,15 @@
   },
   "engines": {
     "node": "8.9.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ojself/cyberwarfare4k.git"
+  },
+  "author": "Tor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ojself/cyberwarfare4k/issues"
+  },
+  "homepage": "https://github.com/Ojself/cyberwarfare4k#readme"
 }

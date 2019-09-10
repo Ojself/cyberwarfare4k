@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Stash = require('../models/Stash');
-const Rank = require('../models/Rank');
-const City = require('../models/City');
+const Stash = require("../models/Stash");
+const Rank = require("../models/Rank");
+const City = require("../models/City");
 
 const userSchema = new Schema(
   {
@@ -12,14 +12,14 @@ const userSchema = new Schema(
       ip: [String],
       status: {
         type: String,
-        enum: ['Pending Confirmation', 'Active'],
-        default: 'Pending Confirmation'
+        enum: ["Pending Confirmation", "Active"],
+        default: "Pending Confirmation"
       },
       confirmationCode: String,
       subscription: {
         type: String,
-        enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
-        default: 'Bronze'
+        enum: ["Bronze", "Silver", "Gold", "Platinum"],
+        default: "Bronze"
       },
       isSetup: {
         type: Boolean,
@@ -27,19 +27,19 @@ const userSchema = new Schema(
       },
       role: {
         type: String,
-        enum: ['user', 'npc', 'admin'],
-        default: 'user'
+        enum: ["user", "npc", "admin"],
+        default: "user"
       },
       notifications: {
         type: Object,
         default: {
-          '0': ['Hey man, welcome to CH4K', false]
+          "0": ["Hey man, welcome to CH4K", false]
         }
       },
       messages: {
         type: Object,
         default: {
-          '0': ['Hey man, welcome to CH4K', false]
+          "0": ["Hey man, welcome to CH4K", false]
         }
       },
       banned: {
@@ -48,18 +48,22 @@ const userSchema = new Schema(
       },
       bannedReason: {
         type: String,
-        default: ''
+        default: ""
       }
     },
     name: {
       type: String,
-      default: '',
+      default: "",
       unique: true
     },
     alliance: {
+      type: Schema.Types.ObjectId,
+      ref: "Alliance"
+    },
+    allianceRole: {
       type: String,
-      enum: ['White', 'Black', 'Red', 'Grey', 'Brown', ''],
-      default: ''
+      enum: ["Boss", "Underboss", "Consigliere", "Captain", "Soldier", ""],
+      default: ""
     },
 
     hackSkill: {
@@ -81,7 +85,7 @@ const userSchema = new Schema(
         type: Number,
         default: 2
       },
-      'Social Engineering': {
+      "Social Engineering": {
         type: Number,
         default: 1
       },
@@ -105,7 +109,7 @@ const userSchema = new Schema(
 
     //Player stats
     playerStats: {
-      city: { type: Schema.Types.ObjectId, ref: 'City' },
+      city: { type: Schema.Types.ObjectId, ref: "City" },
       statPoints: {
         type: Number,
         default: 5
@@ -137,7 +141,7 @@ const userSchema = new Schema(
       },
       bountyDonors: {
         type: [Schema.Types.ObjectId],
-        ref: 'User'
+        ref: "User"
       },
       rank: {
         type: Number,
@@ -145,7 +149,7 @@ const userSchema = new Schema(
       },
       rankName: {
         type: String,
-        default: 'Script kiddie'
+        default: "Script kiddie"
       },
       shutdowns: {
         type: Number,
@@ -164,22 +168,22 @@ const userSchema = new Schema(
     marketPlaceItems: {
       cpu: {
         type: Schema.Types.ObjectId,
-        ref: 'Item',
+        ref: "Item",
         default: null
       },
       firewall: {
         type: Schema.Types.ObjectId,
-        ref: 'Item',
+        ref: "Item",
         default: null
       },
       avs: {
         type: Schema.Types.ObjectId,
-        ref: 'Item',
+        ref: "Item",
         default: null
       },
       encryption: {
         type: Schema.Types.ObjectId,
-        ref: 'Item',
+        ref: "Item",
         default: null
       }
     },
@@ -187,7 +191,7 @@ const userSchema = new Schema(
     specialWeapons: {
       equipped: {
         type: String,
-        default: ''
+        default: ""
       },
       emp: {
         type: Number,
@@ -207,7 +211,7 @@ const userSchema = new Schema(
     // Should be an object with stash instead of array to easier show amount
     stash: {
       type: [Schema.Types.ObjectId],
-      ref: 'Stash'
+      ref: "Stash"
     },
 
     //Figth accessories
@@ -220,8 +224,8 @@ const userSchema = new Schema(
   },
   {
     timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt'
+      createdAt: "createdAt",
+      updatedAt: "updatedAt"
     }
   }
 );
@@ -229,22 +233,22 @@ const userSchema = new Schema(
 // from marketplace
 // this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function(item) {
-  console.log('handleItemPurchase triggered', item);
+  console.log("handleItemPurchase triggered", item);
   const currentItem = this.marketPlaceItems[item.type];
   if (currentItem) {
     // lower the stats so items doesn't stack
     switch (currentItem.type) {
-      case 'cpu':
+      case "cpu":
         this.hackSkill.cpu -= currentItem.bonus;
         break;
-      case 'avs':
+      case "avs":
         this.hackSkill.antiVirus -= currentItem.bonus;
         break;
-      case 'firewall':
+      case "firewall":
         this.playerStats.maxFirewall -= currentItem.bonus;
         this.playerStats.currentFirewall -= currentItem.bonus;
         break;
-      case 'encryption':
+      case "encryption":
         this.hackSkill.encryption -= currentItem.bonus;
         break;
     }
@@ -255,17 +259,17 @@ userSchema.methods.handleItemPurchase = function(item) {
   this.marketPlaceItems[item.type] = item;
   // adds the bonus to user
   switch (item.type) {
-    case 'cpu':
+    case "cpu":
       this.hackSkill.cpu += item.bonus;
       break;
-    case 'avs':
+    case "avs":
       this.hackSkill.antiVirus += item.bonus;
       break;
-    case 'firewall':
+    case "firewall":
       this.playerStats.maxFirewall += item.bonus;
       this.playerStats.currentFirewall += item.bonus;
       break;
-    case 'encryption':
+    case "encryption":
       this.hackSkill.encryption += item.bonus;
       break;
   }
@@ -273,7 +277,7 @@ userSchema.methods.handleItemPurchase = function(item) {
 };
 
 userSchema.methods.newRank = function() {
-  console.log('new rank method triggered');
+  console.log("new rank method triggered");
   this.playerStats.statPoints += 5;
   this.playerStats.rank++;
   Rank.findOne({ rank: this.rank }).then(newRank => {
@@ -283,8 +287,8 @@ userSchema.methods.newRank = function() {
   this.save();
 };
 
-userSchema.methods.giveStash = function(stashName = 'Cables') {
-  console.log('give stash method triggered', stashName);
+userSchema.methods.giveStash = function(stashName = "Cables") {
+  console.log("give stash method triggered", stashName);
   Stash.findOne({ name: stashName }).then(newStash => {
     this.stash.push(newStash._id);
   });
@@ -292,32 +296,32 @@ userSchema.methods.giveStash = function(stashName = 'Cables') {
 };
 
 userSchema.methods.giveExp = function(exp = 1) {
-  console.log('give exp method triggered', exp);
+  console.log("give exp method triggered", exp);
   this.playerStats.exp += exp;
   this.save();
 };
 
-userSchema.methods.giveLegendary = function(itemName = 'emp') {
-  console.log('give legendary method triggered', itemName);
+userSchema.methods.giveLegendary = function(itemName = "emp") {
+  console.log("give legendary method triggered", itemName);
   this[itemName]++;
   this.save();
 };
 
-userSchema.methods.giveSkill = function(skill = 'technical') {
-  console.log('give crimeskill triggered', skill);
-  console.log(this.crimeSkill, 'this.crimeSkill');
+userSchema.methods.giveSkill = function(skill = "technical") {
+  console.log("give crimeskill triggered", skill);
+  console.log(this.crimeSkill, "this.crimeSkill");
   this.crimeSkill[skill]++;
   this.save();
 };
 
 userSchema.methods.batteryDrain = function(battery = 5) {
-  console.log('batterydrain triggered', battery);
+  console.log("batterydrain triggered", battery);
   this.playerStats.battery -= battery;
   this.save();
 };
 
 userSchema.methods.batteryGain = function(battery = 5) {
-  console.log('batteryGain triggered', battery);
+  console.log("batteryGain triggered", battery);
   this.playerStats.battery += battery;
   if (this.playerStats.battery > 100) {
     this.playerStats.battery = 100;
@@ -326,20 +330,20 @@ userSchema.methods.batteryGain = function(battery = 5) {
 };
 
 userSchema.methods.bitcoinDrain = function(bitcoins = 5) {
-  console.log('bitcoinsdrain triggered', bitcoins);
+  console.log("bitcoinsdrain triggered", bitcoins);
   this.playerStats.bitcoins -= bitcoins;
   this.save();
 };
 
 userSchema.methods.bitcoinGain = function(bitcoins = 5) {
-  console.log('bitcoinsGain triggered', bitcoins);
+  console.log("bitcoinsGain triggered", bitcoins);
   this.playerStats.bitcoins += bitcoins;
   // this.playerStats.networth += bitcoins;
   this.save();
 };
 
 userSchema.methods.handlePettyCrime = async function(result) {
-  console.log('handlePettyCrime triggered', result);
+  console.log("handlePettyCrime triggered", result);
   this.playerStats.battery -= result.battery;
   this.playerStats.bitcoins += result.bitcoins;
   this.playerStats.networth += result.bitcoins;
@@ -347,7 +351,7 @@ userSchema.methods.handlePettyCrime = async function(result) {
 
   if (result.stashGained) {
     let newStash = await Stash.findOne({ name: result.stashGained });
-    console.log(newStash, 'newstash');
+    console.log(newStash, "newstash");
     this.stash.push(newStash._id);
   }
   if (result.crimeSkillGained) {
@@ -365,7 +369,7 @@ userSchema.methods.purchaseCurrency = function(
   batteryCost,
   totalPrice
 ) {
-  console.log('purchaseCurrency triggered', arguments);
+  console.log("purchaseCurrency triggered", arguments);
   this.playerStats.battery -= batteryCost;
   this.playerStats.bitCoins -= totalPrice;
   this.currencies[currency.name] += amount;
@@ -378,7 +382,7 @@ userSchema.methods.sellCurrency = function(
   batteryCost,
   totalPrice
 ) {
-  console.log('sellCurrency triggered', arguments);
+  console.log("sellCurrency triggered", arguments);
   this.battery -= batteryCost;
   this.currencies[currency.name] -= amount;
   this.playerStats.bitCoins += totalPrice;
@@ -387,14 +391,14 @@ userSchema.methods.sellCurrency = function(
 };
 
 userSchema.methods.changeCity = function(city, batteryCost) {
-  console.log('changeCity triggered', batteryCost);
+  console.log("changeCity triggered", batteryCost);
   this.playerStats.battery -= batteryCost;
   this.playerStats.city = city._id;
   this.save();
 };
 
 userSchema.methods.handleCrime = function(finalResult) {
-  console.log('userschema handleCrime triggered', finalResult);
+  console.log("userschema handleCrime triggered", finalResult);
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
   this.playerStats.networth += finalResult.playerGains.bitCoins;
@@ -412,7 +416,7 @@ userSchema.methods.handleCrime = function(finalResult) {
 };
 
 userSchema.methods.handleAttack = function(finalResult) {
-  console.log('userschema handleAttack', finalResult);
+  console.log("userschema handleAttack", finalResult);
 
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
@@ -440,7 +444,7 @@ userSchema.methods.handleAttack = function(finalResult) {
 };
 
 userSchema.methods.handleAttackDefense = function(finalResult) {
-  console.log('userschema handleAttackDefense', finalResult);
+  console.log("userschema handleAttackDefense", finalResult);
   // todo, graceperiod
   this.account.notifications[finalResult.date] = [
     `${finalResult.user.name} attacked you at ${new Date(
@@ -475,7 +479,7 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
 // REPAIR
 
 userSchema.methods.partialRepair = function(repairCost, batteryCost) {
-  console.log('partialRepair triggered');
+  console.log("partialRepair triggered");
   // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
   this.playerStats.currentFirewall += (20 * this.playerStats.maxFirewall) / 100;
@@ -487,7 +491,7 @@ userSchema.methods.partialRepair = function(repairCost, batteryCost) {
 };
 
 userSchema.methods.fullRepair = function(repairCost, batteryCost) {
-  console.log('fullRepair triggered');
+  console.log("fullRepair triggered");
   // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
   this.playerStats.currentFirewall = this.playerStats.maxFirewall;
@@ -501,14 +505,14 @@ userSchema.methods.handleDataCenterPurchase = function(
   dataCenter,
   batteryCost
 ) {
-  console.log('handlePurchase triggered');
+  console.log("handlePurchase triggered");
   // this.playerStats.battery -= batteryCost;
   this.playerStats.bitCoins -= dataCenter.price;
   this.save();
 };
 
 userSchema.methods.handleDataCenterAttack = function(dataCenter, result) {
-  console.log('handleDataCenterAttack triggered');
+  console.log("handleDataCenterAttack triggered");
   this.playerStats.battery -= result.batteryCost;
   dataCenter.requiredStash.forEach(el => {
     this.stash.pop(el);
@@ -537,5 +541,5 @@ userSchema.methods.addBounty = function(bountyDonor, bounty) {
   this.save();
 };
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;

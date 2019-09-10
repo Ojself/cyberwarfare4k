@@ -5,7 +5,8 @@ const User = require('../models/User');
 const forumSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   comment: String,
-  date: Date
+  date: Date,
+  AlliancePost: { type: Schema.Types.ObjectId, ref: 'Alliance' }
 });
 
 forumSchema.methods.editPost = function(comment) {

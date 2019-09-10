@@ -95,7 +95,6 @@ function checkForumCriteria(
   idChecker = false
 ) {
   console.log('checkForumCriteria', ...arguments);
-  // todo, something with userid
   if (comment.length > 250) {
     return `Your post is too long..`;
   }
