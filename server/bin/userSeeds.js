@@ -6,6 +6,8 @@ require("../configs/database");
 
 // To execute this seed, run from the root of the project
 // $ node bin/userSeeds.js
+// todo, create something that takes care of all the relational database stuff
+// or a note of how to run the seeds in which order.
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -15,6 +17,8 @@ const Alliance = require("../models/Alliance");
 const bcryptSalt = 10;
 
 const cityIds = [];
+const allianceIds = [];
+const npcIds = [];
 
 async function getCities() {
   let cities = await City.find();
@@ -23,13 +27,23 @@ async function getCities() {
   });
 }
 
-const allianceIds = [];
-
 async function getAlliances() {
-  let alliances = await Alliance.find();
+  const alliances = await Alliance.find();
   alliances.forEach(element => {
     allianceIds.push(element._id);
   });
+}
+
+async function pushAllNpcToAlliance() {
+  await Alliance.findOneAndUpdate({ name: "Grey" }).then(npcAlliance => {
+    console.log(npcAlliance, "this should be grey");
+    this.members = npcIds;
+    this.save();
+  });
+}
+
+function randomCityId() {
+  return cityIds[Math.floor(Math.random() * cityIds.length)];
 }
 
 User.deleteMany()
@@ -51,7 +65,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 0,
           rankName: "Script kiddie"
         },
@@ -68,7 +82,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 1,
           rankName: "Family IT-Support"
         },
@@ -85,7 +99,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 2,
           rankName: "Blog Writer"
         },
@@ -102,7 +116,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 3,
           rankName: "HTML 'programmer'"
         },
@@ -119,7 +133,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 4,
           rankName: "Jr. Web Dev"
         },
@@ -136,7 +150,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 5,
           rankName: "Sr. Web Dev"
         },
@@ -153,7 +167,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 6,
           rankName: "System Dev"
         },
@@ -170,7 +184,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 7,
           rankName: "Cyber Security Dev"
         },
@@ -187,7 +201,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 8,
           rankName: "Basement Dweller"
         },
@@ -204,7 +218,7 @@ User.deleteMany()
           role: "npc"
         },
         playerStats: {
-          city: cityIds[Math.floor(Math.random() * cityIds.length)],
+          city: randomCityId(),
           rank: 9,
           rankName: "Anonymous"
         },
@@ -218,6 +232,7 @@ User.deleteMany()
   .then(usersCreated => {
     console.log(`${usersCreated.length} users created with the following id:`);
     console.log(usersCreated.map(u => u._id));
+    usersCreated.forEach(el => npcIds.push(u._id));
   })
   .then(() => {
     // Close properly the connection to Mongoose
@@ -228,4 +243,5 @@ User.deleteMany()
     throw err;
   });
 
+/* todo, this might be exported elsewhere too */
 module.exports = { getCities };

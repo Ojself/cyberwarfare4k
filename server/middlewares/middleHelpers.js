@@ -1,24 +1,22 @@
-const Stash = require('../models/Stash');
-
 function stashDropChance(user, multiplier = 1) {
   const commonStash = [
-    'Raspberry Pi',
-    'Ubertooth One',
-    'EyeSpy Digital Spy Recorder',
-    'Keylogger',
-    'Lock pick set',
-    'Linux for dummies',
-    'Cables'
+    "Raspberry Pi",
+    "Ubertooth One",
+    "EyeSpy Digital Spy Recorder",
+    "Keylogger",
+    "Lock pick set",
+    "Linux for dummies",
+    "Cables"
   ];
   const rareStash = [
-    'WiFi Pineapple',
-    'Mini Hidden Camera',
-    'Rubber Ducky',
-    'Proxmark3 Kit'
+    "WiFi Pineapple",
+    "Mini Hidden Camera",
+    "Rubber Ducky",
+    "Proxmark3 Kit"
   ];
-  const ultraStash = ['Computer', 'HackRf One'];
+  const ultraStash = ["Computer", "HackRf One"];
 
-  let givenStash = '';
+  let givenStash;
 
   let decider = Math.round(Math.random() * 1000) + multiplier;
   if (decider > 750) {
@@ -36,10 +34,10 @@ function stashDropChance(user, multiplier = 1) {
 
 function crimeSkillDropChance(user) {
   let crimeSkills = [
-    'Technical',
-    'Social Engineering',
-    'Forensics',
-    'Cryptography'
+    "Technical",
+    "Social Engineering",
+    "Forensics",
+    "Cryptography"
   ];
   let givenCrimeSkill;
 
@@ -64,21 +62,19 @@ function crimeSkillDropChance(user) {
 
 // not been implemented yet
 function legendaryDropChance(user) {
-  const legendary = ['emp', 'geostorm', 'medusa'];
-  let givenLegendary;
+  const legendary = ["emp", "geostorm", "medusa"];
 
   let decider = Math.random() * 1000;
 
   if (decider > 998) {
     /* Give legendary skill */
-    givenLegendary = legendary[Math.floor(Math.random() * legendary.length)];
+    return legendary[Math.floor(Math.random() * legendary.length)];
   }
-
-  return givenLegendary;
+  return null;
 }
 
 function batteryCheck(user, x) {
-  return user.playerStats.battery > x;
+  return user.playerStats.battery >= x;
 }
 
 function existingValue(value) {
@@ -97,9 +93,8 @@ function checkOccuranceLimit(array, value, x) {
 }
 
 // Checks for two values being the same incl. type
-function checkSameValue(currentCityName, newCityName) {
-  console.log('checkSameValue triggered', ...arguments);
-  return currentCityName !== newCityName;
+function checkSameValue(valueX, valueY) {
+  return valueX !== valueY;
 }
 
 // Nullifies values in obj so unnecessary data is left behind

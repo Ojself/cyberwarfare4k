@@ -1,30 +1,20 @@
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 // To execute this seed, run from the root of the project
 // $ node bin/citySeeds.js
 
-const mongoose = require('mongoose');
-const City = require('../models/City');
+const mongoose = require("mongoose");
+const City = require("../models/City");
 
-require('../configs/database');
+require("../configs/database");
 
 let cities = [
-  {
-    name: 'Shanghai'
-  },
-  {
-    name: 'Hanoi'
-  },
-  {
-    name: 'Stavanger'
-  },
-  {
-    name: 'Phoenix'
-  },
-  {
-    name: 'Novosibirsk'
-  }
+  { name: "Shanghai" },
+  { name: "Hanoi" },
+  { name: "Stavanger" },
+  { name: "Phoenix" },
+  { name: "Novosibirsk" }
 ];
 
 City.deleteMany()

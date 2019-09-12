@@ -26,6 +26,10 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
   //   return "Departure city doesn't exist";
   // }
 
+  if (!existingValue(batteryCost)) {
+    return "Batterycost doesn't exist";
+  }
+
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }

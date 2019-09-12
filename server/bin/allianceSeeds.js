@@ -11,21 +11,11 @@ const User = require("../models/User");
 require("../configs/database");
 
 let alliances = [
-  {
-    name: "White"
-  },
-  {
-    name: "Black"
-  },
-  {
-    name: "Red"
-  },
-  {
-    name: "Brown"
-  },
-  {
-    name: "Grey"
-  }
+  { name: "White" },
+  { name: "Black" },
+  { name: "Red" },
+  { name: "Brown" },
+  { name: "Grey" }
 ];
 
 Alliance.deleteMany()

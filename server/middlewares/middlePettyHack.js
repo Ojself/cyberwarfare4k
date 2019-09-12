@@ -4,15 +4,18 @@ const {
   legendaryDropChance,
   batteryCheck,
   existingValue
-} = require('../middlewares/middleHelpers');
+} = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to perform petty crime
 function pettyHackRouteCriterias(user, batteryCost) {
-  if (!batteryCheck(user, batteryCost)) {
-    return 'insufficent battery';
-  }
   if (!existingValue(user)) {
-    return "User  doesn't exist";
+    return "User doesn't exist";
+  }
+  if (!existingValue(batteryCost)) {
+    return "Battery doesn't exist";
+  }
+  if (!batteryCheck(user, batteryCost)) {
+    return "insufficent battery";
   }
   return null;
 }
@@ -23,51 +26,57 @@ function pettyCrime(user) {
   let values = Object.values(crimeSkills);
   let probabiltiy;
   const pettyResult = {
+    won: false,
     bitcoins: 0,
     exp: 0,
     battery: 5,
-    stashGained: '',
-    crimeSkillGained: '',
-    legendaryGained: ''
+    stashGained: "",
+    crimeSkillGained: "",
+    legendaryGained: ""
   };
 
-  /* Grabs the two lowest values from crimeskill  */
-  values = values.sort();
+  values = values.reduce((acc, curr) => acc + curr, 0);
 
-  values = values[0] + values[1];
-
-  /* Good overall skills give you 90% chance of success of petty crime*/
-  if (values > 30) {
-    probabiltiy = 0.9;
+  if (values <= 5) {
+    probabiltiy = 0.95;
+  } else if (values < 10) {
+    probabiltiy = 0.4;
+  } else if (values < 15) {
+    probabiltiy = 0.5;
+  } else if (values < 20) {
+    probabiltiy = 0.7;
+  } else if (values < 30) {
+    probabiltiy = 0.85;
   } else {
-    probabiltiy = values / 50 + Math.random();
+    probabiltiy = 0.95;
   }
 
   /* Checking for success */
   if (probabiltiy > decider) {
     /* Success */
-
-    pettyResult.bitcoins = pettyWinBitcoins(user);
-    pettyResult.exp = pettyWinExp(user);
-    if (probabiltiy > decider + 0.2) {
+    pettyResult.won = true;
+    pettyResult.bitcoins = pettyWinBitcoins(probabiltiy);
+    pettyResult.exp = pettyWinExp(probabiltiy);
+    if (probabiltiy > decider + 0.1) {
+      /* bonus success */
       pettyResult.stashGained = stashDropChance(user, values * 100);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);
     }
-    //call user.method something something
   }
-  user.handlePettyCrime(pettyResult);
+  if (user.account.role !== "testUser") {
+    user.handlePettyCrime(pettyResult);
+  }
+  //   console.log(pettyResult, "result");
   return pettyResult;
 }
 
-function pettyWinBitcoins(user) {
-  const bitcoins = Math.floor(Math.random * 1000);
-  return bitcoins;
+function pettyWinBitcoins(probabiltiy = 0.5) {
+  return Math.floor(Math.random() * 5000 * probabiltiy);
 }
 
-function pettyWinExp(user) {
-  const exp = Math.floor(Math.random * 100);
-  return exp;
+function pettyWinExp(probabiltiy = 0.5) {
+  return Math.floor(Math.random() * 2000 * probabiltiy);
 }
 
 module.exports = {

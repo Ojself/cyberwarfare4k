@@ -1,9 +1,9 @@
-const express = require('express');
-const passport = require('passport');
-const bcrypt = require('bcrypt');
+const express = require("express");
+const passport = require("passport");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
-const User = require('../models/User');
+const User = require("../models/User");
 
 // const { sendConfirmation } = require('../configs/nodemailer');
 
@@ -11,24 +11,25 @@ const User = require('../models/User');
 const bcryptSalt = 10;
 
 // TODO: Change email to email.
-router.post('/signup', (req, res, next) => {
+router.post("/signup", (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400).json({ message: 'Indicate email and password' });
+    res.status(400).json({ message: "Indicate email and password" });
     return;
   }
 
-  const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let confirmationCode = '';
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let confirmationCode = "";
   for (let i = 0; i < 25; i++) {
-    confirmationCode
-      += characters[Math.floor(Math.random() * characters.length)];
+    confirmationCode +=
+      characters[Math.floor(Math.random() * characters.length)];
   }
 
-  User.findOne({ email })
-    .then((userDoc) => {
+  User.findOne({ "account.email": email })
+    .then(userDoc => {
       if (userDoc !== null) {
-        res.status(409).json({ message: 'The email already exists' });
+        res.status(409).json({ message: "The email already exists" });
         return;
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
@@ -36,39 +37,42 @@ router.post('/signup', (req, res, next) => {
       const { ip } = req;
       const account = {
         password: hashPass,
-        ip: [ip],
+        ip: [ip]
       };
       const name = `unconfirmedplayer${Math.floor(Math.random() * 1000)}`;
 
       const newUser = new User({
-        email, account, confirmationCode, name,
+        email,
+        account,
+        confirmationCode,
+        name
       });
       return newUser.save();
     })
-    .then((userSaved) => {
+    .then(userSaved => {
       // send
       // LOG IN THIS USER
       // "req.logIn()" is a Passport method that calls "serializeUser()"
       // (that saves the USER ID in the session)
       req.logIn(userSaved, () => {
         // hide "encryptedPassword" before sending the JSON (it's a security risk)
-        userSaved.password = undefined;
+        userSaved.account.password = undefined;
         res.status(200).json(userSaved);
       });
     })
-    .catch((err) => next(err));
+    .catch(err => next(err));
 });
 
-router.post('/login', (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
 
   // first check to see if there's a document with that email
   User.findOne({ email })
-    .then((userDoc) => {
+    .then(userDoc => {
       // "userDoc" will be empty if the email is wrong (no document in database)
       if (!userDoc) {
         // create an error object to send to our error handler with "next()"
-        next(new Error('Incorrect email '));
+        next(new Error("Incorrect email "));
         return;
       }
 
@@ -76,7 +80,7 @@ router.post('/login', (req, res, next) => {
       // "compareSync()" will return false if the "password" is wrong
       if (!bcrypt.compareSync(password, userDoc.password)) {
         // create an error object to send to our error handler with "next()"
-        next(new Error('Password is wrong'));
+        next(new Error("Password is wrong"));
         return;
       }
       // sendConfirmation(email, confirmationCode, username)
@@ -89,13 +93,13 @@ router.post('/login', (req, res, next) => {
         res.json(userDoc);
       });
     })
-    .catch((err) => next(err));
+    .catch(err => next(err));
 });
 // todo add ip when logging in. req.ip
-router.post('/login-with-passport-local-strategy', (req, res, next) => {
-  passport.authenticate('local', (err, theUser, failureDetails) => {
+router.post("/login-with-passport-local-strategy", (req, res, next) => {
+  passport.authenticate("local", (err, theUser, failureDetails) => {
     if (err) {
-      res.status(500).json({ message: 'Something went wrong' });
+      res.status(500).json({ message: "Something went wrong" });
       return;
     }
 
@@ -104,9 +108,9 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
       return;
     }
 
-    req.login(theUser, (err) => {
+    req.login(theUser, err => {
       if (err) {
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: "Something went wrong" });
         return;
       }
 
@@ -116,32 +120,32 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
   req.logout();
-  res.json({ message: 'You are out!' });
+  res.json({ message: "You are out!" });
 });
 
 // todo, what to render
-router.get('/confirm/:confirmCode', (req, res) => {
+router.get("/confirm/:confirmCode", (req, res) => {
   User.findOneAndUpdate(
     { confirmationCode: req.params.confirmCode },
-    { $set: { status: 'Active' } },
+    { $set: { status: "Active" } }
   )
-    .then((user) => {
+    .then(user => {
       // don't render. do something else. redirect to setup?
-      res.render('auth/confirmed', user);
+      res.render("auth/confirmed", user);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
     });
 });
 
-router.post('/forgot', (req, res) => {
-  const {email} = req.body;
+router.post("/forgot", (req, res) => {
+  const { email } = req.body;
   // forgot password
 });
 
-router.post('/reset', (req, res) => {
+router.post("/reset", (req, res) => {
   // reset password
 });
 

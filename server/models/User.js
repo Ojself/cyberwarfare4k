@@ -27,9 +27,10 @@ const userSchema = new Schema(
       },
       role: {
         type: String,
-        enum: ["user", "npc", "admin"],
+        enum: ["user", "npc", "testUser", "testUserDB", "admin"],
         default: "user"
       },
+      //   testUser doesn't update their values in database when testing functions
       notifications: {
         type: Object,
         default: {

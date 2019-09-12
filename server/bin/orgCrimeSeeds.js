@@ -1,190 +1,203 @@
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-// Seeds file that remove all crimes and create XXX new crimes
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 // To execute this seed, run from the root of the project
 // $ node bin/orgCrimeSeeds.js
 
-const mongoose = require('mongoose');
-const User = require('../models/User');
-const OrgCrime = require('../models/OrgCrime');
+const mongoose = require("mongoose");
+const OrgCrime = require("../models/OrgCrime");
 
-require('../configs/database');
+require("../configs/database");
+
+const firewallValues = {
+  easy: 90,
+  medium: 150,
+  hard: 210,
+  challenging: 270,
+  impossible: 450
+};
+
+const difficultyValues = {
+  easy: 30,
+  medium: 50,
+  hard: 70,
+  challenging: 90,
+  impossible: 150
+};
 
 let orgCrimes = [
   // SE
   {
-    name: 'Internet trolling',
-    description: 'Create online havoc by trolling online',
-    crimeType: 'Social Engineering',
-    difficulty: 30,
-    currentFirewall: 90,
-    maxFirewall: 90
+    name: "Internet trolling",
+    description: "Create online havoc by trolling online",
+    crimeType: "Social Engineering",
+    difficulty: difficultyValues.easy,
+    currentFirewall: firewallValues.easy,
+    maxFirewall: firewallValues.easy
   },
 
   {
-    name: 'Piggyback',
+    name: "Piggyback",
     description:
-      'Follow a businessman into his office and steal valuable information',
-    crimeType: 'Social Engineering',
-    difficulty: 50,
-    currentFirewall: 150,
-    maxFirewall: 150
+      "Follow a businessman into his office and steal valuable information",
+    crimeType: "Social Engineering",
+    difficulty: difficultyValues.medium,
+    currentFirewall: firewallValues.medium,
+    maxFirewall: firewallValues.medium
   },
 
   {
-    name: 'Spoof RFID',
-    description: 'Enter an office buildning by brute forcing their door',
-    crimeType: 'Social Engineering',
-    difficulty: 70,
-    currentFirewall: 210,
-    maxFirewall: 210
+    name: "Spoof RFID",
+    description: "Enter an office buildning by brute forcing their door",
+    crimeType: "Social Engineering",
+    difficulty: difficultyValues.hard,
+    currentFirewall: firewallValues.hard,
+    maxFirewall: firewallValues.hard
   },
 
   {
-    name: 'ID theft',
-    description: 'Be someone else, who wants to be you anyway..',
-    crimeType: 'Social Engineering',
-    difficulty: 90,
-    currentFirewall: 270,
-    maxFirewall: 270
+    name: "ID theft",
+    description: "Be someone else, who wants to be you anyway..",
+    crimeType: "Social Engineering",
+    difficulty: difficultyValues.challenging,
+    currentFirewall: firewallValues.challenging,
+    maxFirewall: firewallValues.challenging
   },
 
   {
-    name: 'Ransomware',
-    description: 'Use ransomware to blackmail businesses for money',
-    crimeType: 'Social Engineering',
-    difficulty: 150,
-    currentFirewall: 450,
-    maxFirewall: 450
+    name: "Ransomware",
+    description: "Use ransomware to blackmail businesses for money",
+    crimeType: "Social Engineering",
+    difficulty: difficultyValues.impossible,
+    currentFirewall: firewallValues.impossible,
+    maxFirewall: firewallValues.impossible
   },
 
   // Forensics
   {
-    name: 'Wipe HDD',
-    description: 'Microwave peoples harddrive for money',
-    crimeType: 'Forensics',
-    difficulty: 30,
-    currentFirewall: 90,
-    maxFirewall: 90
+    name: "Wipe HDD",
+    description: "Microwave peoples harddrive for money",
+    crimeType: "Forensics",
+    difficulty: difficultyValues.easy,
+    currentFirewall: firewallValues.easy,
+    maxFirewall: firewallValues.easy
   },
 
   {
-    name: 'Hide data',
-    description: 'Hide your neighbours data and blackmail them!',
-    crimeType: 'Forensics',
-    difficulty: 50,
-    currentFirewall: 150,
-    maxFirewall: 150
+    name: "Hide data",
+    description: "Hide your neighbours data and blackmail them!",
+    crimeType: "Forensics",
+    difficulty: difficultyValues.medium,
+    currentFirewall: firewallValues.medium,
+    maxFirewall: firewallValues.medium
   },
   {
-    name: 'Retrieve data',
-    description: 'Help desperate souls to retrieve their lost data',
-    crimeType: 'Forensics',
-    difficulty: 70,
-    currentFirewall: 210,
-    maxFirewall: 210
+    name: "Retrieve data",
+    description: "Help desperate souls to retrieve their lost data",
+    crimeType: "Forensics",
+    difficulty: difficultyValues.hard,
+    currentFirewall: firewallValues.hard,
+    maxFirewall: firewallValues.hard
   },
   {
-    name: 'Cross-Site Scripting',
-    description: 'Drop malicious code in a comment blog ',
-    crimeType: 'Forensics',
-    difficulty: 90,
-    currentFirewall: 270,
-    maxFirewall: 270
+    name: "Cross-Site Scripting",
+    description: "Drop malicious code in a comment blog ",
+    crimeType: "Forensics",
+    difficulty: difficultyValues.challenging,
+    currentFirewall: firewallValues.challenging,
+    maxFirewall: firewallValues.challenging
   },
   {
-    name: 'Cookie theft',
-    description: 'Steal precious information from the cookie',
-    crimeType: 'Forensics',
-    difficulty: 150,
-    currentFirewall: 450,
-    maxFirewall: 450
+    name: "Cookie theft",
+    description: "Steal precious information from the cookie",
+    crimeType: "Forensics",
+    difficulty: difficultyValues.impossible,
+    currentFirewall: firewallValues.impossible,
+    maxFirewall: firewallValues.impossible
   },
 
   // Technical
   {
-    name: 'Guess password',
-    description: 'Guess your friends social login password',
-    crimeType: 'Technical',
-    difficulty: 30,
-    currentFirewall: 90,
-    maxFirewall: 90
+    name: "Guess password",
+    description: "Guess your friends social login password",
+    crimeType: "Technical",
+    difficulty: difficultyValues.easy,
+    currentFirewall: firewallValues.easy,
+    maxFirewall: firewallValues.easy
   },
   {
-    name: 'Change grades',
-    description: 'Change university grades for money',
-    crimeType: 'Technical',
-    difficulty: 50,
-    currentFirewall: 150,
-    maxFirewall: 150
+    name: "Change grades",
+    description: "Change university grades for money",
+    crimeType: "Technical",
+    difficulty: difficultyValues.medium,
+    currentFirewall: firewallValues.medium,
+    maxFirewall: firewallValues.medium
   },
   {
-    name: 'Web scrapping',
-    description: 'Scrap the web for data and sell profitable patterns',
-    crimeType: 'Technical',
-    difficulty: 70,
-    currentFirewall: 210,
-    maxFirewall: 210
+    name: "Web scrapping",
+    description: "Scrap the web for data and sell profitable patterns",
+    crimeType: "Technical",
+    difficulty: difficultyValues.hard,
+    currentFirewall: firewallValues.hard,
+    maxFirewall: firewallValues.hard
   },
   {
-    name: 'SQL injection',
-    description: 'Look for credit card information in company databases',
-    crimeType: 'Technical',
-    difficulty: 90,
-    currentFirewall: 270,
-    maxFirewall: 270
+    name: "SQL injection",
+    description: "Look for credit card information in company databases",
+    crimeType: "Technical",
+    difficulty: difficultyValues.challenging,
+    currentFirewall: firewallValues.challenging,
+    maxFirewall: firewallValues.challenging
   },
   {
-    name: 'GPS jamming',
-    description: 'Jam GPS signals in 3rd world countries',
-    crimeType: 'Technical',
-    difficulty: 150,
-    currentFirewall: 450,
-    maxFirewall: 450
+    name: "GPS jamming",
+    description: "Jam GPS signals in 3rd world countries",
+    crimeType: "Technical",
+    difficulty: difficultyValues.impossible,
+    currentFirewall: firewallValues.impossible,
+    maxFirewall: firewallValues.impossible
   },
 
   // Cryptography
   {
-    name: 'Crack consoles',
-    description: 'Sell cracked gaming consoles',
-    crimeType: 'Cryptography',
-    difficulty: 30,
-    currentFirewall: 90,
-    maxFirewall: 90
+    name: "Crack consoles",
+    description: "Sell cracked gaming consoles",
+    crimeType: "Cryptography",
+    difficulty: difficultyValues.easy,
+    currentFirewall: firewallValues.easy,
+    maxFirewall: firewallValues.easy
   },
   {
-    name: 'Crypto currency',
-    description: 'Speculate in Virtual currency',
-    crimeType: 'Cryptography',
-    difficulty: 50,
-    currentFirewall: 150,
-    maxFirewall: 150
+    name: "Crypto currency",
+    description: "Speculate in Virtual currency",
+    crimeType: "Cryptography",
+    difficulty: difficultyValues.medium,
+    currentFirewall: firewallValues.medium,
+    maxFirewall: firewallValues.medium
   },
   {
-    name: 'Fake Public-key',
+    name: "Fake Public-key",
     description: "Who's really signing those certificates?",
-    crimeType: 'Cryptography',
-    difficulty: 70,
-    currentFirewall: 210,
-    maxFirewall: 210
+    crimeType: "Cryptography",
+    difficulty: difficultyValues.hard,
+    currentFirewall: firewallValues.hard,
+    maxFirewall: firewallValues.hard
   },
   {
-    name: 'Spoof TLS Handshake',
-    description: 'Much easier to handshake online than irl',
-    crimeType: 'Cryptography',
-    difficulty: 90,
-    currentFirewall: 270,
-    maxFirewall: 270
+    name: "Spoof TLS Handshake",
+    description: "Much easier to handshake online than irl",
+    crimeType: "Cryptography",
+    difficulty: difficultyValues.challenging,
+    currentFirewall: firewallValues.challenging,
+    maxFirewall: firewallValues.challenging
   },
   {
-    name: 'SSL sniffing',
-    description: 'The s in HTTPS is only indicative',
-    crimeType: 'Cryptography',
-    difficulty: 150,
-    currentFirewall: 450,
-    maxFirewall: 450
+    name: "SSL sniffing",
+    description: "The s in HTTPS is only indicative",
+    crimeType: "Cryptography",
+    difficulty: difficultyValues.impossible,
+    currentFirewall: firewallValues.impossible,
+    maxFirewall: firewallValues.impossible
   }
 ];
 
@@ -199,7 +212,6 @@ Crime.deleteMany()
     console.log(crimesCreated.map(u => u._id));
   })
   .then(() => {
-    // Close properly the connection to Mongoose
     mongoose.disconnect();
   })
   .catch(err => {
