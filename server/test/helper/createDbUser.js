@@ -1,8 +1,8 @@
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
-require("../configs/database");
+require("dotenv").config({ path: path.join(__dirname, "../../.env") });
+require("../../configs/database");
 const mongoose = require("mongoose");
-const User = require("../models/User");
+const User = require("../../models/User");
 
 // todo city in user model- should a default?
 
@@ -11,9 +11,9 @@ const User = require("../models/User");
 async function createDummyUser(attributes) {
   const account = {
     role: "testUser",
-    password: "Open Sesame",
+    password: process.env.TEST_USER_PW,
     ip: ["127.0.0.1"]
-  };
+  }
   const namesArray = [
     "Markus",
     "Sindre",
@@ -23,7 +23,9 @@ async function createDummyUser(attributes) {
     "Jonas",
     "Stian",
     "Foyen",
-    "Stine"
+    "Yen",
+    "Stine",
+    "Cathrine"
   ];
 
   const randomArrayNumber = Math.floor(Math.random() * namesArray.length);
@@ -70,12 +72,14 @@ async function createDummyUser(attributes) {
   }
 
   return User.create(dummyUser);
-  cleanUp();
 }
 
-function cleanUp() {
-  User.deleteMany({
-    $or: [{ "account.role": "testUser" }, { "account.role": "testUserDB" }]
+async function cleanUp() {
+  await User.deleteMany({
+    "account.role": "testUser"
+  });
+  await User.deleteMany({
+    "account.role": "testUserDB"
   })
     .then(() => {
       mongoose.disconnect();
@@ -85,5 +89,24 @@ function cleanUp() {
       throw err;
     });
 }
+
+// find a way to add username and password into this
+const login = app => {
+  const agent = chai.request.agent(app); // create agent for storing cookies
+  return new Promise((resilve, reject) => {
+    agent
+      .post("/login/")
+      .send({ username, password })
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({
+          agent,
+          res
+        });
+      });
+  });
+};
 
 module.exports = { createDummyUser, cleanUp };

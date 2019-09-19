@@ -2,7 +2,7 @@ const {
   batteryCheck,
   existingValue,
   checkOccuranceLimit
-} = require('../middlewares/middleHelpers');
+} = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to perform crime
 function crimeRouteCriterias(crime, user, batteryCost) {
@@ -13,10 +13,10 @@ function crimeRouteCriterias(crime, user, batteryCost) {
     return "Crime doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+    return "Insufficent battery";
   }
   if (!crime.available) {
-    return 'This crime is not available at the moment';
+    return "This crime is not available at the moment";
   }
   return null;
 }
@@ -34,9 +34,9 @@ function fightCrime(user, crime, batteryCost) {
       batteryCost: batteryCost,
       exp: 0,
       bitcoins: 0,
-      skillGained: '',
-      stashGained: '',
-      legendaryGained: ''
+      skillGained: "",
+      stashGained: "",
+      legendaryGained: ""
     }
   };
   const finalResult = crimeRecursiveBattle(user, crime, result);
@@ -46,10 +46,10 @@ function fightCrime(user, crime, batteryCost) {
     finalResult.playerGains.levelUp = true;
     user.newRank();
   }
-
-  crime.handleCrime(finalResult);
-  user.handleCrime(finalResult);
-
+  if (user.account.role !== "testUser") {
+    crime.handleCrime(finalResult);
+    user.handleCrime(finalResult);
+  }
   return finalResult;
 }
 
@@ -60,11 +60,11 @@ function crimeRecursiveBattle(user, crime, result) {
   let damage = damageCalulator(user, crime);
 
   // the number that decides the success, lower is better
-  let decider = Math.random();
+  let decider = 1; // set this to Math.random()?
 
   // crime lost
   // if user has lost 4 times, the crime is considered 'lost'
-  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
+  if (checkOccuranceLimit(result.roundResult, "lost", 4)) {
     result.playerGains.batteryCost += 10;
     return result;
   }
@@ -94,39 +94,35 @@ function crimeRecursiveBattle(user, crime, result) {
 function chanceCalculator(user, crime) {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
-  // if user tried to do crimes way over his level, give him low chance for success
+  // if user tried to do crimes way over his level, give him 5% chance for success
   if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
   }
   const probability =
     (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
-  return probability;
+  return probability
 }
+
+//todo if user has 50 skill don't give him more skill in pettycrime
 
 // calculates the 'damage' the user inflicts on the crime
 function damageCalulator(user, crime) {
-  // generates randomNumber, higher is worse
-  const randomNumber = Math.floor(Math.random() * 6) + 3;
 
-  // crimeSkill that matches crimetype, higher is better
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
-
-  // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  const hackSkillDamage =
-    Object.values(user.hackSkill).reduce((a, b) => a + b) / randomNumber;
-
-  return Math.floor(crimeTypeDamage + hackSkillDamage);
+  const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);
+  //boils down the players crime and hacking skills and returns a randomnumber from 0 to x
+  return Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage));
 }
 
 function roundWin(result, damage) {
   result.crimeHp -= damage;
-  result.roundResult.push('win');
+  result.roundResult.push("win");
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
 function roundLost(result) {
-  result.roundResult.push('lost');
+  result.roundResult.push("lost");
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
@@ -139,9 +135,17 @@ function crimeWin(result, crime, user) {
   result.playerGains.exp = 10;
   result.playerGains.bitCoins = 20;
   result.playerGains.skillGained = crime.crimeType;
-  result.playerGains.skillGained = ''; // function here
-  result.playerGains.legendaryGained = ''; // function here
+  result.playerGains.skillGained = ""; // function here
+  result.playerGains.legendaryGained = ""; // function here
   return result;
 }
 
-module.exports = { crimeRouteCriterias, fightCrime };
+module.exports = {
+  crimeRouteCriterias,
+  crimeWin,
+  fightCrime,
+  chanceCalculator,
+  damageCalulator,
+  roundWin,
+  roundLost
+};

@@ -19,6 +19,7 @@ function stashDropChance(user, multiplier = 1) {
   let givenStash;
 
   let decider = Math.round(Math.random() * 1000) + multiplier;
+
   if (decider > 750) {
     /* Give ultra  item */
     givenStash = ultraStash[Math.floor(Math.random() * ultraStash.length)];

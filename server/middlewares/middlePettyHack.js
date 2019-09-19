@@ -20,21 +20,22 @@ function pettyHackRouteCriterias(user, batteryCost) {
   return null;
 }
 
-function pettyCrime(user) {
+async function pettyCrime(user) {
   const crimeSkills = user.crimeSkill;
   const decider = Math.random();
   let values = Object.values(crimeSkills);
   let probabiltiy;
   const pettyResult = {
+    levelUp: false,
     won: false,
-    bitcoins: 0,
+    bitCoins: 0,
     exp: 0,
     battery: 5,
     stashGained: "",
     crimeSkillGained: "",
     legendaryGained: ""
   };
-
+  // sums up the crimeskills
   values = values.reduce((acc, curr) => acc + curr, 0);
 
   if (values <= 5) {
@@ -55,28 +56,33 @@ function pettyCrime(user) {
   if (probabiltiy > decider) {
     /* Success */
     pettyResult.won = true;
-    pettyResult.bitcoins = pettyWinBitcoins(probabiltiy);
-    pettyResult.exp = pettyWinExp(probabiltiy);
+    pettyResult.bitCoins = pettyWinBitcoins(user.playerStats.rank);
+    pettyResult.exp = pettyWinExp(user.playerStats.rank);
     if (probabiltiy > decider + 0.1) {
       /* bonus success */
-      pettyResult.stashGained = stashDropChance(user, values * 100);
+      pettyResult.stashGained = stashDropChance(user, values);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);
     }
   }
-  if (user.account.role !== "testUser") {
-    user.handlePettyCrime(pettyResult);
+
+  if (pettyResult.exp + user.playerStats.exp >= user.playerStats.expToLevel) {
+    pettyResult.levelUp = true;
   }
-  //   console.log(pettyResult, "result");
+
+  if (user.account.role !== "testUser") {
+    await user.handlePettyCrime(pettyResult);
+  }
+
   return pettyResult;
 }
 
-function pettyWinBitcoins(probabiltiy = 0.5) {
-  return Math.floor(Math.random() * 5000 * probabiltiy);
+function pettyWinBitcoins(userRank) {
+  return Math.floor(Math.random() * 1000 + userRank * 1000);
 }
 
-function pettyWinExp(probabiltiy = 0.5) {
-  return Math.floor(Math.random() * 2000 * probabiltiy);
+function pettyWinExp(userRank) {
+  return Math.floor(Math.random() * 1000 + userRank * 1000);
 }
 
 module.exports = {

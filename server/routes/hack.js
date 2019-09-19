@@ -1,32 +1,34 @@
-const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
+const express = require("express");
+const { isLoggedIn } = require("../middlewares/middleAuth");
 const {
   pettyCrime,
   pettyHackRouteCriterias
-} = require('../middlewares/middlePettyHack');
+} = require("../middlewares/middlePettyHack");
 const {
   crimeRouteCriterias,
   fightCrime
-} = require('../middlewares/middleCrime');
+} = require("../middlewares/middleCrime");
 const {
   attackRouteCriterias,
   fightHacker
-} = require('../middlewares/middleAttack');
+} = require("../middlewares/middleAttack");
 const router = express.Router();
-const User = require('../models/User');
-const Crime = require('../models/Crime');
+const User = require("../models/User");
+const Crime = require("../models/Crime");
 
 // @POST
 // PRIVATE
 // User starts interval that calls this route every 4 sec and commit petty crime
 
-router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
-  const userId = req.user._id;
-  const user = await User.findById(userId).populate('playerStats.city', 'name');
+router.post("/pettyCrime", async (req, res, next) => {
+  // const userId = req.user._id
+  const userId = req.body.body; // remove this. only for testing purposes
+
+  const user = await User.findById(userId).populate("playerStats.city", "name");
 
   const batteryCost = 5;
 
-  let message = pettyHackRouteCriterias(user, batteryCost);
+  const message = pettyHackRouteCriterias(user, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -39,7 +41,7 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'pettyCrime commited',
+    message: "pettyCrime commited",
     results
   });
 });
@@ -48,22 +50,29 @@ router.post('/pettyCrime', isLoggedIn, async (req, res, next) => {
 // PRIVATE
 // Retrieves all crimes that are available
 
-// todo, filter out the unavialble crimes
+// todo add try catch
 
-router.get('/crimes', async (req, res, next) => {
-  const crimes = await Crime.find();
-  res.status(200).json({
-    success: true,
-    message: 'Crimes loaded',
-    crimes
-  });
+router.get("/crimes", async (req, res, next) => {
+  try {
+    const crimes = await Crime.find().sort({ available: true });
+    res.status(200).json({
+      success: true,
+      message: "Crimes loaded",
+      crimes
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.toString()
+    });
+  }
 });
 
 // @POST
 // PRIVATE
 // Commit crime route.
 
-router.post('/crimes', async (req, res, next) => {
+router.post("/crimes", async (req, res, next) => {
   const userId = req.user;
   const { crimeId } = req.body;
 
@@ -72,7 +81,7 @@ router.post('/crimes', async (req, res, next) => {
 
   const batteryCost = 7;
 
-  let message = crimeRouteCriterias(crime, user, batteryCost);
+  const message = crimeRouteCriterias(crime, user, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -86,7 +95,7 @@ router.post('/crimes', async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Crime commited',
+    message: "Crime commited",
     finalResult
   });
 });
@@ -95,8 +104,8 @@ router.post('/crimes', async (req, res, next) => {
 // PRIVATE
 // User can hack another plater.
 // /opponentId/attack
-router.post('/:opponentId', async (req, res, next) => {
-  console.log('attack route', req.body);
+router.post("/:opponentId", async (req, res, next) => {
+  console.log("attack route", req.body);
   // const userId = req.user._id;
   const userId = req.body.pmuser;
   const user = await User.findById(userId);
@@ -106,7 +115,7 @@ router.post('/:opponentId', async (req, res, next) => {
 
   const batteryCost = 10;
 
-  let message = attackRouteCriterias(user, opponent, batteryCost);
+  const message = attackRouteCriterias(user, opponent, batteryCost);
 
   if (message) {
     return res.status(400).json({
@@ -119,7 +128,7 @@ router.post('/:opponentId', async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    // message: `You did something`,
+    message: `You attacked ${opponent._name}`,
     finalResult
   });
 });

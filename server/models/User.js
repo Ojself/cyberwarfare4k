@@ -281,7 +281,7 @@ userSchema.methods.newRank = function() {
   console.log("new rank method triggered");
   this.playerStats.statPoints += 5;
   this.playerStats.rank++;
-  Rank.findOne({ rank: this.rank }).then(newRank => {
+  Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
     this.playerStats.rankName = newRank.name;
     this.playerStats.expToLevel = newRank.expToNewRank;
   });
@@ -330,28 +330,27 @@ userSchema.methods.batteryGain = function(battery = 5) {
   this.save();
 };
 
-userSchema.methods.bitcoinDrain = function(bitcoins = 5) {
-  console.log("bitcoinsdrain triggered", bitcoins);
-  this.playerStats.bitcoins -= bitcoins;
+userSchema.methods.bitcoinDrain = function(bitCoins = 5) {
+  console.log("bitCoinsdrain triggered", bitCoins);
+  this.playerStats.bitCoins -= bitCoins;
   this.save();
 };
 
-userSchema.methods.bitcoinGain = function(bitcoins = 5) {
-  console.log("bitcoinsGain triggered", bitcoins);
-  this.playerStats.bitcoins += bitcoins;
-  // this.playerStats.networth += bitcoins;
+userSchema.methods.bitcoinGain = function(bitCoins = 5) {
+  console.log("bitCoinsGain triggered", bitCoins);
+  this.playerStats.bitCoins += bitCoins;
+  // this.playerStats.networth += bitCoins;
   this.save();
 };
 
 userSchema.methods.handlePettyCrime = async function(result) {
-  console.log("handlePettyCrime triggered", result);
   this.playerStats.battery -= result.battery;
-  this.playerStats.bitcoins += result.bitcoins;
-  this.playerStats.networth += result.bitcoins;
+  this.playerStats.bitCoins += result.bitCoins;
+  this.playerStats.networth += result.bitCoins;
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
-    let newStash = await Stash.findOne({ name: result.stashGained });
+    const newStash = await Stash.findOne({ name: result.stashGained });
     console.log(newStash, "newstash");
     this.stash.push(newStash._id);
   }
@@ -360,6 +359,15 @@ userSchema.methods.handlePettyCrime = async function(result) {
   }
   if (result.legendaryGained) {
     this[result.legendaryGained]++;
+  }
+  if (result.levelUp) {
+    this.playerStats.statPoints += 5;
+    this.playerStats.rank++;
+    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+      console.log(newRank, "newRank");
+      this.playerStats.rankName = newRank.name;
+      this.playerStats.expToLevel = newRank.expToNewRank;
+    });
   }
   this.save();
 };
@@ -463,7 +471,7 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
     Object.keys(this.currencies).forEach(el => (this.currencies[el] = 0));
 
     // if user rank 8, he is now 4. if user rank 9, he is now 5
-    let newRank = Math.ceil(this.rank / 2);
+    let newRank = Math.ceil(this.playerStats.rank / 2);
     Rank.findOne({ rank: newRank }).then(newRank => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;

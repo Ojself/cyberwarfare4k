@@ -1,18 +1,18 @@
-const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
-const { nullifyValues } = require('../middlewares/middleHelpers');
+const express = require("express");
+const { isLoggedIn } = require("../middlewares/middleAuth");
+const { nullifyValues } = require("../middlewares/middleHelpers");
 const router = express.Router();
-const User = require('../models/User');
-const Item = require('../models/Item');
-const City = require('../models/City');
+const User = require("../models/User");
+const Item = require("../models/Item");
+const City = require("../models/City");
 
 // might be written wrongly TODO
 // Ensures that email confirmation is been made
 function ensureIsSetup(req, res, next) {
-  if (req.user.account.status === 'Active') {
+  if (req.user.account.status === "Active") {
     return next();
   } else {
-    res.redirect('/');
+    res.redirect("/");
   }
 }
 
@@ -21,7 +21,7 @@ function ensureIsSetup(req, res, next) {
   if (req.user.isSetup()) {
     return next();
   } else {
-    res.redirect('/');
+    res.redirect("/");
   }
 }
 
@@ -34,25 +34,25 @@ function ensureIsSetup(req, res, next) {
 // force user here if !user.isSetup
 // create route criterias
 
-router.post('/createUser', isLoggedIn, async (req, res, next) => {
-  console.log('you are now in the create user route');
+router.post("/createUser", isLoggedIn, async (req, res, next) => {
+  console.log("you are now in the create user route");
 
   let userId = req.user._id;
   let user = await User.findById(userId);
   let { name, cityString } = req.body;
 
   if (user.account.isSetup) {
-    console.log('user is already setup');
+    console.log("user is already setup");
     return res.status(400).json({
       success: false,
-      message: 'user is already setup'
+      message: "user is already setup"
     });
   }
 
   if (!name || !cityString) {
     return res.status(409).json({
       success: false,
-      message: 'Missing parameters'
+      message: "Missing parameters"
     });
   }
 
@@ -62,7 +62,7 @@ router.post('/createUser', isLoggedIn, async (req, res, next) => {
   if (allUsers.find(name => allUsers.name)) {
     return res.status(400).json({
       success: false,
-      message: 'name already exists'
+      message: "name already exists"
     });
   }
 
@@ -86,13 +86,13 @@ function setupPlayer(user, name, city) {
 // PRIVATE
 // Retrives player profile
 
-router.get('/my-profile', isLoggedIn, async (req, res, next) => {
+router.get("/my-profile", isLoggedIn, async (req, res, next) => {
   let userId = req.user._id;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate("alliance", "name");
     res.status(200).json({
       success: true,
-      message: 'user loaded',
+      message: "user loaded",
       user
     });
   } catch (err) {
@@ -105,28 +105,28 @@ router.get('/my-profile', isLoggedIn, async (req, res, next) => {
 // Gets all user
 
 // todo add query to sort differently. by income, rank, kills etc
-router.get('/ladder', isLoggedIn, async (req, res, next) => {
-  console.log('you are now in ladder route');
+router.get("/ladder", isLoggedIn, async (req, res, next) => {
+  console.log("you are now in ladder route");
 
   let users = await User.find();
 
   users = users.map(user =>
     nullifyValues(user, [
-      'account',
-      'hackSkill',
-      'crimeSkill',
-      'marketPlaceItems',
-      'specialWeapons',
-      'fightInformation',
-      'stash',
-      'currencies',
-      'email'
+      "account",
+      "hackSkill",
+      "crimeSkill",
+      "marketPlaceItems",
+      "specialWeapons",
+      "fightInformation",
+      "stash",
+      "currencies",
+      "email"
     ])
   );
 
   res.status(200).json({
     success: true,
-    message: 'users loaded',
+    message: "users loaded",
     users
   });
 });
@@ -137,30 +137,30 @@ router.get('/ladder', isLoggedIn, async (req, res, next) => {
 
 // extract route criterias and functionality
 
-router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
+router.post("/upgradeStats", isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { statPoint } = req.body;
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
-      message: 'no more statpoints'
+      message: "no more statpoints"
     });
   }
 
   user.playerStats.statPoints -= 1;
   switch (statPoint) {
-    case 'firewall':
+    case "firewall":
       user.playerStats.maxFirewall += 5;
       user.playerStats.currentFirewall += 5;
       break;
-    case 'cpu':
+    case "cpu":
       user.hackSkill.cpu += 1;
       break;
-    case 'antivirus':
+    case "antivirus":
       user.hackSkill.antivirus += 1;
       break;
-    case 'encryption':
+    case "encryption":
       user.hackSkill.encryption += 1;
       break;
     default:
@@ -177,16 +177,16 @@ router.post('/upgradeStats', isLoggedIn, async (req, res, next) => {
 // @GET
 // PRIVATE
 // Same as my profile. being used in the navbar for stats
-router.get('/get-nav-user', async (req, res, next) => {
+router.get("/get-nav-user", async (req, res, next) => {
   const userId = req.user._id;
   try {
     const user = await User.findById(userId).populate(
-      'playerStats.city',
-      'name'
+      "playerStats.city",
+      "name"
     );
     res.status(200).json({
       success: true,
-      message: 'nav user loaded',
+      message: "nav user loaded",
       user
     });
   } catch (err) {
@@ -199,12 +199,12 @@ router.get('/get-nav-user', async (req, res, next) => {
 // @GET
 // PRIVATE
 // Gets profile for other user
-router.get('/profile/:profileId', async (req, res, next) => {
+router.get("/profile/:profileId", async (req, res, next) => {
   const { profileId } = req.params;
   const user = await User.findById(profileId);
   res.status(200).json({
     success: true,
-    message: 'nav user loaded',
+    message: "nav user loaded",
     user
   });
 });
