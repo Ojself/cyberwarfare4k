@@ -30,7 +30,7 @@ async function createDummyUser(attributes) {
 
   const randomArrayNumber = Math.floor(Math.random() * namesArray.length);
 
-  const name = namesArray[randomArrayNumber] + Math.floor(Math.random() * 1000);
+  const name = namesArray[randomArrayNumber] + Date.now().toString();
   const email = `${name}@mail.com`;
 
   const dummyUser = { email, account, name };

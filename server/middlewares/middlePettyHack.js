@@ -71,18 +71,18 @@ async function pettyCrime(user) {
   }
 
   if (user.account.role !== "testUser") {
+    console.log('if triggered')
     await user.handlePettyCrime(pettyResult);
   }
-
   return pettyResult;
 }
 
-function pettyWinBitcoins(userRank) {
-  return Math.floor(Math.random() * 1000 + userRank * 1000);
+function pettyWinBitcoins(multiplier) {
+  return Math.floor(Math.random() * 1000 + (multiplier * 1000))
 }
 
-function pettyWinExp(userRank) {
-  return Math.floor(Math.random() * 1000 + userRank * 1000);
+function pettyWinExp(multiplier) {
+  return Math.floor(Math.random() * 1000 + (multiplier * 1000))
 }
 
 module.exports = {

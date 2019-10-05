@@ -34,41 +34,23 @@ function stashDropChance(user, multiplier = 1) {
 }
 
 function crimeSkillDropChance(user) {
-  let crimeSkills = [
+  const crimeSkills = [
     "Technical",
     "Social Engineering",
     "Forensics",
     "Cryptography"
   ];
-  let givenCrimeSkill;
-
-  let decider = Math.random() * 1000;
-
-  if (decider > 750) {
-    /* Give Technical skill */
-    givenCrimeSkill = crimeSkills[0];
-  } else if (decider > 500) {
-    /* Give 'Social Engineering' skill */
-    givenCrimeSkill = crimeSkills[1];
-  } else if (decider > 250) {
-    /* Give Forensics skill */
-    givenCrimeSkill = crimeSkills[2];
-  } else {
-    /* give Cryptography skill */
-    givenCrimeSkill = crimeSkills[3];
-  }
-  //user.giveSkill(givenCrimeSkill);
-  return givenCrimeSkill;
+  const givenCrimeSkill = crimeSkills[Math.floor(Math.random() * crimeSkills.length)]
+  return user.crimeSkill[givenCrimeSkill] >= 50 ? null : givenCrimeSkill
 }
 
 // not been implemented yet
-function legendaryDropChance(user) {
+function legendaryDropChance(multiplier) {
   const legendary = ["emp", "geostorm", "medusa"];
 
-  let decider = Math.random() * 1000;
+  const decider = (Math.random() * 1000) + multiplier;
 
   if (decider > 998) {
-    /* Give legendary skill */
     return legendary[Math.floor(Math.random() * legendary.length)];
   }
   return null;

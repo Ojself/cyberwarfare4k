@@ -21,13 +21,23 @@ const Crime = require("../models/Crime");
 // User starts interval that calls this route every 4 sec and commit petty crime
 
 router.post("/pettyCrime", async (req, res, next) => {
-  // const userId = req.user._id
-  const userId = req.body.body; // remove this. only for testing purposes
 
-  const user = await User.findById(userId).populate("playerStats.city", "name");
+  // const userId = req.user._id
+  const { userId } = req.body; // remove this. only for testing purposes
+  console.log(userId)
+  let user;
+  try {
+    user = await User.findById(userId)//.populate("playerStats.city", "name");
+  } catch (err) {
+    res.status(400).json({ // todo check critera function. double code
+      success: false,
+      message: err.toString(),
+    });
+  }
+
+
 
   const batteryCost = 5;
-
   const message = pettyHackRouteCriterias(user, batteryCost);
 
   if (message) {
@@ -36,6 +46,7 @@ router.post("/pettyCrime", async (req, res, next) => {
       message
     });
   }
+  console.log(user.playerStats.battery)
 
   const results = await pettyCrime(user);
 
@@ -54,7 +65,7 @@ router.post("/pettyCrime", async (req, res, next) => {
 
 router.get("/crimes", async (req, res, next) => {
   try {
-    const crimes = await Crime.find().sort({ available: true });
+    const crimes = await Crime.find({ available: true })
     res.status(200).json({
       success: true,
       message: "Crimes loaded",
@@ -73,17 +84,34 @@ router.get("/crimes", async (req, res, next) => {
 // Commit crime route.
 
 router.post("/crimes", async (req, res, next) => {
-  const userId = req.user;
+  // const userId = req.user._id
   const { crimeId } = req.body;
+  const { userId } = req.body; // remove this. only for testing purposes
+  console.log(crimeId, 'crimeId')
+  let crime;
+  let user;
+  try {
+    try {
+      user = await User.findById(userId)
+    }
+    finally {
+      crime = await Crime.findById(crimeId)
+    }
+  }
 
-  const crime = await Crime.findById(crimeId);
-  const user = await User.findById(userId);
+  catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.toString()
+    });
+  }
+
+
 
   const batteryCost = 7;
-
   const message = crimeRouteCriterias(crime, user, batteryCost);
-
   if (message) {
+    console.log(message, 'crimeRouteCriterias message')
     return res.status(400).json({
       success: false,
       message
@@ -91,7 +119,7 @@ router.post("/crimes", async (req, res, next) => {
   }
 
   // commits crime and returns result object
-  let finalResult = await fightCrime(user, crime, batteryCost);
+  const finalResult = await fightCrime(user, crime, batteryCost);
 
   return res.status(200).json({
     success: true,

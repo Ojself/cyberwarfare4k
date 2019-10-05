@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const User = require('../models/User');
 
 const crimeSchema = new Schema({
   name: String,
@@ -23,9 +22,7 @@ const crimeSchema = new Schema({
   }
 });
 
-crimeSchema.methods.handleCrime = function(finalResult) {
-  console.log('crimeSchema handleCrime triggered', finalResult);
-
+crimeSchema.methods.handleCrime = function (finalResult) {
   this.available = false;
 
   // makes the crime unavailable for a short period < 3 minutes

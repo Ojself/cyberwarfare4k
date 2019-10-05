@@ -39,7 +39,7 @@ router.post("/signup", (req, res, next) => {
         password: hashPass,
         ip: [ip]
       };
-      const name = `unconfirmedplayer${Math.floor(Math.random() * 1000)}`;
+      const name = `unconfirmedplayer${Date.now()}`;
 
       const newUser = new User({
         email,

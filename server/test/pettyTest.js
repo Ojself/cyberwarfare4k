@@ -2,7 +2,6 @@ const assert = require("assert");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const { expect } = require("chai");
-const should = chai.should();
 
 const app = "http://localhost:5000/api/";
 const User = require("../models/User");
@@ -73,7 +72,7 @@ describe("Petty Route", function () {
     skillGainTester(85, fakeSkillGainAttributes.veryStrong, "VERY STRONG");
     async function skillGainTester(x, attributes, skill) {
       it(`Should win atleast ${x}% of time (and skillgain ${x -
-        10}%) as player w ${skill} stats`, async () => {
+        11}%) as player w ${skill} stats`, async () => {
           const alice = await createDummyUser(attributes);
           let result;
           let crimeWon = 0;
@@ -88,75 +87,9 @@ describe("Petty Route", function () {
             }
           }
           expect(crimeWon).to.be.above(x);
-          expect(skillWon).to.be.above(x - 10);
+          expect(skillWon).to.be.above(x - 11);
         });
     }
-  });
-
-  // only God knows what's going on here
-  // Wanted behavior: Call the POST api 6 times to see if the values of player changes.
-  describe("/POST hack/pettyCrime", function () {
-    const attributesPettyPost = {
-      playerStats: { battery: 30, exp: 9999 },
-      role: "testUserDB"
-    };
-    let alice;
-
-    before(function (done) {
-      createDummyUser(attributesPettyPost).then(result => {
-        alice = result;
-        done();
-      });
-    });
-
-    for (let i = 0; i < 7; i++) {
-      it(`POST #${i} numerous times should give user various 'attributes' and status ${
-        i == 6 ? "400" : "200"
-        } `, done => {
-          let userId = alice._id.toString();
-          chai
-            .request(app)
-            .post("hack/pettyCrime")
-            .set("content-type", "application/x-www-form-urlencoded")
-            .send({ body: userId })
-            .end((err, res) => {
-              if (i == 6) {
-                res.should.have.status(400); // insufficent battery
-                done();
-              } else {
-                res.should.have.status(200);
-                done();
-              }
-            });
-        });
-    }
-
-    it("should have levled up and gain new values after commiting 6 pettycrime", async () => {
-      await User.findById(alice._id).then(result => {
-        const crimeSkill = Object.values(result.crimeSkill);
-        const {
-          battery,
-          bitCoins,
-          networth,
-          rank,
-          rankName
-        } = result.playerStats;
-
-        const oldCrimeSkill = Object.values(alice.crimeSkill);
-        const oldBattery = alice.playerStats.battery;
-        const oldBitCoins = alice.playerStats.bitCoins;
-        const oldNetworth = alice.playerStats.networth;
-        const oldRank = alice.playerStats.rank;
-        const oldRankName = alice.playerStats.rankName;
-
-        expect(crimeSkill > oldCrimeSkill).to.be.equal(true);
-        expect(battery > oldBattery).to.be.equal(false);
-        expect(bitCoins > oldBitCoins).to.be.equal(true);
-        expect(networth > oldNetworth).to.be.equal(true);
-        expect(rank > oldRank).to.be.equal(true);
-        expect(rankName !== oldRankName).to.be.equal(true);
-      });
-    });
   });
 });
 

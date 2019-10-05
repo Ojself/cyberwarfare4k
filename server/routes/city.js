@@ -14,6 +14,7 @@ const {
 // Retrives all cities
 
 router.get('/', async (req, res, next) => {
+
   const cities = await City.find();
 
   const message = getCityRouteCriterias(cities);

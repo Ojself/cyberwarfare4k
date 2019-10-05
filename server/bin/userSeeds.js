@@ -232,7 +232,7 @@ User.deleteMany()
   .then(usersCreated => {
     console.log(`${usersCreated.length} users created with the following id:`);
     console.log(usersCreated.map(u => u._id));
-    usersCreated.forEach(el => npcIds.push(u._id));
+    usersCreated.forEach(el => npcIds.push(el._id));
   })
   .then(() => {
     // Close properly the connection to Mongoose

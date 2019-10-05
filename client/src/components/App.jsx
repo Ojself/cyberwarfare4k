@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
-import { Route, Link, NavLink as NavLinkRR, Switch } from 'react-router-dom';
+import React, { Component } from "react";
+import { Route, Link, NavLink as NavLinkRR, Switch } from "react-router-dom";
 
-import Home from './pages/Home';
+import Home from "./pages/Home";
 
 /* Hacker specific imports */
-import MyProfile from './pages/MyProfile';
-import HackCrimes from './pages/HackCrimes';
-import HackPlayer from './pages/HackPlayer';
-import WantedList from './pages/WantedList';
-import Alliance from './pages/Alliance';
-import SystemRepair from './pages/SystemRepair';
-import Marketplace from './pages/Marketplace';
-import Information from './pages/Information';
-import Ladder from './pages/Ladder';
-import Arcade from './pages/Arcade';
-import CreateHacker from './pages/CreateHacker';
-import Petty from './pages/Petty';
-import CryptoCurrency from './pages/CryptoCurrency';
-import VPN from './pages/VPN';
-import DataCenters from './pages/DataCenters';
+import MyProfile from "./pages/MyProfile";
+import HackCrimes from "./pages/HackCrimes";
+import HackPlayer from "./pages/HackPlayer";
+import WantedList from "./pages/WantedList";
+import Alliance from "./pages/Alliance";
+import SystemRepair from "./pages/SystemRepair";
+import Marketplace from "./pages/Marketplace";
+import Information from "./pages/Information";
+import Ladder from "./pages/Ladder";
+import Arcade from "./pages/Arcade";
+import CreateHacker from "./pages/CreateHacker";
+import Petty from "./pages/Petty";
+import CryptoCurrency from "./pages/CryptoCurrency";
+import VPN from "./pages/VPN";
+import DataCenters from "./pages/DataCenters";
 
-import Secret from './pages/Secret';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import api from '../api';
-import logo from '../logo.svg';
+import Secret from "./pages/Secret";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import api from "../api";
+import logo from "../logo.svg";
 
 // styling
 import {
@@ -39,7 +39,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem
-} from 'reactstrap';
+} from "reactstrap";
 
 export default class App extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ export default class App extends Component {
     api
       .getNavUser()
       .then(result => {
-        console.log(result, 'result');
+        console.log(result, "result");
         this.setState({ user: result.user, loading: false });
       })
       .catch(err => this.setState({ message: err.toString() }));
@@ -75,7 +75,7 @@ export default class App extends Component {
     const currentCity = this.state.loading ? (
       <p>City</p>
     ) : (
-      this.state.user.playerStats.city.name
+      <p>city</p> /* this.state.user.playerStats.city.name */
     );
     return (
       <div>
@@ -154,7 +154,7 @@ export default class App extends Component {
                 {/* icon instead of text? */}
                 <div>Battery: {this.state.user.playerStats.battery}%</div>
                 <div>
-                  Firewall{' '}
+                  Firewall{" "}
                   {(
                     (this.state.user.playerStats.currentFirewall /
                       this.state.user.playerStats.maxFirewall) *
@@ -166,7 +166,7 @@ export default class App extends Component {
                   BTCs: {Math.floor(this.state.user.playerStats.bitCoins)}
                 </div>
                 <div>
-                  Exp: {this.state.user.playerStats.exp} /{' '}
+                  Exp: {this.state.user.playerStats.exp} /{" "}
                   {this.state.user.playerStats.expToLevel}
                 </div>
                 <div>{this.state.user.playerStats.rankName}</div>
@@ -186,7 +186,7 @@ export default class App extends Component {
             <NavLinkRR to='/vpn'>VPN</NavLinkRR>
             <NavLinkRR to='/datacenters'>Datacenters</NavLinkRR>
             <NavLinkRR
-              to={{ pathname: '/cryptocurrency', state: { foo: 'bar' } }}
+              to={{ pathname: "/cryptocurrency", state: { foo: "bar" } }}
             >
               CryptoCurrency
             </NavLinkRR>

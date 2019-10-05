@@ -93,12 +93,6 @@ $ npm run dev:client
 # Run the client on http://localhost:3000/
 ```
 
-So now you can go to
-
-- http://localhost:5000/api/: A simple API call
-- http://localhost:5000/: The website based on client/build (that you can update with `$ (cd client && npm run build)`)
-- http://localhost:3000/: The last version of your React application that is calling your API with the base url "http://localhost:5000/api/"
-
 ## Directory structure
 
 ```
@@ -109,15 +103,18 @@ client/
     src/
         components/
             pages/
+            utils/
     package.json
 server/
     bin/
     configs/
+    intervals/
+    middlewares/
     models/
     passport/
     routes/
+    test/
     app.js
-    middlewaresAuth.js
     package.json
 .gitignore
 package.json

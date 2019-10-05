@@ -71,6 +71,11 @@ let ranks = [
     name: "Anonymous",
     rank: 9,
     expToNewRank: 9999999999999
+  },
+  {
+    name: "Cheater",
+    rank: 10,
+    expToNewRank: Infinity
   }
 ];
 
