@@ -114,17 +114,6 @@ function chanceCalculator(user, crime) {
 function damageCalulator(user, crime) {
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
   const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-  console.log(Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage)), 'damage')
-
   return Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage));
 }
 

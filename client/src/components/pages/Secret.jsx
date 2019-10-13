@@ -25,8 +25,6 @@ export default class Secret extends Component {
     );
   }
   componentDidMount() {
-    api.getSecret()
-      .then(data => this.setState({ secret: data.secret }))
-      .catch(err => this.setState({ message: err.toString() }))
+
   }
 }

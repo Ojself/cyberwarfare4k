@@ -84,13 +84,13 @@ router.get("/crimes", async (req, res, next) => {
 // Commit crime route.
 
 router.post("/crimes", async (req, res, next) => {
-  // const userId = req.user._id
+  const userId = req.user._id
   const { crimeId } = req.body;
-  const { userId } = req.body; // remove this. only for testing purposes
+  //const { userId } = req.body; // remove this. only for testing purposes
   console.log(crimeId, 'crimeId')
   let crime;
   let user;
-  try {
+  try { // reformat todo
     try {
       user = await User.findById(userId)
     }
@@ -133,12 +133,12 @@ router.post("/crimes", async (req, res, next) => {
 // User can hack another plater.
 // /opponentId/attack
 router.post("/:opponentId", async (req, res, next) => {
-  console.log("attack route", req.body);
-  // const userId = req.user._id;
-  const userId = req.body.pmuser;
-  const user = await User.findById(userId);
-
+  // const userId = req.user._id
+  const { userId } = req.body; // remove this. only for testing purposes
   const { opponentId } = req.params;
+
+  // todo try catch
+  const user = await User.findById(userId);
   const opponent = await User.findById(opponentId);
 
   const batteryCost = 10;

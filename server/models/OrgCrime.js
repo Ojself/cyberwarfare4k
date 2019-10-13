@@ -12,7 +12,7 @@ const OrgCrimeSchema = new Schema({
   available: { type: Boolean, default: true }
 });
 
-OrgCrimeSchema.methods.handleOrgCrime = async function(user) {
+OrgCrimeSchema.methods.handleOrgCrime = async function (user) {
   console.log('OrgCrimeSchema handleCrime triggered');
   this.readyUsers.push(user._id)
 
@@ -29,7 +29,7 @@ do whatever */
 
 module.exports = mongoose.model('OrgCrime', OrgCrimeSchema);
 
-/* 
+/*
 Hack adobe
 Hack Sony
 Hack Equifax
@@ -38,27 +38,6 @@ Marriott hotels
 Yahoo!
 JP Morgan
 Home Depot
-VISA 
+VISA
 MasterCard
-
-Online bank heist organized
-Rewards points transfer
-Hack social network
-Hijack corporate email
-Ex girlfriend
-Break into cellphone 
-
-Steal credit cards
-
-gain access to gym
-free apps
-free pornhub account
-Web shells
-payloads
-Logic bombs
-backdoors
-exploits
-screen scrapers
-Ransomware
-SQL injection
  */

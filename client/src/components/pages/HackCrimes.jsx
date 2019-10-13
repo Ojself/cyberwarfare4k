@@ -16,14 +16,16 @@ export default class HackCrimes extends Component {
   }
 
   handleClick(crimeId) {
-    console.log(crimeId, 'id');
+    console.log(crimeId, 'crimeId')
+    console.log(this.state, 'state')
     api
       .commitCrimes(crimeId)
       .then(result => {
-        console.log('SUCCESS!', result);
-        this.setState({
-          /* something here maybe */
-        });
+
+        const crimes = this.state.crimes.filter(c => c._id !== crimeId)
+        console.log(crimes, 'newcrimes')
+
+        this.setState({ crimes: crimes });
         setTimeout(() => {
           this.setState({
             message: null
@@ -31,6 +33,7 @@ export default class HackCrimes extends Component {
         }, 2000);
       })
       .catch(err => this.setState({ message: err.toString() }));
+    console.log(this.state.crimes, 'state')
   }
 
   componentDidMount() {

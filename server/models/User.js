@@ -422,11 +422,8 @@ userSchema.methods.handleCrime = async function (finalResult) {
   }
   if (finalResult.playerGains.levelUp) {
     this.playerStats.rank++;
-    console.log('JARLE MOE', this._id)
-    console.log(this.playerStats.rank, 'this rank')
+    this.playerStats.statPoints += 5; // todo exctract rank functionality. used several times
     await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
-      console.log(newRank, 'AKSMNFKAMSF')
-      this.playerStats.statPoints += 5;
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });

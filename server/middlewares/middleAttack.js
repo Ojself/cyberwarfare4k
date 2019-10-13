@@ -6,7 +6,7 @@ const {
 
 // Sees if everything is in order to perform attack
 function attackRouteCriterias(user, opponent, batteryCost) {
-  if (!existingValue(user)) {
+  if (!existingValue(user)) { // todo, caught in the try catch
     return "User doesn't exist";
   }
   if (!existingValue(opponent)) {
@@ -22,11 +22,11 @@ function attackRouteCriterias(user, opponent, batteryCost) {
   if (!checkSuicide(user, opponent)) {
     return `You can't hack yourself..`;
   }
-  if (!graceCheck(opponent)) {
-    return `${opponent.name} is currently graced, try again later!`;
-  }
   if (!checkHealth(user)) {
     return `You need a firewall in order to attack others`;
+  }
+  if (!graceCheck(opponent)) {
+    return `${opponent.name} is currently graced, try again later!`;
   }
   if (!checkHealth(opponent)) {
     return `You can't kill what is already dead`;
@@ -52,7 +52,7 @@ function graceCheck(opponent) {
 }
 
 function checkHealth(player) {
-  return !!player.playerStats.currentFirewall;
+  return player.playerStats.currentFirewall <= 0;
 }
 
 function fightHacker(user, opponent, batteryCost) {
@@ -139,7 +139,7 @@ function attackRecursiveBattle(result) {
 
   if (attackNumber <= defenseNumber) {
     roundLost(result, 'lost', defenseNumber);
-    return attackRecursiveBattle(result);
+    //return attackRecursiveBattle(result);
   }
 
   // round win
@@ -153,7 +153,7 @@ function attackRecursiveBattle(result) {
 
 function attackCalulator(hacker) {
   // generates randomNumber, higher is worse
-  const randomNumber = Math.floor(Math.random() * 6) + 3;
+  const randomNumber = Math.random() * 6 + 3;
 
   // cpu skill of hacker/attacker
   const cpuDamage = hacker.hackSkill.cpu;
@@ -172,7 +172,7 @@ function attackCalulator(hacker) {
 
 function defenseCalulator(victim) {
   // generates randomNumber, higher is worse
-  const randomNumber = Math.floor(Math.random() * 6) + 3;
+  const randomNumber = Math.random() * 6 + 3;
 
   // avs skill of victim
   const avsDefense = victim.hackSkill.antiVirus;
