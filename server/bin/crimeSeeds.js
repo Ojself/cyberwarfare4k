@@ -101,7 +101,7 @@ const crimes = [
   },
   {
     name: "Cross-Site Scripting",
-    description: "Drop malicious code in a comment blog ",
+    description: "Drop malicious code in a comment blog",
     crimeType: "Forensics",
     difficulty: difficultyValues.challenging,
     currentFirewall: firewallValues.challenging,

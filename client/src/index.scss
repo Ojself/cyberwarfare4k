@@ -3,7 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 // for the state.message
@@ -63,4 +63,29 @@ body {
       transform: rotate(360deg);
     }
   }
+}
+
+.tableCrimeWrapper {
+  display: flex;
+}
+
+.crimeTerminalWrapper {
+  color: white;
+  background-color: black;
+  width: 50vw; // 25% of the screen (half of the half)
+  height: 100vh;
+  border-color: gray;
+}
+
+.hackerGreen {
+  background-color: #148e56 !important;
+}
+.hackerPurple {
+  background-color: #aa94ec !important;
+}
+.hackerOrange {
+  background-color: #fbac73 !important;
+}
+.hackerRed {
+  background-color: #ff8a9d !important;
 }

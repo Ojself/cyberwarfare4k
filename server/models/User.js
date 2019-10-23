@@ -448,7 +448,7 @@ userSchema.methods.handleAttack = function (finalResult) {
   }
 
   this.account.notifications[finalResult.date] = [
-    `You attacked ${finalResult.opponent.name} ${new Date(
+    `You attacked ${finalResult.opponent.name} ${new Date( 
       finalResult.date
     ).toString()} and dealt ${finalResult.damageDealt} damage${
     finalResult.victimDead ? ` and he was shutdown!` : `!`
