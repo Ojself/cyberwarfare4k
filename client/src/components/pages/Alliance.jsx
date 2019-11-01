@@ -1,19 +1,19 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 // import api from "../../api";
 
-export default class Alliance extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: ""
-    };
-  }
+const Alliance = ({}) => {
+  const [allianceState, setAllianceState] = useState({
+    name: ""
+  });
 
-  render() {
-    return (
-      <div>
-        <h2>Alliance</h2>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    console.log("using effect");
+  }, []);
+
+  return (
+    <div>
+      <h2>Alliance</h2>
+    </div>
+  );
+};
+export default Alliance;

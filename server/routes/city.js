@@ -1,20 +1,19 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const User = require('../models/User');
-const City = require('../models/City');
+const User = require("../models/User");
+const City = require("../models/City");
 const {
   changeCityRouteCriterias,
   getCityRouteCriterias,
-  changeCity,
-} = require('../middlewares/middleCity.js');
+  changeCity
+} = require("../middlewares/middleCity.js");
 
 // @GET
 // PRIVATE
 // Retrives all cities
 
-router.get('/', async (req, res, next) => {
-
+router.get("/", async (req, res, next) => {
   const cities = await City.find();
 
   const message = getCityRouteCriterias(cities);
@@ -22,14 +21,14 @@ router.get('/', async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message,
+      message
     });
   }
 
   res.status(200).json({
     success: true,
-    message: 'cities loaded',
-    cities,
+    message: "cities loaded..",
+    cities
   });
 });
 
@@ -37,7 +36,7 @@ router.get('/', async (req, res, next) => {
 // PRIVATE
 // Changes the user city
 
-router.post('/', async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -54,7 +53,7 @@ router.post('/', async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message,
+      message
     });
   }
 
@@ -62,7 +61,7 @@ router.post('/', async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,
+    message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`
   });
 });
 

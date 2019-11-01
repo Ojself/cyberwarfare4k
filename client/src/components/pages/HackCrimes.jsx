@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import api from "../../api";
 import CrimeTerminal from "./smaller/crimeTerminal";
-import { Table } from "reactstrap";
+import { Table, UncontrolledTooltip } from "reactstrap";
 
 // props will be deconstr in parameters ({nameOfProp})
 const HackCrimes = () => {
@@ -48,11 +48,11 @@ const HackCrimes = () => {
     <div>
       <h2>Hack Crimes</h2>
       <div className="tableCrimeWrapper">
-        <Table dark>
+        <Table dark striped>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
+              {/* <th>Description</th> */}
               <th>Type</th>
               <th>Difficulty</th>
               <th>Commit Crime</th>
@@ -61,8 +61,14 @@ const HackCrimes = () => {
           <tbody>
             {crimes.map((cr, i) => (
               <tr key={i}>
-                <th scope="row">{cr.name}</th>
-                <td>{cr.description}</td>
+                <th id={`toolTip${i}`} scope="row">
+                  {cr.name}
+                </th>
+                <UncontrolledTooltip placement="top" target={`toolTip${i}`}>
+                  {cr.description}
+                </UncontrolledTooltip>
+
+                {/* <td>{cr.description}</td> */}
                 <td>{cr.crimeType}</td>
                 <td>{cr.difficulty}</td>
                 <td>

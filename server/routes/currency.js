@@ -1,25 +1,25 @@
-const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
+const express = require("express");
+const { isLoggedIn } = require("../middlewares/middleAuth");
 const {
   buyRouteCriterias,
   soldRouteCriterias,
   sellCurrency,
   purchaseCurrency
-} = require('../middlewares/middleCurrency');
+} = require("../middlewares/middleCurrency");
 const router = express.Router();
-const User = require('../models/User');
-const Currency = require('../models/Currency');
+const User = require("../models/User");
+const Currency = require("../models/Currency");
 
 // @GET
 // PRIVATE
 // Retrives all currencies
 
-router.get('/', isLoggedIn, async (req, res, next) => {
-  let currency = await Currency.find().populate('lastPurchasedBy', 'name');
+router.get("/", isLoggedIn, async (req, res, next) => {
+  let currency = await Currency.find().populate("lastPurchasedBy", "name");
 
   return res.status(200).json({
     success: true,
-    message: 'currency loaded',
+    message: "currency loaded..",
     currency
   });
 });
@@ -30,7 +30,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 
 // todo, let user purchase more than one currency at the time.
 
-router.post('/buy', isLoggedIn, async (req, res, next) => {
+router.post("/buy", isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -64,7 +64,7 @@ router.post('/buy', isLoggedIn, async (req, res, next) => {
 
 // todo, let user sell more than one currency at the time.
 
-router.post('/sell', isLoggedIn, async (req, res, next) => {
+router.post("/sell", isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 

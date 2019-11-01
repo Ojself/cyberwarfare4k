@@ -89,3 +89,47 @@ body {
 .hackerRed {
   background-color: #ff8a9d !important;
 }
+
+.progress-bar-animated {
+  background-color: #aa94ec !important;
+}
+
+.progress-bar-danger {
+  background-color: #aa94ec !important;
+}
+
+.terminalFont {
+  font-family: "Roboto Mono", monospace;
+}
+
+.terminalWin {
+  color: #06a308;
+}
+
+.terminalLost {
+  color: #8b0503;
+}
+
+.customProgressBar {
+  margin: 10px;
+}
+
+.Typist .Cursor {
+  display: inline-block;
+
+  &--blinking {
+    opacity: 1;
+    animation: blink 1s linear infinite;
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+}

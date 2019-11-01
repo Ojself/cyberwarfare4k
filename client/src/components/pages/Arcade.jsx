@@ -1,19 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 // import api from "../../api";
 
-export default class Alliance extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: ""
-    };
-  }
+const Arcade = ({}) => {
+  const [allianceState, setAllianceState] = useState({
+    name: ""
+  });
 
-  render() {
-    return (
-      <div>
-        <h2>Arcade</h2>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    console.log("logging");
+  }, []);
+
+  return (
+    <div>
+      <h2>arcade</h2>
+    </div>
+  );
+};
+
+export default Arcade;

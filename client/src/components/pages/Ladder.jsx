@@ -1,38 +1,36 @@
-import React, { Component } from 'react';
-import api from '../../api';
+import React, { Component, useState, useEffect } from "react";
+import api from "../../api";
 
-export default class Ladder extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
-    };
-  }
+const Ladder = ({}) => {
+  const [ladderState, setLadderState] = useState({
+    users: [],
+    loading: true
+  });
 
-  componentDidMount() {
-    api
-      .getAllUsers()
-      .then(users => {
-        this.setState(users);
-      })
-      .catch(err => console.log(err));
-  }
+  useEffect(async () => {
+    const apiUsers = await api.getAllUsers();
+    setLadderState({
+      ...ladderState,
+      apiUsers,
+      loading: false
+    });
+  }, []);
 
-  render() {
-    return (
+  return (
+    <div>
+      <h2>Ladder</h2>
       <div>
-        <h2>Ladder</h2>
-        <div>
-          {/* Name, Kills, deaths, revenue, alliance etc */}
-          {this.state.users.map((user, i) => {
-            return (
-              <div id={i + user} className='ladderNames'>
-                <p>{user.name}</p>
-              </div>
-            );
-          })}
-        </div>
+        {/* Name, Kills, deaths, revenue, alliance etc */}
+        {ladderState.users.map((user, i) => {
+          return (
+            <div id={i + user} className="ladderNames">
+              <p>{user.name}</p>
+            </div>
+          );
+        })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default Ladder;

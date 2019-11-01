@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
-import api from '../../api';
+import React, { Component, useState, useEffect } from "react";
+import api from "../../api";
 
-export default class SystemRepair extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      price: null,
-      message: null
-    };
-  }
-  componentDidMount() {
-    console.log('mounting');
-  }
-  handlePartial() {
+const SystemRepair = ({}) => {
+  const [repairState, setRepairState] = useState({
+    price: null,
+    message: null
+  });
+
+  useEffect(async () => {
+    console.log("use effect");
+  }, []);
+
+  const handlePartial = () => {
     api.repairPartial().then(result => {
-      console.log(result, 'result');
+      console.log(result, "result");
     });
-  }
+  };
 
-  handleFull() {
+  const handleFull = () => {
     api.repairFull().then(result => {
-      console.log(result, 'result');
+      console.log(result, "result");
     });
-  }
+  };
 
   /* todo. styling. add some text about cost or whatevs */
-  render() {
-    return (
+
+  return (
+    <div>
+      <h2>System Repair</h2>
       <div>
-        <h2>System Repair</h2>
         <div>
-          <div>
-            <img src='/pics/partialrepair.jpg' alt='Partial Repari' />
-            <button onClick={() => this.handlePartial()}>Partial repair</button>
-          </div>
-          <div>
-            <img src='/pics/fullrepair.jpg' alt='Partial Repari' />
-            <button onClick={() => this.handleFull()}>Full repair</button>
-          </div>
+          <img src="/pics/partialrepair.jpg" alt="Partial Repari" />
+          <button onClick={() => handlePartial()}>Partial repair</button>
+        </div>
+        <div>
+          <img src="/pics/fullrepair.jpg" alt="Partial Repari" />
+          <button onClick={() => handleFull()}>Full repair</button>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default SystemRepair;

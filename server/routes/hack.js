@@ -66,7 +66,7 @@ router.get("/crimes", async (req, res, next) => {
     const crimes = await Crime.find({ available: true });
     res.status(200).json({
       success: true,
-      message: "Crimes loaded",
+      message: "Crimes loaded..",
       crimes
     });
   } catch (err) {

@@ -72,22 +72,20 @@ export default class App extends Component {
   }
 
   render() {
-    const currentCity = this.state.loading ? (
-      <p>City</p>
-    ) : (
-      <p>city</p> /* this.state.user.playerStats.city.name */
-    );
+    const currentCity = this.state.loading
+      ? "City"
+      : "city"; /* name of the actual city the person is in. */
     return (
       <div>
-        <div className='App '>
+        <div className="App ">
           {/* extract this into another component (navbar) */}
-          <Navbar color='light' light expand='md'>
-            <NavbarBrand href='/'>reactstrap</NavbarBrand>
+          <Navbar color="light" light expand="md">
+            <NavbarBrand href="/">CHW4K</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className='ml-auto' navbar>
+              <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink href='/create-hacker'>Create</NavLink>
+                  <NavLink href="/create-hacker">Create</NavLink>
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
@@ -144,9 +142,9 @@ export default class App extends Component {
               </Nav>
             </Collapse>
           </Navbar>
-          <header className='App-header '>
-            <img src={logo} className='App-logo' alt='logo' />
-            <h1 className='App-title'>CYBERHACKER WARFARE 4000</h1>
+          <header className="App-header ">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">CYBERHACKER WARFARE 4000</h1>
             {this.state.loading ? (
               <p>loading</p>
             ) : (
@@ -172,50 +170,50 @@ export default class App extends Component {
                 <div>{this.state.user.playerStats.rankName}</div>
               </>
             )}
-            <NavLinkRR to='/' exact>
+            <NavLinkRR to="/" exact>
               Home
             </NavLinkRR>
-            <NavLinkRR to='/my-profile'>My profile</NavLinkRR>
-            <NavLinkRR to='/create-hacker'>Create</NavLinkRR>
-            <NavLinkRR to='/petty-hacker'>Petty </NavLinkRR>
-            <NavLinkRR to='/hack-crimes'>Hack Crimes</NavLinkRR>
-            <NavLinkRR to='/hack-player'>Hack Player</NavLinkRR>
-            <NavLinkRR to='/wanted-list'>Wanted List</NavLinkRR>
-            <NavLinkRR to='/alliance'>Alliance</NavLinkRR>
-            <NavLinkRR to='/marketplace'>Marketplace</NavLinkRR>
-            <NavLinkRR to='/vpn'>VPN</NavLinkRR>
-            <NavLinkRR to='/datacenters'>Datacenters</NavLinkRR>
+            <NavLinkRR to="/my-profile">My profile</NavLinkRR>
+            <NavLinkRR to="/create-hacker">Create</NavLinkRR>
+            <NavLinkRR to="/petty-hacker">Petty </NavLinkRR>
+            <NavLinkRR to="/hack-crimes">Hack Crimes</NavLinkRR>
+            <NavLinkRR to="/hack-player">Hack Player</NavLinkRR>
+            <NavLinkRR to="/wanted-list">Wanted List</NavLinkRR>
+            <NavLinkRR to="/alliance">Alliance</NavLinkRR>
+            <NavLinkRR to="/marketplace">Marketplace</NavLinkRR>
+            <NavLinkRR to="/vpn">VPN</NavLinkRR>
+            <NavLinkRR to="/datacenters">Datacenters</NavLinkRR>
             <NavLinkRR
               to={{ pathname: "/cryptocurrency", state: { foo: "bar" } }}
             >
               CryptoCurrency
             </NavLinkRR>
-            <NavLinkRR to='/system-repair'>System Repair</NavLinkRR>
-            <NavLinkRR to='/ladder'>Ladder</NavLinkRR>
-            <NavLinkRR to='/information'>Information</NavLinkRR>
-            <NavLinkRR to='/arcade'>Arcade</NavLinkRR>
-            {!api.isLoggedIn() && <NavLinkRR to='/signup'>Signup</NavLinkRR>}
-            {!api.isLoggedIn() && <NavLinkRR to='/login'>Login</NavLinkRR>}
+            <NavLinkRR to="/system-repair">System Repair</NavLinkRR>
+            <NavLinkRR to="/ladder">Ladder</NavLinkRR>
+            <NavLinkRR to="/information">Information</NavLinkRR>
+            <NavLinkRR to="/arcade">Arcade</NavLinkRR>
+            {!api.isLoggedIn() && <NavLinkRR to="/signup">Signup</NavLinkRR>}
+            {!api.isLoggedIn() && <NavLinkRR to="/login">Login</NavLinkRR>}
             {api.isLoggedIn() && (
-              <Link to='/' onClick={e => this.handleLogoutClick(e)}>
+              <Link to="/" onClick={e => this.handleLogoutClick(e)}>
                 logout
               </Link>
             )}
-            <NavLinkRR to='/secret'>Admin menu</NavLinkRR>
+            <NavLinkRR to="/secret">Admin menu</NavLinkRR>
           </header>
           <Switch>
-            <Route path='/' exact component={Home} />
-            <Route path='/my-profile' component={MyProfile} />
-            <Route path='/create-hacker' component={CreateHacker} />
+            <Route path="/" exact component={Home} />
+            <Route path="/my-profile" component={MyProfile} />
+            <Route path="/create-hacker" component={CreateHacker} />
 
-            <Route path='/petty-hacker' component={Petty} />
-            <Route path='/hack-crimes' component={HackCrimes} />
-            <Route path='/hack-player' component={HackPlayer} />
-            <Route path='/wanted-list' component={WantedList} />
-            <Route path='/alliance' component={Alliance} />
-            <Route path='/marketplace' component={Marketplace} />
+            <Route path="/petty-hacker" component={Petty} />
+            <Route path="/hack-crimes" component={HackCrimes} />
+            <Route path="/hack-player" component={HackPlayer} />
+            <Route path="/wanted-list" component={WantedList} />
+            <Route path="/alliance" component={Alliance} />
+            <Route path="/marketplace" component={Marketplace} />
             <Route
-              path='/cryptocurrency'
+              path="/cryptocurrency"
               render={() => (
                 <CryptoCurrency
                   propsloading={this.state.loading}
@@ -225,18 +223,18 @@ export default class App extends Component {
             />
 
             <Route
-              path='/vpn'
+              path="/vpn"
               render={() => <VPN propsuser={this.state.user} />}
             />
 
-            <Route path='/system-repair' component={SystemRepair} />
-            <Route path='/ladder' component={Ladder} />
-            <Route path='/datacenters' component={DataCenters} />
-            <Route path='/information' component={Information} />
-            <Route path='/arcade' component={Arcade} />
-            <Route path='/signup' component={Signup} />
-            <Route path='/login' component={Login} />
-            <Route path='/secret' component={Secret} />
+            <Route path="/system-repair" component={SystemRepair} />
+            <Route path="/ladder" component={Ladder} />
+            <Route path="/datacenters" component={DataCenters} />
+            <Route path="/information" component={Information} />
+            <Route path="/arcade" component={Arcade} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
+            <Route path="/secret" component={Secret} />
             <Route render={() => <h2>404</h2>} />
           </Switch>
         </div>

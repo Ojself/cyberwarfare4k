@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "alliances loaded",
+    message: "alliances loaded..",
     alliances
   });
 });
@@ -139,7 +139,7 @@ router.get("/:allianceId", async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: `${alliance.name} loaded..`,
+    message: `${alliance.name} loaded....`,
     alliance
   });
 });

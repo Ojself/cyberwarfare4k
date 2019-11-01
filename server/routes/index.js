@@ -92,7 +92,7 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
     const user = await User.findById(userId).populate("alliance", "name");
     res.status(200).json({
       success: true,
-      message: "user loaded",
+      message: "user loaded..",
       user
     });
   } catch (err) {
@@ -126,7 +126,7 @@ router.get("/ladder", isLoggedIn, async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "users loaded",
+    message: "users loaded..",
     users
   });
 });
@@ -186,7 +186,7 @@ router.get("/get-nav-user", async (req, res, next) => {
     );
     res.status(200).json({
       success: true,
-      message: "nav user loaded",
+      message: "nav user loaded..",
       user
     });
   } catch (err) {
@@ -204,7 +204,7 @@ router.get("/profile/:profileId", async (req, res, next) => {
   const user = await User.findById(profileId);
   res.status(200).json({
     success: true,
-    message: "nav user loaded",
+    message: "nav user loaded..",
     user
   });
 });

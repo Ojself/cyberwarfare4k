@@ -13,7 +13,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.5",
     "react-typist": "^2.0.5",
-    "reactstrap": "^8.0.1"
+    "reactstrap": "^8.0.1",
+    "typed.js": "^2.0.11"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,19 +1,19 @@
-const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
-const { marketPlaceCriterias } = require('../middlewares/middleMarketPlace');
+const express = require("express");
+const { isLoggedIn } = require("../middlewares/middleAuth");
+const { marketPlaceCriterias } = require("../middlewares/middleMarketPlace");
 const router = express.Router();
-const User = require('../models/User');
-const Item = require('../models/Item');
+const User = require("../models/User");
+const Item = require("../models/Item");
 
 // @GET
 // PRIVATE
 // Retrived all items from marketplace
 
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   const items = await Item.find();
   res.status(200).json({
     success: true,
-    message: 'items loaded',
+    message: "items loaded..",
     items
   });
 });
@@ -24,7 +24,7 @@ router.get('/', async (req, res, next) => {
 
 // todo check same value is not working
 
-router.post('/buy', async (req, res) => {
+router.post("/buy", async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
   const item = await Item.findById(itemId);

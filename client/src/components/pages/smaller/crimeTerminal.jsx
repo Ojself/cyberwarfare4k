@@ -1,63 +1,107 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
+
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
+
 import { randomCrimeString, errorMessages } from "./combatStrings";
 
-export default class CrimeTerminal extends Component {
-  state = {
-    name: ""
+const CrimeTerminal = ({ apiMessage, result }) => {
+  const [terminalState, setTerminalState] = useState({
+    progressMaxHp: 100,
+    progressCurrentHp: 0,
+    progressColor: "success",
+    defaultColors: ["success", "success", "info", "warning", "danger"],
+    index: 1,
+    lostCount: 0
+  });
+
+  useEffect(() => {}, []);
+
+  const giveLostString = () => {
+    //const dotsString = ".......................................................";
+
+    return `ERROR: ${errorMessages[giveRandomNumber(errorMessages)]}`;
+  };
+  const giveWonString = () => {
+    /* if already won, don't give empty span */
+    /* return randomCrimeString[giveRandomNumber(randomCrimeString)]; */
+    return (
+      <span className="terminalFont terminalLost">{giveLostString()}</span>
+    );
+  };
+  const giveRandomNumber = array => {
+    return Math.floor(Math.random() * array.length);
   };
 
-  giveLostString() {
-    //const dotsString = ".......................................................";
-    return `ERROR: ${errorMessages[this.giveRandomNumber(errorMessages)]}`;
+  const createSuccessString = () => {
+    return "Successstring";
+  };
 
-    return randomCrimeString[this.giveRandomNumber(randomCrimeString)];
-  }
-  giveWonString() {
-    return randomCrimeString[this.giveRandomNumber(randomCrimeString)];
-  }
-  giveRandomNumber(array) {
-    return Math.floor(Math.random() * array.length);
-  }
+  const updateProgressBarValues = () => {
+    console.log(result.roundResult[terminalState.index - 1]);
+    if (result.roundResult[terminalState.index - 1] === "lost") {
+      changeProgressColor();
+    }
 
-  checkProgressValue(n) {
-    return n + 10;
-  }
+    setTerminalState({
+      ...terminalState,
+      progressMaxHp: result.roundCrimeRemainingHp[0],
+      progressCurrentHp:
+        result.roundCrimeRemainingHp[0] -
+        result.roundCrimeRemainingHp[terminalState.index + 1],
+      index: (terminalState.index += 1)
+    });
+  };
 
-  render() {
-    const { apiMessage, result } = this.props;
+  const changeProgressColor = () => {
+    console.log(terminalState.progressColor[terminalState.lostCount]);
+    setTerminalState({
+      ...terminalState,
+      progressColor: terminalState.defaultColors[terminalState.lostCount],
+      lostCount: (terminalState.lostCount += 1)
+    });
+  };
 
-    const typistBuildUp = (
-      <div>
-        <Typist onTypingDone={console.log("done typing")}>
-          {result
-            ? result.roundResult.map((r, i) => (
-                <div key={i}>
-                  <Progress
-                    animated
-                    color="danger"
-                    value={100 - result.roundCrimeRemainingHp[i]}
-                  />
-                  {r == "lost" ? (
-                    <p>{this.giveLostString()}</p>
-                  ) : (
-                    <p>{this.giveWonString()}</p>
-                  )}
-                </div>
-              ))
-            : null}
+  return (
+    <div className="crimeTerminalWrapper">
+      <Progress
+        animated
+        color={terminalState.defaultColors[terminalState.lostCount]}
+        value={terminalState.progressCurrentHp}
+        max={terminalState.progressMaxHp}
+      />
+
+      {/* message from server. eg: Crimes loaded.. disappears after 4 seconds */}
+      {apiMessage && !result && (
+        <Typist cursor={{ hideWhenDone: false }}>
+          <span className="terminalFont">{apiMessage} </span>
         </Typist>
-      </div>
-    );
-    return (
-      <div className="crimeTerminalWrapper">
-        <br />
+      )}
 
-        {apiMessage && !result ? <Typist>{apiMessage}</Typist> : null}
-        {result ? typistBuildUp : null}
-      </div>
-    );
-  }
-}
-/* this.state.result.roundResult.map.el(r => <p>Abcdef</p>) */
+      {result && (
+        <Typist
+          onLineTyped={() => {
+            updateProgressBarValues();
+          }}
+          avgTypingDelay={10}
+          cursor={{ hideWhenDone: true }}
+        >
+          {result.roundResult.map((r, i) => (
+            <div key={i}>
+              {r == "lost" ? (
+                <span className="terminalFont terminalLost">
+                  {giveLostString()}
+                </span>
+              ) : (
+                <span className="terminalFont terminalWin">
+                  {giveWonString()}
+                </span>
+              )}
+            </div>
+          ))}
+        </Typist>
+      )}
+    </div>
+  );
+};
+export default CrimeTerminal;

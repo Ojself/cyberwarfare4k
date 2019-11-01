@@ -1,14 +1,14 @@
-const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
+const express = require("express");
+const { isLoggedIn } = require("../middlewares/middleAuth");
 const {
   purchaseDataCenterCriterias,
   purchaseDataCenter,
   attackDataCenterCriterias,
   attackDataCenter
-} = require('../middlewares/middleDataCenter');
+} = require("../middlewares/middleDataCenter");
 const router = express.Router();
-const DataCenter = require('../models/DataCenter');
-const User = require('../models/User');
+const DataCenter = require("../models/DataCenter");
+const User = require("../models/User");
 
 /* todo, one of the special weapons allows anonymousiy */
 /* todo several feedback messages for res.json? */
@@ -21,11 +21,11 @@ const User = require('../models/User');
 
 // todo, allow alliance member to heal eachother datacenter?
 
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   const userId = req.user._id;
   let dataCenters = await DataCenter.find()
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents']);
+    .populate("requiredStash", ["name", "price"])
+    .populate("city", ["name", "residents"]);
 
   // filter out the datacenters that don't belong to the city the user is in
   dataCenters = dataCenters.filter(el => {
@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
 
   res.status(200).json({
     dataCenters,
-    message: 'datacenters loaded..',
+    message: "datacenters loaded....",
     success: true
   });
 });
@@ -44,7 +44,7 @@ router.get('/', async (req, res, next) => {
 // PRIVATE
 // User purchase a datacenter
 
-router.post('/purchase', async (req, res, next) => {
+router.post("/purchase", async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -75,7 +75,7 @@ router.post('/purchase', async (req, res, next) => {
 // PRIVATE
 // User can attack and lower the health of a datacenter he doesnt owe in order to overtake it
 
-router.post('/attack', async (req, res, next) => {
+router.post("/attack", async (req, res, next) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
