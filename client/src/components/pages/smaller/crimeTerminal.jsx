@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
@@ -69,17 +69,17 @@ const CrimeTerminal = ({ apiMessage, result }) => {
         color={terminalState.defaultColors[terminalState.lostCount]}
         value={terminalState.progressCurrentHp}
         max={terminalState.progressMaxHp}
+        className="customProgressBar"
       />
-
       {/* message from server. eg: Crimes loaded.. disappears after 4 seconds */}
       {apiMessage && !result && (
-        <Typist cursor={{ hideWhenDone: false }}>
-          <span className="terminalFont">{apiMessage} </span>
+        <Typist className=" terminalFont" cursor={{ hideWhenDone: false }}>
+          <span> {apiMessage} </span>
         </Typist>
       )}
-
       {result && (
         <Typist
+          className="terminalFont"
           onLineTyped={() => {
             updateProgressBarValues();
           }}
@@ -88,14 +88,10 @@ const CrimeTerminal = ({ apiMessage, result }) => {
         >
           {result.roundResult.map((r, i) => (
             <div key={i}>
-              {r == "lost" ? (
-                <span className="terminalFont terminalLost">
-                  {giveLostString()}
-                </span>
+              {r === "lost" ? (
+                <span className="terminalLost">{giveLostString()}</span>
               ) : (
-                <span className="terminalFont terminalWin">
-                  {giveWonString()}
-                </span>
+                <span className="terminalWin">{giveWonString()}</span>
               )}
             </div>
           ))}

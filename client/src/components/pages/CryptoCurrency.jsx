@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { InputGroup, InputGroupAddon, Input, Button, Table } from "reactstrap";
 
@@ -79,10 +79,10 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
     });
   };
 
-  const handleInputChange = event => {
+  const handleInputChange = e => {
     setCryptoState({
       ...cryptoState,
-      [event.target.name]: event.target.value
+      [e.target.name]: e.target.value
     });
   };
 
@@ -109,7 +109,7 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
             </thead>
             <tbody>
               {cryptoState.currencies.map((cu, i) => (
-                <tr>
+                <tr key={i}>
                   <th scope="row">{cu.initials}</th>
                   <td>{cu.name}</td>
                   <td>{cu.price}</td>
@@ -132,7 +132,7 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
                       100
                     ).toFixed(2)}
                     %
-                  </td>{" "}
+                  </td>
                   {/* TODO icon and style that says if positive number give green else red and + - */}
                   <td>{KFormatter(cu.available)}</td>
                   <td>{propsloading ? 0 : propsuser.currencies[cu.name]}</td>

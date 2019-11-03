@@ -1,19 +1,15 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
-export default class HackPlayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: ""
-    };
-  }
+const HackPlayer = ({}) => {
+  const [hackState, setHackState] = useState({
+    name: ""
+  });
 
-  render() {
-    return (
-      <div>
-        <h2>Hack Player</h2>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h2>Hack Player</h2>
+    </div>
+  );
+};
+export default HackPlayer;

@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../api";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 

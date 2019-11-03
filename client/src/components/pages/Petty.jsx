@@ -1,54 +1,52 @@
-import React, { Component } from 'react';
-import api from '../../api';
+import React, { useState, useEffect } from "react";
+import api from "../../api";
 
-export default class CreateHacker extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      message: null,
-      user: null,
-      success: true,
-      hacking: false
-    };
-    this.startHack = this.startHack.bind(this);
-    this.toggleHack = this.toggleHack.bind(this);
-  }
+const PettyHack = ({}) => {
+  const [pettyState, setPettyState] = useState({
+    loading: true,
+    message: null,
+    user: null,
+    success: true,
+    hacking: false
+  });
 
-  componentDidMount() {
+  useEffect(() => {
     api
       .getUser()
       .then(result => {
-        this.setState({
+        setPettyState({
+          ...pettyState,
           message: result.message,
           loading: false,
           user: result.user
         });
         setTimeout(() => {
-          this.setState({
+          setPettyState({
+            ...pettyState,
             message: null
           });
         }, 2000);
       })
       .catch(err => console.log(err));
-  }
+  }, []);
 
-  toggleHack() {
-    this.setState({
-      hacking: !this.state.hacking
+  const toggleHack = () => {
+    setPettyState({
+      ...pettyState,
+      hacking: !pettyState.hacking
     });
     setTimeout(() => {
-      this.startHack();
+      startHack();
     }, 100);
-  }
+  };
 
-  startHack() {
-    console.log('start hack', this.state.hacking);
-    if (this.state.hacking) {
+  const startHack = () => {
+    console.log("start hack", pettyState.hacking);
+    if (pettyState.hacking) {
       let pettyHackInterval = setInterval(() => {
-        console.log('interval');
-        if (!this.state.hacking) {
-          console.log('clearing');
+        console.log("interval");
+        if (!pettyState.hacking) {
+          console.log("clearing");
           clearInterval(pettyHackInterval);
         }
         api
@@ -59,15 +57,15 @@ export default class CreateHacker extends Component {
           .catch(err => console.log(err));
       }, 4000);
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className='CreateHacker'>
-        <h2>Petty hackr</h2>
-        <button onClick={this.toggleHack}>Start hacking</button>
-        {this.state.message && <div className='info'>{this.state.message}</div>}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="PettyHack">
+      <h2>Petty hackr</h2>
+      <button onClick={toggleHack}>Start hacking</button>
+      {pettyState.message && <div className="info">{pettyState.message}</div>}
+    </div>
+  );
+};
+
+export default PettyHack;

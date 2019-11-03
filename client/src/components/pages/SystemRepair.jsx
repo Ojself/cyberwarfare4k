@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../api";
 
 const SystemRepair = ({}) => {
@@ -31,11 +31,11 @@ const SystemRepair = ({}) => {
       <div>
         <div>
           <img src="/pics/partialrepair.jpg" alt="Partial Repari" />
-          <button onClick={() => handlePartial()}>Partial repair</button>
+          <button onClick={handlePartial()}>Partial repair</button>
         </div>
         <div>
           <img src="/pics/fullrepair.jpg" alt="Partial Repari" />
-          <button onClick={() => handleFull()}>Full repair</button>
+          <button onClick={handleFull()}>Full repair</button>
         </div>
       </div>
     </div>

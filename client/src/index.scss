@@ -100,6 +100,9 @@ body {
 
 .terminalFont {
   font-family: "Roboto Mono", monospace;
+  text-align: left;
+  margin-left: 4px;
+  margin-top: 4px;
 }
 
 .terminalWin {
@@ -111,7 +114,7 @@ body {
 }
 
 .customProgressBar {
-  margin: 10px;
+  margin: 20px;
 }
 
 .Typist .Cursor {

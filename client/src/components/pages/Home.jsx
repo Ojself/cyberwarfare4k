@@ -1,17 +1,16 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+// import api from "../../api";
 
-export default class Home extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //   }
-  // }
-  render() {
-    return (
-      <div className='Home'>
-        <h2>Home</h2>
-        <p>Work in progress.</p>
-      </div>
-    );
-  }
-}
+const Home = ({}) => {
+  const [homeState, setHomeState] = useState({
+    name: ""
+  });
+
+  return (
+    <div>
+      <h2>Home</h2>
+    </div>
+  );
+};
+
+export default Home;

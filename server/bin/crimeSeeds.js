@@ -33,7 +33,8 @@ const crimes = [
     crimeType: "Social Engineering",
     difficulty: difficultyValues.easy,
     currentFirewall: firewallValues.easy,
-    maxFirewall: firewallValues.easy
+    maxFirewall: firewallValues.easy,
+    difficultyString: "easy"
   },
 
   {
@@ -43,7 +44,8 @@ const crimes = [
     crimeType: "Social Engineering",
     difficulty: difficultyValues.medium,
     currentFirewall: firewallValues.medium,
-    maxFirewall: firewallValues.medium
+    maxFirewall: firewallValues.medium,
+    difficultyString: "medium"
   },
 
   {
@@ -52,7 +54,8 @@ const crimes = [
     crimeType: "Social Engineering",
     difficulty: difficultyValues.hard,
     currentFirewall: firewallValues.hard,
-    maxFirewall: firewallValues.hard
+    maxFirewall: firewallValues.hard,
+    difficultyString: "hard"
   },
 
   {
@@ -61,7 +64,8 @@ const crimes = [
     crimeType: "Social Engineering",
     difficulty: difficultyValues.challenging,
     currentFirewall: firewallValues.challenging,
-    maxFirewall: firewallValues.challenging
+    maxFirewall: firewallValues.challenging,
+    difficultyString: "challenging"
   },
 
   {
@@ -70,7 +74,8 @@ const crimes = [
     crimeType: "Social Engineering",
     difficulty: difficultyValues.impossible,
     currentFirewall: firewallValues.impossible,
-    maxFirewall: firewallValues.impossible
+    maxFirewall: firewallValues.impossible,
+    difficultyString: "impossible"
   },
 
   // Forensics
@@ -80,7 +85,8 @@ const crimes = [
     crimeType: "Forensics",
     difficulty: difficultyValues.easy,
     currentFirewall: firewallValues.easy,
-    maxFirewall: firewallValues.easy
+    maxFirewall: firewallValues.easy,
+    difficultyString: "easy"
   },
 
   {
@@ -89,7 +95,8 @@ const crimes = [
     crimeType: "Forensics",
     difficulty: difficultyValues.medium,
     currentFirewall: firewallValues.medium,
-    maxFirewall: firewallValues.medium
+    maxFirewall: firewallValues.medium,
+    difficultyString: "medium"
   },
   {
     name: "Retrieve data",
@@ -97,7 +104,8 @@ const crimes = [
     crimeType: "Forensics",
     difficulty: difficultyValues.hard,
     currentFirewall: firewallValues.hard,
-    maxFirewall: firewallValues.hard
+    maxFirewall: firewallValues.hard,
+    difficultyString: "hard"
   },
   {
     name: "Cross-Site Scripting",
@@ -105,7 +113,8 @@ const crimes = [
     crimeType: "Forensics",
     difficulty: difficultyValues.challenging,
     currentFirewall: firewallValues.challenging,
-    maxFirewall: firewallValues.challenging
+    maxFirewall: firewallValues.challenging,
+    difficultyString: "challenging"
   },
   {
     name: "Cookie theft",
@@ -113,7 +122,8 @@ const crimes = [
     crimeType: "Forensics",
     difficulty: difficultyValues.impossible,
     currentFirewall: firewallValues.impossible,
-    maxFirewall: firewallValues.impossible
+    maxFirewall: firewallValues.impossible,
+    difficultyString: "impossible"
   },
 
   // Technical
@@ -123,7 +133,8 @@ const crimes = [
     crimeType: "Technical",
     difficulty: difficultyValues.easy,
     currentFirewall: firewallValues.easy,
-    maxFirewall: firewallValues.easy
+    maxFirewall: firewallValues.easy,
+    difficultyString: "easy"
   },
   {
     name: "Change grades",
@@ -131,7 +142,8 @@ const crimes = [
     crimeType: "Technical",
     difficulty: difficultyValues.medium,
     currentFirewall: firewallValues.medium,
-    maxFirewall: firewallValues.medium
+    maxFirewall: firewallValues.medium,
+    difficultyString: "medium"
   },
   {
     name: "Web scrapping",
@@ -139,7 +151,8 @@ const crimes = [
     crimeType: "Technical",
     difficulty: difficultyValues.hard,
     currentFirewall: firewallValues.hard,
-    maxFirewall: firewallValues.hard
+    maxFirewall: firewallValues.hard,
+    difficultyString: "hard"
   },
   {
     name: "SQL injection",
@@ -147,7 +160,8 @@ const crimes = [
     crimeType: "Technical",
     difficulty: difficultyValues.challenging,
     currentFirewall: firewallValues.challenging,
-    maxFirewall: firewallValues.challenging
+    maxFirewall: firewallValues.challenging,
+    difficultyString: "challenging"
   },
   {
     name: "GPS jamming",
@@ -155,7 +169,8 @@ const crimes = [
     crimeType: "Technical",
     difficulty: difficultyValues.impossible,
     currentFirewall: firewallValues.impossible,
-    maxFirewall: firewallValues.impossible
+    maxFirewall: firewallValues.impossible,
+    difficultyString: "impossible"
   },
 
   // Cryptography
@@ -165,7 +180,8 @@ const crimes = [
     crimeType: "Cryptography",
     difficulty: difficultyValues.easy,
     currentFirewall: firewallValues.easy,
-    maxFirewall: firewallValues.easy
+    maxFirewall: firewallValues.easy,
+    difficultyString: "easy"
   },
   {
     name: "Crypto currency",
@@ -173,7 +189,8 @@ const crimes = [
     crimeType: "Cryptography",
     difficulty: difficultyValues.medium,
     currentFirewall: firewallValues.medium,
-    maxFirewall: firewallValues.medium
+    maxFirewall: firewallValues.medium,
+    difficultyString: "medium"
   },
   {
     name: "Fake Public-key",
@@ -181,7 +198,8 @@ const crimes = [
     crimeType: "Cryptography",
     difficulty: difficultyValues.hard,
     currentFirewall: firewallValues.hard,
-    maxFirewall: firewallValues.hard
+    maxFirewall: firewallValues.hard,
+    difficultyString: "hard"
   },
   {
     name: "Spoof TLS Handshake",
@@ -189,7 +207,8 @@ const crimes = [
     crimeType: "Cryptography",
     difficulty: difficultyValues.challenging,
     currentFirewall: firewallValues.challenging,
-    maxFirewall: firewallValues.challenging
+    maxFirewall: firewallValues.challenging,
+    difficultyString: "challenging"
   },
   {
     name: "SSL sniffing",
@@ -197,7 +216,8 @@ const crimes = [
     crimeType: "Cryptography",
     difficulty: difficultyValues.impossible,
     currentFirewall: firewallValues.impossible,
-    maxFirewall: firewallValues.impossible
+    maxFirewall: firewallValues.impossible,
+    difficultyString: "impossible"
   }
 ];
 

@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../api";
 
 import { Table, InputGroup, Input, InputGroupAddon, Button } from "reactstrap";
@@ -40,7 +40,12 @@ const WantedList = ({}) => {
       message: "something happend maybe"
     });
   };
-
+  const addUnlistedPlayer = (
+    <div>
+      <h3>Add unlisted player</h3>
+      <input type="text" />
+    </div>
+  );
   const bountyUsersTable = (
     <Table dark>
       <thead>
@@ -88,6 +93,7 @@ const WantedList = ({}) => {
     <div>
       <h2>Datacenters</h2>
       {wantedState.loading ? <p>a</p> : bountyUsersTable}
+      {addUnlistedPlayer}
     </div>
   );
 };
