@@ -179,21 +179,21 @@ const CryptoCurrencies = props => {
                           BUY
                         </Button>
                       </InputGroupAddon>
+                      {props.loading ||
+                        (cu.levelReq >= props.user.playerStats.rank && (
+                          <UncontrolledTooltip
+                            placement="top"
+                            target={`disableTip${i}`}
+                          >
+                            You're too unexperineced too buy this currency
+                          </UncontrolledTooltip>
+                        ))}
                       <InputGroupAddon addonType="append">
                         <Button name={cu.name} onClick={e => handleSell(e)}>
                           SELL
                         </Button>
                       </InputGroupAddon>
                     </InputGroup>
-                    {props.loading ||
-                      (cu.levelReq >= props.user.playerStats.rank && (
-                        <UncontrolledTooltip
-                          placement="top"
-                          target={`disableTip${i}`}
-                        >
-                          You're too unexperineced too buy this currency
-                        </UncontrolledTooltip>
-                      ))}
                   </td>
                 </tr>
               ))}

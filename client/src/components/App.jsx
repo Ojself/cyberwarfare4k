@@ -61,8 +61,7 @@ const App = ({}) => {
       user: apiUser.user,
       loading: false
     });
-    console.log(appState.user, "user from app component");
-  }, [console.log(appState.user, "user from app component UPDATED")]);
+  }, []);
 
   const handleLogoutClick = e => {
     api.logout();
