@@ -54,24 +54,15 @@ const App = ({}) => {
     });
   };
 
-  useEffect(() => {
-    api
-      .getNavUser()
-      .then(result => {
-        console.log(result, "result");
-        SetAppState({
-          ...appState,
-          user: result.user,
-          loading: false
-        });
-      })
-      .catch(err =>
-        SetAppState({
-          ...appState,
-          message: err.toString()
-        })
-      );
-  }, []);
+  useEffect(async () => {
+    const apiUser = await api.getNavUser();
+    SetAppState({
+      ...appState,
+      user: apiUser.user,
+      loading: false
+    });
+    console.log(appState.user, "user from app component");
+  }, [console.log(appState.user, "user from app component UPDATED")]);
 
   const handleLogoutClick = e => {
     api.logout();
@@ -105,7 +96,7 @@ const App = ({}) => {
                   <DropdownItem>Top Hackers</DropdownItem>
                   <DropdownItem>Top Alliances</DropdownItem>
                   <DropdownItem>Wanted List</DropdownItem>
-                  <DropdownItem>Arcade</DropdownItem>
+                  <DropdownItem href="/arcade">Arcade</DropdownItem>
                   <DropdownItem>Information</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -115,7 +106,7 @@ const App = ({}) => {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>Petty</DropdownItem>
-                  <DropdownItem>Crime</DropdownItem>
+                  <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem>Organized Crime</DropdownItem>
                   <DropdownItem>Hack players</DropdownItem>
@@ -129,7 +120,7 @@ const App = ({}) => {
                   <DropdownItem>Locals</DropdownItem>
                   <DropdownItem>Datacenters</DropdownItem>
                   {/* <DropdownItem divider /> */}
-                  <DropdownItem>VPN</DropdownItem>
+                  <DropdownItem href="/vpn">VPN</DropdownItem>
                   <DropdownItem>Crypto Currency</DropdownItem>
                   <DropdownItem>Marketplace</DropdownItem>
                   <DropdownItem>Chip Chop Shop</DropdownItem>
@@ -145,71 +136,31 @@ const App = ({}) => {
                   <DropdownItem>Public</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
+              {!api.isLoggedIn() && (
+                <NavItem>
+                  <NavLink href="/signup">Signup</NavLink>
+                </NavItem>
+              )}
+              {!api.isLoggedIn() && (
+                <NavItem>
+                  <NavLink href="/login">Login</NavLink>
+                </NavItem>
+              )}
+              {api.isLoggedIn() && (
+                <NavItem>
+                  <NavLink href="/" onClick={e => handleLogoutClick(e)}>
+                    Logout{" "}
+                  </NavLink>
+                </NavItem>
+              )}
             </Nav>
           </Collapse>
         </Navbar>
-        <header className="App-header ">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">CYBERHACKER WARFARE 4000</h1>
-          {appState.loading ? (
-            <p>loading</p>
-          ) : (
-            <>
-              {/* icon instead of text? */}
-              <div>Battery: {appState.user.playerStats.battery}%</div>
-              <div>
-                Firewall{" "}
-                {(
-                  (appState.user.playerStats.currentFirewall /
-                    appState.user.playerStats.maxFirewall) *
-                  100
-                ).toFixed(0)}
-                %
-              </div>
-              <div>BTCs: {Math.floor(appState.user.playerStats.bitCoins)}</div>
-              <div>
-                Exp: {appState.user.playerStats.exp} /{" "}
-                {appState.user.playerStats.expToLevel}
-              </div>
-              <div>{appState.user.playerStats.rankName}</div>
-            </>
-          )}
-          <NavLinkRR to="/" exact>
-            Home
-          </NavLinkRR>
-          <NavLinkRR to="/my-profile">My profile</NavLinkRR>
-          <NavLinkRR to="/create-hacker">Create</NavLinkRR>
-          <NavLinkRR to="/petty-hacker">Petty </NavLinkRR>
-          <NavLinkRR to="/hack-crimes">Hack Crimes</NavLinkRR>
-          <NavLinkRR to="/hack-player">Hack Player</NavLinkRR>
-          <NavLinkRR to="/wanted-list">Wanted List</NavLinkRR>
-          <NavLinkRR to="/alliance">Alliance</NavLinkRR>
-          <NavLinkRR to="/marketplace">Marketplace</NavLinkRR>
-          <NavLinkRR to="/vpn">VPN</NavLinkRR>
-          <NavLinkRR to="/datacenters">Datacenters</NavLinkRR>
-          <NavLinkRR
-            to={{ pathname: "/cryptocurrency", state: { foo: "bar" } }}
-          >
-            CryptoCurrency
-          </NavLinkRR>
-          <NavLinkRR to="/system-repair">System Repair</NavLinkRR>
-          <NavLinkRR to="/ladder">Ladder</NavLinkRR>
-          <NavLinkRR to="/information">Information</NavLinkRR>
-          <NavLinkRR to="/arcade">Arcade</NavLinkRR>
-          {!api.isLoggedIn() && <NavLinkRR to="/signup">Signup</NavLinkRR>}
-          {!api.isLoggedIn() && <NavLinkRR to="/login">Login</NavLinkRR>}
-          {api.isLoggedIn() && (
-            <Link to="/" onClick={e => handleLogoutClick(e)}>
-              logout
-            </Link>
-          )}
-          <NavLinkRR to="/secret">Admin menu</NavLinkRR>
-        </header>
+
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/my-profile" component={MyProfile} />
           <Route path="/create-hacker" component={CreateHacker} />
-
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/hack-crimes" component={HackCrimes} />
           <Route path="/hack-player" component={HackPlayer} />
@@ -219,15 +170,11 @@ const App = ({}) => {
           <Route
             path="/cryptocurrency"
             render={() => (
-              <CryptoCurrency
-                propsloading={appState.loading}
-                propsuser={appState.user}
-              />
+              <CryptoCurrency loading={appState.loading} user={appState.user} />
             )}
           />
 
-          <Route path="/vpn" render={() => <VPN propsuser={appState.user} />} />
-
+          <Route path="/vpn" render={() => <VPN user={appState.user} />} />
           <Route path="/system-repair" component={SystemRepair} />
           <Route path="/ladder" component={Ladder} />
           <Route path="/datacenters" component={DataCenters} />

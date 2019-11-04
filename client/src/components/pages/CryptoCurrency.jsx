@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { InputGroup, InputGroupAddon, Input, Button, Table } from "reactstrap";
+import {
+  UncontrolledTooltip,
+  InputGroup,
+  InputGroupAddon,
+  Input,
+  Button,
+  Table
+} from "reactstrap";
 
 import KFormatter from "../utils/KFormatter";
 import api from "../../api";
 import CryptoCurrenciesChart from "./chart/CryptoCurrencies";
 
-// todo: rename propsuser and propsloading
+// todo: rename user and loading
 // todo deconstruct state {cryptoState} = LiteCoin
-const CryptoCurrencies = ({ propsloading, propsuser }) => {
+const CryptoCurrencies = props => {
   const [cryptoState, setCryptoState] = useState({
     currencies: null,
     loading: true,
@@ -96,7 +103,7 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
           <Table dark striped>
             <thead>
               <tr>
-                <th>Symbol{/* symbol and icon */}</th>
+                <th>Symbol{/* todo add icon */}</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Market cap</th>
@@ -133,10 +140,9 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
                     ).toFixed(2)}
                     %
                   </td>
-                  {/* TODO icon and style that says if positive number give green else red and + - */}
+                  {/* TODO icon  */}
                   <td>{KFormatter(cu.available)}</td>
-                  <td>{propsloading ? 0 : propsuser.currencies[cu.name]}</td>
-                  {/* Displays none if noone has made a purchase of the currency */}
+                  <td>{props.loading ? 0 : props.user.currencies[cu.name]}</td>
                   {cu.lastPurchasedBy[0] ? (
                     <td>
                       <Link to={`profile/${cu.lastPurchasedBy[0]._id}`}>
@@ -147,7 +153,7 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
                     <td> none </td>
                   )}
                   <td>
-                    <InputGroup>
+                    <InputGroup id={`disableTip${i}`}>
                       <Input
                         step={10}
                         min={0}
@@ -155,9 +161,21 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
                         name={cu.name}
                         value={cryptoState[cu.name]}
                         onChange={handleInputChange}
+                        disabled={
+                          props.loading ||
+                          cu.levelReq >= props.user.playerStats.rank
+                        }
                       />
+
                       <InputGroupAddon addonType="append">
-                        <Button name={cu.name} onClick={e => handleBuy(e)}>
+                        <Button
+                          name={cu.name}
+                          onClick={e => handleBuy(e)}
+                          disabled={
+                            props.loading ||
+                            cu.levelReq >= props.user.playerStats.rank
+                          }
+                        >
                           BUY
                         </Button>
                       </InputGroupAddon>
@@ -167,6 +185,15 @@ const CryptoCurrencies = ({ propsloading, propsuser }) => {
                         </Button>
                       </InputGroupAddon>
                     </InputGroup>
+                    {props.loading ||
+                      (cu.levelReq >= props.user.playerStats.rank && (
+                        <UncontrolledTooltip
+                          placement="top"
+                          target={`disableTip${i}`}
+                        >
+                          You're too unexperineced too buy this currency
+                        </UncontrolledTooltip>
+                      ))}
                   </td>
                 </tr>
               ))}
