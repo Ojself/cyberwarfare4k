@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import api from "../api";
 
 import Home from "./pages/Home";
-
-/* Hacker specific imports */
 import MyProfile from "./pages/MyProfile";
 import HackCrimes from "./pages/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
@@ -23,8 +22,6 @@ import Secret from "./pages/Secret";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StatusBar from "./pages/smaller/statusbar";
-
-import api from "../api";
 
 // styling
 import {
@@ -47,12 +44,6 @@ const App = () => {
     loading: true,
     user: null
   });
-  const toggle = () => {
-    SetAppState({
-      ...appState,
-      isOpen: !appState.isOpen
-    });
-  };
 
   useEffect(async () => {
     const apiUser = await api.getNavUser();
@@ -63,19 +54,27 @@ const App = () => {
     });
   }, []);
 
+  const toggle = () => {
+    SetAppState({
+      ...appState,
+      isOpen: !appState.isOpen
+    });
+  };
+
   const handleLogoutClick = e => {
     api.logout();
   };
 
   const currentCity = appState.loading
     ? "City"
-    : appState.user.playerStats.city.name;
+    : appState.user.playerStats.city
+        .name; /* TODO: This will cause error cause no default city is set */
 
   return (
     <div>
       <div className="App ">
         {/* extract this into another component (navbar) */}
-        <Navbar color="light" light expand="md">
+        <Navbar color="dark" dark expand="md">
           <NavbarBrand href="/">CHW4K</NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={appState.isOpen} navbar>
@@ -94,9 +93,9 @@ const App = () => {
                   </DropdownItem>
                   <DropdownItem>Top Hackers</DropdownItem>
                   <DropdownItem>Top Alliances</DropdownItem>
-                  <DropdownItem>Wanted List</DropdownItem>
+                  <DropdownItem href="/wanted-list">Wanted</DropdownItem>
                   <DropdownItem href="/arcade">Arcade</DropdownItem>
-                  <DropdownItem>Information</DropdownItem>
+                  <DropdownItem href="/information">Information</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
@@ -104,7 +103,7 @@ const App = () => {
                   Hack
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Petty</DropdownItem>
+                  <DropdownItem href="/petty-hacker">Petty</DropdownItem>
                   <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem>Organized Crime</DropdownItem>
@@ -117,7 +116,7 @@ const App = () => {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>Locals</DropdownItem>
-                  <DropdownItem>Datacenters</DropdownItem>
+                  <DropdownItem href="/datacenters">Datacenters</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem href="/vpn">VPN</DropdownItem>
                   <DropdownItem href="/cryptocurrency">
@@ -150,7 +149,7 @@ const App = () => {
               {api.isLoggedIn() && (
                 <NavItem>
                   <NavLink href="/" onClick={e => handleLogoutClick(e)}>
-                    Logout{" "}
+                    Logout
                   </NavLink>
                 </NavItem>
               )}

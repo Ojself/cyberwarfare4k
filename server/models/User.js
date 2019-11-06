@@ -4,6 +4,11 @@ const Stash = require("../models/Stash");
 const Rank = require("../models/Rank");
 const City = require("../models/City");
 
+const getCities = async () => {
+const apiCities = await City.find()
+return apiCities
+} 
+
 const userSchema = new Schema(
   {
     email: { type: String, unique: true },
@@ -59,7 +64,7 @@ const userSchema = new Schema(
     },
     alliance: {
       type: Schema.Types.ObjectId,
-      ref: "Alliance"
+      ref: "Alliance",
     },
     allianceRole: {
       type: String,
@@ -158,7 +163,7 @@ const userSchema = new Schema(
       },
       exp: {
         type: Number,
-        default: 0
+        default: 1
       },
       expToLevel: {
         type: Number,

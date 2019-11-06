@@ -178,6 +178,7 @@ router.post("/upgradeStats", isLoggedIn, async (req, res, next) => {
 // PRIVATE
 // Same as my profile. being used in the navbar for stats
 router.get("/get-nav-user", async (req, res, next) => {
+  console.log('get nav user')
   const userId = req.user._id;
   try {
     const user = await User.findById(userId).populate(
