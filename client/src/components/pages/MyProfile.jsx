@@ -10,7 +10,7 @@ import api from "../../api";
 /* Format the tables */
 /* + Button needs to be an actuall button that does an API call */
 
-const MyProfile = ({}) => {
+const MyProfile = () => {
   const [profileState, setProfileState] = useState({
     user: null
   });

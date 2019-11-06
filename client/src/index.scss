@@ -77,6 +77,13 @@ body {
   border-color: gray;
 }
 
+.statusBar {
+  padding-top: 1vh;
+  height: 5vh;
+  background-color: black;
+  color: white;
+}
+
 .hackerGreen {
   background-color: #148e56 !important;
 }
@@ -115,6 +122,10 @@ body {
 
 .customProgressBar {
   margin: 20px;
+}
+
+.navProgressBar {
+  width: 10vw;
 }
 
 .Typist .Cursor {

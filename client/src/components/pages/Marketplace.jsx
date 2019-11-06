@@ -3,25 +3,27 @@ import api from "../../api";
 
 import { Table, Button } from "reactstrap";
 
-const MarketPlace = ({}) => {
+const MarketPlace = props => {
   const [marketPlaceState, setMarketPlaceState] = useState({
-    items: [],
     loading: false,
+    items: [],
     message: null
   });
 
-  useEffect(async () => {
-    const apiItems = await api.getMarketPlaceItems();
-    setMarketPlaceState({
-      ...marketPlaceState,
-      items: apiItems,
-      loading: false
+  useEffect(() => {
+    api.getMarketPlaceItems().then(result => {
+      const { items } = result;
+      console.log("result", items);
+      setMarketPlaceState({
+        ...marketPlaceState,
+        items: result.items,
+        loading: false
+      });
     });
-  });
+  }, []);
 
   const handleMarketPlaceItemPurchase = e => {
     const itemId = e.target.name;
-
     api.purchaseMarketPlaceItem({ itemId }).then(result => {
       console.log(result, "result");
     });
@@ -61,7 +63,7 @@ const MarketPlace = ({}) => {
   return (
     <div>
       <h2>Marketplace</h2>
-      {marketPlaceState.loading ? <p>a</p> : itemsTable}
+      {marketPlaceState.loading ? <p>loading..</p> : itemsTable}
     </div>
   );
 };

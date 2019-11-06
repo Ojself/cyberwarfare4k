@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
-const VPN = ({}) => {
+const VPN = () => {
   const [vpnState, setVpnState] = useState({
     cities: null,
     selectedCity: null,
@@ -11,15 +11,15 @@ const VPN = ({}) => {
     message: null
   });
 
-  useEffect(async () => {
-    const apiCities = await api.getCities();
-    console.log(apiCities, "cities");
-    setVpnState({
-      ...vpnState,
-      users: apiCities.users,
-      bountyUsers: apiCities.bountyUsers,
-      message: apiCities.message,
-      loading: false
+  useEffect(() => {
+    api.getCities().then(result => {
+      console.log(result, "resultttt");
+      setVpnState({
+        ...vpnState,
+        cities: result.cities,
+        message: result.message,
+        loading: false
+      });
     });
   }, []);
 

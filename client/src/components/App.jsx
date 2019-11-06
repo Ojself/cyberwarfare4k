@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link, NavLink as NavLinkRR, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import Home from "./pages/Home";
 
@@ -19,12 +19,12 @@ import Petty from "./pages/Petty";
 import CryptoCurrency from "./pages/CryptoCurrency";
 import VPN from "./pages/VPN";
 import DataCenters from "./pages/DataCenters";
-
 import Secret from "./pages/Secret";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import StatusBar from "./pages/smaller/statusbar";
+
 import api from "../api";
-import logo from "../logo.svg";
 
 // styling
 import {
@@ -41,7 +41,7 @@ import {
   DropdownItem
 } from "reactstrap";
 
-const App = ({}) => {
+const App = () => {
   const [appState, SetAppState] = useState({
     isOpen: false,
     loading: true,
@@ -69,7 +69,7 @@ const App = ({}) => {
 
   const currentCity = appState.loading
     ? "City"
-    : "city"; /* name of the actual city the person is in. */
+    : appState.user.playerStats.city.name;
 
   return (
     <div>
@@ -120,8 +120,10 @@ const App = ({}) => {
                   <DropdownItem>Datacenters</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem href="/vpn">VPN</DropdownItem>
-                  <DropdownItem>Crypto Currency</DropdownItem>
-                  <DropdownItem>Marketplace</DropdownItem>
+                  <DropdownItem href="/cryptocurrency">
+                    Crypto Currency
+                  </DropdownItem>
+                  <DropdownItem href="/marketplace">Marketplace</DropdownItem>
                   <DropdownItem>Chip Chop Shop</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -155,7 +157,7 @@ const App = ({}) => {
             </Nav>
           </Collapse>
         </Navbar>
-
+        <StatusBar loading={appState.loading} user={appState.user} />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/my-profile" component={MyProfile} />

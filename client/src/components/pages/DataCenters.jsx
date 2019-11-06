@@ -3,7 +3,7 @@ import api from "../../api";
 
 import { Table, Button } from "reactstrap";
 
-const DataCenter = ({}) => {
+const DataCenter = () => {
   const [dataCenterState, setDataCenterState] = useState({
     dataCenters: [],
     message: null,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-const PettyHack = ({}) => {
+const PettyHack = () => {
   const [pettyState, setPettyState] = useState({
     loading: true,
     message: null,

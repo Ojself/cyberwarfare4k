@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
-const Alliance = ({}) => {
+const Alliance = () => {
   const [allianceState, setAllianceState] = useState({
     name: ""
   });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-const SystemRepair = ({}) => {
+const SystemRepair = () => {
   const [repairState, setRepairState] = useState({
     price: null,
     message: null

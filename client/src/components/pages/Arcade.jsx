@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
-const Arcade = ({}) => {
+const Arcade = () => {
   const [allianceState, setAllianceState] = useState({
     name: ""
   });

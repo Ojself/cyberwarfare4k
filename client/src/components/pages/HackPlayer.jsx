@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
-const HackPlayer = ({}) => {
+const HackPlayer = () => {
   const [hackState, setHackState] = useState({
     name: ""
   });

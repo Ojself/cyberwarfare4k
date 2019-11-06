@@ -3,7 +3,7 @@ import api from "../../api";
 
 import { Table, InputGroup, Input, InputGroupAddon, Button } from "reactstrap";
 
-const WantedList = ({}) => {
+const WantedList = () => {
   const [wantedState, setWantedState] = useState({
     users: [],
     bountyUsers: [],

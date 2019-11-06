@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-const CreateHacker = ({}) => {
+const CreateHacker = () => {
   const [createState, setCreateState] = useState({
     loading: true,
     message: null,
