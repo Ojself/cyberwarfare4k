@@ -226,7 +226,6 @@ User.deleteMany()
         alliance: allianceIds[allianceIds.length - 1]
       }
     ];
-    console.log(users);
     return User.create(users);
   })
   .then(usersCreated => {

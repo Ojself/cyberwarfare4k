@@ -15,9 +15,11 @@ router.get("/", async (req, res, next) => {
   if (!users) {
     return res.status(400).json({
       success: false,
-      message: "no hackers found, try again later"
+      message: "no hackers found, try again later.."
     });
   }
+
+  // todo, select information instead of nullify
   users = users.map(user =>
     nullifyValues(user, [
       "account",
@@ -51,7 +53,7 @@ router.post("/add-bounty", async (req, res, next) => {
   const user = await User.findById(userId);
   const opponent = await User.findOne({ name });
 
-  let message = addBountyCriteria(user, opponent, bounty);
+  const message = addBountyCriteria(user, opponent, bounty);
 
   if (message) {
     return res.status(400).json({
@@ -62,7 +64,7 @@ router.post("/add-bounty", async (req, res, next) => {
   user.bitcoinDrain(bounty);
   opponent.addBounty(user, bounty);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: `${bounty} added to ${opponent.name}s bounty`
   });

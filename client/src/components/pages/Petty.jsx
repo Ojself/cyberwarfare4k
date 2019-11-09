@@ -5,29 +5,12 @@ const PettyHack = () => {
   const [pettyState, setPettyState] = useState({
     loading: true,
     message: null,
-    user: null,
     success: true,
     hacking: false
   });
 
   useEffect(() => {
-    api
-      .getUser()
-      .then(result => {
-        setPettyState({
-          ...pettyState,
-          message: result.message,
-          loading: false,
-          user: result.user
-        });
-        setTimeout(() => {
-          setPettyState({
-            ...pettyState,
-            message: null
-          });
-        }, 2000);
-      })
-      .catch(err => console.log(err));
+    console.log("using effect");
   }, []);
 
   const toggleHack = () => {

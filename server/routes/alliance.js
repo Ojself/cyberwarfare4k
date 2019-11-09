@@ -145,6 +145,7 @@ router.get("/:allianceId", async (req, res) => {
 });
 
 function dissolveAlliance() {
+  /* this destroys everyone */
   User.find().then(user => {
     user.map(user => {
       user.allianceRole = "";
@@ -159,7 +160,7 @@ function checkCreateAllianceCriteria(user, alliance) {
     return "ùser not found";
   }
   if (!existingValue(alliance)) {
-    return "user already exist";
+    return "alliance already exist";
   }
   // if user doesn't have 1000000
   // if user doesn't have level 5

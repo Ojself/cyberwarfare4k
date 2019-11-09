@@ -14,7 +14,6 @@ import api from "../../api";
 import CryptoCurrenciesChart from "./chart/CryptoCurrencies";
 
 // todo: rename user and loading
-// todo deconstruct state {cryptoState} = LiteCoin
 const CryptoCurrencies = props => {
   const [cryptoState, setCryptoState] = useState({
     currencies: null,

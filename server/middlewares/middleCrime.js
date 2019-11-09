@@ -8,12 +8,6 @@ const {
 
 //todo do this try catch instead.
 function crimeRouteCriterias(crime, user, batteryCost) {
-  if (!existingValue(user)) { // nope
-    return "User doesn't exist";
-  }
-  if (!existingValue(crime)) { // nope
-    return "Crime doesn't exist";
-  }
   if (!batteryCheck(user, batteryCost)) {
     return "Insufficent battery";
   }
@@ -43,11 +37,13 @@ async function fightCrime(user, crime, batteryCost) {
   };
   const finalResult = crimeRecursiveBattle(user, crime, result);
 
-
   // sees if player leveled up
-  if (user.playerStats.exp + finalResult.playerGains.exp >= user.playerStats.expToLevel) {
+  if (
+    user.playerStats.exp + finalResult.playerGains.exp >=
+    user.playerStats.expToLevel
+  ) {
     finalResult.playerGains.levelUp = true;
-    console.log(user._id, 'rankup')
+    console.log(user._id, "rankup");
   }
 
   if (user.account.role !== "testUser") {
@@ -64,7 +60,7 @@ function crimeRecursiveBattle(user, crime, result) {
   const damage = damageCalulator(user, crime);
 
   // the number that decides the success, lower is better
-  const decider = Math.random()
+  const decider = Math.random();
 
   // crime lost
   // if user has lost 4 times, the crime is considered 'lost'
@@ -104,7 +100,7 @@ function chanceCalculator(user, crime) {
   }
   const probability =
     (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
-  return probability
+  return probability;
 }
 
 //todo if user has 50 skill don't give him more skill in pettycrime
@@ -134,45 +130,53 @@ function crimeWin(result, crime, user, decider) {
   // TODO write legendaryGained
 
   result.won = true;
-  result.playerGains.exp = crimeWinExp(crime.difficulty)
-  result.playerGains.bitCoins = crimeWinBitcoins(crime.difficulty)
-  result.playerGains.skillGained = skillGained(decider, user.playerStats.rank, crime.crimeType)
-  result.playerGains.statGained = statGained(decider, user.playerStats.rank)
-  result.playerGains.legendaryGained = ''
+  result.playerGains.exp = crimeWinExp(crime.difficulty);
+  result.playerGains.bitCoins = crimeWinBitcoins(crime.difficulty);
+  result.playerGains.skillGained = skillGained(
+    decider,
+    user.playerStats.rank,
+    crime.crimeType
+  );
+  result.playerGains.statGained = statGained(decider, user.playerStats.rank);
+  result.playerGains.legendaryGained = "";
   return result;
 }
 
 function crimeWinBitcoins(multiplier) {
-  return Math.floor(Math.random() * multiplier) * 1000
+  return Math.floor(Math.random() * multiplier) * 1000;
 }
 function crimeWinExp(multiplier) {
-  return Math.floor(Math.random() * multiplier) * 300 // TODO balance this one
+  return Math.floor(Math.random() * multiplier) * 300; // TODO balance this one
 }
 
 // returns a skill based on luck and rank. Higher rank gives lower chance
 function skillGained(decider, rank, crimeType) {
   if (rank === 0) {
-    rank = 1
+    rank = 1;
   }
-  if (Math.random() - (rank / 14) < decider) {
-    return null
+  if (Math.random() - rank / 14 < decider) {
+    return null;
   }
-  const crimeTypes = ['Technical', 'Social Engineering', 'Forensics', 'Cryptography'].filter(el => el !== crimeType)
-  return crimeTypes[Math.floor(Math.random() * crimeTypes.length)]
+  const crimeTypes = [
+    "Technical",
+    "Social Engineering",
+    "Forensics",
+    "Cryptography"
+  ].filter(el => el !== crimeType);
+  return crimeTypes[Math.floor(Math.random() * crimeTypes.length)];
 }
 
 // gives user statpoints based on luck and rank. Higher rank gives lower chance
 function statGained(decider, rank) {
   if (rank === 0) {
-    rank = 1
+    rank = 1;
   }
-  if (Math.random() - (rank / 8) < decider) {
-    return null
+  if (Math.random() - rank / 8 < decider) {
+    return null;
   }
-  return true
+  return true;
   //return Math.random() - (rank / 10) < decider
 }
-
 
 module.exports = {
   crimeRouteCriterias,

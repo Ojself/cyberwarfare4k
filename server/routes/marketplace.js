@@ -27,10 +27,11 @@ router.get("/", async (req, res, next) => {
 router.post("/buy", async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
+
   const item = await Item.findById(itemId);
   const user = await User.findById(userId);
 
-  let message = marketPlaceCriterias(user, item);
+  const message = marketPlaceCriterias(user, item);
 
   if (message) {
     return res.status(400).json({
@@ -38,10 +39,9 @@ router.post("/buy", async (req, res) => {
       message
     });
   }
-
   user.handleItemPurchase(item);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: `You successfuly purchased ${item.name} for ${item.price}`
   });

@@ -5,9 +5,9 @@ const Rank = require("../models/Rank");
 const City = require("../models/City");
 
 const getCities = async () => {
-const apiCities = await City.find()
-return apiCities
-} 
+  const apiCities = await City.find();
+  return apiCities;
+};
 
 const userSchema = new Schema(
   {
@@ -45,7 +45,7 @@ const userSchema = new Schema(
       messages: {
         type: Object,
         default: {
-          "0": ["Hey man, welcome to CH4K", false]
+          "0": ["Hey man, welcome to CH4K, this is your first message", false]
         }
       },
       banned: {
@@ -64,7 +64,7 @@ const userSchema = new Schema(
     },
     alliance: {
       type: Schema.Types.ObjectId,
-      ref: "Alliance",
+      ref: "Alliance"
     },
     allianceRole: {
       type: String,
@@ -157,10 +157,6 @@ const userSchema = new Schema(
         type: String,
         default: "Script kiddie"
       },
-      shutdowns: {
-        type: Number,
-        default: 0
-      },
       exp: {
         type: Number,
         default: 1
@@ -225,6 +221,30 @@ const userSchema = new Schema(
       gracePeriod: {
         type: Boolean,
         default: false
+      },
+      shutdowns: {
+        type: Number,
+        default: 0
+      },
+      attacksInitiated: {
+        type: Number,
+        default: 0
+      },
+      attacksVictim: {
+        type: Number,
+        default: 0
+      },
+      crimesInitiated: {
+        type: Number,
+        default: 0
+      },
+      vpnChanges: {
+        type: Number,
+        default: 0
+      },
+      currencyPurchases: {
+        type: Number,
+        default: 0
       }
     }
   },
@@ -238,7 +258,7 @@ const userSchema = new Schema(
 
 // from marketplace
 // this probably doesn't work. test it
-userSchema.methods.handleItemPurchase = function (item) {
+userSchema.methods.handleItemPurchase = function(item) {
   console.log("handleItemPurchase triggered", item);
   const currentItem = this.marketPlaceItems[item.type];
   if (currentItem) {
@@ -282,7 +302,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   return this.save();
 };
 
-userSchema.methods.newRank = async function () {
+userSchema.methods.newRank = async function() {
   console.log("new rank method triggered");
   this.playerStats.statPoints += 5;
   this.playerStats.rank++;
@@ -293,7 +313,7 @@ userSchema.methods.newRank = async function () {
   this.save();
 };
 
-userSchema.methods.giveStash = function (stashName = "Cables") {
+userSchema.methods.giveStash = function(stashName = "Cables") {
   console.log("give stash method triggered", stashName);
   Stash.findOne({ name: stashName }).then(newStash => {
     this.stash.push(newStash._id);
@@ -301,32 +321,32 @@ userSchema.methods.giveStash = function (stashName = "Cables") {
   this.save();
 };
 
-userSchema.methods.giveExp = function (exp = 1) {
+userSchema.methods.giveExp = function(exp = 1) {
   console.log("give exp method triggered", exp);
   this.playerStats.exp += exp;
   this.save();
 };
 
-userSchema.methods.giveLegendary = function (itemName = "emp") {
+userSchema.methods.giveLegendary = function(itemName = "emp") {
   console.log("give legendary method triggered", itemName);
   this[itemName]++;
   this.save();
 };
 
-userSchema.methods.giveSkill = function (skill = "technical") {
+userSchema.methods.giveSkill = function(skill = "technical") {
   console.log("give crimeskill triggered", skill);
   console.log(this.crimeSkill, "this.crimeSkill");
   this.crimeSkill[skill]++;
   this.save();
 };
 
-userSchema.methods.batteryDrain = function (battery = 5) {
+userSchema.methods.batteryDrain = function(battery = 5) {
   console.log("batterydrain triggered", battery);
   this.playerStats.battery -= battery;
   this.save();
 };
 
-userSchema.methods.batteryGain = function (battery = 5) {
+userSchema.methods.batteryGain = function(battery = 5) {
   console.log("batteryGain triggered", battery);
   this.playerStats.battery += battery;
   if (this.playerStats.battery > 100) {
@@ -335,20 +355,20 @@ userSchema.methods.batteryGain = function (battery = 5) {
   this.save();
 };
 
-userSchema.methods.bitcoinDrain = function (bitCoins = 5) {
+userSchema.methods.bitcoinDrain = function(bitCoins = 5) {
   console.log("bitCoinsdrain triggered", bitCoins);
   this.playerStats.bitCoins -= bitCoins;
   this.save();
 };
 
-userSchema.methods.bitcoinGain = function (bitCoins = 5) {
+userSchema.methods.bitcoinGain = function(bitCoins = 5) {
   console.log("bitCoinsGain triggered", bitCoins);
   this.playerStats.bitCoins += bitCoins;
   // this.playerStats.networth += bitCoins;
   this.save();
 };
 
-userSchema.methods.handlePettyCrime = async function (result) {
+userSchema.methods.handlePettyCrime = async function(result) {
   this.playerStats.battery -= result.battery;
   this.playerStats.bitCoins += result.bitCoins;
   this.playerStats.networth += result.bitCoins;
@@ -368,7 +388,6 @@ userSchema.methods.handlePettyCrime = async function (result) {
     this.playerStats.statPoints += 5;
     this.playerStats.rank++;
     await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
-
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
@@ -376,7 +395,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
   this.save();
 };
 
-userSchema.methods.purchaseCurrency = function (
+userSchema.methods.purchaseCurrency = function(
   currency,
   amount,
   batteryCost,
@@ -389,7 +408,7 @@ userSchema.methods.purchaseCurrency = function (
   this.save();
 };
 
-userSchema.methods.sellCurrency = function (
+userSchema.methods.sellCurrency = function(
   currency,
   amount,
   batteryCost,
@@ -403,14 +422,14 @@ userSchema.methods.sellCurrency = function (
   this.save();
 };
 
-userSchema.methods.changeCity = function (city, batteryCost) {
+userSchema.methods.changeCity = function(city, batteryCost) {
   console.log("changeCity triggered", batteryCost);
   this.playerStats.battery -= batteryCost;
   this.playerStats.city = city._id;
   this.save();
 };
 
-userSchema.methods.handleCrime = async function (finalResult) {
+userSchema.methods.handleCrime = async function(finalResult) {
   console.log("userschema handleCrime triggered", finalResult);
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
@@ -436,7 +455,7 @@ userSchema.methods.handleCrime = async function (finalResult) {
   await this.save();
 };
 
-userSchema.methods.handleAttack = function (finalResult) {
+userSchema.methods.handleAttack = function(finalResult) {
   console.log("userschema handleAttack", finalResult);
 
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
@@ -453,10 +472,10 @@ userSchema.methods.handleAttack = function (finalResult) {
   }
 
   this.account.notifications[finalResult.date] = [
-    `You attacked ${finalResult.opponent.name} ${new Date( 
+    `You attacked ${finalResult.opponent.name} ${new Date(
       finalResult.date
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-    finalResult.victimDead ? ` and he was shutdown!` : `!`
+      finalResult.victimDead ? ` and he was shutdown!` : `!`
     }`,
     true
   ];
@@ -464,7 +483,7 @@ userSchema.methods.handleAttack = function (finalResult) {
   this.save();
 };
 
-userSchema.methods.handleAttackDefense = function (finalResult) {
+userSchema.methods.handleAttackDefense = function(finalResult) {
   console.log("userschema handleAttackDefense", finalResult);
   // todo, graceperiod
   this.account.notifications[finalResult.date] = [
@@ -499,7 +518,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
 // REPAIR
 // REPAIR
 
-userSchema.methods.partialRepair = function (repairCost, batteryCost) {
+userSchema.methods.partialRepair = function(repairCost, batteryCost) {
   console.log("partialRepair triggered");
   // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
@@ -511,7 +530,7 @@ userSchema.methods.partialRepair = function (repairCost, batteryCost) {
   this.save();
 };
 
-userSchema.methods.fullRepair = function (repairCost, batteryCost) {
+userSchema.methods.fullRepair = function(repairCost, batteryCost) {
   console.log("fullRepair triggered");
   // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
@@ -522,7 +541,7 @@ userSchema.methods.fullRepair = function (repairCost, batteryCost) {
 // DATACENTER
 // DATACENTER
 
-userSchema.methods.handleDataCenterPurchase = function (
+userSchema.methods.handleDataCenterPurchase = function(
   dataCenter,
   batteryCost
 ) {
@@ -532,7 +551,7 @@ userSchema.methods.handleDataCenterPurchase = function (
   this.save();
 };
 
-userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
+userSchema.methods.handleDataCenterAttack = function(dataCenter, result) {
   console.log("handleDataCenterAttack triggered");
   this.playerStats.battery -= result.batteryCost;
   dataCenter.requiredStash.forEach(el => {
@@ -541,7 +560,7 @@ userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   this.save();
 };
 
-userSchema.methods.giveNotification = function (message) {
+userSchema.methods.giveNotification = function(message) {
   let date = Date.now();
   this.account.notifications[date] = [
     `${message} ${new Date(date).toString()}`,
@@ -553,7 +572,7 @@ userSchema.methods.giveNotification = function (message) {
 // WANTEDLIST
 /* todo, erase bounty and  if killed */
 
-userSchema.methods.addBounty = function (bountyDonor, bounty) {
+userSchema.methods.addBounty = function(bountyDonor, bounty) {
   // todo, change array to set to fix this issue?
   if (!this.playerStats.bountyDonors.some(el => el.equals(bountyDonor._id))) {
     this.playerStats.bountyDonors.push(bountyDonor._id);

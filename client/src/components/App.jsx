@@ -4,6 +4,7 @@ import api from "../api";
 
 import Home from "./pages/Home";
 import MyProfile from "./pages/MyProfile";
+import PlayerProfile from "./pages/PlayerProfile";
 import HackCrimes from "./pages/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
 import WantedList from "./pages/WantedList";
@@ -35,7 +36,10 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  InputGroup,
+  InputGroupAddon,
+  Input
 } from "reactstrap";
 
 const App = () => {
@@ -65,10 +69,8 @@ const App = () => {
     api.logout();
   };
 
-  const currentCity = appState.loading
-    ? "City"
-    : appState.user.playerStats.city
-        .name; /* TODO: This will cause error cause no default city is set */
+  const currentCity = appState.loading ? "City" : "cityName ";
+  //: appState.user.playerStats.city.name; /* TODO: This will cause error cause no default city is set */
 
   return (
     <div>
@@ -107,7 +109,7 @@ const App = () => {
                   <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem>Organized Crime</DropdownItem>
-                  <DropdownItem>Hack players</DropdownItem>
+                  <DropdownItem href="/">Hack player</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
@@ -160,6 +162,8 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/my-profile" component={MyProfile} />
+          <Route path="/player/:id" component={PlayerProfile} />
+          <Route path="/player/:id" render={() => <PlayerProfile />} />
           <Route path="/create-hacker" component={CreateHacker} />
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/hack-crimes" component={HackCrimes} />

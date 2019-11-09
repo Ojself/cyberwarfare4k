@@ -20,6 +20,46 @@ body {
   background-color: #e73f3f;
 }
 
+.playerWrapper {
+  height: 50vh;
+  width: 50vw;
+  div {
+    border: solid black 1px;
+  }
+}
+
+.playerInfoWrapper {
+  display: flex;
+  height: auto;
+  width: auto;
+}
+
+.playerAvatarWrapper {
+  display: flex;
+  width: 35%;
+  flex-flow: column;
+}
+
+.playerStatsWrapper {
+  width: 35%;
+  li {
+    list-style-type: none;
+  }
+}
+.playerActionWrapper {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.playerActionButton {
+  height: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 // --------------------
 // Style for App component
 .App {

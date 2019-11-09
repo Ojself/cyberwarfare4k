@@ -14,7 +14,6 @@ const HackCrimes = () => {
     api
       .getCrimes()
       .then(result => {
-        console.log("result", result);
         setApiMessage(result.message);
         setLoading(false);
         setCrimes(result.crimes);
@@ -25,23 +24,19 @@ const HackCrimes = () => {
       .catch(err => console.log(err));
   }, []);
 
-  const handleClick = crimeId => {
-    api
-      .commitCrimes(crimeId)
-      .then(result => {
-        console.log(result, "result");
-        const filteredCrimes = crimes
-          .filter(c => c._id !== crimeId)
-          .filter(c => c.available);
+  const handleClick = async crimeId => {
+    const crimeResult = await api.commitCrimes(crimeId);
 
-        setCrimes(filteredCrimes);
-        setResult(result.finalResult);
+    const filteredCrimes = crimes
+      .filter(c => c._id !== crimeId)
+      .filter(c => c.available);
 
-        setTimeout(() => {
-          setApiMessage(null);
-        }, 2000);
-      })
-      .catch(err => setApiMessage(err.toString()));
+    setCrimes(filteredCrimes);
+    setResult(crimeResult.finalResult);
+
+    setTimeout(() => {
+      setApiMessage(null);
+    }, 2000);
   };
 
   return (

@@ -20,7 +20,6 @@ const MyProfile = () => {
       .getUser()
       .then(user => {
         console.log(user, "user");
-
         setProfileState({
           ...profileState,
           user
