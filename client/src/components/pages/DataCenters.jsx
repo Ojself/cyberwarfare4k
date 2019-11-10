@@ -12,6 +12,7 @@ const DataCenter = () => {
 
   useEffect(async () => {
     api.getDataCenters().then(result => {
+      console.log(result);
       setDataCenterState({
         ...dataCenterState,
         dataCenters: result.dataCenters,
@@ -31,7 +32,8 @@ const DataCenter = () => {
   const checkHealth = (current, max) => {
     const percentage = (current / max) * 100;
     let result;
-    switch (percentage) {
+
+    switch (true) {
       case percentage > 99:
         result = "Full";
         break;
@@ -53,6 +55,7 @@ const DataCenter = () => {
       default:
         result = "broken";
     }
+
     return result;
   };
 
@@ -68,8 +71,6 @@ const DataCenter = () => {
           <th>Action</th>
           {/* <th>Difficulty</th> */}
           <th>Health</th>
-          <th>Attacker</th>
-          <th>Alliance</th>
         </tr>
       </thead>
       <tbody>
@@ -77,7 +78,7 @@ const DataCenter = () => {
           <tr key={dc._id}>
             <th scope="row">{dc.name}</th>
             <td id={`revenueTip${i}`}>{dc.price}</td>
-            <td>{dc.status}</td>
+            <td id={`ownerTip${i}`}>{dc.status}</td>
             <tr>
               {/* shouldn't be visible if it's not purchased yet */}
               <td>{dc.requiredStash[0].name}</td>
@@ -97,6 +98,9 @@ const DataCenter = () => {
             <UncontrolledTooltip placement="top" target={`revenueTip${i}`}>
               <span style={{ color: "#F08F18" }}>&#8383;</span>
               {dc.minutlyrevenue} per minute
+            </UncontrolledTooltip>
+            <UncontrolledTooltip placement="top" target={`ownerTip${i}`}>
+              {dc.status === "Owned" && dc.owner.name}
             </UncontrolledTooltip>
           </tr>
         ))}

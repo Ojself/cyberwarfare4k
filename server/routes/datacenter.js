@@ -25,7 +25,8 @@ router.get("/", async (req, res, next) => {
   const userId = req.user._id;
   let dataCenters = await DataCenter.find()
     .populate("requiredStash", ["name", "price"])
-    .populate("city", ["name", "residents"]);
+    .populate("city", ["name", "residents"])
+    .populate("owner", ["name"]);
 
   // filter out the datacenters that don't belong to the city the user is in
   dataCenters = dataCenters.filter(el => {

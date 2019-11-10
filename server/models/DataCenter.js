@@ -1,21 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const City = require('./City');
-const Stash = require('./Stash');
+const City = require("./City");
+const Stash = require("./Stash");
 
 const dataCenterSchema = new Schema({
   name: String,
   status: {
     type: String,
-    enum: ['Available', 'Malfunctioning', 'Resetting', 'Owned'],
-    default: 'Available'
+    enum: ["Available", "Malfunctioning", "Resetting", "Owned"],
+    default: "Available"
   },
   price: {
     type: Number,
     default: 1000000
   },
-  requiredStash: [{ type: Schema.Types.ObjectId, ref: 'Stash' }],
+  requiredStash: [{ type: Schema.Types.ObjectId, ref: "Stash" }],
   difficulty: Number,
   currentFirewall: {
     type: Number,
@@ -25,10 +25,10 @@ const dataCenterSchema = new Schema({
     type: Number,
     default: 100
   },
-  city: { type: Schema.Types.ObjectId, ref: 'City' },
-  attacker: { type: Schema.Types.ObjectId, ref: 'User' },
-  owner: { type: Schema.Types.ObjectId, ref: 'User' },
-  ownerAlliance: { type: Schema.Types.ObjectId, ref: 'Alliance' },
+  city: { type: Schema.Types.ObjectId, ref: "City" },
+  attacker: { type: Schema.Types.ObjectId, ref: "User" },
+  owner: { type: Schema.Types.ObjectId, ref: "User" },
+  ownerAlliance: { type: Schema.Types.ObjectId, ref: "Alliance" },
   minutlyrevenue: Number,
   timeToAvailable: Number,
   gracePeriod: {
@@ -38,9 +38,9 @@ const dataCenterSchema = new Schema({
 });
 
 dataCenterSchema.methods.handlePurchase = function(user) {
-  console.log('handlePurchase method triggered');
+  console.log("handlePurchase method triggered");
   this.owner = user._id;
-  this.status = 'Owned';
+  this.status = "Owned";
   this.attacker = null; /* might not work because only allows objectId. maybe set to same as owner */
   // gracePeriod for x minutes to let user enjoy some revenue?
   this.save();
@@ -51,7 +51,7 @@ dataCenterSchema.methods.handleAttack = async function(
   dataCenterOwner,
   result
 ) {
-  console.log('handleAttack method triggered');
+  console.log("handleAttack method triggered");
   this.gracePeriod = true;
   // graces the datacenter for a minute so the user can't attack too quick
   let gracePeriodTimeOut = setTimeout(() => {
@@ -80,23 +80,23 @@ dataCenterSchema.methods.handleAttack = async function(
 // resets required stash and removes owner and attacker id
 // heals up the datacenter
 dataCenterSchema.methods.handleDestroyed = async function(dataCenter, result) {
-  console.log('handleDataCenterAttack triggered');
+  console.log("handleDataCenterAttack triggered");
   this.gracePeriod = true;
   this.requiredStash = [];
   this.owner = null;
-  this.status = 'Malfunctioning';
+  this.status = "Malfunctioning";
   this.currentFirewall = this.maxFirewall;
 
   let randomNumber = Math.ceil(Math.random() * 3);
   const stashes = await Stash.find();
 
   setTimeout(() => {
-    this.status = 'Resetting';
+    this.status = "Resetting";
     this.save();
   }, 1000 * 60 * 15);
 
   setTimeout(() => {
-    this.status = 'Available';
+    this.status = "Available";
     this.gracePeriod = false;
     this.attacker = null;
     this.currentFirewall = this.maxFirewall;
@@ -106,9 +106,10 @@ dataCenterSchema.methods.handleDestroyed = async function(dataCenter, result) {
         stashes[Math.floor(Math.random() * stashes.length)]._id
       );
     }
+    this.save();
   }, 1000 * 60 * 15 + randomNumber);
 
   this.save();
 };
 
-module.exports = mongoose.model('dataCenter', dataCenterSchema);
+module.exports = mongoose.model("dataCenter", dataCenterSchema);
