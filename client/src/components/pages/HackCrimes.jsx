@@ -47,7 +47,6 @@ const HackCrimes = () => {
           <thead>
             <tr>
               <th>Name</th>
-              {/* <th>Description</th> */}
               <th>Type</th>
               <th>Difficulty</th>
               <th>Commit Crime</th>
@@ -62,12 +61,16 @@ const HackCrimes = () => {
                 <UncontrolledTooltip placement="top" target={`toolTip${i}`}>
                   {cr.description}
                 </UncontrolledTooltip>
-
-                {/* <td>{cr.description}</td> */}
                 <td>{cr.crimeType}</td>
                 <td>{cr.difficulty}</td>
+                {/* cr.difficultyString */}
                 <td>
-                  <button onClick={e => handleClick(cr._id)}>Commit</button>
+                  <button
+                    className="btn btn-warning"
+                    onClick={e => handleClick(cr._id)}
+                  >
+                    Commit
+                  </button>
                 </td>
               </tr>
             ))}

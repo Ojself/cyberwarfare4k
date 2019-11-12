@@ -8,7 +8,7 @@ const PlayerProfile = props => {
   });
   useEffect(() => {
     const opponentId = props.match.params.id;
-    async function weirdFetch(opponentId) {
+    async function fetchPlayerData(opponentId) {
       api.getOpponent(opponentId).then(result => {
         console.log(result, "resault");
         setOpponentState({
@@ -18,7 +18,7 @@ const PlayerProfile = props => {
         });
       });
     }
-    weirdFetch(opponentId);
+    fetchPlayerData(opponentId);
   }, [console.log(opponentState.opponent)]);
 
   const profilePage = (

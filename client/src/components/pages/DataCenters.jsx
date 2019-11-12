@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 import { Table, Button, UncontrolledTooltip } from "reactstrap";
 
@@ -58,18 +60,16 @@ const DataCenter = () => {
 
     return result;
   };
-
+  const element = <FontAwesomeIcon icon={faCoffee} />;
   const dataCenterTable = (
     <Table dark>
       <thead>
         <tr>
           <th>Name</th>
-          {/* Price only available when not owned */}
-          <th>Price</th> {/* Also, prettify number */}
-          <th>Status</th> {/* tooltip on owned? */}
+          <th>Price</th> {/* prettify number */}
+          <th>Status</th>
           <th>Required Stash</th>
           <th>Action</th>
-          {/* <th>Difficulty</th> */}
           <th>Health</th>
         </tr>
       </thead>

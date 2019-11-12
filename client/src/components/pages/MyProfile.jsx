@@ -1,148 +1,263 @@
 import React, { useState, useEffect } from "react";
+import { Progress, Table } from "reactstrap";
 import api from "../../api";
-/* NOTE: */
-/* Too much information is being sent from the backend, no need for pw, timestamps, etc */
-/* Not mobile friendly */
-/* BTC symbol instead of dollar symbol */
-/* Formating start date */
-/* Table for items */
-/* Something weird with the items. Check schematype */
-/* Format the tables */
-/* + Button needs to be an actuall button that does an API call */
 
-const MyProfile = () => {
-  const [profileState, setProfileState] = useState({
-    user: null
+const MyProfile = props => {
+  const [myProfileState, setMyProfileState] = useState({
+    user: null,
+    loading: true
   });
-
   useEffect(() => {
-    api
-      .getUser()
-      .then(user => {
-        console.log(user, "user");
-        setProfileState({
-          ...profileState,
-          user
+    async function fetchUserData() {
+      api.getUser().then(result => {
+        console.log(result, "resault");
+        setMyProfileState({
+          ...myProfileState,
+          user: result.user,
+          loading: false
         });
-      })
-      .catch(err => console.log(err));
-  }, []);
+      });
+    }
+    fetchUserData();
+  }, [console.log(myProfileState.user)]);
 
-  const handleUpgrade = e => {
-    console.log("upgrading:", e.target.name);
-    /* api call here */
-  };
+  /* const {
+    rankName,
+    exp,
+    expToLevel,
+    statPoints,
+    bounty
+  } = myProfileState.user.playerStats; */
+
+  const profilePage = myProfileState.loading ? (
+    "loading.."
+  ) : (
+    <div className="row">
+      <div className="col">
+        <h3>{myProfileState.user.name}</h3>
+      </div>
+      <div className="w-100">{/* seperator */}</div>
+      <div className="col w-25">
+        <div>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4CL6AEUtKQPO1nNCqjLvd7tGL1K_ALxiqO8MbmaA5yQcxymQn"
+            alt="hackerPic"
+          />
+        </div>
+        <div>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRIEOjHCXPvlpCeMu_nAj7MblPVHPZVUVCihYq5OF8GrYWPvVNv"
+            alt=""
+          />
+        </div>
+      </div>
+      <div className="col w-25 ">
+        <h5>Crime skills</h5>
+
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.crimeSkill.Technical}
+          max={150}
+        >
+          Technical
+        </Progress>
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.crimeSkill["Social Engineering"]}
+          max={150}
+        >
+          Social Engineering
+        </Progress>
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.crimeSkill.Forensics}
+          max={150}
+        >
+          Forensics
+        </Progress>
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.crimeSkill.Cryptography}
+          max={150}
+        >
+          Cryptography
+        </Progress>
+
+        <h5>Hack Skills</h5>
+
+        <Progress
+          className="mb-3 "
+          value={myProfileState.user.hackSkill.cpu}
+          max={150}
+        >
+          CPU
+        </Progress>
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.hackSkill.antiVirus}
+          max={150}
+        >
+          AntiVirus
+        </Progress>
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.hackSkill.encryption}
+          max={150}
+        >
+          Encryption
+        </Progress>
+
+        <h5>Exp</h5>
+
+        <Progress
+          className="mb-3"
+          value={myProfileState.user.playerStats.exp}
+          max={myProfileState.user.playerStats.expToLevel}
+        >
+          {myProfileState.user.playerStats.exp +
+            "/" +
+            myProfileState.user.playerStats.expToLevel}
+        </Progress>
+      </div>
+      <div className="col w-25">
+        <ul>
+          <li>
+            {myProfileState.loading
+              ? "Rank"
+              : myProfileState.user.playerStats.rankName}
+          </li>
+          <li>
+            Networth: <span style={{ color: "#F08F18" }}>&#8383;</span>
+            {myProfileState.user.playerStats.networth}
+          </li>
+          <li>
+            Attacks initiated:
+            {myProfileState.user.fightInformation.attacksInitiated}
+          </li>
+          <li>
+            Attacks Received:
+            {myProfileState.user.fightInformation.attacksVictim}
+          </li>
+          <li>
+            Shutdowns:
+            {myProfileState.user.fightInformation.shutdowns}
+          </li>
+
+          {myProfileState.user.playerStats.bounty && (
+            <li>
+              Bounty: <span style={{ color: "#F08F18" }}>&#8383;</span>
+              {myProfileState.user.playerStats.bounty}
+            </li> /* todo clickable with bounty donor? module */
+          )}
+          {myProfileState.loading ||
+            (myProfileState.user.playerStats.statPoints && (
+              <li>
+                Available Statpoints
+                {myProfileState.loading
+                  ? "0"
+                  : myProfileState.user.playerStats.statPoints}
+              </li>
+            ))}
+        </ul>
+      </div>
+      <div className="col w-25">
+        <h5>Items</h5>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>CPU</th>
+              <th>AVS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Buy?</td>
+              <td>Buy?</td>
+            </tr>
+          </tbody>
+
+          <thead>
+            <tr>
+              <th>Firewall</th>
+              <th>Encryption</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Buy?</td>
+              <td>Buy?</td>
+            </tr>
+          </tbody>
+        </Table>
+
+        <h5>Currencies</h5>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>LTC</th>
+              <th>ETH</th>
+              <th>XRP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {myProfileState.user.currencies.Litecoin
+                  ? myProfileState.user.currencies.Litecoin
+                  : "Buy?"}
+              </td>
+              <td>
+                {myProfileState.user.currencies.Ethereum
+                  ? myProfileState.user.currencies.Ethereum
+                  : "Buy?"}
+              </td>
+              <td>
+                {myProfileState.user.currencies.Ripple
+                  ? myProfileState.user.currencies.Ripple
+                  : "Buy?"}
+              </td>
+            </tr>
+          </tbody>
+
+          <thead>
+            <tr>
+              <th>XMR</th>
+              <th>ZEC</th>
+              <th>DASH</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                {myProfileState.user.currencies.Monero
+                  ? myProfileState.user.currencies.Monero
+                  : "Buy?"}
+              </td>
+              <td>
+                {myProfileState.user.currencies.Zcash
+                  ? myProfileState.user.currencies.Zcash
+                  : "Buy?"}
+              </td>
+              <td>
+                {/* <td>
+                {myProfileState.user.currencies.Dash
+                  ? myProfileState.user.currencies.Dash
+                  : "Buy?"}
+              </td> */}
+                Buy?
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+        <h5>Stash</h5>
+        <h5>Special Weapons</h5>
+      </div>
+    </div>
+  );
 
   return (
-    <div>
-      <h2>My profile</h2>
-
-      {/* Bootstrap table */}
-      {/* 1st table */}
-      <table className="table table-sm table-dark">
-        <thead>
-          <tr>
-            <th scope="col">STATUS:</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Name:</th>
-            <td>{profileState.username}</td>
-          </tr>
-          <tr>
-            <th scope="row">Alliance:</th>
-            <td>{profileState.alliance}</td>
-          </tr>
-          <tr>
-            <th scope="row">Rank:</th>
-            <td>{profileState.rankName}</td>
-          </tr>
-          <tr>
-            <th scope="row">Networth:</th>
-            <td>{profileState.networth}$</td>
-          </tr>
-          <tr>
-            <th scope="row">Start date:</th>
-            <td>{profileState.createdAt}</td>
-          </tr>
-        </tbody>
-      </table>
-      {/* 2nd table */}
-      <table className="table table-sm table-dark">
-        <thead>
-          <tr>
-            <th scope="col">HACK STATS:</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">EXP:</th>
-            <td>{profileState.exp}</td>
-          </tr>
-          <tr>
-            <th scope="row">EXP to new rank:</th>
-            <td>{profileState.expToLevel}</td>
-          </tr>
-          <tr>
-            <th scope="row">Shutdowns:</th>
-            <td>{profileState.rankName}</td>
-          </tr>
-          <tr>
-            <th scope="row">Crime Skill:</th>
-            <td>{profileState.crimeSkill}</td>
-          </tr>
-        </tbody>
-      </table>
-      {/* 3rd table */}
-      <table className="table table-sm table-dark">
-        <thead>
-          <tr>
-            <th scope="col">HACK SKILLS:</th>
-            <th scope="col">VALUE:</th>
-            <th scope="col">UPGRADE:</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Firewall:</th>
-            <td>{profileState.maxFirewall}</td>
-            <td>
-              <button name="maxFirewall" onClick={e => handleUpgrade(e)}>
-                +
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">CPU:</th>
-            <td>{profileState.cpu}</td>
-            <td>
-              <button name="cpu" onClick={e => handleUpgrade(e)}>
-                +
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">AntiVirus:</th>
-            <td>{profileState.antiVirus}</td>
-            <td>
-              <button name="antiVirus" onClick={e => handleUpgrade(e)}>
-                +
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Encryption:</th>
-            <td>{profileState.encryption}</td>
-            <td>
-              <button name="encryption" onClick={e => handleUpgrade(e)}>
-                +
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {/* 4th table Items here */}
+    <div className="container">
+      {myProfileState.loading ? <p>loading..</p> : profilePage}
     </div>
   );
 };
