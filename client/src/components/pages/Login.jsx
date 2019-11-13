@@ -30,21 +30,21 @@ const Login = ({ history }) => {
     <div className="Login">
       <h2>Login</h2>
       <form>
-        email:{" "}
+        email:
         <input
           type="text"
           value={loginState.email}
           name="email"
           onChange={handleInputChange}
-        />{" "}
+        />
         <br />
-        Password:{" "}
+        Password:
         <input
           type="password"
           value={loginState.password}
           name="password"
           onChange={handleInputChange}
-        />{" "}
+        />
         <br />
         <button onClick={e => handleClick(e)}>Login</button>
       </form>

@@ -27,6 +27,12 @@ import StatusBar from "./pages/smaller/statusbar";
 // styling
 import {
   Collapse,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  InputGroup,
+  InputGroupAddon,
+  Input,
   Navbar,
   NavbarToggler,
   NavbarBrand,
@@ -34,12 +40,7 @@ import {
   NavItem,
   NavLink,
   UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  InputGroup,
-  InputGroupAddon,
-  Input
+  UncontrolledTooltip
 } from "reactstrap";
 
 const App = () => {
@@ -67,6 +68,13 @@ const App = () => {
 
   const handleLogoutClick = e => {
     api.logout();
+  };
+
+  const rankChecker = reqLevel => {
+    const { rank } = appState.loading ? 1 : appState.user.playerStats;
+
+    console.log(reqLevel >= rank, rank);
+    return reqLevel >= rank;
   };
 
   const currentCity = appState.loading ? "City" : "cityName ";
@@ -107,10 +115,33 @@ const App = () => {
                 <DropdownMenu right>
                   <DropdownItem href="/petty-hacker">Petty</DropdownItem>
                   <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-                  {/* <DropdownItem divider /> */}
                   <DropdownItem>Organized Crime</DropdownItem>
                   <DropdownItem href="/">Hack player</DropdownItem>
                 </DropdownMenu>
+              </UncontrolledDropdown>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Alliance
+                </DropdownToggle>
+                {appState.user && appState.user.alliance ? (
+                  <DropdownMenu right>
+                    <DropdownItem href="/">Overview</DropdownItem>
+                    <DropdownItem href="/">Leave Alliance</DropdownItem>
+                  </DropdownMenu>
+                ) : (
+                  <DropdownMenu id="allianceCreateNav" right>
+                    <DropdownItem href="/" disabled={rankChecker(4)}>
+                      Create..
+                    </DropdownItem>
+                    <UncontrolledTooltip
+                      placement="top"
+                      target="allianceCreateNav"
+                    >
+                      {rankChecker(4) &&
+                        "You are too unexperienced to create your own alliance"}
+                    </UncontrolledTooltip>
+                  </DropdownMenu>
+                )}
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
@@ -130,12 +161,18 @@ const App = () => {
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  Forum
+                  Communication
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Alliance</DropdownItem>
-                  {/* <DropdownItem divider /> */}
-                  <DropdownItem>Public</DropdownItem>
+                  {appState.user && appState.user.alliance && (
+                    <>
+                      <DropdownItem>Alliance Forum</DropdownItem>
+                      <DropdownItem divider />
+                    </>
+                  )}
+                  <DropdownItem>Public Forum</DropdownItem>
+                  <DropdownItem>Messages</DropdownItem>
+                  <DropdownItem>Notifications</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               {!api.isLoggedIn() && (

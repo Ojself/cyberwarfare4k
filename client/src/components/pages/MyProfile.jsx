@@ -21,14 +21,6 @@ const MyProfile = props => {
     fetchUserData();
   }, [console.log(myProfileState.user)]);
 
-  /* const {
-    rankName,
-    exp,
-    expToLevel,
-    statPoints,
-    bounty
-  } = myProfileState.user.playerStats; */
-
   const profilePage = myProfileState.loading ? (
     "loading.."
   ) : (
@@ -120,44 +112,38 @@ const MyProfile = props => {
         </Progress>
       </div>
       <div className="col w-25">
-        <ul>
-          <li>
+        <ul className="list-group">
+          <li className="list-group-item">
             {myProfileState.loading
               ? "Rank"
               : myProfileState.user.playerStats.rankName}
           </li>
-          <li>
-            Networth: <span style={{ color: "#F08F18" }}>&#8383;</span>
+          <li className="list-group-item">
+            Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
             {myProfileState.user.playerStats.networth}
           </li>
-          <li>
-            Attacks initiated:
+          <li className="list-group-item">
+            Attacks initiated:{" "}
             {myProfileState.user.fightInformation.attacksInitiated}
           </li>
-          <li>
-            Attacks Received:
+          <li className="list-group-item">
+            Attacks Received:{" "}
             {myProfileState.user.fightInformation.attacksVictim}
           </li>
-          <li>
-            Shutdowns:
-            {myProfileState.user.fightInformation.shutdowns}
+          <li className="list-group-item">
+            Shutdowns: {myProfileState.user.fightInformation.shutdowns}
           </li>
-
-          {myProfileState.user.playerStats.bounty && (
-            <li>
-              Bounty: <span style={{ color: "#F08F18" }}>&#8383;</span>
-              {myProfileState.user.playerStats.bounty}
-            </li> /* todo clickable with bounty donor? module */
-          )}
-          {myProfileState.loading ||
-            (myProfileState.user.playerStats.statPoints && (
-              <li>
-                Available Statpoints
-                {myProfileState.loading
-                  ? "0"
-                  : myProfileState.user.playerStats.statPoints}
-              </li>
-            ))}
+          <li className="list-group-item">
+            Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
+            {myProfileState.user.playerStats.bounty}
+          </li>
+          {/* todo clickable with bounty donor? module */}
+          <li className="list-group-item">
+            Available Statpoints:{" "}
+            {myProfileState.loading
+              ? "0"
+              : myProfileState.user.playerStats.statPoints}
+          </li>
         </ul>
       </div>
       <div className="col w-25">

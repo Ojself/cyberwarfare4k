@@ -204,6 +204,7 @@ const CryptoCurrencies = props => {
           <CryptoCurrenciesChart data={[cryptoState.massagedCurrency[2]]} />
           <CryptoCurrenciesChart data={[cryptoState.massagedCurrency[3]]} />
           <CryptoCurrenciesChart data={[cryptoState.massagedCurrency[4]]} />
+          {/* <CryptoCurrenciesChart data={[cryptoState.massagedCurrency[5]]} /> */}
         </>
       )}
     </div>
