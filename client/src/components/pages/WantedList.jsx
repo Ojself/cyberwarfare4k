@@ -91,7 +91,7 @@ const WantedList = () => {
 
   return (
     <div>
-      <h2>Datacenters</h2>
+      <h3>Wanted Hackers</h3>
       {wantedState.loading ? <p>a</p> : bountyUsersTable}
       {addUnlistedPlayer}
     </div>

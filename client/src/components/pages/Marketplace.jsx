@@ -45,7 +45,7 @@ const MarketPlace = props => {
             <th scope="row">{item.name}</th>
             <td>{item.type}</td>
             <td>{item.price}</td>
-            <td>{item.bonus}</td>
+            <td>+{item.bonus}</td>
             <td>
               <Button
                 name={item._id}

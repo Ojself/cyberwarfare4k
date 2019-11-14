@@ -13,6 +13,7 @@ import SystemRepair from "./pages/SystemRepair";
 import Marketplace from "./pages/Marketplace";
 import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
+import MiniGame from "./pages/minigame/MiniGame";
 import Arcade from "./pages/Arcade";
 import CreateHacker from "./pages/CreateHacker";
 import Petty from "./pages/Petty";
@@ -72,8 +73,6 @@ const App = () => {
 
   const rankChecker = reqLevel => {
     const { rank } = appState.loading ? 1 : appState.user.playerStats;
-
-    console.log(reqLevel >= rank, rank);
     return reqLevel >= rank;
   };
 
@@ -97,13 +96,13 @@ const App = () => {
                   Info
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>My profile</DropdownItem>
-                  <DropdownItem>
-                    My alliance {/* appState.user.alliance.name? */}
-                  </DropdownItem>
-                  <DropdownItem>Top Hackers</DropdownItem>
+                  <DropdownItem href="/my-profile">My Profile</DropdownItem>
+
+                  <DropdownItem href="/ladder">Top Hackers</DropdownItem>
                   <DropdownItem>Top Alliances</DropdownItem>
-                  <DropdownItem href="/wanted-list">Wanted</DropdownItem>
+                  <DropdownItem href="/wanted-list">
+                    Wanted Hackers
+                  </DropdownItem>
                   <DropdownItem href="/arcade">Arcade</DropdownItem>
                   <DropdownItem href="/information">Information</DropdownItem>
                 </DropdownMenu>
@@ -148,7 +147,7 @@ const App = () => {
                   {currentCity}
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Locals</DropdownItem>
+                  <DropdownItem>Local Hackers</DropdownItem>
                   <DropdownItem href="/datacenters">Datacenters</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem href="/vpn">VPN</DropdownItem>
@@ -157,6 +156,7 @@ const App = () => {
                   </DropdownItem>
                   <DropdownItem href="/marketplace">Marketplace</DropdownItem>
                   <DropdownItem>Chip Chop Shop</DropdownItem>
+                  <DropdownItem href="/">Bank Transfer</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
@@ -196,6 +196,7 @@ const App = () => {
           </Collapse>
         </Navbar>
         <StatusBar loading={appState.loading} user={appState.user} />
+
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/my-profile" component={MyProfile} />
@@ -221,6 +222,7 @@ const App = () => {
           <Route path="/datacenters" component={DataCenters} />
           <Route path="/information" component={Information} />
           <Route path="/arcade" component={Arcade} />
+          {<Route path="/minigame" component={MiniGame} />}
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
           <Route path="/secret" component={Secret} />
