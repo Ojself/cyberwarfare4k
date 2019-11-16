@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const stashPriceInterval = require('../intervals/stashPriceInterval');
-const batteryInterval = require('../intervals/batteryInterval');
-const currencyPriceInterval = require('../intervals/currencyPriceInterval');
+const mongoose = require("mongoose");
+const stashPriceInterval = require("../intervals/stashPriceInterval");
+const batteryInterval = require("../intervals/batteryInterval");
+const currencyPriceInterval = require("../intervals/currencyPriceInterval");
 
 // Don't forget to set "MONGODB_URI" in ~/server/.env
 const uri =
@@ -17,19 +17,19 @@ mongoose
   })
   .then(() => {
     /* Gives user more energy every 30 minute */
-    console.log('SERVER: battery interval started');
+    console.log("SERVER: battery interval started");
     setInterval(batteryInterval, 30 * 60 * 1000);
   })
   .then(() => {
     /* Changes the stash price every 60 minute */
-    console.log('SERVER: stash price interval started');
+    console.log("SERVER: stash price interval started");
     setInterval(stashPriceInterval, 60 * 60 * 1000);
   })
   .then(() => {
     /* Changes the price of every crypto currency 60 minute */
-    console.log('SERVER: currency price interval started');
+    console.log("SERVER: currency price interval started");
     setInterval(currencyPriceInterval, /* 60 * */ 60 * 1000);
   })
   .catch(err => {
-    console.error('Error connecting to mongo', err);
+    console.error("Error connecting to mongo", err);
   });

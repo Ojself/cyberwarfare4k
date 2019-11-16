@@ -112,4 +112,4 @@ dataCenterSchema.methods.handleDestroyed = async function(dataCenter, result) {
   this.save();
 };
 
-module.exports = mongoose.model("dataCenter", dataCenterSchema);
+module.exports = mongoose.model("DataCenter", dataCenterSchema);

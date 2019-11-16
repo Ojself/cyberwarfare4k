@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 const User = require("../models/User");
 const Alliance = require("../models/Alliance");
@@ -8,21 +7,27 @@ const Alliance = require("../models/Alliance");
 // PRIVATE
 // Retrives all alliances
 
-router.get("/", async (req, res) => {
-  const alliances = await Alliance.find();
+router.get("/ladder", async (req, res, next) => {
+  let alliances = await Alliance.find().populate("members", [
+    "hackSkill",
+    "crimeSkill",
+    "currencies",
+    "fightInformation",
+    "playerStats",
+    "name"
+  ]);
 
-  return res.status(200).json({
+  let stats = findAllianceStats(alliances);
+  stats = getShuffledArr(stats);
+  res.status(200).json({
     success: true,
     message: "alliances loaded..",
-    alliances
+    stats
   });
 });
 
-// todo lean() on mongoose
-
 router.post("/create", async (req, res) => {
   const userId = req.user_id;
-  console.log(req.user);
   const { allianceChoise } = req.body;
 
   const user = await User.findById(userId);
@@ -166,6 +171,82 @@ function checkCreateAllianceCriteria(user, alliance) {
   // if user doesn't have level 5
 
   return null;
+}
+
+const getShuffledArr = arr => {
+  if (arr.length === 1) {
+    return arr;
+  }
+  const rand = Math.floor(Math.random() * arr.length);
+  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i != rand))];
+};
+
+// forgive me for this function
+function findAllianceStats(alliances) {
+  const result = [];
+  for (let i = 0; i < alliances.length; i++) {
+    const allianceStats = {
+      name: alliances[i].name,
+      members: alliances[i].members.length,
+      _id: alliances[i]._id,
+      totHackSkill: 0,
+      totCrimeSkill: 0,
+      totCurrencies: 0,
+      totWealth: 0,
+      totBounty: 0,
+      totRank: 0,
+      totShutdowns: 0,
+      totAttacksInitiated: 0,
+      totAttacksVictim: 0,
+      totCrimesInitiated: 0,
+      totVpnChanges: 0,
+      totCurrencyPurchases: 0
+    };
+
+    for (let j = 0; j < alliances[i].members.length; j++) {
+      allianceStats.totWealth = Object.values(
+        alliances[i].members[j].hackSkill
+      ).reduce((t, n) => t + n);
+
+      allianceStats.totHackSkill = Object.values(
+        alliances[i].members[j].hackSkill
+      ).reduce((t, n) => t + n);
+
+      allianceStats.totCrimeSkill = Object.values(
+        alliances[i].members[j].crimeSkill
+      ).reduce((t, n) => t + n);
+
+      allianceStats.totCurrencies = Object.values(
+        alliances[i].members[j].currencies
+      ).reduce((t, n) => t + n);
+
+      allianceStats.totWealth += alliances[i].members[j].playerStats.bitCoins;
+
+      allianceStats.totBounty += alliances[i].members[j].playerStats.bounty;
+
+      allianceStats.totRank += alliances[i].members[j].playerStats.rank;
+
+      allianceStats.totShutdowns +=
+        alliances[i].members[j].fightInformation.shutdowns;
+
+      allianceStats.totAttacksInitiated +=
+        alliances[i].members[j].fightInformation.attacksInitiated;
+
+      allianceStats.totAttacksVictim +=
+        alliances[i].members[j].fightInformation.attacksVictim;
+
+      allianceStats.totCrimesInitiated +=
+        alliances[i].members[j].fightInformation.crimesInitiated;
+
+      allianceStats.totVpnChanges +=
+        alliances[i].members[j].fightInformation.vpnChanges;
+
+      allianceStats.totCurrencyPurchases +=
+        alliances[i].members[j].fightInformation.currencyPurchases;
+    }
+    result.push(allianceStats);
+  }
+  return result;
 }
 
 module.exports = router;

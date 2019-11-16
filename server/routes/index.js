@@ -5,6 +5,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Item = require("../models/Item");
 const City = require("../models/City");
+const Session = require("../models/Session");
 
 // might be written wrongly TODO
 // Ensures that email confirmation is been made
@@ -148,24 +149,24 @@ router.get("/opponent/:id", async (req, res, next) => {
 // Gets all user
 
 // todo add query to sort differently. by income, rank, kills etc
-router.get("/ladder", isLoggedIn, async (req, res, next) => {
-  console.log("you are now in ladder route");
+router.get("/ladder", async (req, res, next) => {
+  let users = await User.find().populate("alliance", "name");
 
-  let users = await User.find();
-
-  users = users.map(user =>
-    nullifyValues(user, [
-      "account",
-      "hackSkill",
-      "crimeSkill",
-      "marketPlaceItems",
-      "specialWeapons",
-      "fightInformation",
-      "stash",
-      "currencies",
-      "email"
-    ])
-  );
+  users = users
+    .filter(u => /^(?!unconfirmed).*/.test(u.name))
+    .map(user =>
+      nullifyValues(user, [
+        "account",
+        "hackSkill",
+        "crimeSkill",
+        "marketPlaceItems",
+        "specialWeapons",
+        "stash",
+        "currencies",
+        "email"
+      ])
+    );
+  users = getShuffledArr(users);
 
   res.status(200).json({
     success: true,
@@ -261,5 +262,47 @@ router.post("/transfer/:receiverId", async (req, res, next) => {
     message: `You transfered ${amount} to ${receiver.name}..`
   });
 });
+
+// @GET
+// PRIVATE
+// Gets all online users
+
+router.get("/online", async (req, res, next) => {
+  // Default expire for session
+  const twoWeeks = 1000 * 60 * 60 * 24 * 7 * 2;
+  // only those who have activity from last five minutes
+  const fiveMin = 1000 * 60 * 5;
+  // this exact date
+  const now = Date.now();
+  // above variables put together
+  const limitTime = new Date(now + twoWeeks - fiveMin);
+  console.log(limitTime, "limitTime");
+  let onlineIds;
+
+  await Session.find().then(result => {
+    console.log(result[0].expires, result[0].expires > limitTime, "result");
+    const filteredIds = result
+      .filter(x => x.expires > limitTime)
+      .map(y => y.session.match(/[a-f\d]{24}/g, ""))
+      .filter(el => el != null);
+    onlineIds = [].concat(...filteredIds);
+  });
+  console.log(onlineIds, "onlineids");
+  const onlinePlayers = await User.find({ _id: { $in: onlineIds } });
+
+  return res.status(200).json({
+    success: true,
+    message: "Online players loaded..",
+    onlinePlayers
+  });
+});
+
+const getShuffledArr = arr => {
+  if (arr.length === 1) {
+    return arr;
+  }
+  const rand = Math.floor(Math.random() * arr.length);
+  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i != rand))];
+};
 
 module.exports = router;
