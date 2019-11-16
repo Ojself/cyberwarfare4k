@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, NavLink, Button } from "reactstrap";
 import api from "../../api";
 
-const Ladder = () => {
+const Ladder = props => {
   const [ladderState, setLadderState] = useState({
     users: [],
     message: null,
@@ -10,11 +10,7 @@ const Ladder = () => {
   });
 
   useEffect(() => {
-    /* add query here */
-    /* random sort method on server side */
-
-    api.getAllUsers().then(result => {
-      console.log(result);
+    getUsers().then(result => {
       setLadderState({
         ...ladderState,
         users: result.users,
@@ -24,25 +20,75 @@ const Ladder = () => {
     });
   }, []);
 
+  const getUsers = async () => {
+    const users = await api.getAllUsers();
+    return users;
+  };
+
+  const handleSort = (e, sort) => {
+    e.preventDefault();
+    let sortedUsers = ladderState.users || [];
+
+    switch (sort) {
+      case "hacker":
+        sortedUsers = ladderState.users.sort((a, b) =>
+          ("" + a.name).localeCompare(b.name)
+        );
+        break;
+      case "alliance":
+        sortedUsers = ladderState.users.sort((a, b) =>
+          ("" + a.alliance.name).localeCompare(b.alliance.name)
+        );
+        break;
+      case "rank":
+        sortedUsers = ladderState.users.sort(
+          (b, a) => a.playerStats.rank - b.playerStats.rank
+        );
+        break;
+      case "shutdowns":
+        sortedUsers = ladderState.users.sort(
+          (b, a) => a.fightInformation.shutdowns - b.fightInformation.shutdowns
+        );
+        break;
+      case "crimes":
+        sortedUsers = ladderState.users.sort(
+          (b, a) =>
+            a.fightInformation.crimesInitiated -
+            b.fightInformation.crimesInitiated
+        );
+        break;
+      case "networth":
+        sortedUsers = ladderState.users.sort(
+          (b, a) => a.playerStats.networth - b.playerStats.networth
+        );
+        break;
+    }
+
+    setLadderState({
+      ...ladderState,
+      users: sortedUsers
+    });
+  };
+
   return (
     <div>
       <h2>Ladder</h2>
-      <Table dark>
+      <Table striped dark>
         <thead>
           <tr>
-            <th>Hacker</th>
-            <th>Alliance</th>
-            <th>Rank</th>
-            <th>Shutdowns</th>
-            <th>Crimes</th>
-            <th>Networth</th>
+            <th onClick={e => handleSort(e, "hacker")}>Hacker</th>
+            <th onClick={e => handleSort(e, "alliance")}>Alliance</th>
+            <th onClick={e => handleSort(e, "rank")}>Rank</th>
+            <th onClick={e => handleSort(e, "shutdowns")}>Shutdowns</th>
+            <th onClick={e => handleSort(e, "crimes")}>Crimes</th>
+            <th onClick={e => handleSort(e, "networth")}>Networth</th>
           </tr>
         </thead>
         <tbody>
           {ladderState.users.map((user, i) => (
             <tr key={user._id}>
               <th scope="row">
-                <NavLink href={`/player/${user._id}`}>{user.name}</NavLink>
+                <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
               </th>
               <td>
                 {user.alliance ? (

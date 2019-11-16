@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-import { Table, InputGroup, Input, InputGroupAddon, Button } from "reactstrap";
+import {
+  Table,
+  InputGroup,
+  Input,
+  InputGroupAddon,
+  Button,
+  NavLink
+} from "reactstrap";
 
 const WantedList = () => {
   const [wantedState, setWantedState] = useState({
@@ -61,7 +68,9 @@ const WantedList = () => {
       <tbody>
         {wantedState.bountyUsers.map(user => (
           <tr key={user._id}>
-            <th scope="row">{user.name}</th>
+            <th scope="row">
+              <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
+            </th>
             <td>{user.alliance}</td>
             <td>{user.playerStats.rankName}</td>
             <td>{user.playerStats.bountyDonors[0].name}</td>

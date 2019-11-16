@@ -4,11 +4,12 @@ import api from "../api";
 
 import Home from "./pages/Home";
 import MyProfile from "./pages/MyProfile";
-import PlayerProfile from "./pages/PlayerProfile";
+import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
 import WantedList from "./pages/WantedList";
 import Alliance from "./pages/Alliance";
+import AllianceLadder from "./pages/AllianceLadder";
 import SystemRepair from "./pages/SystemRepair";
 import Marketplace from "./pages/Marketplace";
 import Information from "./pages/Information";
@@ -99,7 +100,9 @@ const App = () => {
                   <DropdownItem href="/my-profile">My Profile</DropdownItem>
 
                   <DropdownItem href="/ladder">Top Hackers</DropdownItem>
-                  <DropdownItem>Top Alliances</DropdownItem>
+                  <DropdownItem href="/alliance-ladder">
+                    Top Alliances
+                  </DropdownItem>
                   <DropdownItem href="/wanted-list">
                     Wanted Hackers
                   </DropdownItem>
@@ -189,6 +192,7 @@ const App = () => {
                 <NavItem>
                   <NavLink href="/" onClick={e => handleLogoutClick(e)}>
                     Logout
+                    <p style={{ "font-size": "0.5em" }}>sudo rm -rf </p>
                   </NavLink>
                 </NavItem>
               )}
@@ -200,8 +204,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/my-profile" component={MyProfile} />
-          <Route path="/player/:id" component={PlayerProfile} />
-          <Route path="/player/:id" render={() => <PlayerProfile />} />
+          <Route path="/hacker/:id" component={HackerProfile} />
           <Route path="/create-hacker" component={CreateHacker} />
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/hack-crimes" component={HackCrimes} />
@@ -215,14 +218,14 @@ const App = () => {
               <CryptoCurrency loading={appState.loading} user={appState.user} />
             )}
           />
-
           <Route path="/vpn" render={() => <VPN user={appState.user} />} />
           <Route path="/system-repair" component={SystemRepair} />
           <Route path="/ladder" component={Ladder} />
+          <Route path="/alliance-ladder" component={AllianceLadder} />
           <Route path="/datacenters" component={DataCenters} />
           <Route path="/information" component={Information} />
-          <Route path="/arcade" component={Arcade} />
-          {<Route path="/minigame" component={MiniGame} />}
+          <Route path="/arcade" component={Arcade} /> {/* remove? */}
+          <Route path="/minigame" component={MiniGame} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
           <Route path="/secret" component={Secret} />

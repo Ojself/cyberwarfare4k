@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-const PlayerProfile = props => {
+const HackerProfile = props => {
   const [opponentState, setOpponentState] = useState({
     opponent: null,
     loading: true
@@ -77,4 +77,4 @@ const PlayerProfile = props => {
   return <div>{opponentState.loading ? <p>loading..</p> : profilePage}</div>;
 };
 
-export default PlayerProfile;
+export default HackerProfile;

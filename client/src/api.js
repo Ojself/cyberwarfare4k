@@ -103,6 +103,13 @@ export default {
       .catch(errHandler);
   },
 
+  getAllAlliances() {
+    return service
+      .get("/alliance/ladder")
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
   getAllItems() {
     return service
       .get("/marketplace")
