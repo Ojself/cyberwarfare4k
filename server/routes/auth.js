@@ -4,6 +4,16 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 const User = require("../models/User");
+const City = require("../models/City");
+
+const cityIds = [];
+
+(async function getCities() {
+  let cities = await City.find();
+  cities.forEach(element => {
+    cityIds.push(element._id);
+  });
+})();
 
 // const { sendConfirmation } = require('../configs/nodemailer');
 
@@ -40,13 +50,18 @@ router.post("/signup", (req, res, next) => {
         ip: [ip]
       };
       const name = `unconfirmedplayer${Date.now()}`;
+      const playerStats = {
+        city: cityIds[Math.floor(Math.random() * cityIds.length)]
+      };
 
       const newUser = new User({
         email,
         account,
         confirmationCode,
-        name
+        name,
+        playerStats
       });
+
       return newUser.save();
     })
     .then(userSaved => {

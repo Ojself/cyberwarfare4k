@@ -41,7 +41,6 @@ const WantedList = () => {
     const bounty = wantedState[name];
 
     const result = await api.addBounty({ name, bounty });
-    console.log(result, "result");
     setWantedState({
       ...wantedState,
       message: "something happend maybe"
@@ -71,9 +70,13 @@ const WantedList = () => {
             <th scope="row">
               <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
             </th>
-            <td>{user.alliance}</td>
+            <td>
+              <NavLink href={`/hacker/${user.alliance._id}`}>
+                {user.alliance.name}
+              </NavLink>
+            </td>
             <td>{user.playerStats.rankName}</td>
-            <td>{user.playerStats.bountyDonors[0].name}</td>
+            <td>{user.playerStats.bountyDonors.length}</td>
             <td>{user.playerStats.bounty}</td>
             <td>
               <InputGroup>

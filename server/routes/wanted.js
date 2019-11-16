@@ -10,7 +10,9 @@ const { nullifyValues } = require("../middlewares/middleHelpers.js");
 // Retrives all users and all users with a bounty
 
 router.get("/", async (req, res, next) => {
-  let users = await User.find().populate("playerStats.bountyDonors", "name");
+  let users = await User.find()
+    .populate("playerStats.bountyDonors", "name")
+    .populate("alliance", "name");
 
   if (!users) {
     return res.status(400).json({

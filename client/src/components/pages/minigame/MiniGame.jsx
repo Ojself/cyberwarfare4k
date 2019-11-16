@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import Row from "./Row";
 
 // import api from "../../api";
@@ -15,7 +15,7 @@ const MiniGame = () => {
         endValue: 0,
         speed: 200,
         isRunning: true,
-        key: Math.random(),
+        //key: Math.random(),
         direction: "ltr"
       },
       {
@@ -25,7 +25,7 @@ const MiniGame = () => {
         endValue: 0,
         speed: 200,
         isRunning: true,
-        key: Math.random(),
+        //key: Math.random(),
         direction: "rtl"
       },
       {
@@ -35,7 +35,7 @@ const MiniGame = () => {
         endValue: 0,
         speed: 200,
         isRunning: true,
-        key: Math.random(),
+        //key: Math.random(),
         direction: "ltr"
       }
     ]
@@ -91,7 +91,7 @@ const MiniGame = () => {
     //Generate new key for each row. This forces re-rendering and resetting of timers.
     const rows = gameState.rows.map(row => {
       //Generate new key
-      row.key = Math.random();
+      //row.key = Math.random();
       //Reset running timer
       row.isRunning = true;
       return row;
@@ -102,7 +102,6 @@ const MiniGame = () => {
   };
 
   const setRotatingValue = (index, value) => {
-    console.log("setting value", index, value);
     let rows = gameState.rows;
     let row = rows[index];
     row.value = value;

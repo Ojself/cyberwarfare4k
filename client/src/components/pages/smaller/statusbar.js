@@ -16,7 +16,9 @@ const StatusBar = props => {
         <div>
           <ul className="list-unstyled">
             <li className="list-inline-item" href="#">
-              {props.user.name}
+              <NavLink href={`/hacker/${props.user._id}`}>
+                {props.user.name}
+              </NavLink>
             </li>
             <li className="list-inline-item" href="#">
               {props.user.alliance}

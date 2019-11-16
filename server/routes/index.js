@@ -94,6 +94,7 @@ router.get("/get-nav-user", async (req, res, next) => {
       "playerStats.city",
       "name"
     );
+    console.log(user);
     res.status(200).json({
       success: true,
       message: "nav user loaded..",

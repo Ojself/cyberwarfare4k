@@ -77,8 +77,10 @@ const App = () => {
     return reqLevel >= rank;
   };
 
-  const currentCity = appState.loading ? "City" : "cityName ";
-  //: appState.user.playerStats.city.name; /* TODO: This will cause error cause no default city is set */
+  const currentCity = appState.loading
+    ? "City"
+    : appState.user.playerStats.city.name;
+  /* TODO: This will cause error cause no default city is set */
 
   return (
     <div>

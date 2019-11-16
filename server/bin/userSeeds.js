@@ -43,6 +43,7 @@ async function pushAllNpcToAlliance() {
 }
 
 function randomCityId() {
+  console.log(cityIds);
   return cityIds[Math.floor(Math.random() * cityIds.length)];
 }
 
