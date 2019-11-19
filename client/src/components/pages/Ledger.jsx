@@ -58,7 +58,6 @@ const Ledger = props => {
         label: u.name
       });
     });
-
     return massagedUsers;
   };
 
@@ -71,6 +70,36 @@ const Ledger = props => {
   };
   const handleDespoitAmountChange = e => {
     setLedgerState({ ...ledgerState, depositAmount: e.target.value });
+  };
+
+  const handleDeposit = depositAmount => {
+    api
+      .depositBitcoin({
+        depositAmount
+      })
+      .then(result => {
+        console.log(result, "result");
+        setLedgerState({
+          ...ledgerState,
+          depositAmount: null,
+          message: result.message
+        });
+      });
+  };
+
+  const handleWithdraw = depositAmount => {
+    api
+      .withdrawBitcoin({
+        depositAmount
+      })
+      .then(result => {
+        console.log(result, "result");
+        setLedgerState({
+          ...ledgerState,
+          depositAmount: null,
+          message: result.message
+        });
+      });
   };
 
   const handleTransfer = (transferAmount, receiverId) => {
@@ -124,11 +153,15 @@ const Ledger = props => {
                 <CardText>5% admission fee </CardText>
                 <CardText>
                   In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
-                  {props.loading ? 0 : props.user.playerStats.ledger}
+                  {props.loading
+                    ? 0
+                    : Math.floor(props.user.playerStats.ledger)}
                 </CardText>
                 <CardText>
                   On hand: <span style={{ color: "#F08F18" }}>&#8383;</span>
-                  {props.loading ? 0 : props.user.playerStats.bitCoins}
+                  {props.loading
+                    ? 0
+                    : Math.floor(props.user.playerStats.bitCoins)}
                 </CardText>
                 <InputGroup>
                   <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
@@ -141,8 +174,22 @@ const Ledger = props => {
                     onChange={handleDespoitAmountChange}
                   />
                 </InputGroup>
-                <Button>Depsoit</Button>
-                <Button>Withdraw</Button>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    handleDeposit(ledgerState.depositAmount);
+                  }}
+                >
+                  Depsoit
+                </Button>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    handleWithdraw(ledgerState.depositAmount);
+                  }}
+                >
+                  Withdraw
+                </Button>
               </Card>
             </Col>
           </Row>

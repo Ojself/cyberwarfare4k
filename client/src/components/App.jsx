@@ -22,6 +22,8 @@ import Petty from "./pages/Petty";
 import CryptoCurrency from "./pages/CryptoCurrency";
 import VPN from "./pages/VPN";
 import DataCenters from "./pages/DataCenters";
+import MessageCenter from "./pages/MessageCenter";
+import Notifications from "./pages/Notifications";
 import Secret from "./pages/Secret";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -61,6 +63,14 @@ const App = () => {
       loading: false
     });
   }, []);
+
+  const checkCommunicationtot = () => {
+    return checkCommunication("messages") || checkCommunication("notifications");
+  };
+
+  const checkCommunication = com => {
+    return appState.loading ? false : appState.user.account[com][0][1];
+  };
 
   const toggle = () => {
     SetAppState({
@@ -166,7 +176,13 @@ const App = () => {
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
+                <DropdownToggle
+                  style={{
+                    color: checkCommunicationtot() ? "red" : null
+                  }}
+                  nav
+                  caret
+                >
                   Communication
                 </DropdownToggle>
                 <DropdownMenu right>
@@ -177,8 +193,22 @@ const App = () => {
                     </>
                   )}
                   <DropdownItem>Public Forum</DropdownItem>
-                  <DropdownItem>Messages</DropdownItem>
-                  <DropdownItem>Notifications</DropdownItem>
+                  <DropdownItem
+                    style={{
+                      color: checkCommunication("messages") ? "red" : null
+                    }}
+                    href="/messages"
+                  >
+                    Messages
+                  </DropdownItem>
+                  <DropdownItem
+                    style={{
+                      color: checkCommunication("notifications") ? "red" : null
+                    }}
+                    href="/notifications"
+                  >
+                    Notifications
+                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               {!api.isLoggedIn() && (
@@ -240,6 +270,8 @@ const App = () => {
           <Route path="/information" component={Information} />
           <Route path="/arcade" component={Arcade} /> {/* remove? */}
           <Route path="/minigame" component={MiniGame} />
+          <Route path="/messages" component={MessageCenter} />
+          <Route path="/notifications" component={Notifications} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
           <Route path="/secret" component={Secret} />

@@ -1,6 +1,7 @@
 const express = require("express");
 const { isLoggedIn } = require("../middlewares/middleAuth");
 const { nullifyValues } = require("../middlewares/middleHelpers");
+const {getAllUsers  } = require ('./helper')
 const router = express.Router();
 const User = require("../models/User");
 const Item = require("../models/Item");
@@ -56,12 +57,21 @@ router.post("/createUser", isLoggedIn, async (req, res, next) => {
       message: "Missing parameters.."
     });
   }
-
+  // todo, send through criteria route
   const city = await City.findOne({ cityString });
   const allUsers = await User.find();
 
+  if (
+    name.toLowerCase().startsWith("npc") ||
+    name.toLowerCase().startsWith("unconfirmed")
+  ) {
+    return res.status(409).json({
+      success: false,
+      message: `${name} is not allowed`
+    });
+  }
   if (allUsers.find(name => allUsers.name)) {
-    return res.status(400).json({
+    return res.status(409).json({
       success: false,
       message: "name already exists.."
     });
@@ -90,11 +100,10 @@ router.get("/get-nav-user", async (req, res, next) => {
   console.log("get nav user");
   const userId = req.user._id;
   try {
-    const user = await User.findById(userId).populate(
-      "playerStats.city",
-      "name"
-    );
-    console.log(user);
+    const user = await User.findById(userId)
+      .populate("playerStats.city", "name")
+      .populate("alliance", "name");
+
     res.status(200).json({
       success: true,
       message: "nav user loaded..",
@@ -129,7 +138,20 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
 
 // @GET
 // PRIVATE
-// Retrives player profile
+// Retrives hackers
+
+router.get("/opponent/", async (req, res, next) => {
+  const users = await getAllUsers(false,true)
+    res.status(200).json({
+      success: true,
+      message: "all hackers loaded..",
+      users
+   });
+})
+
+// @GET
+// PRIVATE
+// Retrives hacker profile
 
 router.get("/opponent/:id", async (req, res, next) => {
   const opponentId = req.params.id;

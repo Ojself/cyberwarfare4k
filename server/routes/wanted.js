@@ -19,6 +19,7 @@ router.get("/", async (req, res, next) => {
     });
   }
 
+  // only add players above level 2?
   const bountyUsers = users.filter(user => user.playerStats.bounty > 0);
 
   res.status(200).json({

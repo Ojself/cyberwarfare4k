@@ -223,9 +223,22 @@ export default {
   },
 
   transferBitCoins(body) {
-    console.log(body, "JARLE");
     return service
       .post(`/ledger/transfer/${body.receiverId}`, body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  depositBitcoin(body) {
+    return service
+      .post(`/ledger/deposit/`, body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  withdrawBitcoin(body) {
+    return service
+      .post(`/ledger/withdraw/`, body)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -257,6 +270,33 @@ export default {
   purchaseMarketPlaceItem(body) {
     return service
       .post("/marketplace/buy", body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  //COMMUNICATIONS
+  //COMMUNICATIONS
+
+  readAllCommunication(body) {
+    return service
+      .post(`/communication/readAll`, body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  sendMessage(body) {
+    return service
+      .post(`/communication/message/${body.receiverId}`, body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  //MICS
+  //MICS
+  // get all users. only name and _id
+  getHackerNames() {
+    return service
+      .get("/opponent")
       .then(res => res.data)
       .catch(errHandler);
   }

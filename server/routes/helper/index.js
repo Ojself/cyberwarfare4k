@@ -6,7 +6,7 @@ const getAllUsers = async (filter = null, onlyName = null) => {
     const onlyNameUsers = await User.find().select("name");
     return onlyNameUsers;
   }
-  let users = await User.find()
+  const users = await User.find()
     .populate("playerStats.bountyDonors", "name")
     .populate("alliance", "name")
     .populate("playerStats.city", "name");

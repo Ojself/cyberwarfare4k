@@ -20,6 +20,10 @@ const userSchema = new Schema(
         enum: ["Pending Confirmation", "Active"],
         default: "Pending Confirmation"
       },
+      avatar: {
+        type:String,
+        default:''
+        },
       confirmationCode: String,
       subscription: {
         type: String,
@@ -32,21 +36,25 @@ const userSchema = new Schema(
       },
       role: {
         type: String,
-        enum: ["user", "npc", "testUser", "testUserDB", "admin"],
+        enum: ["user", "npc", "testUser", "admin"],
         default: "user"
       },
-      //   testUser doesn't update their values in database when testing functions
+
       notifications: {
-        type: Object,
-        default: {
-          "0": ["Hey man, welcome to CH4K", false]
-        }
+        type: Array,
+        default: [["Hey man, welcome to CH4K", false]]
       },
       messages: {
-        type: Object,
-        default: {
-          "0": ["Hey man, welcome to CH4K, this is your first message", false]
-        }
+        type: Array,
+        default: [
+          ["Hey man, welcome to CH4K, this is your first message", false]
+        ]
+      },
+      sentMessages: {
+        type: Array,
+        default: [
+          ["Hey man, welcome to CH4K, this is your first SENT message", false]
+        ]
       },
       banned: {
         type: Boolean,
@@ -344,13 +352,13 @@ userSchema.methods.giveSkill = function(skill = "technical") {
   this.save();
 };
 
-userSchema.methods.batteryDrain = function(battery = 5) {
+userSchema.methods.batteryDrain = function(battery) {
   console.log("batterydrain triggered", battery);
   this.playerStats.battery -= battery;
   this.save();
 };
 
-userSchema.methods.batteryGain = function(battery = 5) {
+userSchema.methods.batteryGain = function(battery) {
   console.log("batteryGain triggered", battery);
   this.playerStats.battery += battery;
   if (this.playerStats.battery > 100) {
@@ -359,29 +367,53 @@ userSchema.methods.batteryGain = function(battery = 5) {
   this.save();
 };
 
-userSchema.methods.bitcoinDrain = function(bitCoins = 5) {
+userSchema.methods.bitcoinDrain = function(bitCoins) {
   console.log("bitCoinsdrain triggered", bitCoins);
   this.playerStats.bitCoins -= bitCoins;
   this.save();
 };
 
-userSchema.methods.bitcoinGain = function(bitCoins = 5) {
+userSchema.methods.bitcoinGain = function(bitCoins) {
   console.log("bitCoinsGain triggered", bitCoins);
   this.playerStats.bitCoins += bitCoins;
-  // this.playerStats.networth += bitCoins;
   this.save();
 };
 
-userSchema.methods.ledgerDrain = function(bitCoins = 5) {
+//LEDGER
+//LEDGER
+
+userSchema.methods.ledgerDrainFromTransfer = function(bitCoins) {
   console.log("ledgerDrain triggered", bitCoins);
   this.playerStats.ledger -= bitCoins;
   this.save();
 };
 
-userSchema.methods.ledgerGain = function(bitCoins = 5) {
+userSchema.methods.ledgerGainFromTransfer = function(bitCoins, senderName) {
   console.log("ledgerGain triggered", bitCoins);
   this.playerStats.ledger += bitCoins;
-  // this.playerStats.networth += bitCoins;
+
+  const date = Date.now();
+  const newNotifications = [
+    `You received ${bitCoins} from ${senderName} at ${new Date(
+      date
+    ).toString()}`,
+    true
+  ];
+  this.account.notifications.push(newNotifications);
+  this.save();
+};
+
+userSchema.methods.depositLedger = function(bitCoins, fee) {
+  console.log("depositLedger triggered");
+  this.playerStats.ledger += bitCoins;
+  this.playerStats.bitCoins -= bitCoins * fee;
+  this.save();
+};
+
+userSchema.methods.withdrawLedger = function(bitCoins, fee) {
+  console.log("withdrawLedger triggered");
+  this.playerStats.ledger += bitCoins;
+  this.playerStats.bitCoins -= bitCoins * fee;
   this.save();
 };
 
@@ -488,27 +520,31 @@ userSchema.methods.handleAttack = function(finalResult) {
     this.playerStats.shutdowns++;
   }
 
-  this.account.notifications[finalResult.date] = [
-    `You attacked ${finalResult.opponent.name} ${new Date(
+  const newNotifications = [
+    `You attacked ${finalResult.opponent.name} at ${new Date(
       finalResult.date
     ).toString()} and dealt ${finalResult.damageDealt} damage${
       finalResult.victimDead ? ` and he was shutdown!` : `!`
     }`,
     true
   ];
-
+  this.account.notifications.push(newNotifications);
   this.save();
 };
 
 userSchema.methods.handleAttackDefense = function(finalResult) {
   console.log("userschema handleAttackDefense", finalResult);
   // todo, graceperiod
-  this.account.notifications[finalResult.date] = [
+
+  const newNotifications = [
     `${finalResult.user.name} attacked you at ${new Date(
       finalResult.date
-    ).toString()}`,
-    false
+    ).toString()} and dealt ${finalResult.damageDealt} damage${
+      finalResult.victimDead ? ` and you were shutdown!` : `!`
+    }`,
+    true
   ];
+  this.account.notifications.push(newNotifications);
 
   this.playerStats.bitCoins -= finalResult.playerGains.bitCoins;
   this.playerStats.currentFirewall -= 10; // TODO figure out what number to put here
@@ -519,7 +555,7 @@ userSchema.methods.handleAttackDefense = function(finalResult) {
     Object.keys(this.currencies).forEach(el => (this.currencies[el] = 0));
 
     // if user rank 8, he is now 4. if user rank 9, he is now 5
-    let newRank = Math.ceil(this.playerStats.rank / 2);
+    const newRank = Math.ceil(this.playerStats.rank / 2);
     Rank.findOne({ rank: newRank }).then(newRank => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
@@ -549,7 +585,6 @@ userSchema.methods.partialRepair = function(repairCost, batteryCost) {
 
 userSchema.methods.fullRepair = function(repairCost, batteryCost) {
   console.log("fullRepair triggered");
-  // this.playerStats.battery -= battery;
   this.playerStats.bitCoins -= repairCost;
   this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   this.save();
@@ -578,7 +613,7 @@ userSchema.methods.handleDataCenterAttack = function(dataCenter, result) {
 };
 
 userSchema.methods.giveNotification = function(message) {
-  let date = Date.now();
+  const date = Date.now();
   this.account.notifications[date] = [
     `${message} ${new Date(date).toString()}`,
     true
@@ -597,6 +632,43 @@ userSchema.methods.addBounty = function(bountyDonor, bounty) {
   this.playerStats.bounty += parseInt(bounty);
   this.save();
 };
+
+//MESSAGES
+userSchema.methods.receiveMessage = function(message, senderName) {
+  console.log("receiveMessage triggered");
+  const date = Date.now();
+  const newMessage = [
+    `${senderName} at ${new Date(date).toString()}: ${message}`,
+    true
+  ];
+  this.account.messages.push(newMessage);
+  this.save();
+};
+
+userSchema.methods.sendMessage = function(message) {
+  console.log("sendMessage triggered");
+  const date = Date.now();
+  const newMessage = [
+    `${this.name} at ${new Date(date).toString()}: ${message}`,
+    false
+  ];
+  this.account.sentMessages.push(newMessage);
+  this.save();
+};
+
+userSchema.methods.readAllmessages =  function(communication) {
+  console.log("readAllmessages triggered");
+  const path = this.account.messages
+  for (let i = 0; i< path.length; i++){
+    this.account[communication][i][1]=false
+    // this to ensure mongoose knows embedded arrays have been modified
+    this.markModified(`account.messages.${i.toString()}.1`)  
+  }
+  //this.account.messages[0][1]=false
+  this.save();
+};
+
+
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
