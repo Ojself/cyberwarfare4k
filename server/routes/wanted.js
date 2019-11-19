@@ -2,17 +2,15 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 
+const { getAllUsers } = require("./helper"); // move to middleware?
 const { addBountyCriteria } = require("../middlewares/middleWanted.js");
-const { nullifyValues } = require("../middlewares/middleHelpers.js");
 
 // @GET
 // PRIVATE
 // Retrives all users and all users with a bounty
 
 router.get("/", async (req, res, next) => {
-  let users = await User.find()
-    .populate("playerStats.bountyDonors", "name")
-    .populate("alliance", "name");
+  const users = await getAllUsers();
 
   if (!users) {
     return res.status(400).json({
@@ -21,20 +19,6 @@ router.get("/", async (req, res, next) => {
     });
   }
 
-  // todo, select information instead of nullify
-  users = users.map(user =>
-    nullifyValues(user, [
-      "account",
-      "hackSkill",
-      "crimeSkill",
-      "marketPlaceItems",
-      "specialWeapons",
-      "fightInformation",
-      "stash",
-      "currencies",
-      "email"
-    ])
-  );
   const bountyUsers = users.filter(user => user.playerStats.bounty > 0);
 
   res.status(200).json({

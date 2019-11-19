@@ -212,6 +212,24 @@ export default {
       .catch(errHandler);
   },
 
+  // LEDGER
+  // LEDGER
+
+  getLedgerUsers() {
+    return service
+      .get("/ledger/")
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  transferBitCoins(body) {
+    console.log(body, "JARLE");
+    return service
+      .post(`/ledger/transfer/${body.receiverId}`, body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
   getDataCenters() {
     return service
       .get("/datacenter/")

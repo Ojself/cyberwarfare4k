@@ -7,7 +7,7 @@ const StatusBar = props => {
   });
 
   useEffect(() => {
-    console.log("using effect");
+    // something here?
   }, []);
 
   return (

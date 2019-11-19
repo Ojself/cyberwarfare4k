@@ -11,6 +11,7 @@ import WantedList from "./pages/WantedList";
 import Alliance from "./pages/Alliance";
 import AllianceLadder from "./pages/AllianceLadder";
 import SystemRepair from "./pages/SystemRepair";
+import Ledger from "./pages/Ledger";
 import Marketplace from "./pages/Marketplace";
 import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
@@ -161,7 +162,7 @@ const App = () => {
                   </DropdownItem>
                   <DropdownItem href="/marketplace">Marketplace</DropdownItem>
                   <DropdownItem>Chip Chop Shop</DropdownItem>
-                  <DropdownItem href="/">Bank Transfer</DropdownItem>
+                  <DropdownItem href="/ledger">Ledger</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
@@ -220,9 +221,20 @@ const App = () => {
               <CryptoCurrency loading={appState.loading} user={appState.user} />
             )}
           />
-          <Route path="/vpn" render={() => <VPN user={appState.user} />} />
+          <Route
+            path="/vpn"
+            render={() => (
+              <VPN loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/system-repair" component={SystemRepair} />
           <Route path="/ladder" component={Ladder} />
+          <Route
+            path="/ledger"
+            render={() => (
+              <Ledger loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/alliance-ladder" component={AllianceLadder} />
           <Route path="/datacenters" component={DataCenters} />
           <Route path="/information" component={Information} />

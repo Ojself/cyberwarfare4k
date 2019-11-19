@@ -141,6 +141,10 @@ const userSchema = new Schema(
         type: Number,
         default: 0
       },
+      ledger: {
+        type: Number,
+        default: 1500
+      },
       bounty: {
         type: Number,
         default: 0
@@ -364,6 +368,19 @@ userSchema.methods.bitcoinDrain = function(bitCoins = 5) {
 userSchema.methods.bitcoinGain = function(bitCoins = 5) {
   console.log("bitCoinsGain triggered", bitCoins);
   this.playerStats.bitCoins += bitCoins;
+  // this.playerStats.networth += bitCoins;
+  this.save();
+};
+
+userSchema.methods.ledgerDrain = function(bitCoins = 5) {
+  console.log("ledgerDrain triggered", bitCoins);
+  this.playerStats.ledger -= bitCoins;
+  this.save();
+};
+
+userSchema.methods.ledgerGain = function(bitCoins = 5) {
+  console.log("ledgerGain triggered", bitCoins);
+  this.playerStats.ledger += bitCoins;
   // this.playerStats.networth += bitCoins;
   this.save();
 };
