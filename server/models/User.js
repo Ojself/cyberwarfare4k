@@ -47,13 +47,13 @@ const userSchema = new Schema(
       messages: {
         type: Array,
         default: [
-          ["Hey man, welcome to CH4K, this is your first message", false]
+          [`System ${new Date(Date.now())}:, Hi and welcome to CH4K, this is your first message`, false]
         ]
       },
       sentMessages: {
         type: Array,
         default: [
-          ["Hey man, welcome to CH4K, this is your first SENT message", false]
+          [`System ${new Date(Date.now())}:, Hi and welcome to CH4K, this is your first SENT message`]
         ]
       },
       banned: {
@@ -638,19 +638,18 @@ userSchema.methods.receiveMessage = function(message, senderName) {
   console.log("receiveMessage triggered");
   const date = Date.now();
   const newMessage = [
-    `${senderName} at ${new Date(date).toString()}: ${message}`,
+    `${senderName} ${new Date(date).toString()}: ${message}`,
     true
   ];
   this.account.messages.push(newMessage);
   this.save();
 };
 
-userSchema.methods.sendMessage = function(message) {
+userSchema.methods.sendMessage = function(message, senderName) {
   console.log("sendMessage triggered");
   const date = Date.now();
   const newMessage = [
-    `${this.name} at ${new Date(date).toString()}: ${message}`,
-    false
+    `${senderName} ${new Date(date).toString()}: ${message}`
   ];
   this.account.sentMessages.push(newMessage);
   this.save();
@@ -658,11 +657,11 @@ userSchema.methods.sendMessage = function(message) {
 
 userSchema.methods.readAllmessages =  function(communication) {
   console.log("readAllmessages triggered");
-  const path = this.account.messages
+  const path = this.account[communication]
   for (let i = 0; i< path.length; i++){
-    this.account[communication][i][1]=false
+    path[i][1]=false
     // this to ensure mongoose knows embedded arrays have been modified
-    this.markModified(`account.messages.${i.toString()}.1`)  
+    this.markModified(`account.${communication.toString()}.${i.toString()}.1`)  
   }
   //this.account.messages[0][1]=false
   this.save();

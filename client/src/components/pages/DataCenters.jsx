@@ -29,6 +29,15 @@ const DataCenter = () => {
     api.purchaseDataCenter({ dataCenterName }).then(result => {
       console.log(result, "result purchase");
     });
+    // todo, set datacenter state
+  };
+
+  const handleDataCenterAttack = e => {
+    const dataCenterName = e.target.name;
+    console.log(dataCenterName, "centername");
+    api.purchaseDataCenter({ dataCenterName }).then(result => {
+      console.log(result, "result purchase");
+    });
   };
 
   const checkHealth = (current, max) => {
@@ -87,12 +96,19 @@ const DataCenter = () => {
             </tr>
 
             <td>
-              <Button
-                name={dc.name}
-                onClick={e => this.handleDataCenterPurchase(e)}
-              >
-                {dc.status === "Owned" ? "ATTACK" : "BUY"}
-              </Button>
+              {/* todo, two different buttons */}
+              {dc.status === "Owned" ? (
+                <Button name={dc.name} onClick={e => handleDataCenterAttack(e)}>
+                  Attack
+                </Button>
+              ) : (
+                <Button
+                  name={dc.name}
+                  onClick={e => handleDataCenterPurchase(e)}
+                >
+                  Buy
+                </Button>
+              )}
             </td>
             <td>{checkHealth(dc.currentFirewall, dc.maxFirewall)}</td>
             <UncontrolledTooltip placement="top" target={`revenueTip${i}`}>

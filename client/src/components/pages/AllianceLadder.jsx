@@ -29,7 +29,7 @@ const AllianceLadder = props => {
   const handleSort = (e, sort) => {
     e.preventDefault();
     let sortedAlliances = allianceLadderState.alliances || [];
-
+    // TODO change some value names so we can dynamicaly run functions (see switch)
     switch (sort) {
       case "alliance":
         sortedAlliances = allianceLadderState.alliances.sort((a, b) =>

@@ -257,6 +257,13 @@ export default {
       .catch(errHandler);
   },
 
+  attackDataCenter(body) {
+    return service
+      .post("/datacenter/attack", body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
   // MARKETPLACE
   // MARKETPLACE
 
@@ -285,8 +292,9 @@ export default {
   },
 
   sendMessage(body) {
+    console.log(body, "body");
     return service
-      .post(`/communication/message/${body.receiverId}`, body)
+      .post(`/communication/message/`, body)
       .then(res => res.data)
       .catch(errHandler);
   },

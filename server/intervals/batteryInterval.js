@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const User = require('../models/User');
+const User = require("../models/User");
 
 /* Ensures that users gets more battery after cetain time and never exceeds 100 */
 function batteryInterval() {

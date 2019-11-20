@@ -41,8 +41,11 @@ dataCenterSchema.methods.handlePurchase = function(user) {
   console.log("handlePurchase method triggered");
   this.owner = user._id;
   this.status = "Owned";
-  this.attacker = null; /* might not work because only allows objectId. maybe set to same as owner */
+  this.attacker = null;
+
+  // might not work because only allows objectId. maybe set to same as owner
   // gracePeriod for x minutes to let user enjoy some revenue?
+
   this.save();
 };
 
@@ -60,7 +63,6 @@ dataCenterSchema.methods.handleAttack = async function(
   }, 1000 * 60);
   if (result.won) {
     this.currentFirewall -= result.damageDealt;
-
     // resets the required stash
     // todo repeating, write function
     this.requiredStash = [];

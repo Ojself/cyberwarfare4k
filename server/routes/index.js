@@ -1,7 +1,7 @@
 const express = require("express");
 const { isLoggedIn } = require("../middlewares/middleAuth");
 const { nullifyValues } = require("../middlewares/middleHelpers");
-const {getAllUsers  } = require ('./helper')
+const { getAllUsers } = require("./helper");
 const router = express.Router();
 const User = require("../models/User");
 const Item = require("../models/Item");
@@ -57,8 +57,9 @@ router.post("/createUser", isLoggedIn, async (req, res, next) => {
       message: "Missing parameters.."
     });
   }
+  // todo, addtoset city resident
   // todo, send through criteria route
-  const city = await City.findOne({ cityString });
+  const city = await City.findOne({ name: cityString });
   const allUsers = await User.find();
 
   if (
@@ -88,9 +89,11 @@ router.post("/createUser", isLoggedIn, async (req, res, next) => {
 // todo extract this to somewhere else
 function setupPlayer(user, name, city) {
   user.name = name;
-  user.playerStats.city = city;
+  user.playerStats.city = city._id;
   user.account.isSetup = true;
   user.save();
+  city.residents.push(user._id);
+  city.save();
 }
 
 // @GET
@@ -141,13 +144,13 @@ router.get("/my-profile", isLoggedIn, async (req, res, next) => {
 // Retrives hackers
 
 router.get("/opponent/", async (req, res, next) => {
-  const users = await getAllUsers(false,true)
-    res.status(200).json({
-      success: true,
-      message: "all hackers loaded..",
-      users
-   });
-})
+  const users = await getAllUsers(false, true);
+  res.status(200).json({
+    success: true,
+    message: "all hackers loaded..",
+    users
+  });
+});
 
 // @GET
 // PRIVATE

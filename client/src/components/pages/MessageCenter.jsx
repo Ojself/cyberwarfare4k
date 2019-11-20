@@ -16,7 +16,11 @@ import {
   CardTitle,
   CardText,
   Row,
-  Col
+  Col,
+  ListGroup,
+  ListGroupItem,
+  ListGroupItemHeading,
+  ListGroupItemText
 } from "reactstrap";
 import classnames from "classnames";
 
@@ -27,12 +31,36 @@ const MessageCenter = props => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [textArea, setTextArea] = useState("");
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  const handleChange = selectedOption => {
-    setSelectedOption({ selectedOption });
+  const handleChange = eventValue => {
+    setSelectedOption(eventValue);
+  };
+
+  const handleReply = name => {
+    toggle("3");
+    setSelectedOption("npc"); // todo, this does not work
+  };
+
+  const handleTextAreaChange = e => {
+    setTextArea(e.target.value);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    api
+      .sendMessage({
+        text: textArea,
+        receiverId: selectedOption.value
+      })
+      .then(result => {
+        console.log(result, "result");
+        setTextArea("");
+        setSelectedOption("");
+      });
   };
 
   useEffect(() => {
@@ -96,28 +124,53 @@ const MessageCenter = props => {
         <TabPane tabId="1">
           <Row>
             <Col sm="6">
-              <Card body>
-                <CardTitle>Inbox </CardTitle>
-                <CardText>
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </CardText>
-                <Button>Go somewhere</Button>
-              </Card>
+              <ListGroup>
+                {props.loading
+                  ? "loading.."
+                  : props.user.account.messages.map((m, i) => (
+                      <ListGroupItem active={!!m[0][1]} key={i}>
+                        <ListGroupItemHeading>
+                          From: {m[0].split(" ")[0]}
+                        </ListGroupItemHeading>
+                        <ListGroupItemText>
+                          {m[0]
+                            .split(" ")
+                            .slice(1)
+                            .join(" ")}
+                        </ListGroupItemText>
+                        <Button
+                          onClick={() => {
+                            handleReply(m[0].split(" ")[0]);
+                          }}
+                        >
+                          Reply
+                        </Button>
+                      </ListGroupItem>
+                    ))}
+              </ListGroup>
             </Col>
           </Row>
         </TabPane>
         <TabPane tabId="2">
           <Row>
             <Col sm="6">
-              <Card body>
-                <CardTitle>Sent</CardTitle>
-                <CardText>
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </CardText>
-                <Button>Go somewhere</Button>
-              </Card>
+              <ListGroup>
+                {props.loading
+                  ? "loading.."
+                  : props.user.account.sentMessages.map((m, i) => (
+                      <ListGroupItem key={i}>
+                        <ListGroupItemHeading>
+                          To: {m[0].split(" ")[0]}
+                        </ListGroupItemHeading>
+                        <ListGroupItemText>
+                          {m[0]
+                            .split(" ")
+                            .slice(1)
+                            .join(" ")}
+                        </ListGroupItemText>
+                      </ListGroupItem>
+                    ))}
+              </ListGroup>
             </Col>
           </Row>
         </TabPane>
@@ -127,7 +180,6 @@ const MessageCenter = props => {
               <Card body>
                 <CardTitle>Compose</CardTitle>
                 <Form>
-                  {/* SELECT HERE */}
                   <Select
                     value={selectedOption}
                     onChange={handleChange}
@@ -137,14 +189,16 @@ const MessageCenter = props => {
                     <Label for="messageText">Message</Label>
                     <Input
                       maxLength={250} /* .substr(0,250) */
+                      value={textArea}
+                      onChange={handleTextAreaChange}
                       required={true}
                       type="textarea"
                       name="text"
                       id="messageText"
                     />
                   </FormGroup>
+                  <Button onClick={handleSubmit}>Send!</Button>
                 </Form>
-                <Button>Send!</Button>
               </Card>
             </Col>
           </Row>

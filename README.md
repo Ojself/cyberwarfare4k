@@ -11,7 +11,7 @@ Cyberwarfare4k is a multiplayer role playing game playable in browser. It has mi
 
 ## Stack
 
-Mongo  
+MongoDb  
 Express  
 React  
 Node

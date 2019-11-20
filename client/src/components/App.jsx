@@ -65,7 +65,9 @@ const App = () => {
   }, []);
 
   const checkCommunicationtot = () => {
-    return checkCommunication("messages") || checkCommunication("notifications");
+    return (
+      checkCommunication("messages") || checkCommunication("notifications")
+    );
   };
 
   const checkCommunication = com => {
@@ -225,7 +227,7 @@ const App = () => {
                 <NavItem>
                   <NavLink href="/" onClick={e => handleLogoutClick(e)}>
                     Logout
-                    <p style={{ "font-size": "0.5em" }}>sudo rm -rf </p>
+                    <p style={{ fontSize: "0.5em" }}>sudo rm -rf </p>
                   </NavLink>
                 </NavItem>
               )}
@@ -270,7 +272,12 @@ const App = () => {
           <Route path="/information" component={Information} />
           <Route path="/arcade" component={Arcade} /> {/* remove? */}
           <Route path="/minigame" component={MiniGame} />
-          <Route path="/messages" component={MessageCenter} />
+          <Route
+            path="/messages"
+            render={() => (
+              <MessageCenter loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/notifications" component={Notifications} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />

@@ -46,15 +46,13 @@ router.get("/", async (req, res, next) => {
 // User purchase a datacenter
 
 router.post("/purchase", async (req, res, next) => {
+  
   const userId = req.user._id;
   const user = await User.findById(userId);
 
   const { dataCenterName } = req.body;
-
   const dataCenter = await DataCenter.findOne({ name: dataCenterName });
-
   const batteryCost = 0;
-
   let message = purchaseDataCenterCriterias(user, dataCenter, batteryCost);
 
   if (message) {
