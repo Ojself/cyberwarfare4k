@@ -1,39 +1,28 @@
-const express = require("express");
-const router = express.Router();
-const User = require("../models/User");
+const express = require('express');
 
-const { tranfserCriteria } = require("../middlewares/middleLedger.js");
-const { getAllUsers } = require("./helper"); // move to middleware?
+const router = express.Router();
+const User = require('../models/User');
+
+const { tranfserCriteria } = require('../middlewares/middleLedger.js');
+const { getAllUsers } = require('./helper'); // move to middleware?
 
 // @GET
 // PRIVATE
 // Retrives all users
 
-router.get("/", async (req, res, next) => {
-  const ledgerFilter = [
-    "account",
-    "hackSkill",
-    "crimeSkill",
-    "marketPlaceItems",
-    "specialWeapons",
-    "fightInformation",
-    "stash",
-    "currencies",
-    "playerStats",
-    "email"
-  ];
+router.get('/', async (req, res) => {
   const users = await getAllUsers(null, true);
   if (!users) {
     return res.status(400).json({
       success: false,
-      message: "no hackers found, try again later.."
+      message: 'no hackers found, try again later..',
     });
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
-    message: "hackers loaded..",
-    users
+    message: 'hackers loaded..',
+    users,
   });
 });
 
@@ -41,8 +30,8 @@ router.get("/", async (req, res, next) => {
 // PRIVATE
 // Withdraws money from ledger to hand
 
-router.post("/deposit", async (req, res, next) => {
-  const fee = 1.05;
+router.post('/deposit', async (req, res) => {
+  // const fee = 1.05;
   const { amount } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
@@ -52,14 +41,14 @@ router.post("/deposit", async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
   user.depositLedger(amount);
 
   return res.status(200).json({
     success: true,
-    message: `${amount} was withdrawed from your ledger`
+    message: `${amount} was withdrawed from your ledger`,
   });
 });
 
@@ -67,7 +56,7 @@ router.post("/deposit", async (req, res, next) => {
 // PRIVATE
 // Withdraws money from ledger to hand
 
-router.post("/withdraw", async (req, res, next) => {
+router.post('/withdraw', async (req, res) => {
   const fee = 1.05;
   const { amount } = req.body;
   const userId = req.user._id;
@@ -78,14 +67,14 @@ router.post("/withdraw", async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
   user.withdrawLedger(amount, fee);
 
   return res.status(200).json({
     success: true,
-    message: `${amount} was withdrawed from your ledger`
+    message: `${amount} was withdrawed from your ledger`,
   });
 });
 
@@ -93,7 +82,7 @@ router.post("/withdraw", async (req, res, next) => {
 // PRIVATE
 // Transfer money from hacker x to hacker y
 
-router.post("/transfer/:id", async (req, res, next) => {
+router.post('/transfer/:id', async (req, res) => {
   const { receiverId, transferAmount } = req.body;
   const fee = 1.05;
 
@@ -106,7 +95,7 @@ router.post("/transfer/:id", async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
 
@@ -115,7 +104,7 @@ router.post("/transfer/:id", async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: `${transferAmount} was sent to ${receiver.name}`
+    message: `${transferAmount} was sent to ${receiver.name}`,
   });
 });
 

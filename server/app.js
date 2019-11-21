@@ -1,23 +1,24 @@
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+/* eslint-disable no-console */
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const express = require("express");
-const mongoose = require("mongoose");
-const logger = require("morgan");
-const nocache = require("nocache");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const mongoose = require('mongoose');
+const logger = require('morgan');
+const nocache = require('nocache');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
-require("./configs/database");
+require('./configs/database');
 
-const app_name = require("./package.json").name;
-const debug = require("debug")(
-  `${app_name}:${path.basename(__filename).split(".")[0]}`
-);
+/* const appName = require('./package.json').name;
+const debug = require('debug')(
+  `${appName}:${path.basename(__filename).split('.')[0]}`,
+); */
 
 app.use(nocache());
 
@@ -25,24 +26,24 @@ app.use(nocache());
 app.use(
   cors({
     origin: (origin, cb) => {
-      cb(null, origin && origin.startsWith("http://localhost:"));
+      cb(null, origin && origin.startsWith('http://localhost:'));
     },
     optionsSuccessStatus: 200,
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Makes client IP available
 // This to see if the user is cheating by using several account with same IP.
-app.set("trust proxy", true);
+app.set('trust proxy', true);
 
 // Set the public folder to "~/client/build/"
 // Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Enable authentication using session + passport
 app.use(
@@ -50,40 +51,40 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  })
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  }),
 );
-require("./passport")(app);
+require('./passport')(app);
 
-app.use("/api", require("./routes/index"));
-app.use("/api", require("./routes/auth"));
-app.use("/api/alliance", require("./routes/alliance"));
-app.use("/api/communication", require("./routes/communication"));
-app.use("/api/city", require("./routes/city"));
-app.use("/api/currency", require("./routes/currency"));
-app.use("/api/datacenter", require("./routes/datacenter"));
-app.use("/api/forum", require("./routes/forum"));
-app.use("/api/hack", require("./routes/hack"));
-app.use("/api/ledger", require("./routes/ledger"));
-app.use("/api/marketplace", require("./routes/marketplace"));
-app.use("/api/repair", require("./routes/repair"));
-app.use("/api/wanted", require("./routes/wanted"));
+app.use('/api', require('./routes/index'));
+app.use('/api', require('./routes/auth'));
+app.use('/api/alliance', require('./routes/alliance'));
+app.use('/api/communication', require('./routes/communication'));
+app.use('/api/city', require('./routes/city'));
+app.use('/api/currency', require('./routes/currency'));
+app.use('/api/datacenter', require('./routes/datacenter'));
+app.use('/api/forum', require('./routes/forum'));
+app.use('/api/hack', require('./routes/hack'));
+app.use('/api/ledger', require('./routes/ledger'));
+app.use('/api/marketplace', require('./routes/marketplace'));
+app.use('/api/repair', require('./routes/repair'));
+app.use('/api/wanted', require('./routes/wanted'));
 
 // For any routes that starts with "/api", catch 404 and forward to error handler
-app.use("/api/*", (req, res, next) => {
-  const err = new Error("Not Found");
+app.use('/api/*', (req, res, next) => {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // For any other routes, redirect to the index.html file of React
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 // Error handler
-app.use((err, req, res, next) => {
-  console.error("----- An error happened -----");
+app.use((err, req, res) => {
+  console.error('----- An error happened -----');
   console.error(err);
 
   // only render if the error ocurred before sending the response
@@ -91,10 +92,10 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
 
     // A limited amount of information sent in production
-    if (process.env.NODE_ENV === "production") res.json(err);
+    if (process.env.NODE_ENV === 'production') res.json(err);
     else {
       res.json(
-        JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err)))
+        JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err))),
       );
     }
   }

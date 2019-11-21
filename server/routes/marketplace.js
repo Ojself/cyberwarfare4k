@@ -1,20 +1,20 @@
-const express = require("express");
-const { isLoggedIn } = require("../middlewares/middleAuth");
-const { marketPlaceCriterias } = require("../middlewares/middleMarketPlace");
+const express = require('express');
+const { marketPlaceCriterias } = require('../middlewares/middleMarketPlace');
+
 const router = express.Router();
-const User = require("../models/User");
-const Item = require("../models/Item");
+const User = require('../models/User');
+const Item = require('../models/Item');
 
 // @GET
 // PRIVATE
 // Retrived all items from marketplace
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res) => {
   const items = await Item.find();
   res.status(200).json({
     success: true,
-    message: "items loaded..",
-    items
+    message: 'items loaded..',
+    items,
   });
 });
 
@@ -24,7 +24,7 @@ router.get("/", async (req, res, next) => {
 
 // todo check same value is not working
 
-router.post("/buy", async (req, res) => {
+router.post('/buy', async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
 
@@ -36,14 +36,14 @@ router.post("/buy", async (req, res) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
   user.handleItemPurchase(item);
 
   return res.status(200).json({
     success: true,
-    message: `You successfuly purchased ${item.name} for ${item.price}`
+    message: `You successfuly purchased ${item.name} for ${item.price}`,
   });
 });
 // todo check if if messages actually return the res.json

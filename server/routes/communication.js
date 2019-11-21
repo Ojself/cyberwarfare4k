@@ -1,24 +1,24 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
-const User = require("../models/User");
+const User = require('../models/User');
 
 // @POST
 // PRIVATE
 // reads all messages
 
-router.post("/readAll", async (req, res, next) => {
+router.post('/readAll', async (req, res) => {
   const { communication } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
-  console.log(user, "user");
 
   await user.readAllmessages(communication);
   const readCommuncation = user.account[communication];
 
   return res.status(200).json({
     success: true,
-    message: "messages read",
-    readCommuncation
+    message: 'messages read',
+    readCommuncation,
   });
 });
 
@@ -27,10 +27,8 @@ router.post("/readAll", async (req, res, next) => {
 // reads all messages
 
 // TODO short down message date
-router.post("/message/", async (req, res, next) => {
-  console.log(req.body, "req");
+router.post('/message/', async (req, res) => {
   const { receiverId, text } = req.body;
-  console.log(text, "message");
   const userId = req.user._id;
   const user = await User.findById(userId);
   const receiver = await User.findById(receiverId);
@@ -40,7 +38,7 @@ router.post("/message/", async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "message sent!"
+    message: 'message sent!',
   });
 });
 

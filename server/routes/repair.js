@@ -1,14 +1,14 @@
-const express = require("express");
-const { isLoggedIn } = require("../middlewares/middleAuth");
+const express = require('express');
+
 const router = express.Router();
-const User = require("../models/User");
-const { repairRouteCriterias } = require("../middlewares/middleRepair");
+const User = require('../models/User');
+const { repairRouteCriterias } = require('../middlewares/middleRepair');
 
 // @POST
 // PRIVATE
 // Lets user repair his firewall partialy
 
-router.post("/partial", async (req, res, next) => {
+router.post('/partial', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -20,15 +20,15 @@ router.post("/partial", async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
 
   user.partialRepair(repairCost);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
-    message: `You successfully glued together some loose parts from your computer..`
+    message: 'You successfully glued together some loose parts from your computer..',
   });
 });
 
@@ -36,7 +36,7 @@ router.post("/partial", async (req, res, next) => {
 // PRIVATE
 // Lets user repair his firewall fully
 
-router.post("/full", async (req, res, next) => {
+router.post('/full', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const repairCost = 40000;
@@ -46,14 +46,14 @@ router.post("/full", async (req, res, next) => {
   if (message) {
     return res.status(400).json({
       success: false,
-      message
+      message,
     });
   }
 
   user.fullRepair(repairCost);
   return res.status(200).json({
     success: true,
-    message: `You successfully glued together some loose parts from your computer..`
+    message: 'You successfully glued together some loose parts from your computer..',
   });
 });
 
