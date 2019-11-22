@@ -3,7 +3,7 @@
 const {
   checkFunds,
   checkSameValue,
-  existingValue
+  existingValue,
 } = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to buy item
@@ -21,10 +21,10 @@ function marketPlaceCriterias(user, item) {
   if (
     !checkSameValue(
       JSON.stringify(user.marketPlaceItems[item.type]),
-      JSON.stringify(item._id)
+      JSON.stringify(item._id),
     )
   ) {
-    return `You already own this item`;
+    return 'You already own this item';
   }
   return null;
 }

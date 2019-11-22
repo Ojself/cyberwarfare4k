@@ -1,4 +1,4 @@
-const { existingValue, checkFunds } = require("../middlewares/middleHelpers");
+const { existingValue, checkFunds } = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to transfer bitcoins
 function tranfserCriteria(user, receiver, amount) {
@@ -9,7 +9,7 @@ function tranfserCriteria(user, receiver, amount) {
     return "Opponent doesn't exist";
   }
   if (!checkFunds(user.playerStats.ledger, amount)) {
-    return "Insufficent bitcoins in your ledger";
+    return 'Insufficent bitcoins in your ledger';
   }
   return null;
 }

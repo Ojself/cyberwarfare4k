@@ -41,18 +41,18 @@ function buyRouteCriterias(user, batteryCost, currency, amount) {
   return null;
 }
 
-//checks if level requirement for purchasing is met
+// checks if level requirement for purchasing is met
 function checkCurrencyRequiredLevel(user, currency) {
   return user.playerStats.rank >= currency.levelReq;
 }
 
-//checks if user has enough money
+// checks if user has enough money
 function checkCurrencyfund(user, currency, amount) {
   console.log('checkCurrencyfund check');
   return user.playerStats.bitCoins >= currency.price * amount;
 }
 
-//checks if there's enough available currency to purchase
+// checks if there's enough available currency to purchase
 function checkCurrencyAvailablitiy(currency, amount) {
   console.log('checkCurrencyAvailablitiy check');
   return currency.available >= amount;
@@ -62,7 +62,7 @@ function checkCurrencyAvailablitiy(currency, amount) {
 function checkCurrencyMarketCap(user, currency, amount) {
   console.log('checkCurrencyMarketCap check');
   // what the user already has in his wallet
-  let userCoins = user.currencies[currency.name];
+  const userCoins = user.currencies[currency.name];
   return (
     (currency.maxAmountHold / 100) * currency.marketCap + userCoins >= amount
   );
@@ -92,5 +92,5 @@ module.exports = {
   soldRouteCriterias,
   buyRouteCriterias,
   sellCurrency,
-  purchaseCurrency
+  purchaseCurrency,
 };

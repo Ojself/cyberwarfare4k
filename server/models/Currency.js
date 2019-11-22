@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const User = require('../models/User');
+
+const { Schema } = mongoose;
 
 const currencySchema = new Schema({
   name: String,
@@ -12,27 +12,25 @@ const currencySchema = new Schema({
   price: Number,
   historyPrice: [Number],
   historyTime: [Number],
-  //max a person can hold in percentage
+  // max a person can hold in percentage
   maxAmountHold: { type: Number, default: 10 },
   available: Number,
   marketCap: Number,
   lastPurchasedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   online: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 
 // makes less available crypto currency because why not
 
-currencySchema.methods.purchaseHandle = function(amount, userId) {
-  console.log('purchaseHandle method triggered', amount, userId);
+currencySchema.methods.purchaseHandle = function (amount, userId) {
   this.available -= amount;
   this.lastPurchasedBy = userId;
   // if the purchase is bigger than 8% of market cap. crush some coins
   // and raise the price limits
   if (amount > ((this.maxAmountHold - 2) / 100) * this.marketCap) {
-    console.log('crush triggered');
     this.lowerPrice *= 1.05;
     this.higherPrice *= 1.1;
     this.available -= this.available * 0.001;
@@ -43,8 +41,7 @@ currencySchema.methods.purchaseHandle = function(amount, userId) {
   this.save();
 };
 
-currencySchema.methods.sellHandle = function(amount) {
-  console.log('sellHandle method triggered', amount);
+currencySchema.methods.sellHandle = function (amount) {
   this.available += amount;
   this.save();
 };

@@ -1,7 +1,7 @@
 const {
   batteryCheck,
   existingValue,
-  checkFunds
+  checkFunds,
 } = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to perform repair crime

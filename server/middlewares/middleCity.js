@@ -2,7 +2,7 @@ const {
   batteryCheck,
   existingValue,
   checkFunds,
-  checkSameValue
+  checkSameValue,
 } = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to get cities
@@ -51,5 +51,5 @@ function changeCity(user, newCity, oldCity, batteryCost) {
 module.exports = {
   getCityRouteCriterias,
   changeCityRouteCriterias,
-  changeCity
+  changeCity,
 };

@@ -3,8 +3,8 @@ const {
   stashDropChance,
   legendaryDropChance,
   batteryCheck,
-  existingValue
-} = require("../middlewares/middleHelpers");
+  existingValue,
+} = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to perform petty crime
 function pettyHackRouteCriterias(user, batteryCost) {
@@ -15,7 +15,7 @@ function pettyHackRouteCriterias(user, batteryCost) {
     return "Battery doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return "insufficent battery";
+    return 'insufficent battery';
   }
   return null;
 }
@@ -31,9 +31,9 @@ async function pettyCrime(user) {
     bitCoins: 0,
     exp: 0,
     battery: 5,
-    stashGained: "",
-    crimeSkillGained: "",
-    legendaryGained: ""
+    stashGained: '',
+    crimeSkillGained: '',
+    legendaryGained: '',
   };
   // sums up the crimeskills
   values = values.reduce((acc, curr) => acc + curr, 0);
@@ -70,24 +70,24 @@ async function pettyCrime(user) {
     pettyResult.levelUp = true;
   }
 
-  if (user.account.role !== "testUser") {
-    console.log('if triggered')
+  if (user.account.role !== 'testUser') {
+    console.log('if triggered');
     await user.handlePettyCrime(pettyResult);
   }
   return pettyResult;
 }
 
 function pettyWinBitcoins(multiplier) {
-  return Math.floor(Math.random() * 1000 + (multiplier * 1000))
+  return Math.floor(Math.random() * 1000 + (multiplier * 1000));
 }
 
 function pettyWinExp(multiplier) {
-  return Math.floor(Math.random() * 1000 + (multiplier * 1000))
+  return Math.floor(Math.random() * 1000 + (multiplier * 1000));
 }
 
 module.exports = {
   pettyCrime,
   pettyWinBitcoins,
   pettyWinExp,
-  pettyHackRouteCriterias
+  pettyHackRouteCriterias,
 };

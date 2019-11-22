@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const crimeSchema = new Schema({
   name: String,
@@ -7,32 +8,32 @@ const crimeSchema = new Schema({
   available: { type: Boolean, default: true },
   crimeType: {
     type: String,
-    enum: ["Technical", "Social Engineering", "Forensics", "Cryptography"]
+    enum: ['Technical', 'Social Engineering', 'Forensics', 'Cryptography'],
   },
   description: String,
   difficulty: {
     type: Number,
-    enum: [30, 50, 70, 110, 150]
+    enum: [30, 50, 70, 110, 150],
   },
   currentFirewall: Number,
   maxFirewall: Number,
   difficultyString: {
     type: String,
-    enum: ["easy", "medium", "hard", "challenging", "impossible"]
+    enum: ['easy', 'medium', 'hard', 'challenging', 'impossible'],
   },
   defeatedBy: {
     type: [Schema.Types.ObjectId],
-    ref: "User"
-  }
+    ref: 'User',
+  },
 });
 
-crimeSchema.methods.handleCrime = function(finalResult) {
+crimeSchema.methods.handleCrime = function (finalResult) {
   this.available = false;
 
   // makes the crime unavailable for a short period < 3 minutes
   setTimeout(() => {
     this.available = true;
-    console.log(100 * this.difficulty, "save()");
+
     this.save();
   }, 1000 * this.difficulty);
 
@@ -43,4 +44,4 @@ crimeSchema.methods.handleCrime = function(finalResult) {
   this.save();
 };
 
-module.exports = mongoose.model("Crime", crimeSchema);
+module.exports = mongoose.model('Crime', crimeSchema);

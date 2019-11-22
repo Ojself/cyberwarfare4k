@@ -1,18 +1,18 @@
 const {
   batteryCheck,
   existingValue,
-  checkOccuranceLimit
-} = require("../middlewares/middleHelpers");
+  checkOccuranceLimit,
+} = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to perform crime
 
-//todo do this try catch instead.
+// todo do this try catch instead.
 function crimeRouteCriterias(crime, user, batteryCost) {
   if (!batteryCheck(user, batteryCost)) {
-    return "Insufficent battery";
+    return 'Insufficent battery';
   }
   if (!crime.available) {
-    return "This crime is not available at the moment";
+    return 'This crime is not available at the moment';
   }
   return null;
 }
@@ -27,26 +27,26 @@ async function fightCrime(user, crime, batteryCost) {
     won: false,
     playerGains: {
       levelUp: false,
-      batteryCost: batteryCost,
+      batteryCost,
       exp: 0,
       bitCoins: 0,
       skillGained: null,
       stashGained: null,
-      legendaryGained: null
-    }
+      legendaryGained: null,
+    },
   };
   const finalResult = crimeRecursiveBattle(user, crime, result);
 
   // sees if player leveled up
   if (
-    user.playerStats.exp + finalResult.playerGains.exp >=
-    user.playerStats.expToLevel
+    user.playerStats.exp + finalResult.playerGains.exp
+    >= user.playerStats.expToLevel
   ) {
     finalResult.playerGains.levelUp = true;
-    console.log(user._id, "rankup");
+    console.log(user._id, 'rankup');
   }
 
-  if (user.account.role !== "testUser") {
+  if (user.account.role !== 'testUser') {
     await user.handleCrime(finalResult);
     await crime.handleCrime(finalResult);
   }
@@ -65,7 +65,7 @@ function crimeRecursiveBattle(user, crime, result) {
   // crime lost
   // if user has lost 4 times, the crime is considered 'lost'
   // adds more battery as a penalty for lost crime
-  if (checkOccuranceLimit(result.roundResult, "lost", 4)) {
+  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
     result.playerGains.batteryCost += 10;
     return result;
   }
@@ -98,15 +98,14 @@ function chanceCalculator(user, crime) {
   if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
   }
-  const probability =
-    (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
+  const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
   return probability;
 }
 
-//todo if user has 50 skill don't give him more skill in pettycrime
+// todo if user has 50 skill don't give him more skill in pettycrime
 
 // calculates the 'damage' the user inflicts on the crime
-//boils down the players crime and hacking skills and returns a randomnumber from 0 to x
+// boils down the players crime and hacking skills and returns a randomnumber from 0 to x
 function damageCalulator(user, crime) {
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
   const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);
@@ -115,13 +114,13 @@ function damageCalulator(user, crime) {
 
 function roundWin(result, damage) {
   result.crimeHp -= damage;
-  result.roundResult.push("win");
+  result.roundResult.push('win');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
 function roundLost(result) {
-  result.roundResult.push("lost");
+  result.roundResult.push('lost');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
@@ -135,10 +134,10 @@ function crimeWin(result, crime, user, decider) {
   result.playerGains.skillGained = skillGained(
     decider,
     user.playerStats.rank,
-    crime.crimeType
+    crime.crimeType,
   );
   result.playerGains.statGained = statGained(decider, user.playerStats.rank);
-  result.playerGains.legendaryGained = "";
+  result.playerGains.legendaryGained = '';
   return result;
 }
 
@@ -158,11 +157,11 @@ function skillGained(decider, rank, crimeType) {
     return null;
   }
   const crimeTypes = [
-    "Technical",
-    "Social Engineering",
-    "Forensics",
-    "Cryptography"
-  ].filter(el => el !== crimeType);
+    'Technical',
+    'Social Engineering',
+    'Forensics',
+    'Cryptography',
+  ].filter((el) => el !== crimeType);
   return crimeTypes[Math.floor(Math.random() * crimeTypes.length)];
 }
 
@@ -175,7 +174,7 @@ function statGained(decider, rank) {
     return null;
   }
   return true;
-  //return Math.random() - (rank / 10) < decider
+  // return Math.random() - (rank / 10) < decider
 }
 
 module.exports = {
@@ -185,5 +184,5 @@ module.exports = {
   chanceCalculator,
   damageCalulator,
   roundWin,
-  roundLost
+  roundLost,
 };

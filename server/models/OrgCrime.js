@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const User = require('../models/User');
 
 const OrgCrimeSchema = new Schema({
@@ -9,15 +10,13 @@ const OrgCrimeSchema = new Schema({
   encryption: Number,
   currentFirewall: Number,
   readyUsers: { type: [Schema.types.ObjectId], ref: 'User' },
-  available: { type: Boolean, default: true }
+  available: { type: Boolean, default: true },
 });
 
 OrgCrimeSchema.methods.handleOrgCrime = async function (user) {
-  console.log('OrgCrimeSchema handleCrime triggered');
-  this.readyUsers.push(user._id)
+  this.readyUsers.push(user._id);
 
   if (this.readyUsers.length >= 3) {
-    console.log('all users here, init orgcrime..');
     this.available = false;
   }
 

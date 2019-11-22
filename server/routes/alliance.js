@@ -28,7 +28,7 @@ const getShuffledArr = (arr) => {
     return arr;
   }
   const rand = Math.floor(Math.random() * arr.length);
-  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i != rand))];
+  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i !== rand))];
 };
 
 // forgive me for this function
@@ -158,7 +158,9 @@ router.post('/invite', async (req, res) => {
   const player = await User.findById(invitedPlayer);
   // const allianceName = user.alliance;
 
-  //  const invitationText = `<p>${user.name} has invited you to join ${allianceName} hats.<a href="alliance/accept/${allianceName}">Accept</a> or <a href="alliance/decline/${allianceName}">decline</a></p>`;
+  //  const invitationText = `<p>${user.name} has invited you to join
+  // ${allianceName} hats.<a href="alliance/accept/${allianceName}">Accept</a> or
+  // <a href="alliance/decline/${allianceName}">decline</a></p>`;
 
   res.status(200).json({
     success: true,

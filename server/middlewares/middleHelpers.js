@@ -1,24 +1,24 @@
 function stashDropChance(user, multiplier = 1) {
   const commonStash = [
-    "Raspberry Pi",
-    "Ubertooth One",
-    "EyeSpy Digital Spy Recorder",
-    "Keylogger",
-    "Lock pick set",
-    "Linux for dummies",
-    "Cables"
+    'Raspberry Pi',
+    'Ubertooth One',
+    'EyeSpy Digital Spy Recorder',
+    'Keylogger',
+    'Lock pick set',
+    'Linux for dummies',
+    'Cables',
   ];
   const rareStash = [
-    "WiFi Pineapple",
-    "Mini Hidden Camera",
-    "Rubber Ducky",
-    "Proxmark3 Kit"
+    'WiFi Pineapple',
+    'Mini Hidden Camera',
+    'Rubber Ducky',
+    'Proxmark3 Kit',
   ];
-  const ultraStash = ["Computer", "HackRf One"];
+  const ultraStash = ['Computer', 'HackRf One'];
 
   let givenStash;
 
-  let decider = Math.round(Math.random() * 1000) + multiplier;
+  const decider = Math.round(Math.random() * 1000) + multiplier;
 
   if (decider > 750) {
     /* Give ultra  item */
@@ -35,18 +35,18 @@ function stashDropChance(user, multiplier = 1) {
 
 function crimeSkillDropChance(user) {
   const crimeSkills = [
-    "Technical",
-    "Social Engineering",
-    "Forensics",
-    "Cryptography"
+    'Technical',
+    'Social Engineering',
+    'Forensics',
+    'Cryptography',
   ];
-  const givenCrimeSkill = crimeSkills[Math.floor(Math.random() * crimeSkills.length)]
-  return user.crimeSkill[givenCrimeSkill] >= 50 ? null : givenCrimeSkill
+  const givenCrimeSkill = crimeSkills[Math.floor(Math.random() * crimeSkills.length)];
+  return user.crimeSkill[givenCrimeSkill] >= 50 ? null : givenCrimeSkill;
 }
 
 // not been implemented yet
 function legendaryDropChance(multiplier) {
-  const legendary = ["emp", "geostorm", "medusa"];
+  const legendary = ['emp', 'geostorm', 'medusa'];
 
   const decider = (Math.random() * 1000) + multiplier;
 
@@ -71,7 +71,7 @@ function checkFunds(x, y) {
 
 // checks for number of occurance is over
 function checkOccuranceLimit(array, value, x) {
-  const result = array.filter(el => el === value);
+  const result = array.filter((el) => el === value);
   return result.length >= x;
 }
 
@@ -99,5 +99,5 @@ module.exports = {
   existingValue,
   checkOccuranceLimit,
   checkSameValue,
-  nullifyValues
+  nullifyValues,
 };

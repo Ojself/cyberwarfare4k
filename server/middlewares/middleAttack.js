@@ -1,7 +1,7 @@
 const {
   batteryCheck,
   existingValue,
-  checkOccuranceLimit
+  checkOccuranceLimit,
 } = require('../middlewares/middleHelpers');
 
 // Sees if everything is in order to perform attack
@@ -20,16 +20,16 @@ function attackRouteCriterias(user, opponent, batteryCost) {
     return `All traffic from ${user.playerStats.city.name} is blocked. Try changing VPN or level up!`;
   }
   if (!checkSuicide(user, opponent)) {
-    return `You can't hack yourself..`;
+    return 'You can\'t hack yourself..';
   }
   if (!checkHealth(user)) {
-    return `You need a firewall in order to attack others`;
+    return 'You need a firewall in order to attack others';
   }
   if (!graceCheck(opponent)) {
     return `${opponent.name} is currently graced, try again later!`;
   }
   if (!checkHealth(opponent)) {
-    return `You can't kill what is already dead`;
+    return 'You can\'t kill what is already dead';
   }
   return null;
 }
@@ -70,18 +70,18 @@ function fightHacker(user, opponent, batteryCost) {
     victimDead: false,
     playerGains: {
       levelUp: false,
-      batteryCost: batteryCost,
+      batteryCost,
       exp: 10,
       bitCoins: 10,
-      opponentCurrency: opponent.currencies
-    }
+      opponentCurrency: opponent.currencies,
+    },
   };
   const finalResult = attackRecursiveBattle(result);
 
   // sees if player leveled up
   if (
-    user.playerStats.exp + finalResult.playerGains.exp >=
-    user.playerStats.expToLevel
+    user.playerStats.exp + finalResult.playerGains.exp
+    >= user.playerStats.expToLevel
   ) {
     finalResult.playerGains.levelUp = true;
     user.newRank();
@@ -102,8 +102,9 @@ function attackRecursiveBattle(result) {
   // hack lost
   // if user has lost 4 times, the hack is considered lost
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
-    result.playerGains.batteryCost += 10;
-    return result;
+    const newResult = result;
+    newResult.playerGains.batteryCost += 10;
+    return newResult;
   }
 
   // hack lost
@@ -134,12 +135,12 @@ function attackRecursiveBattle(result) {
     return attackRecursiveBattle(result);
   }
 
-  let attackNumber = attackCalulator(result.user);
-  let defenseNumber = defenseCalulator(result.opponent);
+  const attackNumber = attackCalulator(result.user);
+  const defenseNumber = defenseCalulator(result.opponent);
 
   if (attackNumber <= defenseNumber) {
     roundLost(result, 'lost', defenseNumber);
-    //return attackRecursiveBattle(result);
+    // return attackRecursiveBattle(result);
   }
 
   // round win
@@ -159,8 +160,7 @@ function attackCalulator(hacker) {
   const cpuDamage = hacker.hackSkill.cpu;
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  const hackSkillDamage =
-    Object.values(hacker.hackSkill).reduce((a, b) => a + b) / randomNumber;
+  const hackSkillDamage = Object.values(hacker.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   let damageNumber = cpuDamage + hackSkillDamage;
   if (damageNumber > 30) {
@@ -178,8 +178,7 @@ function defenseCalulator(victim) {
   const avsDefense = victim.hackSkill.antiVirus;
 
   // summarized hackingskills divided by randomnumber. Higher is better (not the randomNumber)
-  const hackSkillDamage =
-    Object.values(victim.hackSkill).reduce((a, b) => a + b) / randomNumber;
+  const hackSkillDamage = Object.values(victim.hackSkill).reduce((a, b) => a + b) / randomNumber;
 
   return Math.floor(avsDefense + hackSkillDamage);
 }
@@ -187,8 +186,7 @@ function defenseCalulator(victim) {
 // returns Boolean to see if hacker was encrypted / blocked by the attack
 function encryptionChecker(attacker, victim) {
   // encryption skills for both players
-  const encryptionAttacker =
-    attacker.hackSkill.encryption / 1000 + Math.random();
+  const encryptionAttacker = attacker.hackSkill.encryption / 1000 + Math.random();
   const encryptionVictim = victim.hackSkill.encryption / 1000 + Math.random();
 
   console.log(encryptionAttacker, encryptionVictim, 'jarle');
@@ -197,29 +195,32 @@ function encryptionChecker(attacker, victim) {
 }
 
 function roundWin(result, damage) {
-  result.victimHp -= damage;
-  result.roundResult.push('win');
-  result.roundVictimRemainingHp.push(result.victimHp);
-  result.roundHackerRemainingHp.push(result.hackerHp);
-  return result;
+  const newResult = result;
+  newResult.victimHp -= damage;
+  newResult.roundResult.push('win');
+  newResult.roundVictimRemainingHp.push(newResult.victimHp);
+  newResult.roundHackerRemainingHp.push(newResult.hackerHp);
+  return newResult;
 }
 
 function roundLost(result, instance, damage = 0) {
-  result.hackerHp -= damage;
-  result.roundResult.push(instance);
-  result.roundVictimRemainingHp.push(result.victimHp);
-  result.roundHackerRemainingHp.push(result.hackerHp);
-  return result;
+  const newResult = result;
+  newResult.hackerHp -= damage;
+  newResult.roundResult.push(instance);
+  newResult.roundVictimRemainingHp.push(newResult.victimHp);
+  newResult.roundHackerRemainingHp.push(newResult.hackerHp);
+  return newResult;
 }
 
 function attackWin(result) {
   // TODO
   // calculate gains
-  result.won = true;
-  result.playerGains.exp = 10;
-  result.playerGains.bitCoins = 20;
+  const newResult = result;
+  newResult.won = true;
+  newResult.playerGains.exp = 10;
+  newResult.playerGains.bitCoins = 20;
 
-  return result;
+  return newResult;
 }
 
 module.exports = { attackRouteCriterias, fightHacker };

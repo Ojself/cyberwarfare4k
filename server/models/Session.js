@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const sessionSchema = new Schema({
   expires: Date,
-  session: String
+  session: String,
 });
 
-module.exports = mongoose.model("Session", sessionSchema);
+module.exports = mongoose.model('Session', sessionSchema);
