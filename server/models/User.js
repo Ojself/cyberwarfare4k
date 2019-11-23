@@ -367,13 +367,11 @@ userSchema.methods.batteryGain = function (battery) {
 };
 
 userSchema.methods.bitcoinDrain = function (bitCoins) {
-  console.log('bitCoinsdrain triggered', bitCoins);
   this.playerStats.bitCoins -= bitCoins;
   this.save();
 };
 
 userSchema.methods.bitcoinGain = function (bitCoins) {
-  console.log('bitCoinsGain triggered', bitCoins);
   this.playerStats.bitCoins += bitCoins;
   this.save();
 };

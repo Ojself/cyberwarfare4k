@@ -2,32 +2,33 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import api from "../api";
 
-import Home from "./pages/Home";
-import MyProfile from "./pages/MyProfile";
+import Arcade from "./pages/Arcade";
+import Alliance from "./pages/Alliance";
+import AllianceLadder from "./pages/AllianceLadder";
+import CryptoCurrency from "./pages/CryptoCurrency";
+import CreateHacker from "./pages/CreateHacker";
+import DataCenters from "./pages/DataCenters";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
-import WantedList from "./pages/WantedList";
-import Alliance from "./pages/Alliance";
-import AllianceLadder from "./pages/AllianceLadder";
-import SystemRepair from "./pages/SystemRepair";
-import Ledger from "./pages/Ledger";
-import Marketplace from "./pages/Marketplace";
+import Home from "./pages/Home";
 import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
+import Locals from "./pages/Locals";
+import Ledger from "./pages/Ledger";
+import Login from "./pages/Login";
+import Marketplace from "./pages/Marketplace";
 import MiniGame from "./pages/minigame/MiniGame";
-import Arcade from "./pages/Arcade";
-import CreateHacker from "./pages/CreateHacker";
-import Petty from "./pages/Petty";
-import CryptoCurrency from "./pages/CryptoCurrency";
-import VPN from "./pages/VPN";
-import DataCenters from "./pages/DataCenters";
+import MyProfile from "./pages/MyProfile";
 import MessageCenter from "./pages/MessageCenter";
 import Notifications from "./pages/Notifications";
+import Petty from "./pages/Petty";
 import Secret from "./pages/Secret";
-import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import StatusBar from "./pages/smaller/statusbar";
+import SystemRepair from "./pages/SystemRepair";
+import VPN from "./pages/VPN";
+import WantedList from "./pages/WantedList";
 
 // styling
 import {
@@ -165,7 +166,7 @@ const App = () => {
                   {currentCity}
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Local Hackers</DropdownItem>
+                  <DropdownItem href="/locals">Local Hackers</DropdownItem>
                   <DropdownItem href="/datacenters">Datacenters</DropdownItem>
                   {/* <DropdownItem divider /> */}
                   <DropdownItem href="/vpn">VPN</DropdownItem>
@@ -238,15 +239,18 @@ const App = () => {
 
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/my-profile" component={MyProfile} />
-          <Route path="/hacker/:id" component={HackerProfile} />
+          <Route path="/alliance" component={Alliance} />
+          <Route path="/alliance-ladder" component={AllianceLadder} />
+          <Route path="/arcade" component={Arcade} /> {/* remove? */}
+          <Route path="/locals" component={Locals} /> 
           <Route path="/create-hacker" component={CreateHacker} />
-          <Route path="/petty-hacker" component={Petty} />
+          <Route path="/my-profile" component={MyProfile} />
           <Route path="/hack-crimes" component={HackCrimes} />
           <Route path="/hack-player" component={HackPlayer} />
-          <Route path="/wanted-list" component={WantedList} />
-          <Route path="/alliance" component={Alliance} />
+          <Route path="/hacker/:id" component={HackerProfile} />
+          <Route path="/petty-hacker" component={Petty} />
           <Route path="/marketplace" component={Marketplace} />
+          <Route path="/wanted-list" component={WantedList} />
           <Route
             path="/cryptocurrency"
             render={() => (
@@ -267,10 +271,8 @@ const App = () => {
               <Ledger loading={appState.loading} user={appState.user} />
             )}
           />
-          <Route path="/alliance-ladder" component={AllianceLadder} />
           <Route path="/datacenters" component={DataCenters} />
           <Route path="/information" component={Information} />
-          <Route path="/arcade" component={Arcade} /> {/* remove? */}
           <Route path="/minigame" component={MiniGame} />
           <Route
             path="/messages"

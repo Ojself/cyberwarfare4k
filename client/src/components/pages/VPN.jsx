@@ -1,68 +1,74 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import Select from "react-select";
 
-const VPN = () => {
+const VPN = props => {
   const [vpnState, setVpnState] = useState({
     cities: null,
-    selectedCity: null,
-    cityPrice: null,
+    massagedCities: null,
+     cityPrice: null,
+    selectedOption: null,
     loading: true,
     message: null
   });
 
   useEffect(() => {
     api.getCities().then(result => {
-      console.log(result, "resultttt");
+      console.log(result,'result')
+      const massagedCities = dataMassager(result.cities)
       setVpnState({
         ...vpnState,
         cities: result.cities,
+        massagedCities: massagedCities,
         message: result.message,
         loading: false
       });
     });
   }, []);
-
-  const handleChange = e => {
-    const selectedCity = e.target.value;
-    const cityObject = vpnState.cities.filter(
-      city => city.name === selectedCity
-    );
-    const cityPrice = cityObject[0].price;
-    setVpnState({ ...vpnState, selectedCity, cityPrice });
+// todo delete residents from api
+// todo. add price in here somewhere
+   const handleChange = selectedOption => {
+     console.log(vpnState,'vpn')
+    setVpnState({ ...vpnState, selectedOption });
   };
 
   const handleTravel = () => {
-    const cityName = vpnState.selectedCity;
-
-    api.changeCity({ cityName }).then(result => {
+    console.log(vpnState,'vpn')
+    const cityId = vpnState.selectedOption.value
+    api.changeCity({ cityId}).then(result => {
       console.log(result, "result change city");
     });
+  };
+
+  const dataMassager = cityArray => {
+    const massagedCities = [];
+    cityArray.forEach(c => {
+      massagedCities.push({
+        value: c._id,
+        label: c.name,
+        price: c.price
+      });
+    });
+    
+    return massagedCities;
   };
 
   return (
     <div>
       <h2>VPN</h2>
-
+      
       <Form>
         <FormGroup>
           <Label for="exampleSelect">Select</Label>
-          <Input
-            /* todo either set value to user.city OR disable user.city */
-            onChange={() => handleChange}
-            value={vpnState.selectedCity}
-            type="select"
-            name="select"
-            id="exampleSelect"
-          >
-            {vpnState.loading ? (
-              <option>none</option>
-            ) : (
-              vpnState.cities.map((el, i) => {
-                return <option key={i}>{el.name}</option>;
-              })
-            )}
-          </Input>
+          <h6>Price: 2000</h6>
+      <Select
+                  value={vpnState.selectedOption}
+                  onChange={handleChange}
+                  options={vpnState.loading ? "" : vpnState.massagedCities}
+                />
+
+      
         </FormGroup>
         <Button onClick={() => handleTravel()}>Change VPN</Button>
       </Form>

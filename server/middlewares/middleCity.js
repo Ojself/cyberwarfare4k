@@ -48,8 +48,10 @@ function changeCity(user, newCity, oldCity, batteryCost) {
   oldCity.departure(user._id);
 }
 
+
 module.exports = {
   getCityRouteCriterias,
   changeCityRouteCriterias,
   changeCity,
+
 };

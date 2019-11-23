@@ -9,7 +9,7 @@ const Currency = require('../models/Currency');
 require('../configs/database');
 // crush currency for every transaction
 
-let currency = [
+const currency = [
   {
     name: 'Litecoin',
     color: 'hsl(255, 70%, 75%)',
@@ -19,7 +19,7 @@ let currency = [
     price: 35,
     levelReq: 4,
     available: 50000,
-    marketCap: 50000
+    marketCap: 50000,
   },
   {
     name: 'Ethereum',
@@ -30,7 +30,7 @@ let currency = [
     price: 120,
     levelReq: 3,
     available: 200000,
-    marketCap: 200000
+    marketCap: 200000,
   },
   {
     name: 'Ripple',
@@ -41,7 +41,7 @@ let currency = [
     price: 0.3,
     levelReq: 5,
     available: 10000000,
-    marketCap: 10000000
+    marketCap: 10000000,
   },
   {
     name: 'Monero',
@@ -52,7 +52,7 @@ let currency = [
     price: 50,
     levelReq: 2,
     available: 100000,
-    marketCap: 100000
+    marketCap: 100000,
   },
   {
     name: 'Zcash',
@@ -63,8 +63,8 @@ let currency = [
     price: 10,
     levelReq: 1,
     available: 10000,
-    marketCap: 10000
-  }
+    marketCap: 10000,
+  },
   /* {
     name: 'Dash',
     color: '',
@@ -118,20 +118,18 @@ let currency = [
 ];
 
 Currency.deleteMany()
-  .then(() => {
-    return Currency.create(currency);
-  })
-  .then(currencyCreated => {
+  .then(() => Currency.create(currency))
+  .then((currencyCreated) => {
     console.log(
-      `${currencyCreated.length} currency created with the following id:`
+      `${currencyCreated.length} currency created with the following id:`,
     );
-    console.log(currencyCreated.map(u => u._id));
+    console.log(currencyCreated.map((u) => u._id));
   })
   .then(() => {
     // Close properly the connection to Mongoose
     mongoose.disconnect();
   })
-  .catch(err => {
+  .catch((err) => {
     mongoose.disconnect();
     throw err;
   });

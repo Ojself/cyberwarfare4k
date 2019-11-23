@@ -1,41 +1,40 @@
-const mongoose = require("mongoose");
-const stashPriceInterval = require("../intervals/stashPriceInterval");
-const batteryInterval = require("../intervals/batteryInterval");
-const currencyPriceInterval = require("../intervals/currencyPriceInterval");
-const dataCenterPayoutInterval = require("../intervals/dataCenterPayoutInterval");
+const mongoose = require('mongoose');
+const stashPriceInterval = require('../intervals/stashPriceInterval');
+const batteryInterval = require('../intervals/batteryInterval');
+const currencyPriceInterval = require('../intervals/currencyPriceInterval');
+const dataCenterPayoutInterval = require('../intervals/dataCenterPayoutInterval');
 
 // todo set "MONGODB_URI" in ~/server/.env
-const uri =
-  process.env.MONGODB_URI ||
-  `mongodb://localhost/please-set-process-env-mongodb-uri`;
+const uri =  process.env.MONGODB_URI
+  || 'mongodb://localhost/please-set-process-env-mongodb-uri';
 
 mongoose
   .connect(uri, { useNewUrlParser: true })
-  .then(x => {
+  .then((x) => {
     console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`
+      `Connected to Mongo! Database name: "${x.connections[0].name}"`,
     );
   })
   .then(() => {
     /* Gives user more energy every 30 minute */
-    console.log("SERVER: battery interval started");
+    console.log('SERVER: battery interval started');
     setInterval(batteryInterval, 30 * 60 * 1000);
   })
   .then(() => {
     /* Changes the stash price every 60 minute */
-    console.log("SERVER: stash price interval started");
+    console.log('SERVER: stash price interval started');
     setInterval(stashPriceInterval, 60 * 60 * 1000);
   })
   .then(() => {
     /* Changes the price of every crypto currency 60 minute */
-    console.log("SERVER: currency price interval started");
+    console.log('SERVER: currency price interval started');
     setInterval(currencyPriceInterval, /* 60 * */ 60 * 1000);
   })
   .then(() => {
-    //todo, write explain here
-    console.log("SERVER: datacenter payout interval started");
+    // todo, write explain here
+    console.log('SERVER: datacenter payout interval started');
     setInterval(dataCenterPayoutInterval, /* 60 * */ 10 * 1000);
   })
-  .catch(err => {
-    console.error("Error connecting to mongo", err);
+  .catch((err) => {
+    console.error('Error connecting to mongo', err);
   });

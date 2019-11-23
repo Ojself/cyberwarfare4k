@@ -9,6 +9,8 @@ const {
   changeCity,
 } = require('../middlewares/middleCity.js');
 
+const { getOnlineUsers } = require('./helper');
+
 // @GET
 // PRIVATE
 // Retrives all cities
@@ -32,6 +34,34 @@ router.get('/', async (req, res) => {
   });
 });
 
+
+// @GET
+// PRIVATE
+// Retrives local players and reviels online status
+
+router.get('/local', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const userCityId = user.playerStats.city;
+
+  const cityLocals = await City.findById(userCityId).populate('residents', ['name', 'playerStats', 'alliance']);
+
+  const onlineUsers = await getOnlineUsers();
+  // gets online users in current city
+
+  const localOnlineUsers = cityLocals.residents.filter((r) => onlineUsers.includes(r._id.toString()));
+
+  return res.status(200).json({
+    success: true,
+    message: 'locals loaded..',
+    cityLocals,
+    localOnlineUsers,
+
+  });
+});
+
+
 // @POST
 // PRIVATE
 // Changes the user city
@@ -40,11 +70,15 @@ router.post('/', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const { cityName } = req.body;
-  const newCity = await City.findOne({ name: cityName });
+
+  const { cityId } = req.body;
+
+  const newCity = await City.findById(cityId);
+
 
   const oldCityId = user.playerStats.city;
   const oldCity = await City.findById(oldCityId);
+  console.log(oldCity, 'oldCity');
 
   const batteryCost = 5;
 

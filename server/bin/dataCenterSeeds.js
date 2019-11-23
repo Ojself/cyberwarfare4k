@@ -16,14 +16,14 @@ const stashesIds = [];
 
 async function getCities() {
   const cities = await City.find();
-  cities.forEach(element => {
+  cities.forEach((element) => {
     cityIds.push(element._id);
   });
 }
 
 async function getStashes() {
   const stashes = await Stash.find();
-  stashes.forEach(element => {
+  stashes.forEach((element) => {
     stashesIds.push(element._id);
   });
 }
@@ -36,21 +36,17 @@ function getThreeRequiredStash() {
   return [
     stashesIds[randomArrayNumber(stashesIds.length)],
     stashesIds[randomArrayNumber(stashesIds.length)],
-    stashesIds[randomArrayNumber(stashesIds.length)]
+    stashesIds[randomArrayNumber(stashesIds.length)],
   ];
 }
 
 DataCenter.deleteMany()
+  .then(() => getCities())
+  .then(() => getStashes())
   .then(() => {
-    return getCities();
-  })
-  .then(() => {
-    return getStashes();
-  })
-  .then(() => {
-    let dataCenters = [
-      //SHANGHAI
-      //SHANGHAI
+    const dataCenters = [
+      // SHANGHAI
+      // SHANGHAI
 
       {
         name: 'China Telecom',
@@ -60,7 +56,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[0],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'China Unicom',
@@ -70,7 +66,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[0],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'China Mobile Hohot',
@@ -80,7 +76,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[0],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Harbin Data Centre',
@@ -90,7 +86,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[0],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Range International Data Centre',
@@ -100,7 +96,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[0],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       // HANOI
       // HANOI
@@ -113,7 +109,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[1],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'NTT Communications',
@@ -123,7 +119,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[1],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'GDS Hanoi Thanglong',
@@ -133,7 +129,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[1],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Tulip Data Centre ',
@@ -143,7 +139,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[1],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'TELEHOUSE Hanoi',
@@ -153,7 +149,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[1],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
 
       // STAVANGER
@@ -166,7 +162,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[2],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Next Generation Data',
@@ -176,7 +172,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[2],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Global Switch',
@@ -186,7 +182,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[2],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Kao Data Campus',
@@ -196,7 +192,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[2],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Kolos Data Centre',
@@ -206,7 +202,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[2],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
 
       // PHOENIX
@@ -220,7 +216,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[3],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'DuPont Fabros Technology',
@@ -230,7 +226,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[3],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Lakeside Technology Centre',
@@ -240,7 +236,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[3],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Switch SUPERNAP',
@@ -250,7 +246,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[3],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'The Citadel',
@@ -260,7 +256,7 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[3],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
 
       // NOVOSIBIRSK
@@ -274,7 +270,7 @@ DataCenter.deleteMany()
         price: 1000000,
         minutlyrevenue: 180,
         city: cityIds[4],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Rostelecom',
@@ -284,7 +280,7 @@ DataCenter.deleteMany()
         price: 1500000,
         minutlyrevenue: 200,
         city: cityIds[4],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Datahouse',
@@ -294,7 +290,7 @@ DataCenter.deleteMany()
         price: 2000000,
         minutlyrevenue: 220,
         city: cityIds[4],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'Data Harbour',
@@ -304,7 +300,7 @@ DataCenter.deleteMany()
         price: 3000000,
         minutlyrevenue: 260,
         city: cityIds[4],
-        requiredStash: getThreeRequiredStash()
+        requiredStash: getThreeRequiredStash(),
       },
       {
         name: 'RTCOMM',
@@ -314,22 +310,22 @@ DataCenter.deleteMany()
         price: 5000000,
         minutlyrevenue: 500,
         city: cityIds[4],
-        requiredStash: getThreeRequiredStash()
-      }
+        requiredStash: getThreeRequiredStash(),
+      },
     ];
     return DataCenter.create(dataCenters);
   })
-  .then(dataCentersCreated => {
+  .then((dataCentersCreated) => {
     console.log(
-      `${dataCentersCreated.length} datacenters created with the following id:`
+      `${dataCentersCreated.length} datacenters created with the following id:`,
     );
-    console.log(dataCentersCreated.map(u => u._id));
+    console.log(dataCentersCreated.map((u) => u._id));
   })
   .then(() => {
     // Close properly the connection to Mongoose
     mongoose.disconnect();
   })
-  .catch(err => {
+  .catch((err) => {
     mongoose.disconnect();
     throw err;
   });

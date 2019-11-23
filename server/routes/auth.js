@@ -61,14 +61,9 @@ router.post('/signup', (req, res, next) => {
         playerStats,
       });
 
-      newUser.save();
-    })
-    .then((userSaved) => {
-      // send
-      // LOG IN THIS USER
-      // (that saves the USER ID in the session)
+      return newUser.save();
+    }).then((userSaved) => {
       req.logIn(userSaved, () => {
-        // hide "encryptedPassword" before sending the JSON (it's a security risk)
         userSaved.account.password = undefined;
         res.status(200).json(userSaved);
       });

@@ -112,6 +112,7 @@ router.get('/ladder', async (req, res) => {
     'playerStats',
     'name',
   ]);
+  console.log(alliances);
 
   let stats = findAllianceStats(alliances);
   stats = getShuffledArr(stats);

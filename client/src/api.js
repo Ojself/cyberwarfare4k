@@ -180,7 +180,8 @@ export default {
       .catch(errHandler);
   },
 
-  // VPN CITIES
+  // VPN 
+  // VPN 
   getCities() {
     return service
       .get("/city")
@@ -191,6 +192,14 @@ export default {
   changeCity(body) {
     return service
       .post("/city", body)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+
+  getLocals() {
+    
+    return service
+      .get("/city/local", )
       .then(res => res.data)
       .catch(errHandler);
   },

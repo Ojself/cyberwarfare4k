@@ -7,7 +7,6 @@ const router = express.Router();
 const User = require('../models/User');
 
 const City = require('../models/City');
-const Session = require('../models/Session');
 
 // might be written wrongly TODO
 // Ensures that email confirmation is been made
@@ -112,7 +111,6 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
 // PRIVATE
 // Same as my profile. being used in the navbar for stats
 router.get('/get-nav-user', async (req, res) => {
-  console.log('get nav user');
   const userId = req.user._id;
   try {
     const user = await User.findById(userId)
@@ -251,40 +249,6 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   return res.status(200).json({
     message: `${statPoint.toUpperCase()} upgraded`,
     success: true,
-  });
-});
-
-
-// @GET
-// PRIVATE
-// Gets all online users
-
-router.get('/online', async (req, res) => {
-  // Default expire for session
-  const twoWeeks = 1000 * 60 * 60 * 24 * 7 * 2;
-  // only those who have activity from last five minutes
-  const fiveMin = 1000 * 60 * 5;
-  // this exact date
-  const now = Date.now();
-  // above variables put together
-  const limitTime = new Date(now + twoWeeks - fiveMin);
-  let onlineIds;
-
-  await Session.find().then((result) => {
-    console.log(result[0].expires, result[0].expires > limitTime, 'result');
-    const filteredIds = result
-      .filter((x) => x.expires > limitTime)
-      .map((y) => y.session.match(/[a-f\d]{24}/g, ''))
-      .filter((el) => el != null);
-    onlineIds = [].concat(...filteredIds);
-  });
-  console.log(onlineIds, 'onlineids');
-  const onlinePlayers = await User.find({ _id: { $in: onlineIds } });
-
-  return res.status(200).json({
-    success: true,
-    message: 'Online players loaded..',
-    onlinePlayers,
   });
 });
 
