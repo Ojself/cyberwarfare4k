@@ -25,7 +25,7 @@ const Signup = ({ history }) => {
       .signup(data)
       .then(result => {
         console.log("SUCCESS!");
-        history.push("/"); // Redirect to the home page
+        history.push("/my-profile"); // Redirect to the home page
       })
       .catch(err =>
         setSignupState({

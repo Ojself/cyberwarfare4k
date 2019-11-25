@@ -21,7 +21,7 @@ const Login = ({ history }) => {
       .login(loginState.email, loginState.password)
       .then(result => {
         console.log("SUCCESS!");
-        history.push("/"); // Redirect to the home page
+        history.push("/my-profile"); 
       })
       .catch(err => setLoginState({ ...loginState, message: err.toString() }));
   };
