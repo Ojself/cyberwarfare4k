@@ -103,7 +103,7 @@ const App = () => {
   return (
     <div>
       <div className="App ">
-        {/* extract this into another component (navbar) */}
+        
         <Navbar color="dark" dark expand="md">
           <NavbarBrand href="/">CHW4K</NavbarBrand>
           <NavbarToggler onClick={toggle} />
@@ -218,16 +218,7 @@ const App = () => {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              {!api.isLoggedIn() && (
-                <NavItem>
-                  <NavLink href="/signup">Signup</NavLink>
-                </NavItem>
-              )}
-              {!api.isLoggedIn() && (
-                <NavItem>
-                  <NavLink href="/login">Login</NavLink>
-                </NavItem>
-              )}
+              
               {api.isLoggedIn() && (
                 <NavItem>
                   <NavLink href="/" onClick={e => handleLogoutClick(e)}>
@@ -240,6 +231,7 @@ const App = () => {
           </Collapse>
         </Navbar>
         <StatusBar loading={appState.loading} user={appState.user} />
+        
 
         <Switch>
           <Route path="/" exact component={Home} />

@@ -35,31 +35,35 @@ const Signup = ({ history }) => {
       );
   };
 
+
   return (
-    <div className="Signup">
-      <h2>Signup</h2>
+    <div className="text-left bg-dark d-flex flex-column m-2 w-50 p-3">
+    {signupState.message && (
+        <div className="info info-danger">{signupState.message}</div>
+      )}
+      <h2 className='text-left'>Register <span  style={{'color':"#FFCC00"}} >- IT'S FREE!</span></h2>
       <form>
-        Email:{" "}
-        <input
+        <p >E-Mail Address</p>
+        < input
+        className="w-100"
           type="text"
           value={signupState.email}
           name="email"
           onChange={handleInputChange}
-        />{" "}
+        />
         <br />
-        Password:{" "}
+        <p>Password</p>
         <input
+        className="w-100"
           type="password"
           value={signupState.password}
           name="password"
           onChange={handleInputChange}
-        />{" "}
+        />
         <br />
-        <button onClick={e => handleClick(e)}>Signup</button>
+        <button className="btn btn-primary w-100 mt-2" onClick={e => handleClick(e)}>Signup</button>
       </form>
-      {signupState.message && (
-        <div className="info info-danger">{signupState.message}</div>
-      )}
+      
     </div>
   );
 };

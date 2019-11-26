@@ -27,30 +27,32 @@ const Login = ({ history }) => {
   };
 
   return (
-    <div className="Login">
-      <h2>Login</h2>
+    <div className="text-left bg-dark d-flex flex-column w-50 m-2 p-3">
+    {loginState.message && (
+        <div className="info info-danger">{loginState.message}</div>
+      )}
+      <h2 className='text-left'>Login</h2>
       <form>
-        email:
+        <p >E-Mail Address</p>
         <input
+          className="w-100"
           type="text"
           value={loginState.email}
           name="email"
           onChange={handleInputChange}
         />
-        <br />
-        Password:
+        <p>Password</p>
         <input
+        className="w-100"
           type="password"
           value={loginState.password}
           name="password"
           onChange={handleInputChange}
         />
         <br />
-        <button onClick={e => handleClick(e)}>Login</button>
+        <button className="btn btn-primary w-100 mt-2" onClick={e => handleClick(e)}>Login</button>
       </form>
-      {loginState.message && (
-        <div className="info info-danger">{loginState.message}</div>
-      )}
+      <p className="text-center mt-3">Forgot Password?</p>{/* Todo, do something here. */}
     </div>
   );
 };
