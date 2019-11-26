@@ -1,4 +1,6 @@
-export default [
+// delete
+
+/* export default [
   {
     id: 'japan',
     color: 'hsl(311, 70%, 50%)',
@@ -54,3 +56,4 @@ export default [
     ]
   }
 ];
+ */

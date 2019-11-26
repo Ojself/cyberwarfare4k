@@ -11,12 +11,12 @@ import DataCenters from "./pages/DataCenters";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
 import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
-import Login from "./pages/Login";
+
 import Marketplace from "./pages/Marketplace";
 import MiniGame from "./pages/minigame/MiniGame";
 import MyProfile from "./pages/MyProfile";
@@ -24,7 +24,11 @@ import MessageCenter from "./pages/MessageCenter";
 import Notifications from "./pages/Notifications";
 import Petty from "./pages/Petty";
 import Secret from "./pages/Secret";
+
+// NOT NEEDED. SEE HOME.JSX
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
 import StatusBar from "./pages/smaller/statusbar";
 import SystemRepair from "./pages/SystemRepair";
 import VPN from "./pages/VPN";
