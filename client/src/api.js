@@ -31,11 +31,22 @@ export default {
     return JSON.parse(localStorage.getItem("user"));
   },
 
+// to see if user is setup
+  isSetup() {
+    if (!this.isLoggedIn()){
+      return false
+    }
+     return service
+      .get("/isSetup")
+      .then(res => res.data)
+      .catch(err=>false);
+  },
+
   signup(userInfo) {
     return service
       .post("/signup", userInfo)
       .then(res => {
-        // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
+        console.log(res.data,'res data ')
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
       })

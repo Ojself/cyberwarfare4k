@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-const Login = ({ history }) => {
+import history from '../history';
+
+const Login = props => {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -20,14 +22,13 @@ const Login = ({ history }) => {
     api
       .login(loginState.email, loginState.password)
       .then(result => {
-        console.log("SUCCESS!");
-        history.push("/my-profile"); 
+        props.redirect('/my-profile/')
       })
       .catch(err => setLoginState({ ...loginState, message: err.toString() }));
   };
 
   return (
-    <div className="text-left bg-dark d-flex flex-column w-50 m-2 p-3">
+    <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
     {loginState.message && (
         <div className="info info-danger">{loginState.message}</div>
       )}

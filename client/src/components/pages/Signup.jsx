@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+
 import api from "../../api";
 
-const Signup = ({ history }) => {
+const Signup = props => {
   const [signupState, setSignupState] = useState({
     email: "",
     password: "",
@@ -24,10 +25,10 @@ const Signup = ({ history }) => {
     api
       .signup(data)
       .then(result => {
-        console.log("SUCCESS!");
-        history.push("/my-profile"); // Redirect to the home page
+        props.redirect('/create-hacker/')
       })
       .catch(err =>
+      
         setSignupState({
           ...signupState,
           message: err.toString()
@@ -37,7 +38,7 @@ const Signup = ({ history }) => {
 
 
   return (
-    <div className="text-left bg-dark d-flex flex-column m-2 w-50 p-3">
+    <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
     {signupState.message && (
         <div className="info info-danger">{signupState.message}</div>
       )}
