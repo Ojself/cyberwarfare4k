@@ -1,5 +1,9 @@
 // --------------------
 // Style reusable for all components
+html{
+  background-color:black
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -291,8 +295,13 @@ body {
 }
 
 .avatarSelectImages{
-  width:90px;
-  height:110px
+  width:115px;
+  height:130px;
+  cursor: pointer;
+  
+}
+.active{
+  border-bottom:red 5px solid
 }
 
 

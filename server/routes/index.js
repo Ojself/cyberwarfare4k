@@ -11,10 +11,11 @@ const City = require('../models/City');
 // might be written wrongly TODO
 // Ensures that email confirmation is been made
 
-function setupPlayer(user, name, city) {
+function setupPlayer(user, name, city, avatar) {
+  user.account.isSetup = true;
   user.name = name;
   user.playerStats.city = city._id;
-  user.account.isSetup = true;
+  user.account.avatar = avatar;
   user.save();
   city.residents.push(user._id);
   city.save();
@@ -59,17 +60,17 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
 
   const userId = req.user._id;
   const user = await User.findById(userId);
-  const { name, cityString } = req.body;
+  const { name, cityString, avatar } = req.body;
+  console.log(name, 'name', cityString, 'cs', avatar, 'avatar');
 
   if (user.account.isSetup) {
-    console.log('user is already setup');
     return res.status(400).json({
       success: false,
       message: 'user is already setup',
     });
   }
 
-  if (!name || !cityString) {
+  if (!name || !cityString || !avatar) {
     return res.status(409).json({
       success: false,
       message: 'Missing parameters..',
@@ -96,7 +97,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
     });
   }
 
-  setupPlayer(user, name, city);
+  setupPlayer(user, name, city, avatar);
 
   return res.status(200).json({
     success: true,
@@ -218,6 +219,7 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
+  console.log(req.body);
   const { statPoint } = req.body;
 
   if (user.playerStats.statPoints <= 0) {

@@ -204,7 +204,7 @@ const Ledger = props => {
                   In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
                   {props.loading ? 0 : props.user.playerStats.ledger}
                 </CardText>
-                {/* isDisabled isSearchable */}
+                {/* isDisabled isSearchable todo */}
                 <Select
                   value={ledgerState.selectedOption}
                   onChange={handleChange}

@@ -119,9 +119,10 @@ const playerAvatars = [
 	},
 	{
         id:21,
-		src: '/hackerAvatars/crime-curiosity.png',
-        title:'Curious Crime'
+		src: '/hackerAvatars/v-mask.jpg',
+        title:'V Mask'
 	},
+	
 	{
         id:22,
 		src: '/hackerAvatars/elonmusk.jpg',
@@ -224,10 +225,11 @@ const playerAvatars = [
         id:44,
 		src: '/hackerAvatars/neo.png',
         title:'Neo Morpheus'
-	},{
+	},
+	{
         id:45,
-		src: '/hackerAvatars/python-crime.png',
-        title:'Python Crime'
+		src: '/hackerAvatars/whitehat.png',
+        title:'White Hat'
 	},{
         id:46,
 		src: '/hackerAvatars/roberttappanmorris.jpg',
@@ -244,15 +246,7 @@ const playerAvatars = [
         id:49,
 		src: '/hackerAvatars/trinitymatrix.jpg',
         title:'Trinity Matrix'
-	},{
-        id:50,
-		src: '/hackerAvatars/v-mask.jpg',
-        title:'V Mask'
-	},{
-        id:51,
-		src: '/hackerAvatars/whitehat.png',
-        title:'White Hat'
-	},
+	}
 	
 ]
 
