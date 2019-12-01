@@ -64,6 +64,8 @@ const App = () => {
   });
 
   useEffect(async () => {
+    
+    
     const apiUser = await api.getNavUser();
     SetAppState({
       ...appState,

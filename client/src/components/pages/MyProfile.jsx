@@ -20,26 +20,26 @@ const MyProfile = props => {
     }
     fetchUserData();
   }, [console.log(myProfileState.user)]);
-
+  const profilePlaceHolderAvatar ='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4CL6AEUtKQPO1nNCqjLvd7tGL1K_ALxiqO8MbmaA5yQcxymQn'
   const profilePage = myProfileState.loading ? (
     "loading.."
   ) : (
     <div className="row">
-      <div className="col">
+      <div className="col p-4">
         <h3>{myProfileState.user.name}</h3>
       </div>
       <div className="w-100">{/* seperator */}</div>
       <div className="col w-25">
         <div>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4CL6AEUtKQPO1nNCqjLvd7tGL1K_ALxiqO8MbmaA5yQcxymQn"
+            src={myProfileState.loading?profilePlaceHolderAvatar:myProfileState.user.account.avatar}
             alt="hackerPic"
           />
         </div>
         <div>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRIEOjHCXPvlpCeMu_nAj7MblPVHPZVUVCihYq5OF8GrYWPvVNv"
-            alt=""
+            src={''}//alliance pic here
+            alt={''}
           />
         </div>
       </div>
@@ -47,7 +47,7 @@ const MyProfile = props => {
         <h5>Crime skills</h5>
 
         <Progress
-          className="mb-3"
+          className="mb-3 "
           value={myProfileState.user.crimeSkill.Technical}
           max={150}
         >
@@ -242,7 +242,7 @@ const MyProfile = props => {
   );
 
   return (
-    <div className="container">
+    <div className="container  mt-5">
       {myProfileState.loading ? <p>loading..</p> : profilePage}
     </div>
   );

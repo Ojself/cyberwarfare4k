@@ -108,7 +108,7 @@ const CreateHacker = props => {
   ]
 
   return (
-    <div style={{'marginTop':'-50px'}} className="w-100 d-flex justify-content-center">
+    <div style={{'marginTop':'-100px'}} className="w-100 d-flex justify-content-center">
     <div className="w-50">
     <div className="">
     <h1>Create A Haxx0r</h1>

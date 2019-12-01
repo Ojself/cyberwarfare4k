@@ -97,11 +97,13 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
     });
   }
 
-  setupPlayer(user, name, city, avatar);
+  const setupUser = await setupPlayer(user, name, city, avatar);
 
   return res.status(200).json({
     success: true,
     message: `user: ${name} created`,
+    user: setupUser,
+
   });
 });
 

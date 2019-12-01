@@ -31,15 +31,11 @@ export default {
     return JSON.parse(localStorage.getItem("user"));
   },
 
-// to see if user is setup
-  isSetup() {
-    if (!this.isLoggedIn()){
-      return false
+  getLocalStorageUser() {
+    const localUser = JSON.parse(localStorage.getItem("user"))
+    if (localUser){
+      return localUser.account.isSetup
     }
-     return service
-      .get("/isSetup")
-      .then(res => res.data)
-      .catch(err=>false);
   },
 
   signup(userInfo) {
@@ -75,7 +71,10 @@ export default {
   createUser(body) {
     return service
       .post("/createUser", body)
-      .then(res => res.data)
+      .then(res =>{
+        localStorage.setItem("user", JSON.stringify(res.data));
+        return res.data
+      })
       .catch(errHandler);
   },
 
