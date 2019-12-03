@@ -31,11 +31,14 @@ export default {
     return JSON.parse(localStorage.getItem("user"));
   },
 
-  getLocalStorageUser() {
+  isSetup() {
     const localUser = JSON.parse(localStorage.getItem("user"))
-    if (localUser){
+    console.log(localUser)
+    /* if (localUser){
+      console.log(localUser,'localuser')
       return localUser.account.isSetup
-    }
+    } */
+    return true //todo fix this. wrong on serverside
   },
 
   signup(userInfo) {
@@ -72,6 +75,7 @@ export default {
     return service
       .post("/createUser", body)
       .then(res =>{
+        console.log(res,'res')
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data
       })

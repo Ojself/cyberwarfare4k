@@ -1,31 +1,36 @@
 import React, { useState, useEffect } from "react";
-const Row = props => {
-  const [renderInterval, setRenderInterval] = useState(null);
-  const [value, setValue] = useState(0);
+function Row  (props){
+  const renderInterval = React.useRef();
+  const [value, setValue] = React.useState(0);
 
   useEffect(() => {
-    var interval = setInterval(counterIntervalFunction, props.speed);
-    setRenderInterval({ interval: interval });
-  }, []);
+    renderInterval.current = setInterval(counterIntervalFunction, props.isRunning, props.direction, props.setRotatingValue, props.index);
+    return () => {
+      clearInterval(renderInterval.current);
+    };
+  }, [props, counterIntervalFunction]);
 
-  const counterIntervalFunction = () => {
-    if (props.isRunning && props.direction === "ltr") {
+  const counterIntervalFunction = React.useCallback((isRunning, direction, setRotatingValue, index) => {
+    if (isRunning === false) {
+      return;
+    }
+  console.log('a')
+    if (direction === 'ltr') {
+      
       const ltrNewValue = value === 2 ? 0 : value + 1;
-      //setValue(ltrNewValue);
-      setValue(Math.floor(Math.random() * 3));
-      props.setRotatingValue(props.index, value);
-    } else if (props.isRunning && props.direction === "rtl") {
+      setValue(ltrNewValue);
+      console.log(props.index,'index')
+      props.setRotatingValue(props.index, ltrNewValue);
+    } else if (props.direction === 'rtl') {
       const rtlNewValue = value === 0 ? 2 : value - 1;
       setValue(rtlNewValue);
-      props.setRotatingValue(props.index, value);
-    } else {
-      clearCounterInterval();
+      props.setRotatingValue(props.index, rtlNewValue);
     }
-  };
+  }, [value]);
 
-  const clearCounterInterval = () => {
-    //clearInterval(interval);
-  };
+
+
+
 
   // determines which row we are dealing with [0,1,2]
   const activeRowIndex = props.data.activeRowIndex;
@@ -53,4 +58,5 @@ const Row = props => {
     </div>
   );
 };
+
 export default Row;

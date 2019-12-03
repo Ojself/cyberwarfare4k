@@ -101,7 +101,7 @@ function findAllianceStats(alliances) {
 
 // @GET
 // PRIVATE
-// Retrives all alliances
+// Retrives all alliances with stats
 
 router.get('/ladder', async (req, res) => {
   const alliances = await Alliance.find().populate('members', [

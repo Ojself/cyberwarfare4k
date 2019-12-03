@@ -88,9 +88,7 @@ const MiniGame = () => {
 
   const resetGame = () => {
     console.log("resetgame");
-    //Generate new key for each row. This forces re-rendering and resetting of timers.
     const rows = gameState.rows.map(row => {
-      //Generate new key
       //row.key = Math.random();
       //Reset running timer
       row.isRunning = true;
@@ -123,10 +121,10 @@ const MiniGame = () => {
     let row = rows[index];
     row.isRunning = false;
     rows[index] = row;
-    setGameState({ ...gameState, rows: rows });
+      setGameState({ ...gameState, rows: rows });
   };
 
-  const rows = gameState.rows.map(row => (
+  const rows = gameState.rows.map(row => 
     <Row
       name={row.name}
       index={row.index}
@@ -138,7 +136,8 @@ const MiniGame = () => {
       key={row.key}
       direction={row.direction}
     />
-  ));
+    
+  );
 
   return (
     <div className="gameWrapper">

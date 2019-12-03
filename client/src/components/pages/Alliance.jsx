@@ -7,12 +7,16 @@ const Alliance = () => {
   });
 
   useEffect(() => {
+    //get alliances
     console.log("using effect");
   }, []);
 
   return (
     <div>
-      <h2>Alliance</h2>
+      <h2>Create Alliance</h2>
+
+      {/* Select which */}
+      <button>Create</button>
     </div>
   );
 };

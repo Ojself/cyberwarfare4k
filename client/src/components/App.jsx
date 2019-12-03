@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import api from "../api";
-import history from './history';
 
 import Arcade from "./pages/Arcade";
 import Alliance from "./pages/Alliance";
@@ -26,9 +25,6 @@ import NavbarComp from "./pages/Navbar";
 import Notifications from "./pages/Notifications";
 import Petty from "./pages/Petty";
 import Secret from "./pages/Secret";
-
-/* import Login from "./pages/Login";
-import Signup from "./pages/Signup"; */
 
 import StatusBar from "./pages/smaller/statusbar";
 import SystemRepair from "./pages/SystemRepair";
@@ -56,7 +52,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
-const App = () => {
+const App = props => {
   const [appState, SetAppState] = useState({
     isOpen: false,
     loading: true,
@@ -72,19 +68,18 @@ const App = () => {
       user: apiUser.user,
       loading: false
     });
-  }, []);
+  }, [console.log(props,'props')]);
 
   
-
- 
-
-  /* TODO: This will cause error cause no default city is set */
+  const checkAll = () =>{
+    return api.isLoggedIn() && api.isSetup()
+  }
 
   return (
     <div>
       <div className="App text-light">
         
-        {api.isLoggedIn() ? (
+        {checkAll() ? (
           <>
         <NavbarComp loading={appState.loading} user={appState.user}/>
         <StatusBar loading={appState.loading} user={appState.user} />
@@ -95,6 +90,7 @@ const App = () => {
         <img id="navbarReplacer"  src={images.utilImages[3].src} alt=""/>
         </div>
         }
+        
         
         
 

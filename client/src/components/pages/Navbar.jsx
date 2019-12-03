@@ -15,6 +15,9 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Popover, 
+  PopoverHeader,
+  PopoverBody,
   UncontrolledDropdown,
   UncontrolledTooltip
 } from "reactstrap";
@@ -25,6 +28,9 @@ const NavbarComp = props => {
     const [navBarState, SetNavBarState] = useState({
     isOpen: false,
   });
+  const [toolOpen, setToolOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
 
   const currentCity = props.loading
     ? "City"
@@ -45,11 +51,10 @@ const NavbarComp = props => {
   };
 
   const toggle = () => {
-    SetNavBarState({
-      ...navBarState,
-      isOpen: !navBarState.isOpen
-    });
+    setToolOpen(!toolOpen);
   };
+
+   const togglePop = () => setPopoverOpen(!popoverOpen);
 
    const rankChecker = reqLevel => {
     const { rank } = props.loading ? 1 : props.user.playerStats;
@@ -110,16 +115,9 @@ const NavbarComp = props => {
                   </DropdownMenu>
                 ) : (
                   <DropdownMenu id="allianceCreateNav" right>
-                    <DropdownItem href="/" disabled={rankChecker(4)}>
+                    <DropdownItem href="/alliance/create">
                       Create..
                     </DropdownItem>
-                    <UncontrolledTooltip
-                      placement="top"
-                      target="allianceCreateNav"
-                    >
-                      {rankChecker(4) &&
-                        "You are too unexperienced to create your own alliance"}
-                    </UncontrolledTooltip>
                   </DropdownMenu>
                 )}
               </UncontrolledDropdown>
