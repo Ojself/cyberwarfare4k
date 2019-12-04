@@ -3,8 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import api from "../api";
 
 import Arcade from "./pages/Arcade";
-import Alliance from "./pages/Alliance";
-import AllianceLadder from "./pages/AllianceLadder";
+import Alliance from "./pages/alliance/Alliance";
+import AllianceLadder from "./pages/alliance/Ladder";
 import CryptoCurrency from "./pages/CryptoCurrency";
 import CreateHacker from "./pages/CreateHacker";
 import DataCenters from "./pages/DataCenters";
@@ -31,7 +31,7 @@ import SystemRepair from "./pages/SystemRepair";
 import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
-import images from './utils/images.js'
+import images from "./utils/images.js";
 
 // styling
 import {
@@ -60,46 +60,37 @@ const App = props => {
   });
 
   useEffect(async () => {
-    
-    
     const apiUser = await api.getNavUser();
     SetAppState({
       ...appState,
       user: apiUser.user,
       loading: false
     });
-  }, [console.log(props,'props')]);
+  }, [console.log(props, "props")]);
 
-  
-  const checkAll = () =>{
-    return api.isLoggedIn() && api.isSetup()
-  }
+  const checkAll = () => {
+    return api.isLoggedIn() && api.isSetup();
+  };
 
   return (
     <div>
       <div className="App text-light">
-        
         {checkAll() ? (
           <>
-        <NavbarComp loading={appState.loading} user={appState.user}/>
-        <StatusBar loading={appState.loading} user={appState.user} />
-        </>
-        )
-        :
-        <div >
-        <img id="navbarReplacer"  src={images.utilImages[3].src} alt=""/>
-        </div>
-        }
-        
-        
-        
+            <NavbarComp loading={appState.loading} user={appState.user} />
+            <StatusBar loading={appState.loading} user={appState.user} />
+          </>
+        ) : (
+          <div>
+            <img id="navbarReplacer" src={images.utilImages[3].src} alt="" />
+          </div>
+        )}
 
-        <Switch >
+        <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/alliance" component={Alliance} />
           <Route path="/alliance-ladder" component={AllianceLadder} />
           <Route path="/arcade" component={Arcade} /> {/* remove? */}
-          
           <Route
             path="/create-hacker"
             render={() => (
@@ -107,11 +98,10 @@ const App = props => {
             )}
           />
           <Route path="/datacenters" component={DataCenters} />
-          
           <Route path="/hack-crimes" component={HackCrimes} />
           <Route path="/hack-player" component={HackPlayer} />
           <Route path="/hacker/:id" component={HackerProfile} />
-          <Route path="/locals" component={Locals} /> 
+          <Route path="/locals" component={Locals} />
           <Route path="/my-profile" component={MyProfile} />
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/marketplace" component={Marketplace} />
@@ -137,7 +127,6 @@ const App = props => {
             )}
           />
           <Route path="/information" component={Information} />
-          
           <Route
             path="/messages"
             render={() => (

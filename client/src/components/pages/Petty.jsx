@@ -5,7 +5,6 @@ const PettyHack = () => {
   const [pettyState, setPettyState] = useState({
     loading: true,
     message: null,
-    success: true,
     hacking: false
   });
 
@@ -27,7 +26,6 @@ const PettyHack = () => {
     console.log("start hack", pettyState.hacking);
     if (pettyState.hacking) {
       let pettyHackInterval = setInterval(() => {
-        console.log("interval");
         if (!pettyState.hacking) {
           console.log("clearing");
           clearInterval(pettyHackInterval);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Table, NavLink, Button } from "reactstrap";
-import api from "../../api";
+import api from "../../../api";
 /* todo don't show alliances that dont have members */
-const AllianceLadder = props => {
-  const [allianceLadderState, setAllianceLadderState] = useState({
+const Ladder = props => {
+  const [ladderState, setLadderState] = useState({
     alliances: [],
     message: null,
     loading: true
@@ -11,8 +11,8 @@ const AllianceLadder = props => {
 
   useEffect(() => {
     getAlliances().then(result => {
-      setAllianceLadderState({
-        ...allianceLadderState,
+      setLadderState({
+        ...ladderState,
         alliances: result.stats,
         message: result.message,
         loading: false
@@ -28,11 +28,11 @@ const AllianceLadder = props => {
 
   const handleSort = (e, sort) => {
     e.preventDefault();
-    let sortedAlliances = allianceLadderState.alliances || [];
+    let sortedAlliances = ladderState.alliances || [];
     // TODO change some value names so we can dynamicaly run functions (see switch)
     switch (sort) {
       case "alliance":
-        sortedAlliances = allianceLadderState.alliances.sort((a, b) =>
+        sortedAlliances = ladderState.alliances.sort((a, b) =>
           ("" + a.name).localeCompare(b.name)
         );
         break;
@@ -72,14 +72,14 @@ const AllianceLadder = props => {
         break;
     }
 
-    setAllianceLadderState({
-      ...allianceLadderState,
+    setLadderState({
+      ...ladderState,
       alliances: sortedAlliances
     });
   };
 
   const sortingMethod = query => {
-    const sortedAllianced = allianceLadderState.alliances.sort(
+    const sortedAllianced = ladderState.alliances.sort(
       (b, a) => a[query] - b[query]
     );
     return sortedAllianced;
@@ -106,7 +106,7 @@ const AllianceLadder = props => {
           </tr>
         </thead>
         <tbody>
-          {allianceLadderState.alliances.map((alliance, i) => (
+          {ladderState.alliances.map((alliance, i) => (
             <tr key={alliance._id}>
               <th scope="row">
                 <NavLink href={`/alliance/${alliance._id}`}>
@@ -149,4 +149,4 @@ const AllianceLadder = props => {
   );
 };
 
-export default AllianceLadder;
+export default Ladder;

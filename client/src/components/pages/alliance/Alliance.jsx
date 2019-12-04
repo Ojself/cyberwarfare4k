@@ -2,21 +2,20 @@ import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
 const Alliance = () => {
-  const [allianceState, setAllianceState] = useState({
+  const [overviewState, setOverviewState] = useState({
     name: ""
   });
 
   useEffect(() => {
-    //get alliances
+    //get Overviews
     console.log("using effect");
   }, []);
 
   return (
     <div>
-      <h2>Create Alliance</h2>
+      <h2>Overview</h2>
 
-      {/* Select which */}
-      <button>Create</button>
+      {/* Boss, CTO, analyst,lead,code monkeyadvisor, capo, capo, soldiers */}
     </div>
   );
 };
