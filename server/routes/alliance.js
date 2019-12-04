@@ -103,6 +103,23 @@ function findAllianceStats(alliances) {
 // PRIVATE
 // Retrives all alliances with stats
 
+router.get('/', async (req, res) => {
+  const alliances = await Alliance.find().populate('members');
+  console.log(alliances);
+
+  let stats = findAllianceStats(alliances);
+  stats = getShuffledArr(stats);
+  res.status(200).json({
+    success: true,
+    message: 'alliances loaded..',
+    stats,
+  });
+});
+
+// @GET
+// PRIVATE
+// Retrives all alliances with stats
+
 router.get('/ladder', async (req, res) => {
   const alliances = await Alliance.find().populate('members', [
     'hackSkill',

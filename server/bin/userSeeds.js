@@ -14,12 +14,17 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const City = require('../models/City');
 const Alliance = require('../models/Alliance');
+const avatars = require('./avatars')
 
 const bcryptSalt = 10;
 
 const cityIds = [];
 const allianceIds = [];
 const npcIds = [];
+
+function giveRandomAvatar(){
+  return avatars[Math.floor(Math.random()*avatars.length)]
+}
 
 async function getCities() {
   const cities = await City.find();
@@ -57,6 +62,7 @@ User.deleteMany()
         email: 'alice@email.com',
         account: {
           password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1'],
           isSetup: true,
@@ -69,11 +75,13 @@ User.deleteMany()
         },
         name: 'npc_alice_level1',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Code Monkey',
       },
       {
         email: 'bob@email.com',
         account: {
           password: bcrypt.hashSync('bob', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -86,11 +94,13 @@ User.deleteMany()
         },
         name: 'npc_bob_level2',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Code Monkey',
       },
       {
         email: 'chuck@email.com',
         account: {
           password: bcrypt.hashSync('chuck', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -103,11 +113,13 @@ User.deleteMany()
         },
         name: 'npc_chuck_level3',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Code Monkey',
       },
       {
         email: 'craig@email.com',
         account: {
           password: bcrypt.hashSync('craig', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -120,11 +132,13 @@ User.deleteMany()
         },
         name: 'npc_craig_level4',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Code Monkey',
       },
       {
         email: 'eve@email.com',
         account: {
           password: bcrypt.hashSync('eve', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -137,11 +151,13 @@ User.deleteMany()
         },
         name: 'npc_eve_level5',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Lead',
       },
       {
         email: 'faythe@email.com',
         account: {
           password: bcrypt.hashSync('faythe', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -154,11 +170,13 @@ User.deleteMany()
         },
         name: 'npc_faythe_level6',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Lead',
       },
       {
         email: 'mallory@email.com',
         account: {
           password: bcrypt.hashSync('mallory', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -171,11 +189,13 @@ User.deleteMany()
         },
         name: 'npc_mallory_level7',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Lead',
       },
       {
         email: 'sybil@email.com',
         account: {
           password: bcrypt.hashSync('sybil', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -188,11 +208,13 @@ User.deleteMany()
         },
         name: 'npc_sybil_level8',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Analyst',
       },
       {
         email: 'trudy@email.com',
         account: {
           password: bcrypt.hashSync('trudy', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -205,11 +227,13 @@ User.deleteMany()
         },
         name: 'npc_trudy_level9',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'CTO',
       },
       {
         email: 'gerald@email.com',
         account: {
           password: bcrypt.hashSync('gerald', bcrypt.genSaltSync(bcryptSalt)),
+          avatar:giveRandomAvatar(),
           subscription: 'Bronze',
           ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
@@ -222,6 +246,7 @@ User.deleteMany()
         },
         name: 'npc_gerald_level10',
         alliance: allianceIds[allianceIds.length - 1],
+        allianceRole:'Boss',
       },
     ];
     return User.create(users);
