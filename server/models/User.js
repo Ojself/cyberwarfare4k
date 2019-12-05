@@ -71,7 +71,7 @@ const userSchema = new Schema(
     },
     allianceRole: {
       type: String,
-      enum: ['Boss', 'CTO', 'Analyst', 'Lead', 'Code Monkey', ''],
+      enum: ['Boss', 'CTO', 'Analyst', 'Lead0','Lead1', 'Code Monkey0','Code Monkey1', ''],
       default: '',
     },
 

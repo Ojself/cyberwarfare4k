@@ -75,7 +75,7 @@ User.deleteMany()
         },
         name: 'npc_alice_level1',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Code Monkey',
+        allianceRole:'Code Monkey0',
       },
       {
         email: 'bob@email.com',
@@ -94,7 +94,7 @@ User.deleteMany()
         },
         name: 'npc_bob_level2',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Code Monkey',
+        allianceRole:'Code Monkey0',
       },
       {
         email: 'chuck@email.com',
@@ -113,7 +113,7 @@ User.deleteMany()
         },
         name: 'npc_chuck_level3',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Code Monkey',
+        allianceRole:'Code Monkey0',
       },
       {
         email: 'craig@email.com',
@@ -132,7 +132,7 @@ User.deleteMany()
         },
         name: 'npc_craig_level4',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Code Monkey',
+        allianceRole:'Code Monkey1',
       },
       {
         email: 'eve@email.com',
@@ -151,7 +151,7 @@ User.deleteMany()
         },
         name: 'npc_eve_level5',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Lead',
+        allianceRole:'Code Monkey1',
       },
       {
         email: 'faythe@email.com',
@@ -170,7 +170,7 @@ User.deleteMany()
         },
         name: 'npc_faythe_level6',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Lead',
+        allianceRole:'Lead0',
       },
       {
         email: 'mallory@email.com',
@@ -189,7 +189,7 @@ User.deleteMany()
         },
         name: 'npc_mallory_level7',
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole:'Lead',
+        allianceRole:'Lead1',
       },
       {
         email: 'sybil@email.com',
