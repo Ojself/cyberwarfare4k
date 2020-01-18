@@ -42,13 +42,22 @@ const userSchema = new Schema(
       messages: {
         type: Array,
         default: [
-          [`System ${new Date(Date.now())}:, Hi and welcome to CH4K, this is your first message`, false],
+          [
+            `System ${new Date(
+              Date.now(),
+            )}:, Hi and welcome to CH4K, this is your first message`,
+            false,
+          ],
         ],
       },
       sentMessages: {
         type: Array,
         default: [
-          [`System ${new Date(Date.now())}:, Hi and welcome to CH4K, this is your first SENT message`],
+          [
+            `System ${new Date(
+              Date.now()
+            )}:, Hi and welcome to CH4K, this is your first SENT message`
+          ],
         ],
       },
       banned: {
@@ -71,20 +80,29 @@ const userSchema = new Schema(
     },
     allianceRole: {
       type: String,
-      enum: ['Boss', 'CTO', 'Analyst', 'Lead0','Lead1', 'Code Monkey0','Code Monkey1', ''],
+      enum: [
+        'Boss',
+        'CTO',
+        'Analyst',
+        'Lead0',
+        'Lead1',
+        'Code Monkey0',
+        'Code Monkey1',
+        '',
+      ],
       default: '',
     },
 
     hackSkill: {
-      cpu: {
+      CPU: {
         type: Number,
         default: 1,
       },
-      antiVirus: {
+      AntiVirus: {
         type: Number,
         default: 2,
       },
-      encryption: {
+      Encryption: {
         type: Number,
         default: 1,
       },
@@ -113,7 +131,7 @@ const userSchema = new Schema(
       Ethereum: { type: Number, default: 0 },
       Ripple: { type: Number, default: 0 },
       Monero: { type: Number, default: 0 },
-      Zcash: { type: Number, default: 0 },
+      Zcash: { type: Number, default: 0 }
     },
 
     // Player stats
@@ -175,22 +193,22 @@ const userSchema = new Schema(
     },
 
     marketPlaceItems: {
-      cpu: {
+      CPU: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
         default: null,
       },
-      firewall: {
+      Firewall: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
         default: null,
       },
-      avs: {
+      AntiVirus: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
         default: null,
       },
-      encryption: {
+      Encryption: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
         default: null,
@@ -271,18 +289,18 @@ userSchema.methods.handleItemPurchase = function (item) {
   if (currentItem) {
     // lower the stats so items doesn't stack
     switch (currentItem.type) {
-      case 'cpu':
-        this.hackSkill.cpu -= currentItem.bonus;
+      case 'CPU':
+        this.hackSkill.CPU -= currentItem.bonus;
         break;
-      case 'avs':
-        this.hackSkill.antiVirus -= currentItem.bonus;
+      case 'AntiVirus':
+        this.hackSkill.AntiVirus -= currentItem.bonus;
         break;
-      case 'firewall':
+      case 'Firewall':
         this.playerStats.maxFirewall -= currentItem.bonus;
         this.playerStats.currentFirewall -= currentItem.bonus;
         break;
-      case 'encryption':
-        this.hackSkill.encryption -= currentItem.bonus;
+      case 'Encryption':
+        this.hackSkill.Encryption -= currentItem.bonus;
         break;
       default:
         break;
@@ -294,18 +312,18 @@ userSchema.methods.handleItemPurchase = function (item) {
   this.marketPlaceItems[item.type] = item;
   // adds the bonus to user
   switch (item.type) {
-    case 'cpu':
-      this.hackSkill.cpu += item.bonus;
+    case 'CPU':
+      this.hackSkill.CPU += item.bonus;
       break;
-    case 'avs':
-      this.hackSkill.antiVirus += item.bonus;
+    case 'AntiVirus':
+      this.hackSkill.AntiVirus += item.bonus;
       break;
-    case 'firewall':
+    case 'Firewall':
       this.playerStats.maxFirewall += item.bonus;
       this.playerStats.currentFirewall += item.bonus;
       break;
-    case 'encryption':
-      this.hackSkill.encryption += item.bonus;
+    case 'Encryption':
+      this.hackSkill.Encryption += item.bonus;
       break;
     default:
       break;
@@ -317,7 +335,7 @@ userSchema.methods.newRank = async function () {
   console.log('new rank method triggered');
   this.playerStats.statPoints += 5;
   this.playerStats.rank += 1;
-  await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
+  await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
     this.playerStats.rankName = newRank.name;
     this.playerStats.expToLevel = newRank.expToNewRank;
   });
@@ -326,7 +344,7 @@ userSchema.methods.newRank = async function () {
 
 userSchema.methods.giveStash = function (stashName = 'Cables') {
   console.log('give stash method triggered', stashName);
-  Stash.findOne({ name: stashName }).then((newStash) => {
+  Stash.findOne({ name: stashName }).then(newStash => {
     this.stash.push(newStash._id);
   });
   this.save();
@@ -392,9 +410,9 @@ userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
   const date = Date.now();
   const newNotifications = [
     `You received ${bitCoins} from ${senderName} at ${new Date(
-      date,
+      date
     ).toString()}`,
-    true,
+    true
   ];
   this.account.notifications.push(newNotifications);
   this.save();
@@ -433,7 +451,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
   if (result.levelUp) {
     this.playerStats.statPoints += 5;
     this.playerStats.rank += 1;
-    await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
+    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
@@ -445,7 +463,7 @@ userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice,
+  totalPrice
 ) {
   console.log('purchaseCurrency triggered');
   this.playerStats.battery -= batteryCost;
@@ -458,7 +476,7 @@ userSchema.methods.sellCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice,
+  totalPrice
 ) {
   console.log('sellCurrency triggered');
   this.battery -= batteryCost;
@@ -493,7 +511,7 @@ userSchema.methods.handleCrime = async function (finalResult) {
   if (finalResult.playerGains.levelUp) {
     this.playerStats.rank += 1;
     this.playerStats.statPoints += 5; // todo exctract rank functionality. used several times
-    await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
+    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
@@ -519,11 +537,11 @@ userSchema.methods.handleAttack = function (finalResult) {
 
   const newNotifications = [
     `You attacked ${finalResult.opponent.name} at ${new Date(
-      finalResult.date,
+      finalResult.date
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and he was shutdown!' : '!'
+    finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
-    true,
+    true
   ];
   this.account.notifications.push(newNotifications);
   this.save();
@@ -535,11 +553,11 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
 
   const newNotifications = [
     `${finalResult.user.name} attacked you at ${new Date(
-      finalResult.date,
+      finalResult.date
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and you were shutdown!' : '!'
+    finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
-    true,
+    true
   ];
   this.account.notifications.push(newNotifications);
 
@@ -549,11 +567,13 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
   // if the player is dead
   if (finalResult.victimDead) {
     // empties his current currency
-    Object.keys(this.currencies).forEach(function (el) { this.currencies[el] = 0; });
+    Object.keys(this.currencies).forEach(function (el) {
+      this.currencies[el] = 0;
+    });
 
     // if user rank 8, he is now 4. if user rank 9, he is now 5
     const newRank = Math.ceil(this.playerStats.rank / 2);
-    Rank.findOne({ rank: newRank }).then((rankResult) => {
+    Rank.findOne({ rank: newRank }).then(rankResult => {
       this.playerStats.rankName = rankResult.name;
       this.playerStats.expToLevel = rankResult.expToNewRank;
       this.playerStats.exp = this.playerStats.expToLevel - 20000;
@@ -588,10 +608,7 @@ userSchema.methods.fullRepair = function (repairCost) {
 // DATACENTER
 // DATACENTER
 
-userSchema.methods.handleDataCenterPurchase = function (
-  dataCenter,
-
-) {
+userSchema.methods.handleDataCenterPurchase = function (dataCenter) {
   console.log('handlePurchase triggered');
   this.playerStats.bitCoins -= dataCenter.price;
   this.save();
@@ -600,7 +617,7 @@ userSchema.methods.handleDataCenterPurchase = function (
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   console.log('handleDataCenterAttack triggered');
   this.playerStats.battery -= result.batteryCost;
-  dataCenter.requiredStash.forEach((el) => {
+  dataCenter.requiredStash.forEach(el => {
     this.stash.pop(el);
   });
   this.save();
@@ -610,7 +627,7 @@ userSchema.methods.giveNotification = function (message) {
   const date = Date.now();
   this.account.notifications[date] = [
     `${message} ${new Date(date).toString()}`,
-    true,
+    true
   ];
   this.save();
 };
@@ -620,7 +637,7 @@ userSchema.methods.giveNotification = function (message) {
 
 userSchema.methods.addBounty = function (bountyDonor, bounty) {
   // todo, change array to set to fix this issue?
-  if (!this.playerStats.bountyDonors.some((el) => el.equals(bountyDonor._id))) {
+  if (!this.playerStats.bountyDonors.some(el => el.equals(bountyDonor._id))) {
     this.playerStats.bountyDonors.push(bountyDonor._id);
   }
   this.playerStats.bounty += parseInt(bounty, 10);
@@ -633,7 +650,7 @@ userSchema.methods.receiveMessage = function (message, senderName) {
   const date = Date.now();
   const newMessage = [
     `${senderName} ${new Date(date).toString()}: ${message}`,
-    true,
+    true
   ];
   this.account.messages.push(newMessage);
   this.save();
@@ -642,9 +659,7 @@ userSchema.methods.receiveMessage = function (message, senderName) {
 userSchema.methods.sendMessage = function (message, senderName) {
   console.log('sendMessage triggered');
   const date = Date.now();
-  const newMessage = [
-    `${senderName} ${new Date(date).toString()}: ${message}`,
-  ];
+  const newMessage = [`${senderName} ${new Date(date).toString()}: ${message}`];
   this.account.sentMessages.push(newMessage);
   this.save();
 };
@@ -661,6 +676,54 @@ userSchema.methods.readAllmessages = function (communication) {
   this.save();
 };
 
+userSchema.methods.handleNewStatpoint = async function (statName) {
+  console.log('hello from mongo', statName);
+  this.playerStats.statPoints -= 1;
+  console.log(this.hackSkill, this.playerStats.exp, 'before');
+  switch (statName) {
+    case 'Firewall':
+      this.playerStats.maxFirewall += 15;
+      this.playerStats.currentFirewall += 15;
+      break;
+    case 'CPU':
+      this.hackSkill.CPU += 5;
+      break;
+    case 'AntiVirus':
+      this.hackSkill.AntiVirus += 5;
+      break;
+    case 'Encryption':
+      this.hackSkill.Encryption += 5;
+      break;
+    case 'Technical':
+      this.crimeSkill.Technical += 5;
+      break;
+    case 'Forensics':
+      this.crimeSkill.Forensics += 5;
+      break;
+    case 'Social Engineering':
+      this.crimeSkill['Social Engineering'] += 5;
+      break;
+    case 'Cryptography':
+      this.crimeSkill.Cryptography += 5;
+      break;
+    case 'exp':
+      this.playerStats.exp += this.playerStats.expToLevel * 0.08;
+      break;
+    default:
+      // gives back statpoints if something went wrong
+      this.playerStats.statPoints += 1;
+  }
+  if (this.playerStats.exp >= this.playerStats.expToLevel) {
+    this.playerStats.statPoints += 5;
+    this.playerStats.rank += 1;
+    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+      this.playerStats.rankName = newRank.name;
+      this.playerStats.expToLevel = newRank.expToNewRank;
+    });
+  }
+  console.log(this.hackSkill, this.playerStats.exp, 'after');
+  this.save();
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
