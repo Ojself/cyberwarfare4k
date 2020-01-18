@@ -6,7 +6,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const mongoose = require('mongoose');
 const Alliance = require('../models/Alliance');
-const User = require('../models/User');
 
 require('../configs/database');
 
@@ -15,22 +14,22 @@ const alliances = [
   { name: 'Black' },
   { name: 'Red' },
   { name: 'Brown' },
-  { name: 'Grey' },
+  { name: 'Grey' }
 ];
 
 Alliance.deleteMany()
   .then(() => Alliance.create(alliances))
-  .then((alliancesCreated) => {
+  .then(alliancesCreated => {
     console.log(
-      `${alliancesCreated.length} alliances created with the following id:`,
+      `${alliancesCreated.length} alliances created with the following id:`
     );
-    console.log(alliancesCreated.map((u) => u._id));
+    console.log(alliancesCreated.map(u => u._id));
   })
   .then(() => {
-    // Close properly the connection to Mongoose
+    console.log('disconnecting from mongoose');
     mongoose.disconnect();
   })
-  .catch((err) => {
+  .catch(err => {
     mongoose.disconnect();
     throw err;
   });

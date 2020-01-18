@@ -6,10 +6,10 @@ const itemSchema = new Schema({
   name: String,
   type: {
     type: String,
-    enum: ['cpu', 'firewall', 'avs', 'encryption'],
+    enum: ['CPU', 'Firewall', 'AntiVirus', 'Encryption']
   },
   price: Number,
-  bonus: Number,
+  bonus: Number
 });
 
 module.exports = mongoose.model('Item', itemSchema);

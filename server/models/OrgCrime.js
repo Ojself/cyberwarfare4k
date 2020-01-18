@@ -7,7 +7,7 @@ const OrgCrimeSchema = new Schema({
   name: String,
   difficulty: Number,
   batteryCost: Number,
-  encryption: Number,
+  Encryption: Number,
   currentFirewall: Number,
   readyUsers: { type: [Schema.types.ObjectId], ref: 'User' },
   available: { type: Boolean, default: true },

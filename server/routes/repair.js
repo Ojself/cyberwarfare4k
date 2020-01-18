@@ -6,7 +6,7 @@ const { repairRouteCriterias } = require('../middlewares/middleRepair');
 
 // @POST
 // PRIVATE
-// Lets user repair his firewall partialy
+// Lets user repair his Firewall partialy
 
 router.post('/partial', async (req, res) => {
   const userId = req.user._id;
@@ -34,7 +34,7 @@ router.post('/partial', async (req, res) => {
 
 // @POST
 // PRIVATE
-// Lets user repair his firewall fully
+// Lets user repair his Firewall fully
 
 router.post('/full', async (req, res) => {
   const userId = req.user._id;

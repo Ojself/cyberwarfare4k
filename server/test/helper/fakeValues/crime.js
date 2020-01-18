@@ -1,15 +1,15 @@
 let user = {
-  account: { role: "testUser" },
+  account: { role: 'testUser' },
   crimeSkill: {
     Technical: 50,
-    "Social Engineering": 50,
+    'Social Engineering': 50,
     Forensics: 50,
     Cryptography: 50
   },
   hackSkill: {
-    cpu: 75,
-    antiVirus: 75,
-    encryption: 75
+    CPU: 75,
+    AntiVirus: 75,
+    Encryption: 75
   },
   playerStats: {
     battery: 20,
@@ -18,7 +18,7 @@ let user = {
 };
 let crime = {
   available: true,
-  crimeType: "Technical",
+  crimeType: 'Technical',
   difficulty: 30,
   currentFirewall: 90 // diff*3
 };
@@ -34,18 +34,18 @@ const result = {
     batteryCost: 7,
     exp: 0,
     bitCoins: 0,
-    skillGained: "",
-    stashGained: "",
-    legendaryGained: ""
+    skillGained: '',
+    stashGained: '',
+    legendaryGained: ''
   }
-}
+};
 
 const fakeDamageAttribtures = {
   beginner: {
     hackSkill: {
-      cpu: 3,
-      antiVirus: 2,
-      encryption: 3
+      CPU: 3,
+      AntiVirus: 2,
+      Encryption: 3
     },
     crimeSkill: 10,
     damage: 10,
@@ -53,9 +53,9 @@ const fakeDamageAttribtures = {
   },
   novice: {
     hackSkill: {
-      cpu: 20,
-      antiVirus: 20,
-      encryption: 20
+      CPU: 20,
+      AntiVirus: 20,
+      Encryption: 20
     },
     crimeSkill: 40,
     damage: 50,
@@ -63,9 +63,9 @@ const fakeDamageAttribtures = {
   },
   intermidiate: {
     hackSkill: {
-      cpu: 50,
-      antiVirus: 50,
-      encryption: 50
+      CPU: 50,
+      AntiVirus: 50,
+      Encryption: 50
     },
     crimeSkill: 70,
     damage: 110,
@@ -73,9 +73,9 @@ const fakeDamageAttribtures = {
   },
   strong: {
     hackSkill: {
-      cpu: 110,
-      antiVirus: 110,
-      encryption: 110
+      CPU: 110,
+      AntiVirus: 110,
+      Encryption: 110
     },
     crimeSkill: 140,
     damage: 230,
@@ -83,15 +83,14 @@ const fakeDamageAttribtures = {
   },
   veryStrong: {
     hackSkill: {
-      cpu: 200,
-      antiVirus: 200,
-      encryption: 200
+      CPU: 200,
+      AntiVirus: 200,
+      Encryption: 200
     },
     crimeSkill: 200,
     damage: 400,
-    string: "VERY STRONG"
+    string: 'VERY STRONG'
   }
-}
+};
 
-
-module.exports = { user, crime, result, fakeDamageAttribtures }
+module.exports = { user, crime, result, fakeDamageAttribtures };

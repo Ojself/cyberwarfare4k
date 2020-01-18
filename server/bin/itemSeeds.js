@@ -7,7 +7,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // $ node bin/itemSeeds.js
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const Item = require('../models/Item');
 
 require('../configs/database');
@@ -16,159 +15,158 @@ const items = [
   /* CPU */
   {
     name: 'Intel celeron G3930',
-    type: 'cpu',
+    type: 'CPU',
     price: 15000,
     bonus: 3,
   },
 
   {
     name: 'Intel i3-8350K',
-    type: 'cpu',
+    type: 'CPU',
     price: 50000,
     bonus: 10,
   },
 
   {
     name: 'AMD Ryzen Threaddripper 1950X',
-    type: 'cpu',
+    type: 'CPU',
     price: 120000,
     bonus: 20,
   },
 
   {
     name: 'Intel i9-7980 xe',
-    type: 'cpu',
+    type: 'CPU',
     price: 300000,
     bonus: 50,
   },
 
   {
     name: 'Intel Xeon Platinum 8180',
-    type: 'cpu',
+    type: 'CPU',
     price: 1000000,
     bonus: 100,
   },
   /* FIREWALL */
   {
     name: 'A lighter and a can of fuel',
-    type: 'firewall',
+    type: 'Firewall',
     price: 15000,
-    bonus: 3,
+    bonus: 3
   },
 
   {
     name: 'Linksys VPN router',
-    type: 'firewall',
+    type: 'Firewall',
     price: 50000,
-    bonus: 10,
+    bonus: 10
   },
 
   {
     name: 'Zyxel ZYWALL110',
-    type: 'firewall',
+    type: 'Firewall',
     price: 120000,
-    bonus: 20,
+    bonus: 20
   },
 
   {
     name: 'Zyxel USG1100 UTM BDL',
-    type: 'firewall',
+    type: 'Firewall',
     price: 300000,
-    bonus: 50,
+    bonus: 50
   },
 
   {
     name: 'Cisco PIX 500',
-    type: 'firewall',
+    type: 'Firewall',
     price: 1000000,
-    bonus: 100,
+    bonus: 100
   },
 
   /* ANTIVIRUS (AVS) */
 
   {
     name: 'Windows defender',
-    type: 'avs',
+    type: 'AntiVirus',
     price: 15000,
-    bonus: 3,
+    bonus: 3
   },
 
   {
     name: 'McAfee',
-    type: 'avs',
+    type: 'AntiVirus',
     price: 50000,
-    bonus: 10,
+    bonus: 10
   },
 
   {
     name: 'Norton Antivirus',
-    type: 'avs',
+    type: 'AntiVirus',
     price: 120000,
-    bonus: 20,
+    bonus: 20
   },
 
   {
     name: 'AVG',
-    type: 'avs',
+    type: 'AntiVirus',
     price: 300000,
-    bonus: 50,
+    bonus: 50
   },
 
   {
     name: 'Avast Business Pro',
-    type: 'avs',
+    type: 'AntiVirus',
     price: 1000000,
-    bonus: 100,
+    bonus: 100
   },
 
   /* ENCRYPTION */
   {
     name: 'Enigma machine',
-    type: 'encryption',
+    type: 'Encryption',
     price: 15000,
-    bonus: 3,
+    bonus: 3
   },
 
   {
     name: 'Bcrypt npm node',
-    type: 'encryption',
+    type: 'Encryption',
     price: 50000,
-    bonus: 10,
+    bonus: 10
   },
 
   {
     name: 'IVeraCrypt',
-    type: 'encryption',
+    type: 'Encryption',
     price: 120000,
-    bonus: 20,
+    bonus: 20
   },
 
   {
     name: 'CertainSafe',
-    type: 'encryption',
+    type: 'Encryption',
     price: 300000,
-    bonus: 50,
+    bonus: 50
   },
 
   {
     name: 'Vernam Cipher',
-    type: 'encryption',
+    type: 'Encryption',
     price: 1000000,
-    bonus: 100,
-  },
+    bonus: 100
+  }
 ];
 
 Item.deleteMany()
   .then(() => Item.create(items))
-  .then((itemsCreated) => {
+  .then(itemsCreated => {
     console.log(`${itemsCreated.length} items created with the following id:`);
-    console.log(itemsCreated.map((u) => u._id));
+    console.log(itemsCreated.map(u => u._id));
   })
   .then(() => {
-    // Close properly the connection to Mongoose
     mongoose.disconnect();
   })
-  .catch((err) => {
+  .catch(err => {
     mongoose.disconnect();
     throw err;
   });

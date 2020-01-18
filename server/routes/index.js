@@ -21,7 +21,7 @@ function setupPlayer(user, name, city, avatar) {
   city.save();
 }
 
-const getShuffledArr = (arr) => {
+const getShuffledArr = arr => {
   if (arr.length === 1) {
     return arr;
   }
@@ -54,7 +54,6 @@ const getShuffledArr = (arr) => {
 // force user here if !user.isSetup
 // create route criterias
 
-
 router.post('/createUser', isLoggedIn, async (req, res) => {
   console.log('you are now in the create user route');
 
@@ -66,14 +65,14 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   if (user.account.isSetup) {
     return res.status(400).json({
       success: false,
-      message: 'user is already setup',
+      message: 'user is already setup'
     });
   }
 
   if (!name || !cityString || !avatar) {
     return res.status(409).json({
       success: false,
-      message: 'Missing parameters..',
+      message: 'Missing parameters..'
     });
   }
   // todo, addtoset city resident
@@ -82,18 +81,18 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   const allUsers = await User.find();
 
   if (
-    name.toLowerCase().startsWith('npc')
-    || name.toLowerCase().startsWith('unconfirmed')
+    name.toLowerCase().startsWith('npc') ||
+    name.toLowerCase().startsWith('unconfirmed')
   ) {
     return res.status(409).json({
       success: false,
-      message: `${name} is not allowed`,
+      message: `${name} is not allowed`
     });
   }
-  if (allUsers.find((name) => allUsers.name)) {
+  if (allUsers.find(name => allUsers.name)) {
     return res.status(409).json({
       success: false,
-      message: 'name already exists..',
+      message: 'name already exists..'
     });
   }
 
@@ -102,13 +101,11 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   return res.status(200).json({
     success: true,
     message: `user: ${name} created`,
-    user: setupUser,
-
+    user: setupUser
   });
 });
 
 // todo extract this to somewhere else
-
 
 // @GET
 // PRIVATE
@@ -123,12 +120,12 @@ router.get('/get-nav-user', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'nav user loaded..',
-      user,
+      user
     });
   } catch (err) {
     res.status(400).json({
       success: true,
-      message: err.toString(),
+      message: err.toString()
     });
   }
   /* todo, too much information is being passsed */
@@ -141,11 +138,18 @@ router.get('/get-nav-user', async (req, res) => {
 router.get('/my-profile', isLoggedIn, async (req, res, next) => {
   const userId = req.user._id;
   try {
-    const user = await User.findById(userId).populate('alliance', 'name');
+    const user = await User.findById(userId)
+      .populate('marketPlaceItems.CPU')
+      .populate('marketPlaceItems.Firewall')
+      .populate('marketPlaceItems.AntiVirus')
+      .populate('marketPlaceItems.Encryption')
+      .populate('alliance', 'name');
+
+    console.log(user, 'user');
     res.status(200).json({
       success: true,
       message: 'user loaded..',
-      user,
+      user
     });
   } catch (err) {
     next(err);
@@ -161,7 +165,7 @@ router.get('/opponent/', async (req, res) => {
   res.status(200).json({
     success: true,
     message: 'all hackers loaded..',
-    users,
+    users
   });
 });
 
@@ -176,7 +180,7 @@ router.get('/opponent/:id', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'opponent loaded..',
-      opponent,
+      opponent
     });
   } catch (err) {
     console.log('err', err);
@@ -192,23 +196,25 @@ router.get('/ladder', async (req, res) => {
   let users = await User.find().populate('alliance', 'name');
 
   users = users
-    .filter((u) => /^(?!unconfirmed).*/.test(u.name))
-    .map((user) => nullifyValues(user, [
-      'account',
-      'hackSkill',
-      'crimeSkill',
-      'marketPlaceItems',
-      'specialWeapons',
-      'stash',
-      'currencies',
-      'email',
-    ]));
+    .filter(u => /^(?!unconfirmed).*/.test(u.name))
+    .map(user =>
+      nullifyValues(user, [
+        'account',
+        'hackSkill',
+        'crimeSkill',
+        'marketPlaceItems',
+        'specialWeapons',
+        'stash',
+        'currencies',
+        'email'
+      ])
+    );
   users = getShuffledArr(users);
 
   res.status(200).json({
     success: true,
     message: 'users loaded..',
-    users,
+    users
   });
 });
 
@@ -221,40 +227,24 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
-  console.log(req.body);
   const { statPoint } = req.body;
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
-      message: 'no more statpoints',
+      message: 'no more statpoints'
     });
   }
 
-  user.playerStats.statPoints -= 1;
-  switch (statPoint) {
-    case 'firewall':
-      user.playerStats.maxFirewall += 5;
-      user.playerStats.currentFirewall += 5;
-      break;
-    case 'cpu':
-      user.hackSkill.cpu += 1;
-      break;
-    case 'antivirus':
-      user.hackSkill.antivirus += 1;
-      break;
-    case 'encryption':
-      user.hackSkill.encryption += 1;
-      break;
-    default:
-      // gives back statpoints if something went wrong
-      user.playerStats.statPoints += 1;
-  }
-  user.save();
+  await user.handleNewStatpoint(statPoint);
+
+  /* todo nullify user info */
+  const updatedUser = await User.findById(userId).exec();
+
   return res.status(200).json({
     message: `${statPoint.toUpperCase()} upgraded`,
-    success: true,
+    updatedUser,
+    success: true
   });
 });
-
 
 module.exports = router;
