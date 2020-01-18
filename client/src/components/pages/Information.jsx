@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 // import api from "../../api";
 
 const Information = () => {
   const [informationState, setInfomrationState] = useState({
-    name: ""
+    name: ''
   });
 
   useEffect(() => {
-    console.log("using effect");
+    console.log('using effect');
   }, []);
 
   return (
@@ -104,7 +104,7 @@ const Information = () => {
         <p>
           <strong>MARKETPLACE</strong>: You can boost your character by buying
           new equipment for your computer. You can only hold one item from each
-          group: cpu, avs, firewall, encryption.
+          group: CPU, AntiVirus, Firewall, Encryption.
         </p>
 
         <p>

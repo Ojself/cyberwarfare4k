@@ -7,15 +7,13 @@ const Alliance = () => {
   });
 
   useEffect(() => {
-    //get Overviews
+    //get Overview from url
     console.log("using effect");
   }, []);
 
   return (
     <div>
-      <h2>Overview</h2>
-
-      {/* Boss, CTO, analyst,lead,code monkeyadvisor, capo, capo, soldiers */}
+      
     </div>
   );
 };

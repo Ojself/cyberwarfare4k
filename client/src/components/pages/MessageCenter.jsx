@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import api from "../../api";
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import api from '../../api';
 import {
   Form,
   FormGroup,
@@ -21,17 +21,17 @@ import {
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText
-} from "reactstrap";
-import classnames from "classnames";
+} from 'reactstrap';
+import classnames from 'classnames';
 
 const MessageCenter = props => {
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState('1');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [textArea, setTextArea] = useState("");
+  const [textArea, setTextArea] = useState('');
 
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -41,8 +41,8 @@ const MessageCenter = props => {
   };
 
   const handleReply = name => {
-    toggle("3");
-    setSelectedOption("npc"); // todo, this does not work
+    toggle('3');
+    setSelectedOption('npc'); // todo, this does not work
   };
 
   const handleTextAreaChange = e => {
@@ -57,15 +57,15 @@ const MessageCenter = props => {
         receiverId: selectedOption.value
       })
       .then(result => {
-        console.log(result, "result");
-        setTextArea("");
-        setSelectedOption("");
+        console.log(result, 'result');
+        setTextArea('');
+        setSelectedOption('');
       });
   };
 
   useEffect(() => {
     api.getHackerNames().then(result => {
-      console.log(result, "result");
+      console.log(result, 'result');
       const { users } = result;
       const massagedUsers = dataMassager(users);
 
@@ -91,9 +91,9 @@ const MessageCenter = props => {
       <Nav tabs>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === "1" })}
+            className={classnames({ active: activeTab === '1' })}
             onClick={() => {
-              toggle("1");
+              toggle('1');
             }}
           >
             Inbox
@@ -101,9 +101,9 @@ const MessageCenter = props => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === "2" })}
+            className={classnames({ active: activeTab === '2' })}
             onClick={() => {
-              toggle("2");
+              toggle('2');
             }}
           >
             Sent
@@ -111,9 +111,9 @@ const MessageCenter = props => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === "3" })}
+            className={classnames({ active: activeTab === '3' })}
             onClick={() => {
-              toggle("3");
+              toggle('3');
             }}
           >
             Compose
@@ -121,26 +121,26 @@ const MessageCenter = props => {
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
+        <TabPane tabId='1'>
           <Row>
-            <Col sm="6">
+            <Col sm='6'>
               <ListGroup>
                 {props.loading
-                  ? "loading.."
+                  ? 'loading..'
                   : props.user.account.messages.map((m, i) => (
                       <ListGroupItem active={!!m[0][1]} key={i}>
                         <ListGroupItemHeading>
-                          From: {m[0].split(" ")[0]}
+                          From: {m[0].split(' ')[0]}
                         </ListGroupItemHeading>
                         <ListGroupItemText>
                           {m[0]
-                            .split(" ")
+                            .split(' ')
                             .slice(1)
-                            .join(" ")}
+                            .join(' ')}
                         </ListGroupItemText>
                         <Button
                           onClick={() => {
-                            handleReply(m[0].split(" ")[0]);
+                            handleReply(m[0].split(' ')[0]);
                           }}
                         >
                           Reply
@@ -151,22 +151,22 @@ const MessageCenter = props => {
             </Col>
           </Row>
         </TabPane>
-        <TabPane tabId="2">
+        <TabPane tabId='2'>
           <Row>
-            <Col sm="6">
+            <Col sm='6'>
               <ListGroup>
                 {props.loading
-                  ? "loading.."
+                  ? 'loading..'
                   : props.user.account.sentMessages.map((m, i) => (
                       <ListGroupItem key={i}>
-                        <ListGroupItemHeading>
-                          To: {m[0].split(" ")[0]}
+                        <ListGroupItemHeading className='text-dark'>
+                          To: {m[0].split(' ')[0]}
                         </ListGroupItemHeading>
-                        <ListGroupItemText>
+                        <ListGroupItemText className='text-dark'>
                           {m[0]
-                            .split(" ")
+                            .split(' ')
                             .slice(1)
-                            .join(" ")}
+                            .join(' ')}
                         </ListGroupItemText>
                       </ListGroupItem>
                     ))}
@@ -174,27 +174,28 @@ const MessageCenter = props => {
             </Col>
           </Row>
         </TabPane>
-        <TabPane tabId="3">
+        <TabPane tabId='3'>
           <Row>
-            <Col sm="6">
+            <Col sm='6'>
               <Card body>
                 <CardTitle>Compose</CardTitle>
                 <Form>
                   <Select
+                    className='text-dark'
                     value={selectedOption}
                     onChange={handleChange}
-                    options={loading ? "" : users}
+                    options={loading ? '' : users}
                   />
                   <FormGroup>
-                    <Label for="messageText">Message</Label>
+                    <Label for='messageText'>Message</Label>
                     <Input
                       maxLength={250} /* .substr(0,250) */
                       value={textArea}
                       onChange={handleTextAreaChange}
                       required={true}
-                      type="textarea"
-                      name="text"
-                      id="messageText"
+                      type='textarea'
+                      name='text'
+                      id='messageText'
                     />
                   </FormGroup>
                   <Button onClick={handleSubmit}>Send!</Button>
