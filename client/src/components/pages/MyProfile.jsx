@@ -44,6 +44,7 @@ const MyProfile = props => {
   useEffect(() => {
     async function fetchUserData() {
       api.getUser().then(result => {
+        console.log(result.user);
         setMyProfileState({
           ...myProfileState,
           user: result.user,
@@ -52,9 +53,9 @@ const MyProfile = props => {
       });
     }
     fetchUserData();
-  }, [myProfileState.user]);
+  }, []);
 
-  const getMarketPlaceItem = (type, value = 'name') => {
+  const getMarketPlaceItemValue = (type, value, displayBonus = false) => {
     // type enum = [CPU,firwall,Encryption,AntiVirus]
     // value enum = [name,type,price,bonus,_id]
     if (
@@ -62,9 +63,10 @@ const MyProfile = props => {
       !myProfileState.user.marketPlaceItems[type] ||
       !myProfileState.user.marketPlaceItems[type][value]
     ) {
-      return 'none';
+      return false;
     }
-    return myProfileState.user.marketPlaceItems[type][value];
+    const item = myProfileState.user.marketPlaceItems[type];
+    return displayBonus ? `${item[value]} + (${item.bonus})` : item[value];
   };
 
   const getCurrency = name => {
@@ -139,8 +141,9 @@ const MyProfile = props => {
                 upgrade={e => handleUpgrade(e)}
                 key={i}
                 name={h}
-                skill={myProfileState.user.hackSkill[h]}
+                value={myProfileState.user.hackSkill[h]}
                 hasStatPoints={!!myProfileState.user.playerStats.statPoints}
+                bonus={getMarketPlaceItemValue(h, 'bonus')}
               />
             </div>
           );
@@ -245,8 +248,13 @@ const MyProfile = props => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{getMarketPlaceItem('CPU', 'name')}</td>
-                        <td>{getMarketPlaceItem('AntiVirus', 'name')}</td>
+                        <td>
+                          {getMarketPlaceItemValue('CPU', 'name') || 'none'}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue('AntiVirus', 'name') ||
+                            'none'}
+                        </td>
                       </tr>
                     </tbody>
 
@@ -258,8 +266,14 @@ const MyProfile = props => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{getMarketPlaceItem('Encryption', 'name')}</td>
-                        <td>{getMarketPlaceItem('Firewall', 'name')}</td>
+                        <td>
+                          {getMarketPlaceItemValue('Encryption', 'name') ||
+                            'none '}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue('Firewall', 'name') ||
+                            'none'}
+                        </td>
                       </tr>
                     </tbody>
                   </Table>

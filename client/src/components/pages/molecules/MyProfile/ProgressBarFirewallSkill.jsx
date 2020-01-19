@@ -22,12 +22,12 @@ const ProgressBarFirewallSkill = props => {
 
   const whatsMyClass = () => {
     if (blink) {
-      return 'myprofile-statpoints-displayer-blink';
+      return 'myprofile-statpoint-firewall-click ';
     }
     if (hovered) {
-      return 'myprofile-statpoint-displayer';
+      return 'myprofile-statpoint-firewall-hover';
     }
-    return 'myprofile-statpoints';
+    return 'myprofile-statpoint';
   };
 
   return (
@@ -38,8 +38,9 @@ const ProgressBarFirewallSkill = props => {
       onClick={e => blinkMe(e)}
     >
       <div style={{ fontSize: '0.7rem' }} className='text-center text-light'>
-        Firewall
-        {props.maxFirewall > 100 ? <>(+{props.maxFirewall - 100})</> : null}
+        {`${props.name} ${props.value > 100 ? 100 : props.value}% ${
+          props.value > 100 ? `+(${props.value - 100})` : ''
+        }`}
       </div>
 
       <Progress multi className='mb-2 '>

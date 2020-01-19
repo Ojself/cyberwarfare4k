@@ -23,12 +23,12 @@ const ProgressBarHackSkill = props => {
 
   const whatsMyClass = () => {
     if (blink) {
-      return 'myprofile-statpoints-displayer-blink';
+      return 'myprofile-statpoint-hack-click ';
     }
     if (hovered) {
-      return 'myprofile-statpoint-displayer';
+      return 'myprofile-statpoint-hack-hover';
     }
-    return 'myprofile-statpoints';
+    return 'myprofile-statpoint';
   };
 
   return (
@@ -40,23 +40,20 @@ const ProgressBarHackSkill = props => {
       onClick={e => blinkMe(e)}
     >
       <div style={{ fontSize: '0.7rem' }} className='text-center text-light'>
-        {props.name}
+        {`${props.name} ${props.value}% ${
+          props.bonus ? `+(${props.bonus})` : ''
+        }`}
       </div>
       <Progress multi className='mb-2 mx-2' name={props.name}>
         <Progress
           bar
           color='primary'
-          value={props.skill}
+          value={props.value}
           max={100}
-          name={props.name}
+          name={100}
         />
-        <Progress
-          bar
-          color='warning'
-          value={props.bonus}
-          max={100}
-          name={props.name}
-        />
+        <Progress bar color='warning' value={props.bonus} max={100} />
+        <Progress bar color='dark' value={200 - props.value}></Progress>
       </Progress>
     </div>
   );

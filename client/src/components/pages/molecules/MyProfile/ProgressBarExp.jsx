@@ -22,12 +22,12 @@ const ProgressBarExp = props => {
 
   const whatsMyClass = () => {
     if (blink) {
-      return 'myprofile-statpoints-displayer-blink';
+      return 'myprofile-statpoint-exp-click ';
     }
     if (hovered) {
-      return 'myprofile-statpoint-displayer';
+      return 'myprofile-statpoint-exp-hover';
     }
-    return 'myprofile-statpoints';
+    return 'myprofile-statpoint';
   };
 
   return (
@@ -41,12 +41,15 @@ const ProgressBarExp = props => {
         Exp {props.value + '/ ' + props.max}
       </div>
 
-      <Progress
-        color={props.color}
-        className='mb-2 '
-        value={props.value}
-        max={props.max}
-      />
+      <Progress multi className='mb-2 '>
+        <Progress bar color={props.color} value={props.value} max={props.max} />
+        <Progress
+          bar
+          color='dark'
+          value={props.max - props.value}
+          max={props.max}
+        ></Progress>
+      </Progress>
     </div>
   );
 };

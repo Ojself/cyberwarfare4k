@@ -23,12 +23,12 @@ const ProgressBarCrimeSkill = props => {
 
   const whatsMyClass = () => {
     if (blink) {
-      return 'myprofile-statpoints-displayer-blink';
+      return 'myprofile-statpoint-crime-click ';
     }
     if (hovered) {
-      return 'myprofile-statpoint-displayer';
+      return 'myprofile-statpoint-crime-hover';
     }
-    return 'myprofile-statpoints';
+    return 'myprofile-statpoint';
   };
 
   return (
@@ -44,16 +44,20 @@ const ProgressBarCrimeSkill = props => {
         style={{ fontSize: '0.7rem' }}
         className='text-center text-light'
       >
-        {props.name}
+        {`${props.name} ${props.value}%`}
       </div>
 
-      <Progress
-        name={props.name}
-        color={props.color}
-        className='mb-2 mx-2'
-        value={props.value}
-        max={props.max}
-      />
+      <Progress multi className='mb-2 mx-2' name={props.name}>
+        <Progress
+          bar
+          name={props.name}
+          color={props.color}
+          className=''
+          value={props.value}
+          max={props.bonus}
+        />
+        <Progress bar color='dark' value={100 - props.value}></Progress>
+      </Progress>
     </div>
   );
 };

@@ -316,14 +316,53 @@ body {
 }
 
 .myprofile-statpoint {
-  border: 2px solid black;
+  padding: 2px;
 }
 
-/* Shows which stat the user can upgrade when hovering */
-.myprofile-statpoint-displayer {
-  border: 2px solid green;
+.myprofile-statpoint-crime-hover {
+  box-sizing: border-box;
+  border: solid #28a744 2px;
+  cursor: pointer;
 }
-/* feedback to user when clicking progressbar */
-.myprofile-statpoints-displayer-blink {
-  border: 4px solid greenyellow;
+
+.myprofile-statpoint-crime-click {
+  box-sizing: content-box;
+  border: solid greenyellow 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-hack-hover {
+  box-sizing: border-box;
+  border: solid #007bff 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-hack-click {
+  box-sizing: content-box;
+  border: solid lightblue 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-exp-hover {
+  box-sizing: border-box;
+  border: solid #ffc107 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-exp-click {
+  box-sizing: content-box;
+  border: solid yellow 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-firewall-hover {
+  box-sizing: border-box;
+  border: solid #dc3546 2px;
+  cursor: pointer;
+}
+
+.myprofile-statpoint-firewall-click {
+  box-sizing: content-box;
+  border: solid salmon 2px;
+  cursor: pointer;
 }
