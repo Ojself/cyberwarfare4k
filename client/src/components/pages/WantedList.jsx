@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import api from "../../api";
+import React, { useState, useEffect } from 'react';
+import api from '../../api';
+import Select from 'react-select';
 
 import {
+  Form,
   Table,
   InputGroup,
   Input,
   InputGroupAddon,
   Button,
   NavLink
-} from "reactstrap";
+} from 'reactstrap';
 
 const WantedList = () => {
   const [wantedState, setWantedState] = useState({
@@ -18,11 +20,30 @@ const WantedList = () => {
     message: null
   });
 
+  const [selectedOption, setSelectedOption] = useState(null);
+  const handleChange = eventValue => {
+    setSelectedOption(eventValue);
+  };
+
+  /* todo, this is being used many times */
+  const dataMassager = userArray => {
+    const massagedUsers = [];
+    console.log(userArray);
+    userArray.forEach(u => {
+      massagedUsers.push({
+        value: u._id,
+        label: u.name
+      });
+    });
+    return massagedUsers;
+  };
+
   useEffect(async () => {
     const apiWantedUsers = await api.getWantedUsers();
+    const massagedUser = dataMassager(apiWantedUsers.users);
     setWantedState({
       ...wantedState,
-      users: apiWantedUsers.users,
+      users: massagedUser,
       bountyUsers: apiWantedUsers.bountyUsers,
       message: apiWantedUsers.message,
       loading: false
@@ -43,13 +64,20 @@ const WantedList = () => {
     const result = await api.addBounty({ name, bounty });
     setWantedState({
       ...wantedState,
-      message: "something happend maybe"
+      message: 'something happend maybe'
     });
   };
   const addUnlistedPlayer = (
     <div>
-      <h3>Add unlisted player</h3>
-      <input type="text" />
+      <h3>Add an unlisted player</h3>
+      <Form>
+        <Select
+          className='text-dark'
+          value={selectedOption}
+          onChange={handleChange}
+          options={wantedState.loading ? '' : wantedState.users}
+        />
+      </Form>
     </div>
   );
   const bountyUsersTable = (
@@ -67,7 +95,7 @@ const WantedList = () => {
       <tbody>
         {wantedState.bountyUsers.map(user => (
           <tr key={user._id}>
-            <th scope="row">
+            <th scope='row'>
               <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
             </th>
             <td>
@@ -83,12 +111,12 @@ const WantedList = () => {
                 <Input
                   step={10}
                   min={0}
-                  type="number"
+                  type='number'
                   name={user.name}
                   value={wantedState[user.name]}
                   onChange={handleInputChange}
                 />
-                <InputGroupAddon addonType="append">
+                <InputGroupAddon addonType='append'>
                   <Button name={user.name} onClick={e => handleAddBounty(e)}>
                     ADD
                   </Button>

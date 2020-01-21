@@ -14,7 +14,6 @@ import {
   Card,
   Button,
   CardTitle,
-  CardText,
   Row,
   Col,
   ListGroup,
@@ -28,7 +27,6 @@ const MessageCenter = props => {
   const [activeTab, setActiveTab] = useState('1');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [textArea, setTextArea] = useState('');
@@ -89,36 +87,22 @@ const MessageCenter = props => {
   return (
     <div>
       <Nav tabs>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '1' })}
-            onClick={() => {
-              toggle('1');
-            }}
-          >
-            Inbox
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => {
-              toggle('2');
-            }}
-          >
-            Sent
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === '3' })}
-            onClick={() => {
-              toggle('3');
-            }}
-          >
-            Compose
-          </NavLink>
-        </NavItem>
+        {['Inbox', 'Sent', 'Compose'].map((t, i) => {
+          return (
+            <NavItem>
+              <NavLink
+                className={classnames({
+                  active: activeTab === i + 1 + ''
+                })}
+                onClick={() => {
+                  toggle(i + 1 + '');
+                }}
+              >
+                {t}
+              </NavLink>
+            </NavItem>
+          );
+        })}
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId='1'>
