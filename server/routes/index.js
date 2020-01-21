@@ -143,7 +143,7 @@ router.get('/my-profile', isLoggedIn, async (req, res, next) => {
       .populate('marketPlaceItems.Firewall')
       .populate('marketPlaceItems.AntiVirus')
       .populate('marketPlaceItems.Encryption')
-      .populate('alliance', 'name');
+      .populate('alliance');
 
     console.log(user, 'user');
     res.status(200).json({
