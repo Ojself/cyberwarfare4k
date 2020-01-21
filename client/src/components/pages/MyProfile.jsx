@@ -18,6 +18,14 @@ import ProgressBarExp from './molecules/MyProfile/ProgressBarExp';
 import api from '../../api';
 import classnames from 'classnames';
 
+/* Todo / know bugs */
+
+/* listening to user will cause an infinite api calls */
+/* set condition if user does not belong to an alliance */
+/* add pictures of stash in stash-tab with correct colors */
+/* change or remove placeholder picture */
+/* Stat upgrade only listen to to parts of the component. eg, you have to click the progressbar, but not the color itself */
+
 const MyProfile = props => {
   const [myProfileState, setMyProfileState] = useState({
     user: null,
@@ -53,9 +61,9 @@ const MyProfile = props => {
       });
     }
     fetchUserData();
-  }, []);
+  }, [myProfileState.user]);
 
-  const getMarketPlaceItemValue = (type, value, displayBonus = false) => {
+  const getMarketPlaceItemValue = (type, value) => {
     // type enum = [CPU,firwall,Encryption,AntiVirus]
     // value enum = [name,type,price,bonus,_id]
     if (
@@ -65,8 +73,7 @@ const MyProfile = props => {
     ) {
       return false;
     }
-    const item = myProfileState.user.marketPlaceItems[type];
-    return displayBonus ? `${item[value]} + (${item.bonus})` : item[value];
+    return myProfileState.user.marketPlaceItems[type][value];
   };
 
   const getCurrency = name => {
@@ -95,10 +102,10 @@ const MyProfile = props => {
         )}
       </div>
       <div className='w-100'>{/* seperator */}</div>
-      <div className='col w-25'>
+      <div className='col w-25 '>
         <div>
           <img
-            style={{ maxWidth: '150px', width: '100%' }}
+            style={{ maxWidth: '200px', width: '100%' }}
             src={
               myProfileState.loading
                 ? profilePlaceHolderAvatar
@@ -107,12 +114,19 @@ const MyProfile = props => {
             alt='hackerPic'
           />
         </div>
-        <div>
-          <img
-            style={{ maxWidth: '150px', width: '100%' }}
-            src={''} //alliance pic here
-            alt={''}
-          />
+        <div className='mt-4'>
+          {
+            /* todo. check if even in alliance in first place. */
+            <img
+              style={{ maxWidth: '200px', width: '100%' }}
+              src={
+                myProfileState.loading && !myProfileState.user.alliance
+                  ? ''
+                  : `/alliancePics/${myProfileState.user.alliance.name}.png`
+              } //alliance pic here
+              alt={''}
+            />
+          }
         </div>
       </div>
       <div className='col w-25 '>
@@ -204,36 +218,20 @@ const MyProfile = props => {
       <div className='col w-25'>
         <div>
           <Nav tabs>
-            <NavItem>
-              <NavLink
-                className={classnames({ active: activeTab === '1' })}
-                onClick={() => {
-                  toggle('1');
-                }}
-              >
-                Items
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className={classnames({ active: activeTab === '2' })}
-                onClick={() => {
-                  toggle('2');
-                }}
-              >
-                Currencies
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                className={classnames({ active: activeTab === '3' })}
-                onClick={() => {
-                  toggle('3');
-                }}
-              >
-                Stash
-              </NavLink>
-            </NavItem>
+            {['Items', 'Currencies', 'Stash'].map((t, i) => {
+              return (
+                <NavItem>
+                  <NavLink
+                    className={classnames({ active: activeTab === i + 1 + '' })}
+                    onClick={() => {
+                      toggle(i + 1 + '');
+                    }}
+                  >
+                    {t}
+                  </NavLink>
+                </NavItem>
+              );
+            })}
           </Nav>
           <TabContent activeTab={activeTab}>
             <TabPane tabId='1'>

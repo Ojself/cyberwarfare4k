@@ -8,12 +8,10 @@ const StatusBar = props => {
         <div>
           <ul className='list-unstyled'>
             <li className='list-inline-item' href='#'>
-              <NavLink href={`/hacker/${props.user._id}`}>
-                {props.user.name}
-              </NavLink>
+              <NavLink href={`/my-profile`}>{props.user.name}</NavLink>
             </li>
             <li className='list-inline-item' href='#'>
-              {props.user.alliance}
+              {props.user.alliance.name}
             </li>
             <li className='list-inline-item' href='#'>
               <span style={{ color: 'red' }}>&#9829;</span>
@@ -36,7 +34,7 @@ const StatusBar = props => {
               {props.user.playerStats.rankName}
             </li>
             <li className='list-inline-item ml-2' href='#'>
-              XP: {props.user.playerStats.exp}
+              XP:{/*  {props.user.playerStats.exp} */}
             </li>
             <li className='list-inline-item navProgressBar'>
               <Progress
