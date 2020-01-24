@@ -18,7 +18,7 @@ import ProgressBarExp from './molecules/MyProfile/ProgressBarExp';
 import api from '../../api';
 import classnames from 'classnames';
 
-/* Todo / know bugs */
+/* Todo / known bugs */
 
 /* listening to user will cause an infinite api calls */
 /* set condition if user does not belong to an alliance */
@@ -49,10 +49,17 @@ const MyProfile = props => {
       .catch(err => console.warn('err', err));
   };
 
+  const giveMeStashColor = color => {
+    const defaultColors = ['red', 'blue', 'orange', 'green'];
+    return color
+      ? color
+      : defaultColors[Math.floor(Math.random() * defaultColors.length)];
+  };
+
   useEffect(() => {
     async function fetchUserData() {
       api.getUser().then(result => {
-        console.log(result.user);
+        console.log(result.user, 'jarle');
         setMyProfileState({
           ...myProfileState,
           user: result.user,
@@ -61,7 +68,7 @@ const MyProfile = props => {
       });
     }
     fetchUserData();
-  }, [myProfileState.user]);
+  }, []);
 
   const getMarketPlaceItemValue = (type, value) => {
     // type enum = [CPU,firwall,Encryption,AntiVirus]
@@ -101,7 +108,7 @@ const MyProfile = props => {
           <h3>{myProfileState.user.name}</h3>
         )}
       </div>
-      <div className='w-100'>{/* seperator */}</div>
+      <div className='w-100'></div>
       <div className='col w-25 '>
         <div>
           <img
@@ -112,19 +119,20 @@ const MyProfile = props => {
                 : myProfileState.user.account.avatar
             }
             alt='hackerPic'
+            title='This is you!'
           />
         </div>
         <div className='mt-4'>
           {
-            /* todo. check if even in alliance in first place. */
             <img
               style={{ maxWidth: '200px', width: '100%' }}
               src={
-                myProfileState.loading && !myProfileState.user.alliance
+                myProfileState.loading
                   ? ''
                   : `/alliancePics/${myProfileState.user.alliance.name}.png`
-              } //alliance pic here
-              alt={''}
+              }
+              alt={'Alliance'}
+              title='Alliance'
             />
           }
         </div>
@@ -317,7 +325,23 @@ const MyProfile = props => {
             </TabPane>
             <TabPane tabId='3'>
               <Row>
-                <Col sm='12'></Col>
+                <Col sm='12'>
+                  <div className='d-flex row'>
+                    {!myProfileState.loading &&
+                      Object.keys(myProfileState.user.stash).map(s => (
+                        <div>
+                          <img
+                            style={{ maxWidth: '75px', width: '100%' }}
+                            src={`/stashPics/${s}/${giveMeStashColor()}.png`}
+                            title={s}
+                            alt={'Stash'}
+                          />
+
+                          <p>{myProfileState.user.stash[s]}</p>
+                        </div>
+                      ))}
+                  </div>
+                </Col>
               </Row>
             </TabPane>
           </TabContent>

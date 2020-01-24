@@ -226,7 +226,7 @@ const Ledger = props => {
                   onClick={() => {
                     handleTransfer(
                       ledgerState.transferAmount,
-                      ledgerState.selectedOption.value
+                      ledgerState.selectedOption.value /* todo, value or _id? */
                     );
                   }}
                 >

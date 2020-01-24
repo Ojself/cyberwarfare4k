@@ -12,6 +12,12 @@ import {
   NavLink
 } from 'reactstrap';
 
+/* todo. make searchable form so donations can be added to new players */
+/* todo, make component for adding bounty number when player is selected */
+/* todo, if bountydonors name is too many, hide em */
+/* show all bounty donors */
+/* link on names and maybe alliance */
+
 const WantedList = () => {
   const [wantedState, setWantedState] = useState({
     users: [],
@@ -23,19 +29,6 @@ const WantedList = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const handleChange = eventValue => {
     setSelectedOption(eventValue);
-  };
-
-  /* todo, this is being used many times */
-  const dataMassager = userArray => {
-    const massagedUsers = [];
-    console.log(userArray);
-    userArray.forEach(u => {
-      massagedUsers.push({
-        value: u._id,
-        label: u.name
-      });
-    });
-    return massagedUsers;
   };
 
   useEffect(async () => {
@@ -50,6 +43,19 @@ const WantedList = () => {
     });
   }, []);
 
+  /* todo, this is being used many times */
+  const dataMassager = userArray => {
+    const massagedUsers = [];
+    console.log(userArray);
+    userArray.forEach(u => {
+      massagedUsers.push({
+        value: u._id,
+        label: u.name
+      });
+    });
+    return massagedUsers;
+  };
+
   const handleInputChange = e => {
     setWantedState({
       ...wantedState,
@@ -57,17 +63,8 @@ const WantedList = () => {
     });
   };
 
-  const handleAddBounty = async e => {
-    const { name } = e.target;
-    const bounty = wantedState[name];
-
-    const result = await api.addBounty({ name, bounty });
-    setWantedState({
-      ...wantedState,
-      message: 'something happend maybe'
-    });
-  };
-  const addUnlistedPlayer = (
+  // select form
+  const ComponentAddUnlistedPlayer = (
     <div>
       <h3>Add an unlisted player</h3>
       <Form>
@@ -78,9 +75,24 @@ const WantedList = () => {
           options={wantedState.loading ? '' : wantedState.users}
         />
       </Form>
+      <InputGroup>
+        <InputGroupAddon addonType='prepend'>&#8383;</InputGroupAddon>
+        <Input
+          type='number'
+          min={0}
+          step='1'
+          placeholder='Amount'
+          value={wantedState.bountyInput}
+          onChange={handleInputChange}
+        />
+      </InputGroup>
+      <Button>ADD</Button> {/* disabled */}
     </div>
   );
-  const bountyUsersTable = (
+
+  // input field for bounty on targeted user
+
+  const ComponentBountyUsersTable = (
     <Table dark>
       <thead>
         <tr>
@@ -117,9 +129,7 @@ const WantedList = () => {
                   onChange={handleInputChange}
                 />
                 <InputGroupAddon addonType='append'>
-                  <Button name={user.name} onClick={e => handleAddBounty(e)}>
-                    ADD
-                  </Button>
+                  <Button name={user.name}>ADD BOUNTY</Button>
                 </InputGroupAddon>
               </InputGroup>
             </td>
@@ -132,14 +142,15 @@ const WantedList = () => {
   return (
     <div>
       <h3>Wanted Hackers</h3>
-      {wantedState.loading ? <p>a</p> : bountyUsersTable}
-      {addUnlistedPlayer}
+      {wantedState.loading ? (
+        <p>loading..</p>
+      ) : (
+        <>
+          <div> {ComponentBountyUsersTable} </div>
+          <div> {ComponentAddUnlistedPlayer} </div>
+        </>
+      )}
     </div>
   );
 };
 export default WantedList;
-/* todo. make searchable form so donations can be added to new players */
-
-/* todo, if bountydonors name is too many, hide em */
-/* show all bounty donors */
-/* link on names and maybe alliance */

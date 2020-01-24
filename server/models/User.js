@@ -55,8 +55,8 @@ const userSchema = new Schema(
         default: [
           [
             `System ${new Date(
-              Date.now()
-            )}:, Hi and welcome to CH4K, this is your first SENT message`
+              Date.now(),
+            )}:, Hi and welcome to CH4K, this is your first SENT message`,
           ],
         ],
       },
@@ -131,7 +131,7 @@ const userSchema = new Schema(
       Ethereum: { type: Number, default: 0 },
       Ripple: { type: Number, default: 0 },
       Monero: { type: Number, default: 0 },
-      Zcash: { type: Number, default: 0 }
+      Zcash: { type: Number, default: 0 },
     },
 
     // Player stats
@@ -235,10 +235,22 @@ const userSchema = new Schema(
         default: 0,
       },
     },
-    // Should be an object with stash instead of array to easier show amount
+
     stash: {
-      type: [Schema.Types.ObjectId],
-      ref: 'Stash',
+      Cables: { type: Number, default: 5 },
+      'Linux for dummies': { type: Number, default: 1 },
+      'Lock pick set': { type: Number, default: 1 },
+      'Proxmark3 Kit': { type: Number, default: 0 },
+      'Rubber Ducky': { type: Number, default: 0 },
+      Keylogger: { type: Number, default: 0 },
+      'EyeSpy Digital Spy Recorder': { type: Number, default: 0 },
+      'WiFi Pineapple': { type: Number, default: 0 },
+      'HackRf One': { type: Number, default: 0 },
+      Computer: { type: Number, default: 0 },
+      'Ubertooth One': { type: Number, default: 0 },
+      Magspoof: { type: Number, default: 0 },
+      'Raspberry Pi': { type: Number, default: 0 },
+      'Mini Hidden Camera': { type: Number, default: 0 },
     },
 
     // Figth accessories
@@ -335,7 +347,7 @@ userSchema.methods.newRank = async function () {
   console.log('new rank method triggered');
   this.playerStats.statPoints += 5;
   this.playerStats.rank += 1;
-  await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+  await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
     this.playerStats.rankName = newRank.name;
     this.playerStats.expToLevel = newRank.expToNewRank;
   });
@@ -344,7 +356,7 @@ userSchema.methods.newRank = async function () {
 
 userSchema.methods.giveStash = function (stashName = 'Cables') {
   console.log('give stash method triggered', stashName);
-  Stash.findOne({ name: stashName }).then(newStash => {
+  Stash.findOne({ name: stashName }).then((newStash) => {
     this.stash.push(newStash._id);
   });
   this.save();
@@ -410,9 +422,9 @@ userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
   const date = Date.now();
   const newNotifications = [
     `You received ${bitCoins} from ${senderName} at ${new Date(
-      date
+      date,
     ).toString()}`,
-    true
+    true,
   ];
   this.account.notifications.push(newNotifications);
   this.save();
@@ -451,7 +463,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
   if (result.levelUp) {
     this.playerStats.statPoints += 5;
     this.playerStats.rank += 1;
-    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+    await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
@@ -463,7 +475,7 @@ userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice
+  totalPrice,
 ) {
   console.log('purchaseCurrency triggered');
   this.playerStats.battery -= batteryCost;
@@ -476,7 +488,7 @@ userSchema.methods.sellCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice
+  totalPrice,
 ) {
   console.log('sellCurrency triggered');
   this.battery -= batteryCost;
@@ -494,7 +506,6 @@ userSchema.methods.changeCity = function (city, batteryCost) {
 };
 
 userSchema.methods.handleCrime = async function (finalResult) {
-  console.log('userschema handleCrime triggered', finalResult);
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
   this.playerStats.networth += finalResult.playerGains.bitCoins;
@@ -511,7 +522,7 @@ userSchema.methods.handleCrime = async function (finalResult) {
   if (finalResult.playerGains.levelUp) {
     this.playerStats.rank += 1;
     this.playerStats.statPoints += 5; // todo exctract rank functionality. used several times
-    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+    await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
@@ -520,8 +531,6 @@ userSchema.methods.handleCrime = async function (finalResult) {
 };
 
 userSchema.methods.handleAttack = function (finalResult) {
-  console.log('userschema handleAttack', finalResult);
-
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
   this.playerStats.networth += finalResult.playerGains.bitCoins;
@@ -537,11 +546,11 @@ userSchema.methods.handleAttack = function (finalResult) {
 
   const newNotifications = [
     `You attacked ${finalResult.opponent.name} at ${new Date(
-      finalResult.date
+      finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
     finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
-    true
+    true,
   ];
   this.account.notifications.push(newNotifications);
   this.save();
@@ -553,11 +562,11 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
 
   const newNotifications = [
     `${finalResult.user.name} attacked you at ${new Date(
-      finalResult.date
+      finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
     finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
-    true
+    true,
   ];
   this.account.notifications.push(newNotifications);
 
@@ -573,7 +582,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
 
     // if user rank 8, he is now 4. if user rank 9, he is now 5
     const newRank = Math.ceil(this.playerStats.rank / 2);
-    Rank.findOne({ rank: newRank }).then(rankResult => {
+    Rank.findOne({ rank: newRank }).then((rankResult) => {
       this.playerStats.rankName = rankResult.name;
       this.playerStats.expToLevel = rankResult.expToNewRank;
       this.playerStats.exp = this.playerStats.expToLevel - 20000;
@@ -617,7 +626,7 @@ userSchema.methods.handleDataCenterPurchase = function (dataCenter) {
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   console.log('handleDataCenterAttack triggered');
   this.playerStats.battery -= result.batteryCost;
-  dataCenter.requiredStash.forEach(el => {
+  dataCenter.requiredStash.forEach((el) => {
     this.stash.pop(el);
   });
   this.save();
@@ -627,7 +636,7 @@ userSchema.methods.giveNotification = function (message) {
   const date = Date.now();
   this.account.notifications[date] = [
     `${message} ${new Date(date).toString()}`,
-    true
+    true,
   ];
   this.save();
 };
@@ -637,7 +646,7 @@ userSchema.methods.giveNotification = function (message) {
 
 userSchema.methods.addBounty = function (bountyDonor, bounty) {
   // todo, change array to set to fix this issue?
-  if (!this.playerStats.bountyDonors.some(el => el.equals(bountyDonor._id))) {
+  if (!this.playerStats.bountyDonors.some((el) => el.equals(bountyDonor._id))) {
     this.playerStats.bountyDonors.push(bountyDonor._id);
   }
   this.playerStats.bounty += parseInt(bounty, 10);
@@ -650,7 +659,7 @@ userSchema.methods.receiveMessage = function (message, senderName) {
   const date = Date.now();
   const newMessage = [
     `${senderName} ${new Date(date).toString()}: ${message}`,
-    true
+    true,
   ];
   this.account.messages.push(newMessage);
   this.save();
@@ -716,7 +725,7 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
     this.playerStats.statPoints += 5;
     this.playerStats.rank += 1;
-    await Rank.findOne({ rank: this.playerStats.rank }).then(newRank => {
+    await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
       this.playerStats.rankName = newRank.name;
       this.playerStats.expToLevel = newRank.expToNewRank;
     });

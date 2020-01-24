@@ -8,11 +8,20 @@ const StatusBar = props => {
         <div>
           <ul className='list-unstyled'>
             <li className='list-inline-item' href='#'>
-              <NavLink href={`/my-profile`}>{props.user.name}</NavLink>
+              <NavLink href={`/my-profile`}>
+                <i
+                  style={{
+                    color: props.user.alliance.name,
+                    fontSize: '30px'
+                  }}
+                  class='fab fa-redhat'
+                ></i>
+              </NavLink>
             </li>
             <li className='list-inline-item' href='#'>
-              {props.user.alliance.name}
+              <NavLink href={`/my-profile`}>{props.user.name}</NavLink>
             </li>
+
             <li className='list-inline-item' href='#'>
               <span style={{ color: 'red' }}>&#9829;</span>
               {(
