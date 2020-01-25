@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
 const service = axios.create({
   baseURL:
-    process.env.NODE_ENV === "production"
-      ? "/api"
-      : "http://localhost:5000/api",
+    process.env.NODE_ENV === 'production'
+      ? '/api'
+      : 'http://localhost:5000/api',
   withCredentials: true
 });
 
 const errHandler = err => {
   console.error(err);
   if (err.response && err.response.data) {
-    console.error("API response", err.response.data);
+    console.error('API response', err.response.data);
     throw err.response.data.message;
   }
   throw err;
@@ -23,30 +23,30 @@ export default {
   // This method is synchronous and returns true or false
   // To know if the user is connected, we just check if we have a value for localStorage.getItem('user')
   isLoggedIn() {
-    return localStorage.getItem("user") != null;
+    return localStorage.getItem('user') != null;
   },
 
   // This method returns the user from the localStorage
   getLocalStorageUser() {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem('user'));
   },
 
   isSetup() {
-    const localUser = JSON.parse(localStorage.getItem("user"))
-    console.log(localUser)
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    console.log(localUser);
     /* if (localUser){
       console.log(localUser,'localuser')
       return localUser.account.isSetup
     } */
-    return true //todo fix this. wrong on serverside
+    return true; //todo fix this. wrong on serverside
   },
 
   signup(userInfo) {
     return service
-      .post("/signup", userInfo)
+      .post('/signup', userInfo)
       .then(res => {
-        console.log(res.data,'res data ')
-        localStorage.setItem("user", JSON.stringify(res.data));
+        console.log(res.data, 'res data ');
+        localStorage.setItem('user', JSON.stringify(res.data));
         return res.data;
       })
       .catch(errHandler);
@@ -54,51 +54,51 @@ export default {
 
   login(email, password) {
     return service
-      .post("/login", {
+      .post('/login', {
         email,
         password
       })
       .then(res => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
-        localStorage.setItem("user", JSON.stringify(res.data));
+        localStorage.setItem('user', JSON.stringify(res.data));
         return res.data;
       })
       .catch(errHandler);
   },
 
   logout() {
-    localStorage.removeItem("user");
-    return service.get("/logout");
+    localStorage.removeItem('user');
+    return service.get('/logout');
   },
 
   createUser(body) {
     return service
-      .post("/createUser", body)
-      .then(res =>{
-        console.log(res,'res')
-        localStorage.setItem("user", JSON.stringify(res.data));
-        return res.data
+      .post('/createUser', body)
+      .then(res => {
+        console.log(res, 'res');
+        localStorage.setItem('user', JSON.stringify(res.data));
+        return res.data;
       })
       .catch(errHandler);
   },
 
   upgradeStats(statPoint) {
     return service
-      .post("/upgradeStats", { statPoint })
+      .post('/upgradeStats', { statPoint })
       .then(res => res.data)
       .catch(errHandler);
   },
 
   getUser() {
     return service
-      .get("/my-profile")
+      .get('/my-profile')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   getNavUser() {
     return service
-      .get("/get-nav-user")
+      .get('/get-nav-user')
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -112,21 +112,21 @@ export default {
 
   getAllUsers() {
     return service
-      .get("/ladder")
+      .get('/ladder')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   getAllAlliances() {
     return service
-      .get("/alliance/ladder")
+      .get('/alliance/ladder')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   getAllItems() {
     return service
-      .get("/marketplace")
+      .get('/marketplace')
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -135,7 +135,7 @@ export default {
 
   pettyHack() {
     return service
-      .post("/hack/pettyCrime")
+      .post('/hack/pettyCrime')
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -144,14 +144,14 @@ export default {
 
   getCrimes() {
     return service
-      .get("/hack/crimes")
+      .get('/hack/crimes')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   commitCrimes(crimeId) {
     return service
-      .post("/hack/crimes", { crimeId })
+      .post('/hack/crimes', { crimeId })
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -160,21 +160,21 @@ export default {
   // CRYPTOCURRENCY
   getCrypto() {
     return service
-      .get("/currency/")
+      .get('/currency/')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   buyCrypto(body) {
     return service
-      .post("/currency/buy", body)
+      .post('/currency/buy', body)
       .then(res => res.data)
       .catch(errHandler);
   },
 
   sellCrypto(body) {
     return service
-      .post("/currency/sell", body)
+      .post('/currency/sell', body)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -182,38 +182,37 @@ export default {
   // REPAIR
   repairPartial() {
     return service
-      .post("/repair/partial")
+      .post('/repair/partial')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   repairFull() {
     return service
-      .post("/repair/full")
+      .post('/repair/full')
       .then(res => res.data)
       .catch(errHandler);
   },
 
-  // VPN 
-  // VPN 
+  // VPN
+  // VPN
   getCities() {
     return service
-      .get("/city")
+      .get('/city')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   changeCity(body) {
     return service
-      .post("/city", body)
+      .post('/city', body)
       .then(res => res.data)
       .catch(errHandler);
   },
 
   getLocals() {
-    
     return service
-      .get("/city/local", )
+      .get('/city/local')
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -223,14 +222,14 @@ export default {
 
   getWantedUsers() {
     return service
-      .get("/wanted/")
+      .get('/wanted/')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   addBounty(body) {
     return service
-      .post("/wanted/add-bounty", body)
+      .post('/wanted/add-bounty', body)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -240,7 +239,7 @@ export default {
 
   getLedgerUsers() {
     return service
-      .get("/ledger/")
+      .get('/ledger/')
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -268,21 +267,21 @@ export default {
 
   getDataCenters() {
     return service
-      .get("/datacenter/")
+      .get('/datacenter/')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   purchaseDataCenter(body) {
     return service
-      .post("/datacenter/purchase", body)
+      .post('/datacenter/purchase', body)
       .then(res => res.data)
       .catch(errHandler);
   },
 
   attackDataCenter(body) {
     return service
-      .post("/datacenter/attack", body)
+      .post('/datacenter/attack', body)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -292,14 +291,14 @@ export default {
 
   getMarketPlaceItems() {
     return service
-      .get("/marketplace")
+      .get('/marketplace')
       .then(res => res.data)
       .catch(errHandler);
   },
 
   purchaseMarketPlaceItem(body) {
     return service
-      .post("/marketplace/buy", body)
+      .post('/marketplace/buy', body)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -315,7 +314,7 @@ export default {
   },
 
   sendMessage(body) {
-    console.log(body, "body");
+    console.log(body, 'body');
     return service
       .post(`/communication/message/`, body)
       .then(res => res.data)
@@ -327,7 +326,7 @@ export default {
   // get all users. only name and _id
   getHackerNames() {
     return service
-      .get("/opponent")
+      .get('/opponent')
       .then(res => res.data)
       .catch(errHandler);
   }

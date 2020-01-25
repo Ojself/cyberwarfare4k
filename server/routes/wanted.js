@@ -36,11 +36,11 @@ router.get('/', async (req, res) => {
 // Adds bounty to a user
 
 router.post('/add-bounty', async (req, res) => {
-  const { name, bounty } = req.body;
+
+  const { opponentId, bounty } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
-  const opponent = await User.findOne({ name });
-
+  const opponent = await User.findById(opponentId);
   const message = addBountyCriteria(user, opponent, bounty);
 
   if (message) {
@@ -52,9 +52,14 @@ router.post('/add-bounty', async (req, res) => {
   user.bitcoinDrain(bounty);
   opponent.addBounty(user, bounty);
 
+  const users = await getAllUsers();
+  const bountyUsers = users.filter((u) => u.playerStats.bounty > 0);
+
   return res.status(200).json({
     success: true,
     message: `${bounty} added to ${opponent.name}s bounty`,
+    bountyUsers,
+    users,
   });
 });
 

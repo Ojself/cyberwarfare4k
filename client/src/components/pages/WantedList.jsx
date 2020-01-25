@@ -3,20 +3,26 @@ import api from '../../api';
 import Select from 'react-select';
 
 import {
+  Button,
   Form,
-  Table,
   InputGroup,
   Input,
   InputGroupAddon,
-  Button,
-  NavLink
+  InputGroupText,
+  NavLink,
+  Popover,
+  PopoverHeader,
+  PopoverBody,
+  Table,
+  UncontrolledPopover
 } from 'reactstrap';
 
-/* todo. make searchable form so donations can be added to new players */
 /* todo, make component for adding bounty number when player is selected */
 /* todo, if bountydonors name is too many, hide em */
 /* show all bounty donors */
 /* link on names and maybe alliance */
+/* Minimum of bounty should be 10000 */
+/* Select module does not  overlap buttons */
 
 const WantedList = () => {
   const [wantedState, setWantedState] = useState({
@@ -33,7 +39,7 @@ const WantedList = () => {
 
   useEffect(async () => {
     const apiWantedUsers = await api.getWantedUsers();
-    const massagedUser = dataMassager(apiWantedUsers.users);
+    const massagedUser = dataMassagerForSelectComponent(apiWantedUsers.users);
     setWantedState({
       ...wantedState,
       users: massagedUser,
@@ -44,9 +50,8 @@ const WantedList = () => {
   }, []);
 
   /* todo, this is being used many times */
-  const dataMassager = userArray => {
+  const dataMassagerForSelectComponent = userArray => {
     const massagedUsers = [];
-    console.log(userArray);
     userArray.forEach(u => {
       massagedUsers.push({
         value: u._id,
@@ -57,10 +62,31 @@ const WantedList = () => {
   };
 
   const handleInputChange = e => {
+    console.log('changing', e.target.name);
     setWantedState({
       ...wantedState,
       [e.target.name]: e.target.value
     });
+  };
+
+  const addBounty = () => {
+    const bounty = wantedState.bounty;
+    const opponentId = selectedOption.value;
+    api
+      .addBounty({
+        bounty,
+        opponentId
+      })
+      .then(result => {
+        console.log('jarle', result);
+        const massagedUser = dataMassagerForSelectComponent(result.users);
+        setWantedState({
+          ...wantedState,
+          users: massagedUser,
+          bountyUsers: result.bountyUsers,
+          message: result.message
+        });
+      });
   };
 
   // select form
@@ -76,17 +102,20 @@ const WantedList = () => {
         />
       </Form>
       <InputGroup>
-        <InputGroupAddon addonType='prepend'>&#8383;</InputGroupAddon>
+        <InputGroupAddon addonType='prepend'>
+          <InputGroupText style={{ color: '#F08F18' }}>&#8383;</InputGroupText>
+        </InputGroupAddon>
         <Input
           type='number'
-          min={0}
-          step='1'
+          min={1000}
+          step='1000'
           placeholder='Amount'
           value={wantedState.bountyInput}
+          name={'bounty'}
           onChange={handleInputChange}
         />
       </InputGroup>
-      <Button>ADD</Button> {/* disabled */}
+      <Button onClick={addBounty}>ADD</Button> {/* disabled */}
     </div>
   );
 
@@ -105,7 +134,7 @@ const WantedList = () => {
         </tr>
       </thead>
       <tbody>
-        {wantedState.bountyUsers.map(user => (
+        {wantedState.bountyUsers.map((user, i) => (
           <tr key={user._id}>
             <th scope='row'>
               <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
@@ -116,7 +145,21 @@ const WantedList = () => {
               </NavLink>
             </td>
             <td>{user.playerStats.rankName}</td>
-            <td>{user.playerStats.bountyDonors.length}</td>
+            <td>
+              {user.playerStats.bountyDonors.length}
+              <Button id='PopoverFocus' type='button'>
+                Show
+              </Button>
+              <UncontrolledPopover placement='right' target='PopoverFocus'>
+                <PopoverHeader>Donors</PopoverHeader>
+                <PopoverBody>
+                  {user.playerStats.bountyDonors.map(d => (
+                    <p>{d.name}</p>
+                  ))}
+                </PopoverBody>
+              </UncontrolledPopover>
+            </td>
+
             <td>{user.playerStats.bounty}</td>
             <td>
               <InputGroup>
@@ -140,14 +183,14 @@ const WantedList = () => {
   );
 
   return (
-    <div>
+    <div className='container'>
       <h3>Wanted Hackers</h3>
       {wantedState.loading ? (
         <p>loading..</p>
       ) : (
         <>
-          <div> {ComponentBountyUsersTable} </div>
           <div> {ComponentAddUnlistedPlayer} </div>
+          <div> {ComponentBountyUsersTable} </div>
         </>
       )}
     </div>

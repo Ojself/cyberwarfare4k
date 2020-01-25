@@ -9,7 +9,6 @@ import {
   Label,
   Input,
   FormFeedback,
-  FormText,
   Button,
   UncontrolledTooltip
 } from 'reactstrap';
@@ -41,7 +40,7 @@ const CreateHacker = props => {
 
   const selectAvatar = e => {
     let avatar = e.target.name || null;
-    if (createState.selectedAvatar == avatar) {
+    if (createState.selectedAvatar === avatar) {
       avatar = null;
     }
     console.log(avatar, 'avatar');
@@ -227,7 +226,7 @@ const CreateHacker = props => {
               name={el.src}
               onClick={selectAvatar}
               className={
-                createState.selectedAvatar == el.src
+                createState.selectedAvatar === el.src
                   ? 'avatarSelectImages m-4 active'
                   : 'avatarSelectImages m-4'
               }

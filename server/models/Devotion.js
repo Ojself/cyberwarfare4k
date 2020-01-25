@@ -22,7 +22,7 @@ maxhp on crimes are lower
 skill gain
 hides online status
 Higher sales price for stash
-
+schizofreni. make money while afk
 other thoughts: disposable weapons and potions?
 */
 
