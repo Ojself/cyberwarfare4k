@@ -1,5 +1,8 @@
 Work in progress. including the readme
 
+<img src="./chw4kscreenshot.png" width="800" height="auto">
+
+
 # CYBERWARFARE4K
 
 _.. now in React!_
