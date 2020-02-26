@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
 const Information = () => {
-  const [informationState, setInfomrationState] = useState({
-    name: ''
-  });
-
   useEffect(() => {
-    console.log('using effect');
+    console.log("using effect");
   }, []);
 
   return (

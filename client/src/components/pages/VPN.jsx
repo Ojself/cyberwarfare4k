@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, Label } from "reactstrap";
 import Select from "react-select";
 
-const VPN = props => {
+const VPN = () => {
   const [vpnState, setVpnState] = useState({
     cities: null,
     massagedCities: null,
@@ -67,8 +67,6 @@ const VPN = props => {
                   onChange={handleChange}
                   options={vpnState.loading ? "" : vpnState.massagedCities}
                 />
-
-      
         </FormGroup>
         <Button onClick={() => handleTravel()}>Change VPN</Button>
       </Form>

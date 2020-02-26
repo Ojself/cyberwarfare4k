@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Table, NavLink, Button } from "reactstrap";
+import { Table, NavLink } from "reactstrap";
 import api from "../../api";
 
-const Ladder = props => {
+const Ladder = () => {
   const [ladderState, setLadderState] = useState({
     users: [],
     message: null,
@@ -85,7 +85,7 @@ const Ladder = props => {
           </tr>
         </thead>
         <tbody>
-          {ladderState.users.map((user, i) => (
+          {ladderState.users.map((user) => (
             <tr key={user._id}>
               <th scope="row">
                 <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
@@ -96,8 +96,8 @@ const Ladder = props => {
                     {user.alliance.name}
                   </NavLink>
                 ) : (
-                  "none"
-                )}
+                    "none"
+                  )}
               </td>
               <td>{user.playerStats.rankName}</td>
               <td>{user.fightInformation.shutdowns}</td>

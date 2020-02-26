@@ -151,7 +151,7 @@ body {
 }
 
 .terminalFont {
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   text-align: left;
   margin-left: 4px;
   margin-top: 4px;
@@ -216,19 +216,19 @@ body {
   animation-fill-mode: forwards;
 
   &.columns-top {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-top.svg');
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-top.svg");
   }
 
   &.columns-center {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-center.svg');
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-center.svg");
   }
 
   &.columns-bottom {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-bottom.svg');
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-bottom.svg");
   }
 
   &:after {
-    content: '';
+    content: "";
     display: block;
     padding-top: 12.07%;
   }
@@ -309,7 +309,6 @@ body {
   width: 100%;
   height: 30vh;
 }
-
 .myprofile-statpoint {
   padding: 2px;
 }

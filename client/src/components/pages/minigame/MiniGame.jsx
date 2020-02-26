@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Row from "./Row";
+import Row from "./molecules/Row";
 
 // import api from "../../api";
 
@@ -121,10 +121,10 @@ const MiniGame = () => {
     let row = rows[index];
     row.isRunning = false;
     rows[index] = row;
-      setGameState({ ...gameState, rows: rows });
+    setGameState({ ...gameState, rows: rows });
   };
 
-  const rows = gameState.rows.map(row => 
+  const rows = gameState.rows.map(row =>
     <Row
       name={row.name}
       index={row.index}
@@ -136,7 +136,7 @@ const MiniGame = () => {
       key={row.key}
       direction={row.direction}
     />
-    
+
   );
 
   return (
