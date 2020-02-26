@@ -82,7 +82,7 @@ function checkSameValue(valueX, valueY) {
 
 // Nullifies values in obj so unnecessary data is left behind
 function nullifyValues(obj, valuesArray) {
-  for (key in obj) {
+  for (const key in obj) {
     if (valuesArray.includes(key)) {
       obj[key] = null;
     }

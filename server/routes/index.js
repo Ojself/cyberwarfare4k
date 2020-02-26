@@ -21,7 +21,7 @@ function setupPlayer(user, name, city, avatar) {
   city.save();
 }
 
-const getShuffledArr = arr => {
+const getShuffledArr = (arr) => {
   if (arr.length === 1) {
     return arr;
   }
@@ -65,14 +65,14 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   if (user.account.isSetup) {
     return res.status(400).json({
       success: false,
-      message: 'user is already setup'
+      message: 'user is already setup',
     });
   }
 
   if (!name || !cityString || !avatar) {
     return res.status(409).json({
       success: false,
-      message: 'Missing parameters..'
+      message: 'Missing parameters..',
     });
   }
   // todo, addtoset city resident
@@ -81,18 +81,18 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   const allUsers = await User.find();
 
   if (
-    name.toLowerCase().startsWith('npc') ||
-    name.toLowerCase().startsWith('unconfirmed')
+    name.toLowerCase().startsWith('npc')
+    || name.toLowerCase().startsWith('unconfirmed')
   ) {
     return res.status(409).json({
       success: false,
-      message: `${name} is not allowed`
+      message: `${name} is not allowed`,
     });
   }
-  if (allUsers.find(name => allUsers.name)) {
+  if (allUsers.find((name) => allUsers.name)) {
     return res.status(409).json({
       success: false,
-      message: 'name already exists..'
+      message: 'name already exists..',
     });
   }
 
@@ -101,7 +101,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   return res.status(200).json({
     success: true,
     message: `user: ${name} created`,
-    user: setupUser
+    user: setupUser,
   });
 });
 
@@ -120,12 +120,12 @@ router.get('/get-nav-user', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'nav user loaded..',
-      user
+      user,
     });
   } catch (err) {
     res.status(400).json({
       success: true,
-      message: err.toString()
+      message: err.toString(),
     });
   }
   /* todo, too much information is being passsed */
@@ -149,7 +149,7 @@ router.get('/my-profile', isLoggedIn, async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'user loaded..',
-      user
+      user,
     });
   } catch (err) {
     next(err);
@@ -161,11 +161,11 @@ router.get('/my-profile', isLoggedIn, async (req, res, next) => {
 // Retrives hackers
 
 router.get('/opponent/', async (req, res) => {
-  const users = await getAllUsers(false, true);
+  const users = await getAllUsers(false, { name: '1' });
   res.status(200).json({
     success: true,
     message: 'all hackers loaded..',
-    users
+    users,
   });
 });
 
@@ -180,7 +180,7 @@ router.get('/opponent/:id', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'opponent loaded..',
-      opponent
+      opponent,
     });
   } catch (err) {
     console.log('err', err);
@@ -196,25 +196,23 @@ router.get('/ladder', async (req, res) => {
   let users = await User.find().populate('alliance', 'name');
 
   users = users
-    .filter(u => /^(?!unconfirmed).*/.test(u.name))
-    .map(user =>
-      nullifyValues(user, [
-        'account',
-        'hackSkill',
-        'crimeSkill',
-        'marketPlaceItems',
-        'specialWeapons',
-        'stash',
-        'currencies',
-        'email'
-      ])
-    );
+    .filter((u) => /^(?!unconfirmed).*/.test(u.name))
+    .map((user) => nullifyValues(user, [
+      'account',
+      'hackSkill',
+      'crimeSkill',
+      'marketPlaceItems',
+      'specialWeapons',
+      'stash',
+      'currencies',
+      'email',
+    ]));
   users = getShuffledArr(users);
 
   res.status(200).json({
     success: true,
     message: 'users loaded..',
-    users
+    users,
   });
 });
 
@@ -231,7 +229,7 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
-      message: 'no more statpoints'
+      message: 'no more statpoints',
     });
   }
 
@@ -243,7 +241,7 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   return res.status(200).json({
     message: `${statPoint.toUpperCase()} upgraded`,
     updatedUser,
-    success: true
+    success: true,
   });
 });
 

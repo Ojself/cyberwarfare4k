@@ -2,10 +2,10 @@ const { nullifyValues } = require('../../middlewares/middleHelpers.js');
 const User = require('../../models/User');
 const Session = require('../../models/Session');
 
-const getAllUsers = async (filter = null, onlyName = null) => {
-  if (onlyName) {
-    const onlyNameUsers = await User.find().select('name');
-    return onlyNameUsers;
+const getAllUsers = async (filterArray = [], select = null) => {
+  if (select) { // {name:'1'}
+    const usersWithSelect = await User.find().select(select);
+    return usersWithSelect;
   }
   let users = await User.find()
     .populate('playerStats.bountyDonors', 'name')
@@ -15,8 +15,8 @@ const getAllUsers = async (filter = null, onlyName = null) => {
   // todo, select information instead of nullify?
   // todo apply filter
 
-  if (filter) {
-    users = users.map((user) => nullifyValues(user, filter));
+  if (filterArray.length) {
+    users = users.map((user) => nullifyValues(user, filterArray));
   }
   return users;
 };

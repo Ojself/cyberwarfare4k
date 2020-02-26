@@ -11,7 +11,7 @@ const { getAllUsers } = require('./helper'); // move to middleware?
 // Retrives all users
 
 router.get('/', async (req, res) => {
-  const users = await getAllUsers(null, true);
+  const users = await getAllUsers(null, { select: '1' });
   if (!users) {
     return res.status(400).json({
       success: false,
