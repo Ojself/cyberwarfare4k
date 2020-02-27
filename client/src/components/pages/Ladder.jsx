@@ -2,12 +2,33 @@ import React, { useState, useEffect } from "react";
 import { Table, NavLink } from "reactstrap";
 import api from "../../api";
 
+/* Todo
+styling
+Math.flooring values
+slicing out user array in server side so there's not too many users?
+*/
+
 const Ladder = () => {
   const [ladderState, setLadderState] = useState({
     users: [],
     message: null,
     loading: true
   });
+  const [sortState, setSortState] = useState({
+    hacker: false,
+    alliance: false,
+    rank: false,
+    shutdowns: false,
+    crimesInitiated: false,
+    networth: false
+  });
+
+  const toggleSort = sortName => {
+    setSortState({
+      ...sortState,
+      [sortName]: !sortState[sortName]
+    });
+  };
 
   useEffect(() => {
     getUsers().then(result => {
@@ -21,46 +42,75 @@ const Ladder = () => {
   }, []);
 
   const getUsers = async () => {
-    const users = await api.getAllUsers();
+    const users = await api.getAllLadderUsers();
     return users;
   };
 
   const handleSort = (e, sort) => {
+    sort = sort.toLowerCase();
     e.preventDefault();
     let sortedUsers = ladderState.users || [];
 
     switch (sort) {
       case "hacker":
-        sortedUsers = ladderState.users.sort((a, b) =>
-          ("" + a.name).localeCompare(b.name)
-        );
+        toggleSort("hacker");
+        sortedUsers = ladderState.users.sort((a, b) => {
+          if (sortState.hacker) {
+            return ("" + a.name).localeCompare(b.name);
+          }
+          return ("" + b.name).localeCompare(a.name);
+        });
         break;
       case "alliance":
-        sortedUsers = ladderState.users.sort((a, b) =>
-          ("" + a.alliance.name).localeCompare(b.alliance.name)
-        );
+        toggleSort("alliance"); // yikes
+        sortedUsers = ladderState.users.sort((a, b) => {
+          if (!a.alliance || !a.alliance.name) {
+            a = { alliance: { name: "" } };
+          }
+          if (!b.alliance || !b.alliance.name) {
+            b = { alliance: { name: "" } };
+          }
+          if (sortState.alliance) {
+            return ("" + a.alliance.name).localeCompare(b.alliance.name);
+          }
+          return ("" + b.alliance.name).localeCompare(a.alliance.name);
+        });
         break;
       case "rank":
-        sortedUsers = ladderState.users.sort(
-          (b, a) => a.playerStats.rank - b.playerStats.rank
-        );
+        toggleSort("rank");
+        sortedUsers = ladderState.users.sort((b, a) => {
+          if (sortState.rank) {
+            return a.playerStats.rank - b.playerStats.rank;
+          }
+          return b.playerStats.rank - a.playerStats.rank;
+        });
         break;
       case "shutdowns":
-        sortedUsers = ladderState.users.sort(
-          (b, a) => a.fightInformation.shutdowns - b.fightInformation.shutdowns
-        );
+        toggleSort("shutdowns");
+        sortedUsers = ladderState.users.sort((b, a) => {
+          if (sortState.shutdowns) {
+            return a.fightInformation.shutdowns - b.fightInformation.shutdowns;
+          }
+          return b.fightInformation.shutdowns - a.fightInformation.shutdowns;
+        });
         break;
       case "crimes":
-        sortedUsers = ladderState.users.sort(
-          (b, a) =>
-            a.fightInformation.crimesInitiated -
-            b.fightInformation.crimesInitiated
-        );
+        toggleSort("crimes");
+        sortedUsers = ladderState.users.sort((b, a) => {
+          if (sortState.crimes) {
+            return a.fightInformation.crimesInitiated - b.fightInformation.crimesInitiated;
+          }
+          return b.fightInformation.crimesInitiated - a.fightInformation.crimesInitiated;
+        });
         break;
       case "networth":
-        sortedUsers = ladderState.users.sort(
-          (b, a) => a.playerStats.networth - b.playerStats.networth
-        );
+        toggleSort("networth");
+        sortedUsers = ladderState.users.sort((b, a) => {
+          if (sortState.networth) {
+            return a.playerStats.networth - b.playerStats.networth;
+          }
+          return b.playerStats.networth - a.playerStats.networth;
+        });
         break;
     }
 
@@ -71,33 +121,32 @@ const Ladder = () => {
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Ladder</h2>
-      <Table striped dark>
+      <Table className="mt-5" striped dark>
         <thead>
           <tr>
-            <th onClick={e => handleSort(e, "hacker")}>Hacker</th>
-            <th onClick={e => handleSort(e, "alliance")}>Alliance</th>
-            <th onClick={e => handleSort(e, "rank")}>Rank</th>
-            <th onClick={e => handleSort(e, "shutdowns")}>Shutdowns</th>
-            <th onClick={e => handleSort(e, "crimes")}>Crimes</th>
-            <th onClick={e => handleSort(e, "networth")}>Networth</th>
+            {["Hacker", "Alliance", "Rank", "Shutdowns", "Crimes", "Networth"].map((s, i) => {
+              return (
+                <th key={i} style={{ cursor: "pointer" }} onClick={e => handleSort(e, s)}>
+                  {s}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>
-          {ladderState.users.map((user) => (
+          {ladderState.users.map(user => (
             <tr key={user._id}>
               <th scope="row">
                 <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
               </th>
               <td>
                 {user.alliance ? (
-                  <NavLink href={`/alliance/${user.alliance._id}`}>
-                    {user.alliance.name}
-                  </NavLink>
+                  <NavLink href={`/alliance/${user.alliance._id}`}>{user.alliance.name}</NavLink>
                 ) : (
-                    "none"
-                  )}
+                  "none"
+                )}
               </td>
               <td>{user.playerStats.rankName}</td>
               <td>{user.fightInformation.shutdowns}</td>

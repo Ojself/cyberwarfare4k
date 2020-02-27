@@ -110,7 +110,7 @@ export default {
       .catch(errHandler);
   },
 
-  getAllUsers() {
+  getAllLadderUsers() {
     return service
       .get("/ladder")
       .then(res => res.data)
