@@ -548,7 +548,7 @@ userSchema.methods.handleAttack = function (finalResult) {
     `You attacked ${finalResult.opponent.name} at ${new Date(
       finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-    finalResult.victimDead ? ' and he was shutdown!' : '!'
+      finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
   ];
@@ -564,7 +564,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
     `${finalResult.user.name} attacked you at ${new Date(
       finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-    finalResult.victimDead ? ' and you were shutdown!' : '!'
+      finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
   ];

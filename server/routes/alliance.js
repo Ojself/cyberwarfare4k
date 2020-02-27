@@ -3,140 +3,59 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Alliance = require('../models/Alliance');
-
 const {
+  checkCreateAllianceCriteria,
+  findAllianceStats,
+} = require('../middlewares/middleAlliance');
 
-  existingValue,
-} = require('../middlewares/middleHelpers.js');
-
-
-function checkCreateAllianceCriteria(user, alliance) {
-  if (!existingValue(user)) {
-    return 'ùser not found';
-  }
-  if (!existingValue(alliance)) {
-    return 'alliance already exist';
-  }
-  // if user doesn't have 1000000
-  // if user doesn't have level 5
-
-  return null;
-}
-
-const getShuffledArr = (arr) => {
-  if (arr.length === 1) {
-    return arr;
-  }
-  const rand = Math.floor(Math.random() * arr.length);
-  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i !== rand))];
-};
-
-// forgive me for this function
-function findAllianceStats(alliances) {
-  const result = [];
-  for (let i = 0; i < alliances.length; i += 1) {
-    const allianceStats = {
-      name: alliances[i].name,
-      members: alliances[i].members.length,
-      _id: alliances[i]._id,
-      totHackSkill: 0,
-      totCrimeSkill: 0,
-      totCurrencies: 0,
-      totWealth: 0,
-      totBounty: 0,
-      totRank: 0,
-      totShutdowns: 0,
-      totAttacksInitiated: 0,
-      totAttacksVictim: 0,
-      totCrimesInitiated: 0,
-      totVpnChanges: 0,
-      totCurrencyPurchases: 0,
-    };
-
-    for (let j = 0; j < alliances[i].members.length; j += 1) {
-      allianceStats.totWealth = Object.values(
-        alliances[i].members[j].hackSkill,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totHackSkill = Object.values(
-        alliances[i].members[j].hackSkill,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totCrimeSkill = Object.values(
-        alliances[i].members[j].crimeSkill,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totCurrencies = Object.values(
-        alliances[i].members[j].currencies,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totWealth += alliances[i].members[j].playerStats.bitCoins;
-
-      allianceStats.totBounty += alliances[i].members[j].playerStats.bounty;
-
-      allianceStats.totRank += alliances[i].members[j].playerStats.rank;
-
-      allianceStats.totShutdowns
-        += alliances[i].members[j].fightInformation.shutdowns;
-
-      allianceStats.totAttacksInitiated
-        += alliances[i].members[j].fightInformation.attacksInitiated;
-
-      allianceStats.totAttacksVictim
-        += alliances[i].members[j].fightInformation.attacksVictim;
-
-      allianceStats.totCrimesInitiated
-        += alliances[i].members[j].fightInformation.crimesInitiated;
-
-      allianceStats.totVpnChanges
-        += alliances[i].members[j].fightInformation.vpnChanges;
-
-      allianceStats.totCurrencyPurchases
-        += alliances[i].members[j].fightInformation.currencyPurchases;
-    }
-    result.push(allianceStats);
-  }
-  return result;
-}
+// TODO SEEDS ARE NOT WORKING. alliances do not have members in it
 
 // @GET
 // PRIVATE
 // Retrives all alliances with stats
 
-router.get('/', async (req, res) => {
+/* **********UNUSED?? */
+
+/* router.get('/', async (req, res) => {
   const alliances = await Alliance.find().populate('members');
   console.log(alliances);
 
-  let stats = findAllianceStats(alliances);
+  const totStats = findAllianceStats(alliances);
   stats = getShuffledArr(stats);
   res.status(200).json({
     success: true,
     message: 'alliances loaded..',
-    stats,
+    totStats,
   });
 });
 
+ */
 // @GET
 // PRIVATE
 // Retrives all alliances with stats
 
 router.get('/ladder', async (req, res) => {
-  const alliances = await Alliance.find().populate('members', [
-    'hackSkill',
-    'crimeSkill',
-    'currencies',
-    'fightInformation',
-    'playerStats',
-    'name',
-  ]);
-  console.log(alliances);
-
-  let stats = findAllianceStats(alliances);
-  stats = getShuffledArr(stats);
+  let alliances;
+  try {
+    alliances = await Alliance.find().populate('members', [
+      'hackSkill',
+      'crimeSkill',
+      'currencies',
+      'fightInformation',
+      'playerStats',
+      'name',
+    ]);
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: JSON.stringify(e),
+    });
+  }
+  const totStats = findAllianceStats(alliances);
   res.status(200).json({
     success: true,
-    message: 'alliances loaded..',
-    stats,
+    message: 'alliances ladder loaded..',
+    totStats,
   });
 });
 

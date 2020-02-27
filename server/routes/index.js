@@ -1,6 +1,5 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { nullifyValues } = require('../middlewares/middleHelpers');
 const { getAllUsers } = require('./helper');
 
 const router = express.Router();
@@ -89,7 +88,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
       message: `${name} is not allowed`,
     });
   }
-  if (allUsers.find((name) => allUsers.name)) {
+  if (allUsers.find((name) => allUsers.name)) { // todo, probably wrong
     return res.status(409).json({
       success: false,
       message: 'name already exists..',
@@ -189,27 +188,32 @@ router.get('/opponent/:id', async (req, res) => {
 
 // @GET
 // PRIVATE
-// Gets all user
+// Gets all users for the 'Top Hackers' page'
 
-// todo add query to sort differently. by income, rank, kills etc
 router.get('/ladder', async (req, res) => {
-  let users = await User.find().populate('alliance', 'name');
-
-  users = users
-    .filter((u) => /^(?!unconfirmed).*/.test(u.name))
-    .map((user) => nullifyValues(user, [
-      'account',
-      'hackSkill',
-      'crimeSkill',
-      'marketPlaceItems',
-      'specialWeapons',
-      'stash',
-      'currencies',
-      'email',
-    ]));
+  const dbSelectOptions = {
+    name: '1',
+    alliance: '1',
+    'playerStats.rankName': '1',
+    'playerStats.rank': '1',
+    'playerStats.networth': '1',
+    'fightInformation.shutdowns': '1',
+    'fightInformation.crimesInitiated': '1',
+  };
+  let users;
+  try {
+    users = await User.find()
+      .select(dbSelectOptions)
+      .populate('alliance', 'name');
+  } catch (e) {
+    return res.status(400).json({
+      success: true,
+      message: JSON.stringify(e),
+    });
+  }
   users = getShuffledArr(users);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: 'users loaded..',
     users,
