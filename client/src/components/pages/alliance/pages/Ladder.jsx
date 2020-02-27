@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, NavLink, Button } from "reactstrap";
 import api from "../../../../api";
-/* todo don't show alliances that dont have members */
-const Ladder = props => {
+/* todo styling */
+const Ladder = () => {
   const [ladderState, setLadderState] = useState({
     alliances: [],
     message: null,
@@ -13,140 +13,139 @@ const Ladder = props => {
     getAlliances().then(result => {
       setLadderState({
         ...ladderState,
-        alliances: result.stats,
+        alliances: result.totStats,
         message: result.message,
         loading: false
       });
     });
   }, []);
 
+  const [sortState, setSortState] = useState({
+    alliance: false,
+    members: false,
+    rank: false,
+    totWealth: false,
+    totSkills: false,
+    totAttacksInitiated: false,
+    totShutdowns: false,
+    totVpnChanges: false,
+    totCurrencies: false,
+    totCurrencyPurchases: false,
+    totBounty: false
+  });
+
+  const toggleSort = sortName => {
+    setSortState({
+      ...sortState,
+      [sortName]: !sortState[sortName]
+    });
+  };
+
   const getAlliances = async () => {
     const alliances = await api.getAllAlliances();
-    console.log(alliances, "result");
     return alliances;
   };
 
   const handleSort = (e, sort) => {
     e.preventDefault();
     let sortedAlliances = ladderState.alliances || [];
-    // TODO change some value names so we can dynamicaly run functions (see switch)
-    switch (sort) {
-      case "alliance":
-        sortedAlliances = ladderState.alliances.sort((a, b) =>
-          ("" + a.name).localeCompare(b.name)
-        );
-        break;
-      case "members":
-        console.log("sw");
-        sortedAlliances = sortingMethod("members");
-        break;
-      case "rank":
-        sortedAlliances = sortingMethod("rank");
-        break;
-      case "wealth":
-        sortedAlliances = sortingMethod("totWealth");
-        break;
-      case "hackskills":
-        sortedAlliances = sortingMethod("totHackSkill");
-        break;
-      case "crimeskills":
-        sortedAlliances = sortingMethod("totCrimeSkill");
-        break;
-      case "aggressive":
-        sortedAlliances = sortingMethod("totAttacksInitiated");
-        break;
-      case "shutdowns":
-        sortedAlliances = sortingMethod("totShutdowns");
-        break;
-      case "vpnchanges":
-        sortedAlliances = sortingMethod("totVpnChanges");
-        break;
-      case "cc":
-        sortedAlliances = sortingMethod("totCurrencies");
-        break;
-      case "ccpurch":
-        sortedAlliances = sortingMethod("totCurrencyPurchases");
-        break;
-      case "bounty":
-        sortedAlliances = sortingMethod("totBounty");
-        break;
+    toggleSort(sort);
+    if (sort === "alliance") {
+      sortedAlliances = ladderState.alliances.sort((a, b) => {
+        if (sortState.alliance) {
+          return ("" + a.name).localeCompare(b.name);
+        } else {
+          return ("" + b.name).localeCompare(a.name);
+        }
+      });
+    } else {
+      sortedAlliances = numberSortingMethod(sort);
     }
-
     setLadderState({
       ...ladderState,
       alliances: sortedAlliances
     });
   };
 
-  const sortingMethod = query => {
-    const sortedAllianced = ladderState.alliances.sort(
-      (b, a) => a[query] - b[query]
-    );
-    return sortedAllianced;
+  const numberSortingMethod = query => {
+    return ladderState.alliances.sort((b, a) => {
+      if (sortState[query]) {
+        return a[query] - b[query];
+      }
+      return b[query] - a[query];
+    });
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Alliance Ladder</h2>
-      <Table striped dark>
+      <Table striped dark className="mt-5">
         <thead>
           <tr>
-            <th onClick={e => handleSort(e, "alliance")}>Alliance</th>
-            <th onClick={e => handleSort(e, "members")}>Members</th>
-            <th onClick={e => handleSort(e, "rank")}>Highest ranked</th>
-            <th onClick={e => handleSort(e, "wealth")}>Wealth</th>
-            <th onClick={e => handleSort(e, "hackskills")}>Hacker skills</th>
-            <th onClick={e => handleSort(e, "crimeskills")}>Crime skills</th>
-            <th onClick={e => handleSort(e, "aggressive")}>Most aggressive</th>
-            <th onClick={e => handleSort(e, "shutdowns")}>Most shutdowns</th>
-            <th onClick={e => handleSort(e, "vpnchanges")}>Most on the move</th>
-            <th onClick={e => handleSort(e, "cc")}>Most CC holders</th>
-            <th onClick={e => handleSort(e, "ccpurch")}>Most CC purchases</th>
-            <th onClick={e => handleSort(e, "bounty")}>Most Bounty</th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "alliance")}>
+              Alliance
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "members")}>
+              Members
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totRank")}>
+              Highest ranked
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totWealth")}>
+              Wealth
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totSkills")}>
+              Skills
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totAttacksInitiated")}>
+              Most aggressive
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totShutdowns")}>
+              Most shutdowns
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totVpnChanges")}>
+              Most on the move
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totCurrencies")}>
+              Most CC holders
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totCurrencyPurchases")}>
+              Most CC purchases
+            </th>
+            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totBounty")}>
+              Most Bounty
+            </th>
           </tr>
         </thead>
         <tbody>
-          {ladderState.alliances.map((alliance, i) => (
+          {ladderState.alliances.map(alliance => (
             <tr key={alliance._id}>
               <th scope="row">
-                <NavLink href={`/alliance/${alliance._id}`}>
-                  {alliance.name}
-                </NavLink>
+                <NavLink href={`/alliance/${alliance._id}`}>{alliance.name}</NavLink>
               </th>
 
               <td>{alliance.members}</td>
-              <td>{Math.round(alliance.rank / alliance.members) || 0}</td>
-              <td>{Math.round(alliance.totWealth / alliance.members) || 0}</td>
-              <td>
-                {Math.round(alliance.totHackSkill / alliance.members) || 0}
-              </td>
-              <td>
-                {Math.round(alliance.totCrimeSkill / alliance.members) || 0}
-              </td>
-              <td>
-                {Math.round(alliance.totAttacksInitiated / alliance.members) ||
-                  0}
-              </td>
-              <td>
-                {Math.round(alliance.totShutdowns / alliance.members) || 0}
-              </td>
-              <td>
-                {Math.round(alliance.totVpnChanges / alliance.members) || 0}
-              </td>
-              <td>
-                {Math.round(alliance.totCurrencies / alliance.members) || 0}
-              </td>
-              <td>
-                {Math.round(alliance.totCurrencyPurchases / alliance.members) ||
-                  0}
-              </td>
-              <td>{Math.round(alliance.totBounty / alliance.members) || 0}</td>
+
+              <td>{getAverageScore(alliance.totRank, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totWealth, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totSkills, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totAttacksInitiated, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totShutdowns, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totVpnChanges, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totCurrencies, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totCurrencyPurchases, alliance.members)}</td>
+              <td>{getAverageScore(alliance.totBounty, alliance.members)}</td>
             </tr>
           ))}
         </tbody>
       </Table>
     </div>
   );
+};
+
+const getAverageScore = (x, y) => {
+  const result = Math.round(x / y);
+  return result ? result : 0;
 };
 
 export default Ladder;

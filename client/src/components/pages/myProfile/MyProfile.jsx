@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col
-} from "reactstrap";
+import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from "reactstrap";
 
 import ProgressBarCrimeSkill from "./molecules/ProgressBarCrimeSkill";
 import ProgressBarHackSkill from "./molecules/ProgressBarHackSkill";
@@ -26,7 +17,7 @@ import classnames from "classnames";
 /* change or remove placeholder picture */
 /* Stat upgrade only listen to to parts of the component. eg, you have to click the progressbar, but not the color itself */
 
-const MyProfile = props => {
+const MyProfile = () => {
   const [myProfileState, setMyProfileState] = useState({
     user: null,
     loading: true,
@@ -49,11 +40,9 @@ const MyProfile = props => {
       .catch(err => console.warn("err", err));
   };
 
-  const giveMeStashColor = color => {
+  const getStashColor = color => {
     const defaultColors = ["red", "blue", "orange", "green"];
-    return color
-      ? color
-      : defaultColors[Math.floor(Math.random() * defaultColors.length)];
+    return color ? color : defaultColors[Math.floor(Math.random() * defaultColors.length)];
   };
 
   useEffect(() => {
@@ -109,15 +98,11 @@ const MyProfile = props => {
         )}
       </div>
       <div className="w-100"></div>
-      <div className="col w-25 ">
+      <div className="col w-25">
         <div>
           <img
-            style={{ maxWidth: "200px", width: "100%" }}
-            src={
-              myProfileState.loading
-                ? profilePlaceHolderAvatar
-                : myProfileState.user.account.avatar
-            }
+            style={{ maxWidth: "200px", width: "65%" }}
+            src={myProfileState.loading ? profilePlaceHolderAvatar : myProfileState.user.account.avatar}
             alt="hackerPic"
             title="This is you!"
           />
@@ -125,10 +110,9 @@ const MyProfile = props => {
         <div className="mt-4">
           {myProfileState.loading ? (
             <img
-              style={{ maxWidth: "200px", width: "100%" }}
+              style={{ maxWidth: "200px", width: "65%" }}
               src={
-                myProfileState.user.alliance &&
-                myProfileState.user.alliance.name
+                myProfileState.user.alliance && myProfileState.user.alliance.name
                   ? `/alliancePics/${myProfileState.user.alliance.name}.png`
                   : ""
               }
@@ -141,21 +125,19 @@ const MyProfile = props => {
         </div>
       </div>
       <div className="col w-25 ">
-        {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
-          (c, i) => {
-            return (
-              <ProgressBarCrimeSkill
-                color="success"
-                upgrade={e => handleUpgrade(e)}
-                key={i}
-                name={c}
-                value={myProfileState.user.crimeSkill[c]}
-                max={100}
-                hasStatPoints={!!myProfileState.user.playerStats.statPoints}
-              />
-            );
-          }
-        )}
+        {["Technical", "Forensics", "Social Engineering", "Cryptography"].map((c, i) => {
+          return (
+            <ProgressBarCrimeSkill
+              color="success"
+              upgrade={e => handleUpgrade(e)}
+              key={i}
+              name={c}
+              value={myProfileState.user.crimeSkill[c]}
+              max={100}
+              hasStatPoints={!!myProfileState.user.playerStats.statPoints}
+            />
+          );
+        })}
 
         {/* Seperator between crime- and hackprogressbars */}
         <div className={"my-4"}></div>
@@ -197,25 +179,19 @@ const MyProfile = props => {
       <div className="col w-25">
         <ul className="list-group ">
           <li className="list-group-item bg-dark mb-2 ">
-            {myProfileState.loading
-              ? "Rank"
-              : myProfileState.user.playerStats.rankName}
+            {myProfileState.loading ? "Rank" : myProfileState.user.playerStats.rankName}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
             {myProfileState.user.playerStats.networth}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks initiated:{" "}
-            {myProfileState.user.fightInformation.attacksInitiated}
+            Attacks initiated: {myProfileState.user.fightInformation.attacksInitiated}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks received:{" "}
-            {myProfileState.user.fightInformation.attacksVictim}
+            Attacks received: {myProfileState.user.fightInformation.attacksVictim}
           </li>
-          <li className="list-group-item bg-dark mb-2">
-            Shutdowns: {myProfileState.user.fightInformation.shutdowns}
-          </li>
+          <li className="list-group-item bg-dark mb-2">Shutdowns: {myProfileState.user.fightInformation.shutdowns}</li>
           <li className="list-group-item bg-dark mb-2">
             Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
             {myProfileState.user.playerStats.bounty}
@@ -226,7 +202,7 @@ const MyProfile = props => {
           </li>
         </ul>
       </div>
-      <div className="col w-25">
+      <div className="col w-25 px-0">
         <div>
           <Nav tabs>
             {["Items", "Currencies", "Stash"].map((t, i) => {
@@ -257,13 +233,8 @@ const MyProfile = props => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>
-                          {getMarketPlaceItemValue("CPU", "name") || "none"}
-                        </td>
-                        <td>
-                          {getMarketPlaceItemValue("AntiVirus", "name") ||
-                            "none"}
-                        </td>
+                        <td>{getMarketPlaceItemValue("CPU", "name") || "none"}</td>
+                        <td>{getMarketPlaceItemValue("AntiVirus", "name") || "none"}</td>
                       </tr>
                     </tbody>
 
@@ -275,14 +246,8 @@ const MyProfile = props => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>
-                          {getMarketPlaceItemValue("Encryption", "name") ||
-                            "none "}
-                        </td>
-                        <td>
-                          {getMarketPlaceItemValue("Firewall", "name") ||
-                            "none"}
-                        </td>
+                        <td>{getMarketPlaceItemValue("Encryption", "name") || "none "}</td>
+                        <td>{getMarketPlaceItemValue("Firewall", "name") || "none"}</td>
                       </tr>
                     </tbody>
                   </Table>
@@ -335,7 +300,7 @@ const MyProfile = props => {
                         <div>
                           <img
                             style={{ maxWidth: "75px", width: "100%" }}
-                            src={`/stashPics/${s}/${giveMeStashColor()}.png`}
+                            src={`/stashPics/${s}/${getStashColor()}.png`}
                             title={s}
                             alt={"Stash"}
                           />
@@ -353,11 +318,7 @@ const MyProfile = props => {
     </div>
   );
 
-  return (
-    <div className="container  mt-5">
-      {myProfileState.loading ? <p>loading..</p> : profilePage}
-    </div>
-  );
+  return <div className="container  mt-5">{myProfileState.loading ? <p>loading..</p> : profilePage}</div>;
 };
 
 export default MyProfile;

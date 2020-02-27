@@ -24,9 +24,7 @@ const HackerProfile = props => {
   const profilePage = (
     <div className="playerWrapper">
       <div className="playerNameWrapper">
-        <h3>
-          {opponentState.loading ? "Player Name" : opponentState.opponent.name}
-        </h3>
+        <h3>{opponentState.loading ? "Player Name" : opponentState.opponent.name}</h3>
       </div>
       <div className="playerInfoWrapper">
         <div className="playerAvatarWrapper">
@@ -45,16 +43,10 @@ const HackerProfile = props => {
         </div>
         <div className="playerStatsWrapper">
           <ul>
-            <li>
-              {opponentState.loading
-                ? "Rank"
-                : opponentState.opponent.playerStats.rankName}
-            </li>
+            <li>{opponentState.loading ? "Rank" : opponentState.opponent.playerStats.rankName}</li>
             <li>
               Networth <span style={{ color: "#F08F18" }}>&#8383;</span>
-              {opponentState.loading
-                ? "0"
-                : opponentState.opponent.playerStats.networth}
+              {opponentState.loading ? "0" : opponentState.opponent.playerStats.ledger} {/* todo probably not */}
             </li>
           </ul>
         </div>
