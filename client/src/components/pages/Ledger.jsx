@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import api from '../../api';
-import classnames from 'classnames';
-import Select from 'react-select';
+import React, { useState, useEffect } from "react";
+import api from "../../api";
+import classnames from "classnames";
+import Select from "react-select";
 
 import {
   InputGroup,
@@ -17,27 +17,27 @@ import {
   CardTitle,
   CardText,
   Row,
-  Col
-} from 'reactstrap';
+  Col,
+} from "reactstrap";
 
-const Ledger = props => {
+const Ledger = (props) => {
   const [ledgerState, setLedgerState] = useState({
     users: null,
     depositAmount: null,
     transferAmount: null,
-    receiver: '',
+    receiver: "",
     selectedOption: null,
     loading: true,
-    message: null
+    message: null,
   });
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState("1");
 
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   useEffect(() => {
-    api.getLedgerUsers().then(result => {
+    api.getLedgerUsers().then((result) => {
       const { users } = result;
       const massagedUsers = dataMassager(users);
 
@@ -45,89 +45,89 @@ const Ledger = props => {
         ...ledgerState,
         loading: false,
         message: result.message,
-        users: massagedUsers
+        users: massagedUsers,
       });
     });
-  }, [console.log('STATE', ledgerState)]);
+  }, [console.log("STATE", ledgerState)]);
 
-  const dataMassager = userArray => {
+  const dataMassager = (userArray) => {
     const massagedUsers = [];
-    userArray.forEach(u => {
+    userArray.forEach((u) => {
       massagedUsers.push({
         value: u._id,
-        label: u.name
+        label: u.name,
       });
     });
     return massagedUsers;
   };
 
-  const handleChange = selectedOption => {
+  const handleChange = (selectedOption) => {
     setLedgerState({ ...ledgerState, selectedOption });
   };
 
-  const handleTransferAmountChange = e => {
+  const handleTransferAmountChange = (e) => {
     setLedgerState({ ...ledgerState, transferAmount: e.target.value });
   };
-  const handleDespoitAmountChange = e => {
+  const handleDespoitAmountChange = (e) => {
     setLedgerState({ ...ledgerState, depositAmount: e.target.value });
   };
 
-  const handleDeposit = depositAmount => {
+  const handleDeposit = (depositAmount) => {
     api
       .depositBitcoin({
-        depositAmount
+        depositAmount,
       })
-      .then(result => {
-        console.log(result, 'result');
+      .then((result) => {
+        console.log(result, "result");
         setLedgerState({
           ...ledgerState,
           depositAmount: null,
-          message: result.message
+          message: result.message,
         });
       });
   };
 
-  const handleWithdraw = depositAmount => {
+  const handleWithdraw = (depositAmount) => {
     api
       .withdrawBitcoin({
-        depositAmount
+        depositAmount,
       })
-      .then(result => {
-        console.log(result, 'result');
+      .then((result) => {
+        console.log(result, "result");
         setLedgerState({
           ...ledgerState,
           depositAmount: null,
-          message: result.message
+          message: result.message,
         });
       });
   };
 
   const handleTransfer = (transferAmount, receiverId) => {
-    console.log('handling transfer');
+    console.log("handling transfer");
     api
       .transferBitCoins({
         transferAmount,
-        receiverId
+        receiverId,
       })
-      .then(result => {
-        console.log(result, 'result');
+      .then((result) => {
+        console.log(result, "result");
         setLedgerState({
           ...ledgerState,
           selectedOption: null,
           transferAmount: null,
-          message: result.message
+          message: result.message,
         });
       });
   };
   /* todo center ledger in browser */
   return (
-    <div>
+    <div className=" d-flex flex-column align-items-center">
       <Nav tabs>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '1' })}
+            className={classnames({ active: activeTab === "1" })}
             onClick={() => {
-              toggle('1');
+              toggle("1");
             }}
           >
             Deposit
@@ -135,9 +135,9 @@ const Ledger = props => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '2' })}
+            className={classnames({ active: activeTab === "2" })}
             onClick={() => {
-              toggle('2');
+              toggle("2");
             }}
           >
             Transfer
@@ -145,36 +145,36 @@ const Ledger = props => {
         </NavItem>
       </Nav>
       <TabContent activeTab={activeTab}>
-        <TabPane tabId='1'>
+        <TabPane tabId="1">
           <Row>
-            <Col sm='6'>
-              <Card body className='text-dark'>
+            <Col sm="12">
+              <Card body className="text-dark">
                 <CardTitle>5% admission fee </CardTitle>
                 <CardText>
-                  In ledger: <span style={{ color: '#F08F18' }}>&#8383;</span>
+                  In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
                   {props.loading
                     ? 0
                     : Math.floor(props.user.playerStats.ledger)}
                 </CardText>
                 <CardText>
-                  On hand: <span style={{ color: '#F08F18' }}>&#8383;</span>
+                  On hand: <span style={{ color: "#F08F18" }}>&#8383;</span>
                   {props.loading
                     ? 0
                     : Math.floor(props.user.playerStats.bitCoins)}
                 </CardText>
                 <InputGroup>
-                  <InputGroupAddon addonType='prepend'>&#8383;</InputGroupAddon>
+                  <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
                   <Input
-                    type='number'
+                    type="number"
                     min={0}
-                    step='1'
-                    placeholder='Amount'
+                    step="1"
+                    placeholder="Amount"
                     value={ledgerState.depositAmount}
                     onChange={handleDespoitAmountChange}
                   />
                 </InputGroup>
                 <Button
-                  type='submit'
+                  type="submit"
                   onClick={() => {
                     handleDeposit(ledgerState.depositAmount);
                   }}
@@ -182,7 +182,7 @@ const Ledger = props => {
                   Depsoit
                 </Button>
                 <Button
-                  type='submit'
+                  type="submit"
                   onClick={() => {
                     handleWithdraw(ledgerState.depositAmount);
                   }}
@@ -193,36 +193,36 @@ const Ledger = props => {
             </Col>
           </Row>
         </TabPane>
-        <TabPane tabId='2'>
+        <TabPane tabId="2">
           <Row>
-            <Col sm='6'>
-              <Card body className='text-dark'>
+            <Col sm="12">
+              <Card body className="text-dark">
                 <CardTitle>Transfer Bitcoins</CardTitle>
                 <CardText>5% admission fee </CardText>
                 <CardText>
-                  In ledger: <span style={{ color: '#F08F18' }}>&#8383;</span>
+                  In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
                   {props.loading ? 0 : props.user.playerStats.ledger}
                 </CardText>
                 {/* isDisabled isSearchable todo */}
                 <Select
                   value={ledgerState.selectedOption}
                   onChange={handleChange}
-                  options={ledgerState.loading ? '' : ledgerState.users}
+                  options={ledgerState.loading ? "" : ledgerState.users}
                 />
 
                 <InputGroup>
-                  <InputGroupAddon addonType='prepend'>&#8383;</InputGroupAddon>
+                  <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
                   <Input
-                    type='number'
+                    type="number"
                     min={0}
-                    step='1'
-                    placeholder='Amount'
+                    step="1"
+                    placeholder="Amount"
                     value={ledgerState.transferAmount}
                     onChange={handleTransferAmountChange}
                   />
                 </InputGroup>
                 <Button
-                  type='submit'
+                  type="submit"
                   onClick={() => {
                     handleTransfer(
                       ledgerState.transferAmount,

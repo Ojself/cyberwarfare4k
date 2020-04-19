@@ -16,17 +16,27 @@ const { getOnlineUsers } = require('./helper');
 // Retrives all cities
 
 router.get('/', async (req, res) => {
-  const cities = await City.find();
+  let cities;
+  const dbSelectOptions = {
+    price: '1',
+    name: '1',
+  };
+  try {
+    cities = await City.find().select(dbSelectOptions);
+  } catch (e) {
+    return res.status(400).json({
+      success: false,
+      message: JSON.stringify(e),
+    });
+  }
 
   const message = getCityRouteCriterias(cities);
-
   if (message) {
     return res.status(400).json({
       success: false,
       message,
     });
   }
-
   return res.status(200).json({
     success: true,
     message: 'cities loaded..',

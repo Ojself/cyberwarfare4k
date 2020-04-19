@@ -13,7 +13,7 @@ import {
   PopoverBody,
   Table,
   UncontrolledPopover,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
 
 /* todo */
@@ -25,19 +25,19 @@ const WantedList = () => {
     users: [],
     bountyUsers: [],
     loading: true,
-    message: null
+    message: null,
   });
 
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const handleSelectUserChange = eventValue => {
+  const handleSelectUserChange = (eventValue) => {
     setSelectedOption(eventValue);
   };
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setWantedState({
       ...wantedState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -49,17 +49,17 @@ const WantedList = () => {
       users: massagedUser,
       bountyUsers: apiWantedUsers.bountyUsers,
       message: apiWantedUsers.message,
-      loading: false
+      loading: false,
     });
   }, []);
 
   /* todo, this is being used many times */
-  const dataMassagerForSelectComponent = userArray => {
+  const dataMassagerForSelectComponent = (userArray) => {
     const massagedUsers = [];
-    userArray.forEach(u => {
+    userArray.forEach((u) => {
       massagedUsers.push({
         value: u._id,
-        label: u.name
+        label: u.name,
       });
     });
     return massagedUsers;
@@ -74,7 +74,7 @@ const WantedList = () => {
       users: massagedUser,
       bountyUsers: result.bountyUsers,
       [clearName]: 0,
-      message: result.message
+      message: result.message,
     });
   };
 
@@ -89,7 +89,7 @@ const WantedList = () => {
     }
     return true;
   };
-  const checkDisabledButton = name => {
+  const checkDisabledButton = (name) => {
     if (name && wantedState[name] && wantedState[name] >= 1000) {
       return false;
     }
@@ -98,7 +98,7 @@ const WantedList = () => {
 
   // select form
   const ComponentAddUnlistedPlayer = (
-    <div className="pt-4 w-100 flex-column container d-flex justify-content-center align-items-center">
+    <div className="pt-4 w-100 flex-column d-flex justify-content-center align-items-center">
       <h6>Add an unlisted player</h6>
       <div className="w-50">
         <Form>
@@ -220,7 +220,7 @@ const WantedList = () => {
   );
 
   return (
-    <div className="container mt-5">
+    <div className="page-container">
       <h2>Wanted</h2>
       <h3>Cyber Criminals</h3>
       {wantedState.loading ? (
@@ -228,7 +228,7 @@ const WantedList = () => {
       ) : (
         <>
           <div> {ComponentAddUnlistedPlayer} </div>
-          <div> {ComponentBountyUsersTable} </div>
+          <div className="content"> {ComponentBountyUsersTable} </div>
         </>
       )}
     </div>

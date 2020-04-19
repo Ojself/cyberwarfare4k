@@ -354,6 +354,7 @@ userSchema.methods.newRank = async function () {
   this.save();
 };
 
+/* todo unused function */
 userSchema.methods.giveStash = function (stashName = 'Cables') {
   console.log('give stash method triggered', stashName);
   Stash.findOne({ name: stashName }).then((newStash) => {
@@ -451,8 +452,8 @@ userSchema.methods.handlePettyCrime = async function (result) {
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
-    const newStash = await Stash.findOne({ name: result.stashGained });
-    this.stash.push(newStash._id);
+    const stashName = result.stashGained;
+    this.stash[stashName] += 1;
   }
   if (result.crimeSkillGained) {
     this.crimeSkill[result.crimeSkillGained] += 1;
@@ -514,8 +515,10 @@ userSchema.methods.handleCrime = async function (finalResult) {
   this.crimeSkill[finalResult.crimeType] += 1;
 
   if (finalResult.playerGains.stashGained) {
-    this.stash.push(finalResult.playerGains.stashGained);
+    const stashName = finalResult.playerGains.stashGained;
+    this.stash[stashName] += 1;
   }
+
   if (finalResult.playerGains.legendaryGained) {
     this.legendaryGained[finalResult.playerGains.legendaryGained] += 1;
   }
@@ -548,7 +551,7 @@ userSchema.methods.handleAttack = function (finalResult) {
     `You attacked ${finalResult.opponent.name} at ${new Date(
       finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and he was shutdown!' : '!'
+    finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
   ];
@@ -564,7 +567,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
     `${finalResult.user.name} attacked you at ${new Date(
       finalResult.date,
     ).toString()} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and you were shutdown!' : '!'
+    finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
   ];

@@ -32,13 +32,11 @@ import WantedList from "./pages/WantedList";
 
 import images from "./pages/_helpers/images";
 
-// styling
-
-const App = props => {
+const App = (props) => {
   const [appState, SetAppState] = useState({
     isOpen: false,
     loading: true,
-    user: null
+    user: null,
   });
 
   useEffect(async () => {
@@ -46,7 +44,7 @@ const App = props => {
     SetAppState({
       ...appState,
       user: apiUser.user,
-      loading: false
+      loading: false,
     });
   }, [console.log(props, "props")]);
 
@@ -64,7 +62,11 @@ const App = props => {
           </>
         ) : (
           <div>
-            <img id="navbarReplacer" src={images.utilImages[3].src} alt="" />
+            <img
+              id="navbarReplacer"
+              src={images.utilImages[3].src}
+              alt="Cyber Header"
+            />
           </div>
         )}
 

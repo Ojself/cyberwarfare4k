@@ -6,25 +6,28 @@ const {
   existingValue,
 } = require('../middlewares/middleHelpers');
 
+const pettyWinBitcoins = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 1000)));
+
+const pettyWinExp = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 1000)));
+
 // Sees if everything is in order to perform petty crime
-function pettyHackRouteCriterias(user, batteryCost) {
+const pettyHackRouteCriterias = (user, batteryCost) => {
   if (!existingValue(user)) {
     return "User doesn't exist";
-  }
-  if (!existingValue(batteryCost)) {
-    return "Battery doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'insufficent battery';
   }
   return null;
-}
+};
 
 async function pettyCrime(user) {
-  const crimeSkills = user.crimeSkill;
   const decider = Math.random();
-  let values = Object.values(crimeSkills);
-  let probabiltiy;
+
+  // sums up the crimeskills
+  const crimeSkills = user.crimeSkill;
+  const values = Object.values(crimeSkills).reduce((acc, curr) => acc + curr, 0);
+
   const pettyResult = {
     levelUp: false,
     won: false,
@@ -35,9 +38,8 @@ async function pettyCrime(user) {
     crimeSkillGained: '',
     legendaryGained: '',
   };
-  // sums up the crimeskills
-  values = values.reduce((acc, curr) => acc + curr, 0);
 
+  let probabiltiy;
   if (values <= 5) {
     probabiltiy = 0.95;
   } else if (values < 10) {
@@ -70,19 +72,9 @@ async function pettyCrime(user) {
     pettyResult.levelUp = true;
   }
 
-  if (user.account.role !== 'testUser') {
-    console.log('if triggered');
-    await user.handlePettyCrime(pettyResult);
-  }
+  await user.handlePettyCrime(pettyResult);
+
   return pettyResult;
-}
-
-function pettyWinBitcoins(multiplier) {
-  return Math.floor(Math.random() * 1000 + (multiplier * 1000));
-}
-
-function pettyWinExp(multiplier) {
-  return Math.floor(Math.random() * 1000 + (multiplier * 1000));
 }
 
 module.exports = {

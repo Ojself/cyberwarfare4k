@@ -9,33 +9,33 @@ const DataCenter = () => {
   const [dataCenterState, setDataCenterState] = useState({
     dataCenters: [],
     message: null,
-    loading: true
+    loading: true,
   });
 
   useEffect(async () => {
-    api.getDataCenters().then(result => {
+    api.getDataCenters().then((result) => {
       console.log(result);
       setDataCenterState({
         ...dataCenterState,
         dataCenters: result.dataCenters,
-        loading: false
+        loading: false,
       });
     });
   }, []);
 
-  const handleDataCenterPurchase = e => {
+  const handleDataCenterPurchase = (e) => {
     const dataCenterName = e.target.name;
     console.log(dataCenterName, "centername");
-    api.purchaseDataCenter({ dataCenterName }).then(result => {
+    api.purchaseDataCenter({ dataCenterName }).then((result) => {
       console.log(result, "result purchase");
     });
     // todo, set datacenter state
   };
 
-  const handleDataCenterAttack = e => {
+  const handleDataCenterAttack = (e) => {
     const dataCenterName = e.target.name;
     console.log(dataCenterName, "centername");
-    api.purchaseDataCenter({ dataCenterName }).then(result => {
+    api.purchaseDataCenter({ dataCenterName }).then((result) => {
       console.log(result, "result purchase");
     });
   };
@@ -71,7 +71,7 @@ const DataCenter = () => {
   };
   const element = <FontAwesomeIcon icon={faCoffee} />;
   const dataCenterTable = (
-    <Table dark>
+    <Table className="content" dark>
       <thead>
         <tr>
           <th>Name</th>
@@ -98,13 +98,16 @@ const DataCenter = () => {
             <td>
               {/* todo, two different buttons */}
               {dc.status === "Owned" ? (
-                <Button name={dc.name} onClick={e => handleDataCenterAttack(e)}>
+                <Button
+                  name={dc.name}
+                  onClick={(e) => handleDataCenterAttack(e)}
+                >
                   Attack
                 </Button>
               ) : (
                 <Button
                   name={dc.name}
-                  onClick={e => handleDataCenterPurchase(e)}
+                  onClick={(e) => handleDataCenterPurchase(e)}
                 >
                   Buy
                 </Button>
@@ -125,7 +128,7 @@ const DataCenter = () => {
   );
 
   return (
-    <div>
+    <div className="page-container">
       <h2>Data centers</h2>
       {dataCenterState.loading ? <p>loading..</p> : dataCenterTable}
     </div>

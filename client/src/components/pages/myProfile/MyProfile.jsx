@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from "reactstrap";
+import {
+  Table,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  Col,
+} from "reactstrap";
 
 import ProgressBarCrimeSkill from "./molecules/ProgressBarCrimeSkill";
 import ProgressBarHackSkill from "./molecules/ProgressBarHackSkill";
@@ -21,38 +30,40 @@ const MyProfile = () => {
   const [myProfileState, setMyProfileState] = useState({
     user: null,
     loading: true,
-    message: null
+    message: null,
   });
   const [activeTab, setActiveTab] = useState("1");
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const handleUpgrade = upgradeName => {
+  const handleUpgrade = (upgradeName) => {
     api
       .upgradeStats(upgradeName)
-      .then(result => {
+      .then((result) => {
         setMyProfileState({
           ...myProfileState,
-          user: result.updatedUser
+          user: result.updatedUser,
         });
       })
-      .catch(err => console.warn("err", err));
+      .catch((err) => console.warn("err", err));
   };
 
-  const getStashColor = color => {
+  const getStashColor = (color) => {
     const defaultColors = ["red", "blue", "orange", "green"];
-    return color ? color : defaultColors[Math.floor(Math.random() * defaultColors.length)];
+    return color
+      ? color
+      : defaultColors[Math.floor(Math.random() * defaultColors.length)];
   };
 
   useEffect(() => {
     async function fetchUserData() {
-      api.getUser().then(result => {
+      api.getUser().then((result) => {
         console.log(result.user, "jarle");
         setMyProfileState({
           ...myProfileState,
           user: result.user,
-          loading: false
+          loading: false,
         });
       });
     }
@@ -72,7 +83,7 @@ const MyProfile = () => {
     return myProfileState.user.marketPlaceItems[type][value];
   };
 
-  const getCurrency = name => {
+  const getCurrency = (name) => {
     // name enum = [Litecoin,Ethereum,Ripple,Monero]
     if (myProfileState.loading || !myProfileState.user.currencies[name]) {
       return "0";
@@ -102,7 +113,11 @@ const MyProfile = () => {
         <div>
           <img
             style={{ maxWidth: "200px", width: "65%" }}
-            src={myProfileState.loading ? profilePlaceHolderAvatar : myProfileState.user.account.avatar}
+            src={
+              myProfileState.loading
+                ? profilePlaceHolderAvatar
+                : myProfileState.user.account.avatar
+            }
             alt="hackerPic"
             title="This is you!"
           />
@@ -112,7 +127,8 @@ const MyProfile = () => {
             <img
               style={{ maxWidth: "200px", width: "65%" }}
               src={
-                myProfileState.user.alliance && myProfileState.user.alliance.name
+                myProfileState.user.alliance &&
+                myProfileState.user.alliance.name
                   ? `/alliancePics/${myProfileState.user.alliance.name}.png`
                   : ""
               }
@@ -125,19 +141,21 @@ const MyProfile = () => {
         </div>
       </div>
       <div className="col w-25 ">
-        {["Technical", "Forensics", "Social Engineering", "Cryptography"].map((c, i) => {
-          return (
-            <ProgressBarCrimeSkill
-              color="success"
-              upgrade={e => handleUpgrade(e)}
-              key={i}
-              name={c}
-              value={myProfileState.user.crimeSkill[c]}
-              max={100}
-              hasStatPoints={!!myProfileState.user.playerStats.statPoints}
-            />
-          );
-        })}
+        {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
+          (c, i) => {
+            return (
+              <ProgressBarCrimeSkill
+                color="success"
+                upgrade={(e) => handleUpgrade(e)}
+                key={i}
+                name={c}
+                value={myProfileState.user.crimeSkill[c]}
+                max={100}
+                hasStatPoints={!!myProfileState.user.playerStats.statPoints}
+              />
+            );
+          }
+        )}
 
         {/* Seperator between crime- and hackprogressbars */}
         <div className={"my-4"}></div>
@@ -145,7 +163,7 @@ const MyProfile = () => {
           return (
             <div>
               <ProgressBarHackSkill
-                upgrade={e => handleUpgrade(e)}
+                upgrade={(e) => handleUpgrade(e)}
                 key={i}
                 name={h}
                 value={myProfileState.user.hackSkill[h]}
@@ -161,7 +179,7 @@ const MyProfile = () => {
 
         <ProgressBarExp
           color="warning"
-          upgrade={e => handleUpgrade(e)}
+          upgrade={(e) => handleUpgrade(e)}
           name={"exp"}
           value={myProfileState.user.playerStats.exp}
           max={myProfileState.user.playerStats.expToLevel}
@@ -169,7 +187,7 @@ const MyProfile = () => {
         />
 
         <ProgressBarFirewallSkill
-          upgrade={e => handleUpgrade(e)}
+          upgrade={(e) => handleUpgrade(e)}
           name="Firewall"
           value={myProfileState.user.playerStats.currentFirewall}
           max={myProfileState.user.playerStats.maxFirewall}
@@ -179,19 +197,25 @@ const MyProfile = () => {
       <div className="col w-25">
         <ul className="list-group ">
           <li className="list-group-item bg-dark mb-2 ">
-            {myProfileState.loading ? "Rank" : myProfileState.user.playerStats.rankName}
+            {myProfileState.loading
+              ? "Rank"
+              : myProfileState.user.playerStats.rankName}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
             {myProfileState.user.playerStats.networth}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks initiated: {myProfileState.user.fightInformation.attacksInitiated}
+            Attacks initiated:{" "}
+            {myProfileState.user.fightInformation.attacksInitiated}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks received: {myProfileState.user.fightInformation.attacksVictim}
+            Attacks received:{" "}
+            {myProfileState.user.fightInformation.attacksVictim}
           </li>
-          <li className="list-group-item bg-dark mb-2">Shutdowns: {myProfileState.user.fightInformation.shutdowns}</li>
+          <li className="list-group-item bg-dark mb-2">
+            Shutdowns: {myProfileState.user.fightInformation.shutdowns}
+          </li>
           <li className="list-group-item bg-dark mb-2">
             Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
             {myProfileState.user.playerStats.bounty}
@@ -233,8 +257,13 @@ const MyProfile = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{getMarketPlaceItemValue("CPU", "name") || "none"}</td>
-                        <td>{getMarketPlaceItemValue("AntiVirus", "name") || "none"}</td>
+                        <td>
+                          {getMarketPlaceItemValue("CPU", "name") || "none"}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue("AntiVirus", "name") ||
+                            "none"}
+                        </td>
                       </tr>
                     </tbody>
 
@@ -246,8 +275,14 @@ const MyProfile = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{getMarketPlaceItemValue("Encryption", "name") || "none "}</td>
-                        <td>{getMarketPlaceItemValue("Firewall", "name") || "none"}</td>
+                        <td>
+                          {getMarketPlaceItemValue("Encryption", "name") ||
+                            "none "}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue("Firewall", "name") ||
+                            "none"}
+                        </td>
                       </tr>
                     </tbody>
                   </Table>
@@ -296,7 +331,7 @@ const MyProfile = () => {
                 <Col sm="12">
                   <div className="d-flex row">
                     {!myProfileState.loading &&
-                      Object.keys(myProfileState.user.stash).map(s => (
+                      Object.keys(myProfileState.user.stash).map((s) => (
                         <div>
                           <img
                             style={{ maxWidth: "75px", width: "100%" }}
@@ -318,7 +353,11 @@ const MyProfile = () => {
     </div>
   );
 
-  return <div className="container  mt-5">{myProfileState.loading ? <p>loading..</p> : profilePage}</div>;
+  return (
+    <div className="  mt-5">
+      {myProfileState.loading ? <p>loading..</p> : profilePage}
+    </div>
+  );
 };
 
 export default MyProfile;

@@ -20,12 +20,21 @@ const Crime = require('../models/Crime');
 
 // @POST
 // PRIVATE
-// User starts interval that calls this route every 4 sec and commit petty crime
+// User starts interval that calls this route every x sec and commit petty crime
 
 router.post('/pettyCrime', async (req, res) => {
-  // const { userId } = req.body; // remove this. only for testing purposes
   const userId = req.user._id;
-  const user = await User.findById(userId);
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (e) {
+    console.error('error: ', e);
+    res.status(400).json({
+      success: false,
+      message: JSON.stringify(e),
+    });
+  }
+
   const batteryCost = 5;
   const message = pettyHackRouteCriterias(user, batteryCost);
 
@@ -38,6 +47,7 @@ router.post('/pettyCrime', async (req, res) => {
 
   const results = await pettyCrime(user);
 
+  /* Todo send back user? */
   return res.status(200).json({
     success: true,
     message: 'pettyCrime commited',

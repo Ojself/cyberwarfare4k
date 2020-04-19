@@ -4,46 +4,48 @@ import { faWifi } from "@fortawesome/free-solid-svg-icons";
 
 import { Table, NavLink } from "reactstrap";
 import api from "../../api";
+/* todo, fix right online status. probably time difference between db and node */
+/* indicate online status */
+/* Look into res.send values. too much is being sent */
 
-const Locals = props => {
+const Locals = (props) => {
   const [localState, setLocalState] = useState({
     cityLocals: [],
     localOnlineUsers: [],
     message: null,
-    loading: true
+    loading: true,
   });
 
   useEffect(() => {
-    getLocals().then(result => {
+    getLocals().then((result) => {
       setLocalState({
         ...localState,
         cityLocals: result.cityLocals,
         message: result.message,
         localOnlineUsers: result.localOnlineUsers,
-        loading: false
+        loading: false,
       });
     });
   }, [console.log(localState)]);
 
   const getLocals = async () => {
     const cityLocals = await api.getLocals();
-
     return cityLocals;
   };
 
-  const checkIfOnline = userId => {
+  const checkIfOnline = (userId) => {
     if (localState.loading) {
       return false;
     }
 
-    const result = localState.localOnlineUsers.filter(r => r._id === userId);
+    const result = localState.localOnlineUsers.filter((r) => r._id === userId);
     return !!result;
   };
 
   return (
-    <div>
-      <h2>Locals</h2>
-      <Table striped dark>
+    <div className="page-container ">
+      <h2>Locals in {`{props.city}`}</h2>
+      <Table striped dark className="content">
         <thead>
           <tr>
             <th>Hacker</th>

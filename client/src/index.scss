@@ -64,18 +64,25 @@ body {
   align-items: center;
 }
 
-/* MyProfile.jsx */
+/* Ladder.jsx */
+
+.page-container {
+  margin: 0 auto;
+  margin-top: 3%;
+  height: 100vh;
+
+  .content {
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 3%;
+  }
+}
 
 // --------------------
 // Style for App component
 .App {
   text-align: center;
   background-color: black;
-
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 80px;
-  }
 
   .App-header {
     padding: 20px;
@@ -98,16 +105,6 @@ body {
 
   .App-intro {
     font-size: large;
-  }
-
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
   }
 }
 

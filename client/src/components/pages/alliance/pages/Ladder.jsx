@@ -6,16 +6,16 @@ const Ladder = () => {
   const [ladderState, setLadderState] = useState({
     alliances: [],
     message: null,
-    loading: true
+    loading: true,
   });
 
   useEffect(() => {
-    getAlliances().then(result => {
+    getAlliances().then((result) => {
       setLadderState({
         ...ladderState,
         alliances: result.totStats,
         message: result.message,
-        loading: false
+        loading: false,
       });
     });
   }, []);
@@ -31,13 +31,13 @@ const Ladder = () => {
     totVpnChanges: false,
     totCurrencies: false,
     totCurrencyPurchases: false,
-    totBounty: false
+    totBounty: false,
   });
 
-  const toggleSort = sortName => {
+  const toggleSort = (sortName) => {
     setSortState({
       ...sortState,
-      [sortName]: !sortState[sortName]
+      [sortName]: !sortState[sortName],
     });
   };
 
@@ -63,11 +63,11 @@ const Ladder = () => {
     }
     setLadderState({
       ...ladderState,
-      alliances: sortedAlliances
+      alliances: sortedAlliances,
     });
   };
 
-  const numberSortingMethod = query => {
+  const numberSortingMethod = (query) => {
     return ladderState.alliances.sort((b, a) => {
       if (sortState[query]) {
         return a[query] - b[query];
@@ -77,51 +77,86 @@ const Ladder = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="page-container ">
       <h2>Alliance Ladder</h2>
-      <Table striped dark className="mt-5">
+      <Table striped dark className="content">
         <thead>
           <tr>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "alliance")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "alliance")}
+            >
               Alliance
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "members")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "members")}
+            >
               Members
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totRank")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totRank")}
+            >
               Highest ranked
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totWealth")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totWealth")}
+            >
               Wealth
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totSkills")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totSkills")}
+            >
               Skills
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totAttacksInitiated")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totAttacksInitiated")}
+            >
               Most aggressive
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totShutdowns")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totShutdowns")}
+            >
               Most shutdowns
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totVpnChanges")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totVpnChanges")}
+            >
               Most on the move
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totCurrencies")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totCurrencies")}
+            >
               Most CC holders
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totCurrencyPurchases")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totCurrencyPurchases")}
+            >
               Most CC purchases
             </th>
-            <th style={{ cursor: "pointer" }} onClick={e => handleSort(e, "totBounty")}>
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "totBounty")}
+            >
               Most Bounty
             </th>
           </tr>
         </thead>
         <tbody>
-          {ladderState.alliances.map(alliance => (
+          {ladderState.alliances.map((alliance) => (
             <tr key={alliance._id}>
               <th scope="row">
-                <NavLink href={`/alliance/${alliance._id}`}>{alliance.name}</NavLink>
+                <NavLink href={`/alliance/${alliance._id}`}>
+                  {alliance.name}
+                </NavLink>
               </th>
 
               <td>{alliance.members}</td>
@@ -129,11 +164,27 @@ const Ladder = () => {
               <td>{getAverageScore(alliance.totRank, alliance.members)}</td>
               <td>{getAverageScore(alliance.totWealth, alliance.members)}</td>
               <td>{getAverageScore(alliance.totSkills, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totAttacksInitiated, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totShutdowns, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totVpnChanges, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totCurrencies, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totCurrencyPurchases, alliance.members)}</td>
+              <td>
+                {getAverageScore(
+                  alliance.totAttacksInitiated,
+                  alliance.members
+                )}
+              </td>
+              <td>
+                {getAverageScore(alliance.totShutdowns, alliance.members)}
+              </td>
+              <td>
+                {getAverageScore(alliance.totVpnChanges, alliance.members)}
+              </td>
+              <td>
+                {getAverageScore(alliance.totCurrencies, alliance.members)}
+              </td>
+              <td>
+                {getAverageScore(
+                  alliance.totCurrencyPurchases,
+                  alliance.members
+                )}
+              </td>
               <td>{getAverageScore(alliance.totBounty, alliance.members)}</td>
             </tr>
           ))}

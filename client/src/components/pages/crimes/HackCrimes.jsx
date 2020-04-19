@@ -13,7 +13,7 @@ const HackCrimes = () => {
   useEffect(() => {
     api
       .getCrimes()
-      .then(result => {
+      .then((result) => {
         setApiMessage(result.message);
         setLoading(false);
         setCrimes(result.crimes);
@@ -21,15 +21,15 @@ const HackCrimes = () => {
           setApiMessage(null);
         }, 5000);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
-  const handleClick = async crimeId => {
+  const handleClick = async (crimeId) => {
     const crimeResult = await api.commitCrimes(crimeId);
 
     const filteredCrimes = crimes
-      .filter(c => c._id !== crimeId)
-      .filter(c => c.available);
+      .filter((c) => c._id !== crimeId)
+      .filter((c) => c.available);
 
     setCrimes(filteredCrimes);
     setResult(crimeResult.finalResult);
@@ -40,9 +40,9 @@ const HackCrimes = () => {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <h2>Hack Crimes</h2>
-      <div className="tableCrimeWrapper">
+      <div className="content tableCrimeWrapper">
         <Table dark striped>
           <thead>
             <tr>
@@ -67,7 +67,7 @@ const HackCrimes = () => {
                 <td>
                   <button
                     className="btn btn-warning"
-                    onClick={e => handleClick(cr._id)}
+                    onClick={(e) => handleClick(cr._id)}
                   >
                     Commit
                   </button>

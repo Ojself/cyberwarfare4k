@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
 
-import { randomCrimeString, errorMessages } from "./combatStrings";
+import { randomCrimeString, errorMessages } from "../_helpers/combatStrings";
 
 const CrimeTerminal = ({ apiMessage, result }) => {
   const [terminalState, setTerminalState] = useState({
@@ -12,7 +12,7 @@ const CrimeTerminal = ({ apiMessage, result }) => {
     progressColor: "success",
     defaultColors: ["success", "success", "info", "warning", "danger"],
     index: 1,
-    lostCount: 0
+    lostCount: 0,
   });
 
   useEffect(() => {}, []);
@@ -29,7 +29,7 @@ const CrimeTerminal = ({ apiMessage, result }) => {
       <span className="terminalFont terminalLost">{giveLostString()}</span>
     );
   };
-  const giveRandomNumber = array => {
+  const giveRandomNumber = (array) => {
     return Math.floor(Math.random() * array.length);
   };
 
@@ -49,7 +49,7 @@ const CrimeTerminal = ({ apiMessage, result }) => {
       progressCurrentHp:
         result.roundCrimeRemainingHp[0] -
         result.roundCrimeRemainingHp[terminalState.index + 1],
-      index: (terminalState.index += 1)
+      index: (terminalState.index += 1),
     });
   };
 
@@ -58,7 +58,7 @@ const CrimeTerminal = ({ apiMessage, result }) => {
     setTerminalState({
       ...terminalState,
       progressColor: terminalState.defaultColors[terminalState.lostCount],
-      lostCount: (terminalState.lostCount += 1)
+      lostCount: (terminalState.lostCount += 1),
     });
   };
 

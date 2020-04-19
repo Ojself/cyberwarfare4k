@@ -12,7 +12,7 @@ const Ladder = () => {
   const [ladderState, setLadderState] = useState({
     users: [],
     message: null,
-    loading: true
+    loading: true,
   });
   const [sortState, setSortState] = useState({
     hacker: false,
@@ -20,23 +20,23 @@ const Ladder = () => {
     rank: false,
     shutdowns: false,
     crimesInitiated: false,
-    networth: false
+    networth: false,
   });
 
-  const toggleSort = sortName => {
+  const toggleSort = (sortName) => {
     setSortState({
       ...sortState,
-      [sortName]: !sortState[sortName]
+      [sortName]: !sortState[sortName],
     });
   };
 
   useEffect(() => {
-    getUsers().then(result => {
+    getUsers().then((result) => {
       setLadderState({
         ...ladderState,
         users: result.users,
         message: result.message,
-        loading: false
+        loading: false,
       });
     });
   }, []);
@@ -98,9 +98,15 @@ const Ladder = () => {
         toggleSort("crimes");
         sortedUsers = ladderState.users.sort((b, a) => {
           if (sortState.crimes) {
-            return a.fightInformation.crimesInitiated - b.fightInformation.crimesInitiated;
+            return (
+              a.fightInformation.crimesInitiated -
+              b.fightInformation.crimesInitiated
+            );
           }
-          return b.fightInformation.crimesInitiated - a.fightInformation.crimesInitiated;
+          return (
+            b.fightInformation.crimesInitiated -
+            a.fightInformation.crimesInitiated
+          );
         });
         break;
       case "networth":
@@ -116,19 +122,30 @@ const Ladder = () => {
 
     setLadderState({
       ...ladderState,
-      users: sortedUsers
+      users: sortedUsers,
     });
   };
 
   return (
-    <div className="container mt-5">
+    <div className="page-container ">
       <h2>Ladder</h2>
-      <Table className="mt-5" striped dark>
+      <Table className="content" striped dark>
         <thead>
           <tr>
-            {["Hacker", "Alliance", "Rank", "Shutdowns", "Crimes", "Networth"].map((s, i) => {
+            {[
+              "Hacker",
+              "Alliance",
+              "Rank",
+              "Shutdowns",
+              "Crimes",
+              "Networth",
+            ].map((s, i) => {
               return (
-                <th key={i} style={{ cursor: "pointer" }} onClick={e => handleSort(e, s)}>
+                <th
+                  key={i}
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => handleSort(e, s)}
+                >
                   {s}
                 </th>
               );
@@ -136,14 +153,16 @@ const Ladder = () => {
           </tr>
         </thead>
         <tbody>
-          {ladderState.users.map(user => (
+          {ladderState.users.map((user) => (
             <tr key={user._id}>
               <th scope="row">
                 <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
               </th>
               <td>
                 {user.alliance ? (
-                  <NavLink href={`/alliance/${user.alliance._id}`}>{user.alliance.name}</NavLink>
+                  <NavLink href={`/alliance/${user.alliance._id}`}>
+                    {user.alliance.name}
+                  </NavLink>
                 ) : (
                   "none"
                 )}
