@@ -37,14 +37,16 @@ const Locals = (props) => {
     if (localState.loading) {
       return false;
     }
-
     const result = localState.localOnlineUsers.filter((r) => r._id === userId);
-    return !!result;
+    return !!result.length;
   };
 
   return (
     <div className="page-container ">
-      <h2>Locals in {`{props.city}`}</h2>
+      <h2>
+        Locals in{" "}
+        {props.loading ? "your city!" : props.user.playerStats.city.name}
+      </h2>
       <Table striped dark className="content">
         <thead>
           <tr>
@@ -59,8 +61,7 @@ const Locals = (props) => {
                 <tr key={user._id}>
                   <th scope="row">
                     <NavLink href={`/hacker/${user._id}`}>
-                      {" "}
-                      {checkIfOnline("5dd92c85dbffb976e3c59ef1") && (
+                      {checkIfOnline(user._id) && (
                         <FontAwesomeIcon icon={faWifi} />
                       )}{" "}
                       {user.name}

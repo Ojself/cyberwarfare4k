@@ -1,0 +1,54 @@
+.petty-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.terminal {
+  width: 50%;
+
+  .terminal-font {
+    font-family: "Roboto Mono", monospace;
+    text-align: left;
+    margin-left: 4px;
+    margin-top: 4px;
+  }
+}
+
+.result-list {
+  width: 50%;
+}
+
+.result-wrapper {
+  width: 100%;
+  border: 1px solid red;
+  padding: 5px;
+  margin: 5px;
+
+  img {
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+  }
+
+  #success-color {
+    color: greenyellow;
+  }
+
+  #fail-color {
+    color: tomato;
+  }
+
+  .content {
+    text-align: left;
+    display: flex;
+    width: 100%;
+  }
+  .gains {
+    width: 100%;
+    margin-left: 5%;
+    p {
+      width: 100%;
+      margin-bottom: 0%;
+    }
+  }
+}

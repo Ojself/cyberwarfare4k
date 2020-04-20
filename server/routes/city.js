@@ -58,16 +58,13 @@ router.get('/local', async (req, res) => {
   const cityLocals = await City.findById(userCityId).populate('residents', ['name', 'playerStats', 'alliance']);
 
   const onlineUsers = await getOnlineUsers();
-
   // gets online users in current city
   const localOnlineUsers = cityLocals.residents.filter((r) => onlineUsers.includes(r._id.toString()));
-
   return res.status(200).json({
     success: true,
     message: 'locals loaded..',
     cityLocals,
     localOnlineUsers,
-
   });
 });
 

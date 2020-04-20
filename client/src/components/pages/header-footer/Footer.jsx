@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   const currentYear = new Date(Date.now()).getFullYear();
   return (
-    <footer className="container dark-light pt-5">
+    <footer className="dark-light pt-5">
       <div className="text-center py-3">
         © {currentYear} Copyright
         <div className="py-2">

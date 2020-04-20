@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api from "../../../api";
-import CrimeTerminal from "../smaller/crimeTerminal";
+import api from "../../../../api";
+import CrimeTerminal from "./crimeTerminal";
 import { Table, UncontrolledTooltip } from "reactstrap";
 
 // props will be deconstr in parameters ({nameOfProp})

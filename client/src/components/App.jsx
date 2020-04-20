@@ -9,7 +9,7 @@ import CreateHacker from "./pages/createHacker/CreateHacker";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
 import HackerProfile from "./pages/HackerProfile";
-import HackCrimes from "./pages/crimes/HackCrimes";
+import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
 import Home from "./pages/home/Home";
 import Information from "./pages/Information";
@@ -18,12 +18,12 @@ import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
 
 import Marketplace from "./pages/Marketplace";
-import MiniGame from "./pages/minigame/MiniGame";
+
 import MyProfile from "./pages/myProfile/MyProfile";
 import MessageCenter from "./pages/communication/MessageCenter";
 import NavbarComp from "./pages/header-footer/Navbar";
 import Notifications from "./pages/communication/Notifications";
-import Petty from "./pages/crimes/Petty";
+import Petty from "./pages/crimes/petty/Petty";
 
 import StatusBar from "./pages/header-footer/Statusbar";
 import SystemRepair from "./pages/SystemRepair";
@@ -84,7 +84,12 @@ const App = (props) => {
           <Route path="/hack-crimes" component={HackCrimes} />
           <Route path="/hack-player" component={HackPlayer} />
           <Route path="/hacker/:id" component={HackerProfile} />
-          <Route path="/locals" component={Locals} />
+          <Route
+            path="/locals"
+            render={() => (
+              <Locals loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/my-profile" component={MyProfile} />
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/marketplace" component={Marketplace} />
@@ -116,7 +121,7 @@ const App = (props) => {
               <MessageCenter loading={appState.loading} user={appState.user} />
             )}
           />
-          <Route path="/minigame" component={MiniGame} />
+
           <Route path="/notifications" component={Notifications} />
           <Route render={() => <h2>404</h2>} />
         </Switch>

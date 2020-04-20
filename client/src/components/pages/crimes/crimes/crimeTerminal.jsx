@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
 
-import { randomCrimeString, errorMessages } from "../_helpers/combatStrings";
+import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
 const CrimeTerminal = ({ apiMessage, result }) => {
   const [terminalState, setTerminalState] = useState({

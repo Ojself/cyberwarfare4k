@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const crimeResultWon = props => {
-  const [crimeResultWon, setCrimeResultWon] = useState({});
-
-  useEffect(() => {}, []);
-
+const crimeResultWon = (props) => {
   const levelUpTag /* random strings? */ = (
     <div>
       <span>You gained a new level!</span>
