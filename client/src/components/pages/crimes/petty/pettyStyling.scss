@@ -29,6 +29,10 @@
     width: 100px;
     object-fit: contain;
   }
+  .placeHolder {
+    height: 100px;
+    min-width: 100px;
+  }
 
   #success-color {
     color: greenyellow;

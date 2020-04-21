@@ -19,7 +19,7 @@ const PettyHack = () => {
     insertPhrase();
     const pettyInterval = setInterval(() => {
       performHack(pettyState.hacking);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(pettyInterval);
   }, [pettyState.hacking]);
 
@@ -35,7 +35,7 @@ const PettyHack = () => {
           hacking: !pettyState.hacking,
           stopping: false,
         });
-      }, 5000);
+      }, 3000);
     }
     setPettyState({
       ...pettyState,

@@ -10,15 +10,15 @@ import {
   Input,
   FormFeedback,
   Button,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
 
-const CreateHacker = props => {
+const CreateHacker = (props) => {
   const [createState, setCreateState] = useState({
     message: null,
     selectedCity: null,
     selectedAvatar: null,
-    name: null
+    name: null,
   });
 
   useEffect(() => {}, [console.log(createState, "state")]);
@@ -26,19 +26,19 @@ const CreateHacker = props => {
   //todo, create something that handles invalid name
   //todo, check statpoints
 
-  const handleSelectChange = selectedCity => {
+  const handleSelectChange = (selectedCity) => {
     setCreateState({ ...createState, selectedCity });
   };
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     console.log(e.target.name, "e");
     setCreateState({
       ...createState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const selectAvatar = e => {
+  const selectAvatar = (e) => {
     let avatar = e.target.name || null;
     if (createState.selectedAvatar === avatar) {
       avatar = null;
@@ -47,51 +47,51 @@ const CreateHacker = props => {
     e.preventDefault();
     setCreateState({
       ...createState,
-      selectedAvatar: avatar
+      selectedAvatar: avatar,
     });
   };
 
-  const handleCreate = e => {
+  const handleCreate = (e) => {
     e.preventDefault();
     const data = {
       name: createState.name,
       cityString: createState.selectedCity.value,
-      avatar: createState.selectedAvatar
+      avatar: createState.selectedAvatar,
     };
     api
       .createUser(data)
-      .then(result => {
+      .then((result) => {
         console.log("SUCCESS!");
         console.log(result, "result");
       })
-      .catch(err =>
+      .catch((err) =>
         setCreateState({ ...createState, message: err.toString() })
       );
   };
 
   /* todo, extract elsewhere? */
-  const handleUpgrade = e => {
+  const handleUpgrade = (e) => {
     console.log("handleupgrade");
     e.preventDefault();
     console.log(e.target.name, "e.target");
     const data = e.target.name;
     api
       .upgradeStats(data)
-      .then(result => {
+      .then((result) => {
         console.log("SUCCESS!", result);
         /* todo make screen blink green? */
         setCreateState({
           ...createState,
-          message: `${result.message}`
+          message: `${result.message}`,
         });
         setTimeout(() => {
           setCreateState({
             ...createState,
-            message: null
+            message: null,
           });
         }, 2000);
       })
-      .catch(err =>
+      .catch((err) =>
         setCreateState({ ...createState, message: err.toString() })
       );
   };
@@ -101,15 +101,12 @@ const CreateHacker = props => {
     { value: "Hanoi", label: "Hanoi" },
     { value: "Stavanger", label: "Stavanger" },
     { value: "Novosibirsk", label: "Novosibirsk" },
-    { value: "Shanghai", label: "Shanghai" }
+    { value: "Shanghai", label: "Shanghai" },
   ];
 
   return (
-    <div
-      style={{ marginTop: "-100px" }}
-      className="w-100 d-flex justify-content-center"
-    >
-      <div className="w-50">
+    <div style={{ marginTop: "-100px" }} className="page-container">
+      <div className="content">
         <div className="">
           <h1>Create A Haxx0r</h1>
         </div>

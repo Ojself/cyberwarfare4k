@@ -59,16 +59,19 @@ const PettyResult = (props) => {
     <>
       <h6 id="success-color">Success!</h6>
       <div className="content">
-        {stashGained && (
+        {stashGained ? (
           <div className="d-flex flex-column text-center">
             <img
               src={`/stashPics/${stashGained}/${getStashColor(
                 props.index
               )}.png`}
               alt={stashGained}
+              title={stashGained}
             />
             <p>1x</p>
           </div>
+        ) : (
+          <div className="placeHolder"></div>
         )}
         <div className="gains">
           <p>

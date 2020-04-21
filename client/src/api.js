@@ -5,10 +5,10 @@ const service = axios.create({
     process.env.NODE_ENV === "production"
       ? "/api"
       : "http://localhost:5000/api",
-  withCredentials: true
+  withCredentials: true,
 });
 
-const errHandler = err => {
+const errHandler = (err) => {
   console.error(err);
   if (err.response && err.response.data) {
     console.error("API response", err.response.data);
@@ -44,7 +44,7 @@ export default {
   signup(userInfo) {
     return service
       .post("/signup", userInfo)
-      .then(res => {
+      .then((res) => {
         console.log(res.data, "res data ");
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
@@ -56,9 +56,9 @@ export default {
     return service
       .post("/login", {
         email,
-        password
+        password,
       })
-      .then(res => {
+      .then((res) => {
         // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
@@ -74,7 +74,7 @@ export default {
   createUser(body) {
     return service
       .post("/createUser", body)
-      .then(res => {
+      .then((res) => {
         console.log(res, "res");
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
@@ -85,49 +85,49 @@ export default {
   upgradeStats(statPoint) {
     return service
       .post("/upgradeStats", { statPoint })
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getUser() {
     return service
       .get("/my-profile")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getNavUser() {
     return service
       .get("/get-nav-user")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getOpponent(opponentId) {
     return service
       .get(`/opponent/${opponentId}`)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getAllLadderUsers() {
     return service
       .get("/ladder")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getAllAlliances() {
     return service
       .get("/alliance/ladder")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getAllItems() {
     return service
       .get("/marketplace")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -136,7 +136,7 @@ export default {
   pettyHack() {
     return service
       .post("/hack/pettyCrime")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -145,14 +145,14 @@ export default {
   getCrimes() {
     return service
       .get("/hack/crimes")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   commitCrimes(crimeId) {
     return service
       .post("/hack/crimes", { crimeId })
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -161,21 +161,21 @@ export default {
   getCrypto() {
     return service
       .get("/currency/")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   buyCrypto(body) {
     return service
       .post("/currency/buy", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   sellCrypto(body) {
     return service
       .post("/currency/sell", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -183,14 +183,14 @@ export default {
   repairPartial() {
     return service
       .post("/repair/partial")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   repairFull() {
     return service
       .post("/repair/full")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -199,21 +199,21 @@ export default {
   getCities() {
     return service
       .get("/city")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   changeCity(body) {
     return service
       .post("/city", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getLocals() {
     return service
       .get("/city/local")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -223,14 +223,14 @@ export default {
   getWantedUsers() {
     return service
       .get("/wanted/")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   addBounty(body) {
     return service
       .post("/wanted/add-bounty", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -240,49 +240,49 @@ export default {
   getLedgerUsers() {
     return service
       .get("/ledger/")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   transferBitCoins(body) {
     return service
       .post(`/ledger/transfer/${body.receiverId}`, body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   depositBitcoin(body) {
     return service
       .post(`/ledger/deposit/`, body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   withdrawBitcoin(body) {
     return service
       .post(`/ledger/withdraw/`, body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   getDataCenters() {
     return service
       .get("/datacenter/")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   purchaseDataCenter(body) {
     return service
       .post("/datacenter/purchase", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   attackDataCenter(body) {
     return service
       .post("/datacenter/attack", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -292,24 +292,24 @@ export default {
   getMarketPlaceItems() {
     return service
       .get("/marketplace")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   purchaseMarketPlaceItem(body) {
     return service
       .post("/marketplace/buy", body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
   //COMMUNICATIONS
   //COMMUNICATIONS
 
-  readAllCommunication(body) {
+  readAllCommunication(communication) {
     return service
-      .post(`/communication/readAll`, body)
-      .then(res => res.data)
+      .post(`/communication/readAll`, { communication })
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -317,7 +317,7 @@ export default {
     console.log(body, "body");
     return service
       .post(`/communication/message/`, body)
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -327,7 +327,7 @@ export default {
   getHackerNames() {
     return service
       .get("/opponent")
-      .then(res => res.data)
+      .then((res) => res.data)
       .catch(errHandler);
-  }
+  },
 };

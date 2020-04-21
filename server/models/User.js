@@ -37,14 +37,21 @@ const userSchema = new Schema(
 
       notifications: {
         type: Array,
-        default: [['Hey man, welcome to CH4K', false]],
+        default: [
+          [
+            `System ${new Date(
+              Date.now().toString().slice(0, 21),
+            )}:, This is your first notification`,
+            false,
+          ],
+        ],
       },
       messages: {
         type: Array,
         default: [
           [
             `System ${new Date(
-              Date.now(),
+              Date.now().toString().slice(0, 21),
             )}:, Hi and welcome to CH4K, this is your first message`,
             false,
           ],
@@ -424,7 +431,7 @@ userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
   const newNotifications = [
     `You received ${bitCoins} from ${senderName} at ${new Date(
       date,
-    ).toString()}`,
+    ).toString().slice(0, 21)}`,
     true,
   ];
   this.account.notifications.push(newNotifications);
@@ -550,7 +557,7 @@ userSchema.methods.handleAttack = function (finalResult) {
   const newNotifications = [
     `You attacked ${finalResult.opponent.name} at ${new Date(
       finalResult.date,
-    ).toString()} and dealt ${finalResult.damageDealt} damage${
+    ).toString().slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
     finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
@@ -566,7 +573,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
   const newNotifications = [
     `${finalResult.user.name} attacked you at ${new Date(
       finalResult.date,
-    ).toString()} and dealt ${finalResult.damageDealt} damage${
+    ).toString().slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
     finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
@@ -638,7 +645,7 @@ userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
 userSchema.methods.giveNotification = function (message) {
   const date = Date.now();
   this.account.notifications[date] = [
-    `${message} ${new Date(date).toString()}`,
+    `${message} ${new Date(date).toString().slice(0, 21)}`,
     true,
   ];
   this.save();
@@ -658,31 +665,38 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
 
 // MESSAGES
 userSchema.methods.receiveMessage = function (message, senderName) {
-  console.log('receiveMessage triggered');
+  console.log('receiveMessage triggered', message, senderName);
   const date = Date.now();
   const newMessage = [
-    `${senderName} ${new Date(date).toString()}: ${message}`,
+    `${senderName} ${new Date(date).toString().slice(0, 21)}: ${message}`,
     true,
   ];
-  this.account.messages.push(newMessage);
+
+  this.account.messages.unshift(newMessage);
+
   this.save();
 };
 
-userSchema.methods.sendMessage = function (message, senderName) {
-  console.log('sendMessage triggered');
+userSchema.methods.sendMessage = function (message, senderName, self) {
   const date = Date.now();
-  const newMessage = [`${senderName} ${new Date(date).toString()}: ${message}`];
-  this.account.sentMessages.push(newMessage);
+  const newMessage = [`${senderName} ${new Date(date).toString().slice(0, 21)}: ${message} `];
+  this.account.sentMessages.unshift(newMessage);
+  if (self) { // sending message to self
+    newMessage.push(true);
+    this.account.messages.unshift(newMessage);
+  }
   this.save();
 };
 
 userSchema.methods.readAllmessages = function (communication) {
-  console.log('readAllmessages triggered');
+
   const path = this.account[communication];
+
   for (let i = 0; i < path.length; i += 1) {
+
     path[i][1] = false;
     // this to ensure mongoose knows embedded arrays have been modified
-    this.markModified(`account.${communication.toString()}.${i.toString()}.1`);
+    this.markModified(`account.${communication}.${i.toString()}.1`);
   }
   // this.account.messages[0][1]=false
   this.save();

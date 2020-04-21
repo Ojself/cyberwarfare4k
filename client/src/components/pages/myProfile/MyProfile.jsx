@@ -97,8 +97,8 @@ const MyProfile = () => {
   const profilePage = myProfileState.loading ? (
     "loading.."
   ) : (
-    <div className="row">
-      <div className="col p-4">
+    <div className="">
+      <div className="">
         {myProfileState.user.playerStats.statPoints ? (
           <div>
             <h2 style={{ color: "#F08F18" }}>UPGRADES AVAILABLE!</h2>
@@ -108,8 +108,8 @@ const MyProfile = () => {
           <h3>{myProfileState.user.name}</h3>
         )}
       </div>
-      <div className="w-100"></div>
-      <div className="col w-25">
+      <div className=""></div>
+      <div className="">
         <div>
           <img
             style={{ maxWidth: "200px", width: "65%" }}
@@ -122,7 +122,7 @@ const MyProfile = () => {
             title="This is you!"
           />
         </div>
-        <div className="mt-4">
+        {/* <div className="mt-4"> //allianceavatar
           {myProfileState.loading ? (
             <img
               style={{ maxWidth: "200px", width: "65%" }}
@@ -138,9 +138,9 @@ const MyProfile = () => {
           ) : (
             <img alt=""></img>
           )}
-        </div>
+        </div> */}
       </div>
-      <div className="col w-25 ">
+      <div style={{ width: "20%" }} className=" ">
         {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
           (c, i) => {
             return (
@@ -158,7 +158,7 @@ const MyProfile = () => {
         )}
 
         {/* Seperator between crime- and hackprogressbars */}
-        <div className={"my-4"}></div>
+        <div className="my-4"></div>
         {["CPU", "AntiVirus", "Encryption"].map((h, i) => {
           return (
             <div>
@@ -175,7 +175,7 @@ const MyProfile = () => {
         })}
 
         {/* Seperator between hack- and otherprogressbar */}
-        <div className={"my-4"}></div>
+        <div className="my-4"></div>
 
         <ProgressBarExp
           color="warning"
@@ -194,8 +194,9 @@ const MyProfile = () => {
           hasStatPoints={!!myProfileState.user.playerStats.statPoints}
         />
       </div>
-      <div className="col w-25">
-        <ul className="list-group ">
+      {/* grey rank overiew */}
+      <div style={{ width: "15%" }} className="col">
+        <ul className="list-group">
           <li className="list-group-item bg-dark mb-2 ">
             {myProfileState.loading
               ? "Rank"
@@ -226,7 +227,7 @@ const MyProfile = () => {
           </li>
         </ul>
       </div>
-      <div className="col w-25 px-0">
+      <div style={{ width: "18%" }} className="px-0">
         <div>
           <Nav tabs>
             {["Items", "Currencies", "Stash"].map((t, i) => {
