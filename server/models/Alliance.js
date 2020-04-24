@@ -28,7 +28,7 @@ allianceSchema.methods.inviteMember = function (player) {
 };
 
 allianceSchema.methods.leaveAlliance = function (player) {
-  // player.sendNotication to boss
+  // player.sendNotification to boss
   // also in userschema
   this.members.pop(player._id);
   this.save();

@@ -558,7 +558,7 @@ userSchema.methods.handleAttack = function (finalResult) {
     `You attacked ${finalResult.opponent.name} at ${new Date(
       finalResult.date,
     ).toString().slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-    finalResult.victimDead ? ' and he was shutdown!' : '!'
+      finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
   ];
@@ -574,7 +574,7 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
     `${finalResult.user.name} attacked you at ${new Date(
       finalResult.date,
     ).toString().slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-    finalResult.victimDead ? ' and you were shutdown!' : '!'
+      finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
   ];
@@ -663,7 +663,8 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
   this.save();
 };
 
-// MESSAGES
+// exported into a new model
+/* // MESSAGES
 userSchema.methods.receiveMessage = function (message, senderName) {
   console.log('receiveMessage triggered', message, senderName);
   const date = Date.now();
@@ -701,7 +702,7 @@ userSchema.methods.readAllmessages = function (communication) {
   // this.account.messages[0][1]=false
   this.save();
 };
-
+ */
 userSchema.methods.handleNewStatpoint = async function (statName) {
   console.log('hello from mongo', statName);
   this.playerStats.statPoints -= 1;
@@ -747,7 +748,6 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
   }
-  console.log(this.hackSkill, this.playerStats.exp, 'after');
   this.save();
 };
 

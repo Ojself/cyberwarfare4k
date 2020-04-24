@@ -40,8 +40,6 @@ router.post('/', async (req, res) => {
     const oldQuery = minigamesForUser[0].query
     const twelveHoursInMS = 1000 * 60 * 60 * 12
     const twelveHoursPassed = minigamesForUser[0].generated + twelveHoursInMS <= now;
-
-
     const remainingTimeInMS = minigamesForUser[0].generated + twelveHoursInMS - now
 
     if (!twelveHoursPassed) {
@@ -104,7 +102,7 @@ router.post('/:query', async (req, res) => {
 
 const generateQueryString = () => {
     const lexi = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let query = '';
+    let query = '#';
     for (let i = 0; i < 6; i += 1) {
         query += lexi[Math.floor(Math.random() * lexi.length)]
     }
