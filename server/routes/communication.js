@@ -1,22 +1,25 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const User = require('../models/User');
-const Message = require('../models/Message');
+const User = require("../models/User");
+const Message = require("../models/Message");
 
+const { getInbox } = require("./helper");
 
 // @GET
 // PRIVATE
 // get all messages for user
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const userId = req.user._id;
   let inbox;
   let sent;
 
   try {
-    inbox = await Message.find({ to: userId }).populate('from', 'name').sort({ createdAt: -1 });
-    sent = await Message.find({ from: userId }).populate('to', 'name').sort({ createdAt: -1 });
+    inbox = await getInbox(userId);
+    sent = await Message.find({ from: userId })
+      .populate("to", "name")
+      .sort({ createdAt: -1 });
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -38,7 +41,7 @@ router.get('/', async (req, res) => {
 // PRIVATE
 // reads all messages
 
-router.patch('/', async (req, res) => {
+router.patch("/", async (req, res) => {
   const userId = req.user._id;
   let messages;
 
@@ -56,7 +59,7 @@ router.patch('/', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'messages read',
+    message: "messages read",
   });
 });
 
@@ -64,7 +67,7 @@ router.patch('/', async (req, res) => {
 // PRIVATE
 // sends message from one user to another and archives the sent message
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const { receiverId, text } = req.body;
   const userId = req.user._id;
 
@@ -82,7 +85,7 @@ router.post('/', async (req, res) => {
   }
   return res.status(200).json({
     success: true,
-    message: 'message sent ..',
+    message: "message sent ..",
   });
 });
 

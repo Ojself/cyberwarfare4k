@@ -46,7 +46,7 @@ const App = (props) => {
       user: apiUser.user,
       loading: false,
     });
-  }, [console.log(props, "props")]);
+  }, []);
 
   const loggedInAndSetup = () => {
     return api.isLoggedIn() && api.isSetup();

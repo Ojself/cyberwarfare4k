@@ -91,14 +91,14 @@ export default {
 
   getUser() {
     return service
-      .get("/my-profile")
+      .get("/profile")
       .then((res) => res.data)
       .catch(errHandler);
   },
 
   getNavUser() {
     return service
-      .get("/get-nav-user")
+      .get("/user")
       .then((res) => res.data)
       .catch(errHandler);
   },
