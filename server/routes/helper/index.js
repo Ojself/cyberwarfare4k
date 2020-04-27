@@ -1,7 +1,7 @@
-const { nullifyValues } = require("../../middlewares/middleHelpers.js");
-const User = require("../../models/User");
-const Session = require("../../models/Session");
-const Message = require("../../models/Message");
+const { nullifyValues } = require('../../middlewares/middleHelpers.js');
+const User = require('../../models/User');
+const Session = require('../../models/Session');
+const Message = require('../../models/Message');
 
 const getAllUsers = async (filterArray = [], select = null) => {
   if (select) {
@@ -10,9 +10,9 @@ const getAllUsers = async (filterArray = [], select = null) => {
     return usersWithSelect;
   }
   let users = await User.find()
-    .populate("playerStats.bountyDonors", "name")
-    .populate("alliance", "name")
-    .populate("playerStats.city", "name");
+    .populate('playerStats.bountyDonors', 'name')
+    .populate('alliance', 'name')
+    .populate('playerStats.city', 'name');
 
   // todo, select information instead of nullify?
   // todo apply filter
@@ -38,20 +38,24 @@ const getOnlineUsers = async () => {
   await Session.find().then((result) => {
     const filteredIds = result
       .filter((x) => x.expires > limitTime)
-      .map((y) => y.session.match(/[a-f\d]{24}/g, ""))
+      .map((y) => y.session.match(/[a-f\d]{24}/g, ''))
       .filter((el) => el != null);
     onlineIds = [].concat(...filteredIds);
   });
-  console.log("onlineIds: ", onlineIds, "stop");
+  console.log('onlineIds: ', onlineIds, 'stop');
   // const onlinePlayers = await User.find({ _id: { $in: onlineIds } });
 
   return onlineIds;
 };
 
 const getInbox = async (userId) => {
-  return await Message.find({ to: userId })
-    .populate("from", "name")
+  const inbox = await Message.find({ to: userId })
+    .populate('from', 'name')
     .sort({ createdAt: -1 });
+  const sent = await Message.find({ from: userId })
+    .populate('to', 'name')
+    .sort({ createdAt: -1 });
+  return { inbox, sent };
 };
 
 module.exports = { getAllUsers, getOnlineUsers, getInbox };

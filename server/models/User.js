@@ -46,27 +46,6 @@ const userSchema = new Schema(
           ],
         ],
       },
-      messages: {
-        type: Array,
-        default: [
-          [
-            `System ${new Date(
-              Date.now().toString().slice(0, 21),
-            )}:, Hi and welcome to CH4K, this is your first message`,
-            false,
-          ],
-        ],
-      },
-      sentMessages: {
-        type: Array,
-        default: [
-          [
-            `System ${new Date(
-              Date.now(),
-            )}:, Hi and welcome to CH4K, this is your first SENT message`,
-          ],
-        ],
-      },
       banned: {
         type: Boolean,
         default: false,

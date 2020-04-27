@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./pettyStyling.scss";
 import {} from "@fortawesome/free-solid-svg-icons";
-import { UncontrolledTooltip } from "reactstrap";
+
 const PettyResult = (props) => {
   const {
     won,
@@ -31,13 +31,15 @@ const PettyResult = (props) => {
 
   const failStrings = [
     "You failed at commiting a petty crime",
+    "Your attack was unsuccessful",
     "You found noone to attack",
+    "Your computer malfunctioned",
     "Noone fell for your scam attempt",
   ];
 
   const failComponent = (
     <>
-      <h6>Fail!</h6>
+      <h6 id="fail-color">Fail!</h6>
       <p>
         <strong>
           {failStrings[Math.floor(Math.random() * failStrings.length)]}

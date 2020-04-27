@@ -12,35 +12,32 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown
+  UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = props => {
+const NavbarComp = (props) => {
   const [toolOpen, setToolOpen] = useState(false);
 
   const currentCity = props.loading ? "City" : props.user.playerStats.city.name;
 
-  const handleLogoutClick = e => {
+  const handleLogoutClick = (e) => {
     api.logout();
   };
 
-  const checkCommunicationtot = () => {
-    return (
-      checkCommunication("messages") || checkCommunication("notifications")
-    );
+  const checkAllCommunication = () => {
+    return checkInbox() /* || checkCommunication("notifications") */;
   };
 
-  const checkCommunication = com => {
-    return props.loading ? false : props.user.account[com][0][1];
+  const checkInbox = () => {
+    if (props.loading) {
+      return false;
+    }
+    return props.messages.inbox.length && !props.messages.inbox[0].read;
   };
 
   const toggle = () => {
     setToolOpen(!toolOpen);
   };
-
-  useEffect(() => {
-    console.log("NAVBAR!");
-  }, []);
 
   return (
     <div>
@@ -113,7 +110,7 @@ const NavbarComp = props => {
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle
                 style={{
-                  color: checkCommunicationtot() ? "red" : null
+                  color: checkAllCommunication() ? "red" : null,
                 }}
                 nav
                 caret
@@ -130,16 +127,18 @@ const NavbarComp = props => {
                 <DropdownItem>Public Forum</DropdownItem>
                 <DropdownItem
                   style={{
-                    color: checkCommunication("messages") ? "red" : null
+                    color: checkInbox("messages") ? "red" : null,
                   }}
                   href="/messages"
                 >
                   Messages
                 </DropdownItem>
                 <DropdownItem
-                  style={{
-                    color: checkCommunication("notifications") ? "red" : null
-                  }}
+                  style={
+                    {
+                      /* color: checkCommunication("notifications") ? "red" : null, */
+                    }
+                  }
                   href="/notifications"
                 >
                   Notifications
@@ -149,7 +148,7 @@ const NavbarComp = props => {
             {/* todo, probably dont need this because you wont see the navbar anyway */}
             {api.isLoggedIn() && (
               <NavItem>
-                <NavLink href="/" onClick={e => handleLogoutClick(e)}>
+                <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
                   Logout
                   <p style={{ fontSize: "0.5em" }}>sudo rm -rf </p>
                 </NavLink>

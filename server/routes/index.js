@@ -1,6 +1,6 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { getInbox } = require('./helper');
+const { getInbox, getAllUsers } = require('./helper');
 
 const router = express.Router();
 
@@ -105,43 +105,14 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   });
 });
 
-// todo extract this to somewhere else
-
-// @GET
-// PRIVATE
-// Same as my profile. being used in the navbar for stats
-router.get('/user', async (req, res) => {
-  if (!req.user) {
-    return;
-  }
-  /* if (!req.user._id) {
-    return;
-  } */
-  const userId = req.user._id;
-  try {
-    const user = await User.findById(userId)
-      .populate('playerStats.city', 'name')
-      .populate('alliance', 'name');
-
-    res.status(200).json({
-      success: true,
-      message: 'nav user loaded..',
-      user,
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: true,
-      message: err.toString(),
-    });
-  }
-  /* todo, too much information is being passsed */
-});
-
 // @GET
 // PRIVATE
 // Retrives player profile
 
 router.get('/profile', isLoggedIn, async (req, res) => {
+  if (!req.user) {
+    return;
+  }
   const userId = req.user._id;
 
   try {
@@ -160,7 +131,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
       messages,
     });
   } catch (err) {
-    return res.status(200).json({
+    return res.status(400).json({
       success: false,
       message: `error: ${JSON.stringify(err)}`,
     });
@@ -172,10 +143,21 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 // Retrives hackers
 
 router.get('/opponent/', async (req, res) => {
-  const users = await getAllUsers(false, { name: '1' });
+  let users;
+  const dbSelectOptions = {
+    name: '1',
+  };
+  try {
+    users = await User.find().select(dbSelectOptions);
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: `error: ${JSON.stringify(e)}`,
+    });
+  }
   res.status(200).json({
     success: true,
-    message: 'all hackers loaded..',
+    message: 'hackers loaded..',
     users,
   });
 });
@@ -243,22 +225,33 @@ router.get('/ladder', async (req, res) => {
 
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
-  const user = await User.findById(userId);
   const { statPoint } = req.body;
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (e) {
+    return res.status(400).json({
+      success: false,
+      message: `error ${JSON.stringify(e)}`,
+    });
+  }
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
+      success: false,
       message: 'no more statpoints',
     });
   }
 
-  await user.handleNewStatpoint(statPoint);
+  await user.handleNewStatpoint(statPoint).then((result) => {
+    console.log(result, 'resuilt from saving statpoint');
+  });
 
   /* todo nullify user info */
   const updatedUser = await User.findById(userId).exec();
 
   return res.status(200).json({
-    message: `${statPoint.toUpperCase()} upgraded`,
+    message: `${statPoint} skill upgraded..`,
     updatedUser,
     success: true,
   });

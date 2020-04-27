@@ -34,22 +34,31 @@ const App = (props) => {
   const [appState, SetAppState] = useState({
     isOpen: false,
     loading: true,
+    messages: null,
     user: null,
   });
 
   useEffect(async () => {
-    const apiUser = await api.getNavUser();
-    console.log(props, "props");
+    const apiUser = await api.getUser();
+    console.log(apiUser, "apiuser");
     SetAppState({
       ...appState,
       user: apiUser.user,
+      messages: apiUser.messages,
       loading: false,
     });
   }, []);
 
+  const setUser = (user) => {
+    SetAppState({
+      ...appState,
+      user: user,
+      loading: false,
+    });
+  };
+
   const showNavBar = () => {
     const path = window.location.pathname;
-    console.log(path, "path");
 
     if (
       path === "/" ||
@@ -66,7 +75,11 @@ const App = (props) => {
       <div className="App text-light">
         {showNavBar() && (
           <>
-            <NavbarComp loading={appState.loading} user={appState.user} />
+            <NavbarComp
+              loading={appState.loading}
+              messages={appState.messages}
+              user={appState.user}
+            />
             <StatusBar loading={appState.loading} user={appState.user} />
           </>
         )}
@@ -91,7 +104,17 @@ const App = (props) => {
               <Locals loading={appState.loading} user={appState.user} />
             )}
           />
-          <Route path="/my-profile" component={MyProfile} />
+
+          <Route
+            path="/my-profile"
+            render={() => (
+              <MyProfile
+                loading={appState.loading}
+                user={appState.user}
+                setUser={setUser}
+              />
+            )}
+          />
           <Route path="/petty-hacker" component={Petty} />
           <Route path="/marketplace" component={Marketplace} />
           <Route path="/wanted-list" component={WantedList} />
@@ -119,7 +142,10 @@ const App = (props) => {
           <Route
             path="/messages"
             render={() => (
-              <MessageCenter loading={appState.loading} user={appState.user} />
+              <MessageCenter
+                loading={appState.loading}
+                messages={appState.messages}
+              />
             )}
           />
 

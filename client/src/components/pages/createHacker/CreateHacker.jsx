@@ -67,19 +67,6 @@ const CreateHacker = (props) => {
     });
   };
 
-  /* 
-  const handleClick = (e) => {
-    e.preventDefault();
-    api
-      .login(loginState.email, loginState.password)
-      .then((result) => {
-        props.redirect("/my-profile/");
-      })
-      .catch((err) =>
-        setLoginState({ ...loginState, message: err.toString() })
-      );
-  }; */
-
   const handleCreate = (e) => {
     e.preventDefault();
     const data = {

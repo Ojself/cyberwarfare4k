@@ -92,20 +92,20 @@ export default {
       .catch(errHandler);
   },
 
-  getNavUser() {
+  /* getNavUser() {
     return service
       .get("/user")
       .then((res) => res.data)
       .catch(errHandler);
-  },
+  }, */
 
-  getOpponent(opponentId) {
+  /*   getOpponent(opponentId) {
     return service
       .get(`/opponent/${opponentId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
-
+ */
   getAllLadderUsers() {
     return service
       .get("/ladder")
@@ -304,7 +304,7 @@ export default {
 
   readAllCommunication(communication) {
     return service
-      .post(`/communication/readAll`, { communication })
+      .patch(`/communication/`, { communication })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -312,7 +312,7 @@ export default {
   sendMessage(body) {
     console.log(body, "body");
     return service
-      .post(`/communication/message/`, body)
+      .post(`/communication/`, body)
       .then((res) => res.data)
       .catch(errHandler);
   },

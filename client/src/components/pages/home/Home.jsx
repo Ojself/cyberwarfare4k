@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import hackerComments from "../_helpers/hackerComments";
 import hackerNames from "../_helpers/hackerNames";

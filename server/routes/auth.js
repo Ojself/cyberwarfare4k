@@ -73,21 +73,15 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
-
   // first check to see if there's a document with that email
   User.findOne({ email })
     .then((userDoc) => {
       // "userDoc" will be empty if the email is wrong (no document in database)
       if (!userDoc) {
-        // create an error object to send to our error handler with "next()"
         next(new Error('Incorrect email '));
         return;
       }
-
-      // second check the password
-      // "compareSync()" will return false if the "password" is wrong
-      if (!bcrypt.compareSync(password, userDoc.password)) {
-        // create an error object to send to our error handler with "next()"
+      if (!bcrypt.compareSync(password, userDoc.account.password)) {
         next(new Error('Password is wrong'));
         return;
       }
@@ -122,7 +116,6 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
         return;
       }
 
-      // We are now logged in (notice req.user)
       res.json(req.user);
     });
   })(req, res, next);

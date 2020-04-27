@@ -1,13 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// Seeds file that remove all ranks and create all ranks for marketplace
-
-// To execute this seed, run from the root of the project
-// $ node bin/rankSeeds.js
-
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const Rank = require('../models/Rank');
 
 require('../configs/database');

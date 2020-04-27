@@ -2,16 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/User');
-const Forum = require('../models/Forum');
+/* const Forum = require('../models/Forum'); */
 
 /* not pretty, refactor this */
-function checkForumCriteria(
-  comment = 'abc',
-  userId,
-  commentId,
-  idChecker = false,
-) {
-  console.log('checkForumCriteria', ...arguments);
+function checkForumPostCriteria(comment) {
   if (comment.length > 250) {
     return 'Your post is too long..';
   }
@@ -24,11 +18,11 @@ function checkForumCriteria(
     return 'no need for your script tags here..';
   }
 
-  if (idChecker) {
+  /* if (idChecker) {
     if (!userId.toString() === commentId.toString()) {
       return 'You can\'t do changes to other posts but your own.';
     }
-  }
+  } */
   return null;
 }
 
@@ -47,7 +41,7 @@ router.post('/', async (req, res) => {
   const { comment } = req.body;
   const now = new Date();
 
-  const message = checkForumCriteria(comment, user);
+  const message = checkForumPostCriteria(comment, user);
 
   if (message) {
     return res.status(400).json({

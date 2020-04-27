@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 import { Table, Button, UncontrolledTooltip } from "reactstrap";
 
@@ -69,7 +67,7 @@ const DataCenter = () => {
 
     return result;
   };
-  const element = <FontAwesomeIcon icon={faCoffee} />;
+
   const dataCenterTable = (
     <Table className="content" dark>
       <thead>

@@ -26,6 +26,7 @@ import classnames from "classnames";
 // todo message sent feedback
 // ban people for spamming
 // alternate background color for easier reading
+// todo, linking color of names
 
 const MessageCenter = (props) => {
   const [globalInfo, setGlobalInfo] = useState("");
@@ -137,7 +138,7 @@ const MessageCenter = (props) => {
         <Nav tabs className="">
           {["Inbox", "Sent", "Compose"].map((t, i) => {
             return (
-              <NavItem>
+              <NavItem key={i}>
                 <NavLink
                   className={classnames({
                     active: activeTab === i + 1 + "",
@@ -159,30 +160,36 @@ const MessageCenter = (props) => {
                 <ListGroup>
                   {props.loading
                     ? "loading.."
-                    : props.user.account.messages.map((m, i) => {
-                        const name = m[0].split(" ")[0];
-                        const id = getId(name);
+                    : props.messages.inbox.map((m, i) => {
+                        const name = m.from.name;
+                        const id = m.from._id;
+                        const date = m.dateSent;
+                        const read = m.read;
+                        const message = m.text;
 
-                        const message = m[0].split(" ").slice(1).join(" ");
-                        const unread = m[1];
-                        const inboxClass = unread
-                          ? "mt-2 text-light"
-                          : "mt-2 text-dark";
+                        const inboxClass = read
+                          ? "mt-2 text-dark"
+                          : "mt-2 text-light";
 
                         return (
                           <ListGroupItem
                             className={inboxClass}
-                            active={unread}
+                            active={!read}
                             key={i}
                           >
                             <ListGroupItemHeading>
                               From:{" "}
-                              <NavLink href={`/hacker/${id}`}>{name}</NavLink>
+                              <NavLink
+                                className={inboxClass}
+                                href={`/hacker/${id}`}
+                              >
+                                {name}
+                              </NavLink>
                             </ListGroupItemHeading>
-                            <ListGroupItemText>{message}</ListGroupItemText>
+                            <ListGroupItemText>{`${date}: ${message}`}</ListGroupItemText>
                             <Button
                               onClick={() => {
-                                handleReply(m[0].split(" ")[0]);
+                                handleReply(name);
                               }}
                             >
                               Reply
@@ -200,10 +207,12 @@ const MessageCenter = (props) => {
                 <ListGroup>
                   {props.loading
                     ? "loading.."
-                    : props.user.account.sentMessages.map((m, i) => {
-                        const name = m[0].split(" ")[0];
-                        const id = getId(name);
-                        const message = m[0].split(" ").slice(1).join(" ");
+                    : props.messages.sent.map((m, i) => {
+                        const name = m.to.name;
+                        const id = m.to._id;
+                        const date = m.dateSent;
+                        const message = m.text;
+
                         return (
                           <ListGroupItem className="mt-2" key={i}>
                             <ListGroupItemHeading className="text-dark">
@@ -211,7 +220,7 @@ const MessageCenter = (props) => {
                               {<NavLink href={`/hacker/${id}`}>{name}</NavLink>}
                             </ListGroupItemHeading>
                             <ListGroupItemText className="text-dark">
-                              {message}
+                              {`${date}: ${message}`}
                             </ListGroupItemText>
                           </ListGroupItem>
                         );

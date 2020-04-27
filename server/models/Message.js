@@ -18,8 +18,8 @@ const messageSchema = new Schema({
   },
 });
 
+
 messageSchema.methods.readMe = function () {
-  console.log('hello');
   this.read = true;
   this.save();
 };

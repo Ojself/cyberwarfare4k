@@ -9,3 +9,4 @@ todo, make a file that runs all the seeds in this order:
 7. city
 8. datacenters
 9. user
+10. message
