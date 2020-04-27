@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import api from "../api";
 
 import Alliance from "./pages/alliance/pages/Alliance";
@@ -30,8 +30,6 @@ import SystemRepair from "./pages/SystemRepair";
 import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
-import images from "./pages/_helpers/images";
-
 const App = (props) => {
   const [appState, SetAppState] = useState({
     isOpen: false,
@@ -41,6 +39,7 @@ const App = (props) => {
 
   useEffect(async () => {
     const apiUser = await api.getNavUser();
+    console.log(props, "props");
     SetAppState({
       ...appState,
       user: apiUser.user,
@@ -48,26 +47,28 @@ const App = (props) => {
     });
   }, []);
 
-  const loggedInAndSetup = () => {
-    return api.isLoggedIn() && api.isSetup();
+  const showNavBar = () => {
+    const path = window.location.pathname;
+    console.log(path, "path");
+
+    if (
+      path === "/" ||
+      path === "/create-hacker" ||
+      path === "/create-hacker/"
+    ) {
+      return false;
+    }
+    return true;
   };
 
   return (
     <div>
       <div className="App text-light">
-        {loggedInAndSetup() ? (
+        {showNavBar() && (
           <>
             <NavbarComp loading={appState.loading} user={appState.user} />
             <StatusBar loading={appState.loading} user={appState.user} />
           </>
-        ) : (
-          <div>
-            <img
-              id="navbarReplacer"
-              src={images.utilImages[3].src}
-              alt="Cyber Header"
-            />
-          </div>
         )}
 
         <Switch>

@@ -3,18 +3,32 @@ import React, { useState, useEffect } from "react";
 import hackerComments from "../_helpers/hackerComments";
 import hackerNames from "../_helpers/hackerNames";
 import images from "../_helpers/images";
-// import api from "../../api";
+import api from "../../../api";
 
 import Login from "../loginSignup/Login";
 import Signup from "../loginSignup/Signup";
 
-const Home = props => {
-  const [homeState, setHomeState] = useState({
-    name: ""
-  });
+import "./homeStyling.scss";
+const Home = (props) => {
+  useEffect(() => {
+    redirectToCorrectPage().then((result) => {});
+  }, []);
 
-  const redirect = url => {
-    console.log("redirecting", url);
+  const redirectToCorrectPage = async () => {
+    const reDirectInformation = await api.getRedirectInfo();
+    const status = reDirectInformation.status;
+
+    if (status.userInstance && status.isSetup) {
+      return redirect("/my-profile");
+    }
+    if (status.userInstance) {
+      return redirect("/create-hacker");
+    }
+
+    return false;
+  };
+
+  const redirect = (url) => {
     props.history.push(url);
   };
 
@@ -36,11 +50,18 @@ const Home = props => {
     return hackerQuote;
   };
   return (
-    <div style={{ marginTop: "-100px" }} className="d-flex flex-column">
-      <div className="d-flex flex-row justify-content-center">
+    <div>
+      <div>
+        <img
+          id="navbarReplacer"
+          src={images.utilImages[3].src}
+          alt="Cyber Header"
+        />
+      </div>
+      <div className="d-flex  justify-content-center">
         <div className="d-flex flex-column w-25">
           <img
-            style={{ width: "20vw" }}
+            style={{ marginTop: "-50px", width: "80%" }}
             src={images.utilImages[0].src}
             alt="Hacker Home"
           />
@@ -62,7 +83,7 @@ const Home = props => {
             of the legendary Anonymous.
           </p>
           <div className="d-flex justify-content-center h-100">
-            <Login redirext={redirect} />
+            <Login redirect={redirect} />
             <Signup redirect={redirect} />
           </div>
         </div>

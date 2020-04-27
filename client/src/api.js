@@ -20,8 +20,6 @@ const errHandler = (err) => {
 export default {
   service: service,
 
-  // This method is synchronous and returns true or false
-  // To know if the user is connected, we just check if we have a value for localStorage.getItem('user')
   isLoggedIn() {
     return localStorage.getItem("user") != null;
   },
@@ -31,14 +29,13 @@ export default {
     return JSON.parse(localStorage.getItem("user"));
   },
 
-  isSetup() {
-    const localUser = JSON.parse(localStorage.getItem("user"));
-    console.log(localUser);
-    /* if (localUser){
-      console.log(localUser,'localuser')
-      return localUser.account.isSetup
-    } */
-    return true; //todo fix this. wrong on serverside
+  getRedirectInfo() {
+    return service
+      .get("/user-setup-status")
+      .then((res) => {
+        return res.data;
+      })
+      .catch(errHandler);
   },
 
   signup(userInfo) {
@@ -59,7 +56,6 @@ export default {
         password,
       })
       .then((res) => {
-        // If we have localStorage.getItem('user') saved, the application will consider we are loggedin
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
       })

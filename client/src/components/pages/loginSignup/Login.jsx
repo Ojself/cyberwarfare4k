@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import api from "../../../api";
 
-import history from "../../history";
-
-const Login = props => {
+const Login = (props) => {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
-    message: null
+    message: null,
   });
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setLoginState({
       ...loginState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     e.preventDefault();
     api
       .login(loginState.email, loginState.password)
-      .then(result => {
+      .then((result) => {
         props.redirect("/my-profile/");
       })
-      .catch(err => setLoginState({ ...loginState, message: err.toString() }));
+      .catch((err) =>
+        setLoginState({ ...loginState, message: err.toString() })
+      );
   };
 
   return (
@@ -53,7 +53,7 @@ const Login = props => {
         <br />
         <button
           className="btn btn-primary w-100 mt-2"
-          onClick={e => handleClick(e)}
+          onClick={(e) => handleClick(e)}
         >
           Login
         </button>

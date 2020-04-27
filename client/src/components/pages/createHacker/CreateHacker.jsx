@@ -10,7 +10,6 @@ import {
   Input,
   FormFeedback,
   Button,
-  UncontrolledTooltip,
 } from "reactstrap";
 
 const CreateHacker = (props) => {
@@ -21,7 +20,25 @@ const CreateHacker = (props) => {
     name: null,
   });
 
-  useEffect(() => {}, [console.log(createState, "state")]);
+  useEffect(() => {
+    redirectToCorrectPage().then((result) => {});
+  }, []);
+
+  const redirectToCorrectPage = async () => {
+    const reDirectInformation = await api.getRedirectInfo();
+    const status = reDirectInformation.status;
+
+    if (status.userInstance && status.isSetup) {
+      window.location.pathname = "/my-profile";
+      return;
+    }
+    if (!status.userInstance) {
+      window.location.pathname = "/";
+      return;
+    }
+
+    return false;
+  };
 
   //todo, create something that handles invalid name
   //todo, check statpoints
@@ -43,13 +60,25 @@ const CreateHacker = (props) => {
     if (createState.selectedAvatar === avatar) {
       avatar = null;
     }
-    console.log(avatar, "avatar");
     e.preventDefault();
     setCreateState({
       ...createState,
       selectedAvatar: avatar,
     });
   };
+
+  /* 
+  const handleClick = (e) => {
+    e.preventDefault();
+    api
+      .login(loginState.email, loginState.password)
+      .then((result) => {
+        props.redirect("/my-profile/");
+      })
+      .catch((err) =>
+        setLoginState({ ...loginState, message: err.toString() })
+      );
+  }; */
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -61,35 +90,8 @@ const CreateHacker = (props) => {
     api
       .createUser(data)
       .then((result) => {
-        console.log("SUCCESS!");
         console.log(result, "result");
-      })
-      .catch((err) =>
-        setCreateState({ ...createState, message: err.toString() })
-      );
-  };
-
-  /* todo, extract elsewhere? */
-  const handleUpgrade = (e) => {
-    console.log("handleupgrade");
-    e.preventDefault();
-    console.log(e.target.name, "e.target");
-    const data = e.target.name;
-    api
-      .upgradeStats(data)
-      .then((result) => {
-        console.log("SUCCESS!", result);
-        /* todo make screen blink green? */
-        setCreateState({
-          ...createState,
-          message: `${result.message}`,
-        });
-        setTimeout(() => {
-          setCreateState({
-            ...createState,
-            message: null,
-          });
-        }, 2000);
+        window.location.pathname = "/my-profile";
       })
       .catch((err) =>
         setCreateState({ ...createState, message: err.toString() })
@@ -106,146 +108,77 @@ const CreateHacker = (props) => {
 
   return (
     <div style={{ marginTop: "-100px" }} className="page-container">
-      <div className="content">
-        <div className="">
-          <h1>Create A Haxx0r</h1>
-        </div>
-
-        {/* Name */}
-        <div className="mb-5">
-          <Form className="d-flex justify-content-center ">
-            <FormGroup className="">
-              <Label for="name"></Label>
-              <Input
-                maxlength={15}
-                value={createState.name}
-                name="name"
-                onChange={handleInputChange}
-                placeholder="Name"
-              />
-              <FormFeedback invalid>Your character name requires</FormFeedback>
-              <FormFeedback invalid>- more than 3 characters</FormFeedback>
-              <FormFeedback invalid>- not more than 15 characters</FormFeedback>
-            </FormGroup>
-          </Form>
-        </div>
-        {/* Set Your Skills */}
-        <div className="d-flex flex-column mb-5">
-          <h3>Set Your Skills</h3>
-          {/* actual skills */}
-          <h4>
-            Statpoints:{" "}
-            <span style={{ color: "red" }}>
-              {props.loading ? "5" : props.user.playerStats.statPoints}
-            </span>{" "}
-          </h4>
-          <div className="d-flex justify-content-center justify-content-around row w-100 ">
-            <div id="createHackerFirewall" className="">
-              <Button
-                name="Firewall"
-                onClick={handleUpgrade}
-                color="primary"
-                size="s"
-                active
-              >
-                +
-              </Button>{" "}
-              Firewall
-            </div>
-            <div id="createHackerCpu" className="">
-              <Button
-                name="CPU"
-                onClick={handleUpgrade}
-                color="primary"
-                size="s"
-                active
-              >
-                +
-              </Button>{" "}
-              CPU
-            </div>
-
-            <div id="createHackerEncryption" className="">
-              <Button
-                name="Encryption"
-                onClick={handleUpgrade}
-                color="primary"
-                size="s"
-                active
-              >
-                +
-              </Button>{" "}
-              Encryption
-            </div>
-            <div id="createHackerAvs" className="">
-              <Button
-                name="AntiVirus"
-                onClick={handleUpgrade}
-                color="primary"
-                size="s"
-                active
-              >
-                +
-              </Button>{" "}
-              AVS
-            </div>
+      {
+        <div className="content">
+          <div className="">
+            <h1>Create A Haxx0r</h1>
           </div>
-        </div>
-        <UncontrolledTooltip placement="bottom" target="createHackerFirewall">
-          Max health
-        </UncontrolledTooltip>
-        <UncontrolledTooltip placement="bottom" target="createHackerEncryption">
-          Block skill
-        </UncontrolledTooltip>
-        <UncontrolledTooltip placement="bottom" target="createHackerCpu">
-          Attack skill
-        </UncontrolledTooltip>
-        <UncontrolledTooltip placement="bottom" target="createHackerAvs">
-          Defense skill
-        </UncontrolledTooltip>
-        {/* City select */}
-        <div className="mb-5">
-          <h3>Select Your City</h3>
 
-          <Select
-            className="text-dark w-25 m-auto"
-            value={createState.selectedCity}
-            onChange={handleSelectChange}
-            options={cities}
-          />
-        </div>
-        {/* Avatars */}
-        <h3>Select Your Avatar</h3>
-        <div className="d-flex justify-content-center flex-wrap">
-          {images.playerAvatars.map((el, i) => (
-            <img
-              key={el.src}
-              name={el.src}
-              onClick={selectAvatar}
-              className={
-                createState.selectedAvatar === el.src
-                  ? "avatarSelectImages m-4 active"
-                  : "avatarSelectImages m-4"
-              }
-              src={el.src}
-              alt={el.title}
+          <div className="mb-5">
+            <Form className="d-flex justify-content-center ">
+              <FormGroup className="">
+                <Label for="name"></Label>
+                <Input
+                  maxLength={15}
+                  value={createState.name}
+                  name="name"
+                  onChange={handleInputChange}
+                  placeholder="Name"
+                />
+                <FormFeedback invalid>
+                  Your character name requires
+                </FormFeedback>
+                <FormFeedback invalid>- more than 3 characters</FormFeedback>
+                <FormFeedback invalid>
+                  - not more than 15 characters
+                </FormFeedback>
+              </FormGroup>
+            </Form>
+          </div>
+
+          <div className="mb-5">
+            <h3>Select Your City</h3>
+
+            <Select
+              className="text-dark w-25 m-auto"
+              value={createState.selectedCity}
+              onChange={handleSelectChange}
+              options={cities}
             />
-          ))}
+          </div>
+
+          <h3>Select Your Avatar</h3>
+          <div className="d-flex justify-content-center flex-wrap">
+            {images.playerAvatars.map((el, i) => (
+              <img
+                key={el.src}
+                name={el.src}
+                onClick={selectAvatar}
+                className={
+                  createState.selectedAvatar === el.src
+                    ? "avatarSelectImages m-4 active"
+                    : "avatarSelectImages m-4"
+                }
+                src={el.src}
+                alt={el.title}
+              />
+            ))}
+          </div>
+          <Button
+            disabled={
+              !createState.selectedAvatar ||
+              !createState.selectedCity ||
+              !createState.name
+            }
+            className="m-5 p-3"
+            onClick={handleCreate}
+            color="primary"
+            size="lg"
+          >
+            Create!
+          </Button>
         </div>
-        <Button
-          disabled={
-            !createState.selectedAvatar ||
-            !createState.selectedCity ||
-            !createState.name
-          }
-          className="m-5 p-3"
-          onClick={handleCreate}
-          color="primary"
-          size="lg"
-        >
-          Create!
-        </Button>
-      </div>
+      }
     </div>
   );
 };

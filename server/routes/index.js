@@ -1,11 +1,11 @@
-const express = require("express");
-const { isLoggedIn } = require("../middlewares/middleAuth");
-const { getInbox } = require("./helper");
+const express = require('express');
+const { isLoggedIn } = require('../middlewares/middleAuth');
+const { getInbox } = require('./helper');
 
 const router = express.Router();
 
-const User = require("../models/User");
-const City = require("../models/City");
+const User = require('../models/User');
+const City = require('../models/City');
 
 // might be written wrongly TODO
 // Ensures that email confirmation is been made
@@ -53,25 +53,25 @@ const getShuffledArr = (arr) => {
 // force user here if !user.isSetup
 // create route criterias
 
-router.post("/createUser", isLoggedIn, async (req, res) => {
-  console.log("you are now in the create user route");
+router.post('/createUser', isLoggedIn, async (req, res) => {
+  console.log('you are now in the create user route');
 
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { name, cityString, avatar } = req.body;
-  console.log(name, "name", cityString, "cs", avatar, "avatar");
+  console.log(name, 'name', cityString, 'cs', avatar, 'avatar');
 
   if (user.account.isSetup) {
     return res.status(400).json({
       success: false,
-      message: "user is already setup",
+      message: 'user is already setup',
     });
   }
 
   if (!name || !cityString || !avatar) {
     return res.status(409).json({
       success: false,
-      message: "Missing parameters..",
+      message: 'Missing parameters..',
     });
   }
   // todo, addtoset city resident
@@ -80,8 +80,8 @@ router.post("/createUser", isLoggedIn, async (req, res) => {
   const allUsers = await User.find();
 
   if (
-    name.toLowerCase().startsWith("npc") ||
-    name.toLowerCase().startsWith("unconfirmed")
+    name.toLowerCase().startsWith('npc')
+    || name.toLowerCase().startsWith('unconfirmed')
   ) {
     return res.status(409).json({
       success: false,
@@ -92,7 +92,7 @@ router.post("/createUser", isLoggedIn, async (req, res) => {
     // todo, probably wrong
     return res.status(409).json({
       success: false,
-      message: "name already exists..",
+      message: 'name already exists..',
     });
   }
 
@@ -110,16 +110,22 @@ router.post("/createUser", isLoggedIn, async (req, res) => {
 // @GET
 // PRIVATE
 // Same as my profile. being used in the navbar for stats
-router.get("/user", async (req, res) => {
+router.get('/user', async (req, res) => {
+  if (!req.user) {
+    return;
+  }
+  /* if (!req.user._id) {
+    return;
+  } */
   const userId = req.user._id;
   try {
     const user = await User.findById(userId)
-      .populate("playerStats.city", "name")
-      .populate("alliance", "name");
+      .populate('playerStats.city', 'name')
+      .populate('alliance', 'name');
 
     res.status(200).json({
       success: true,
-      message: "nav user loaded..",
+      message: 'nav user loaded..',
       user,
     });
   } catch (err) {
@@ -135,21 +141,21 @@ router.get("/user", async (req, res) => {
 // PRIVATE
 // Retrives player profile
 
-router.get("/profile", isLoggedIn, async (req, res) => {
+router.get('/profile', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
 
   try {
     const user = await User.findById(userId)
-      .populate("marketPlaceItems.CPU")
-      .populate("marketPlaceItems.Firewall")
-      .populate("marketPlaceItems.AntiVirus")
-      .populate("marketPlaceItems.Encryption")
-      .populate("alliance", "name")
-      .populate("playerStats.city", "name");
+      .populate('marketPlaceItems.CPU')
+      .populate('marketPlaceItems.Firewall')
+      .populate('marketPlaceItems.AntiVirus')
+      .populate('marketPlaceItems.Encryption')
+      .populate('alliance', 'name')
+      .populate('playerStats.city', 'name');
     const messages = await getInbox(userId);
     return res.status(200).json({
       success: true,
-      message: "user loaded..",
+      message: 'user loaded..',
       user,
       messages,
     });
@@ -165,11 +171,11 @@ router.get("/profile", isLoggedIn, async (req, res) => {
 // PRIVATE
 // Retrives hackers
 
-router.get("/opponent/", async (req, res) => {
-  const users = await getAllUsers(false, { name: "1" });
+router.get('/opponent/', async (req, res) => {
+  const users = await getAllUsers(false, { name: '1' });
   res.status(200).json({
     success: true,
-    message: "all hackers loaded..",
+    message: 'all hackers loaded..',
     users,
   });
 });
@@ -178,13 +184,13 @@ router.get("/opponent/", async (req, res) => {
 // PRIVATE
 // Retrives hacker profile
 
-router.get("/opponent/:id", async (req, res) => {
+router.get('/opponent/:id', async (req, res) => {
   const opponentId = req.params.id;
   try {
     const opponent = await User.findById(opponentId);
     res.status(200).json({
       success: true,
-      message: "opponent loaded..",
+      message: 'opponent loaded..',
       opponent,
     });
   } catch (err) {
@@ -199,21 +205,21 @@ router.get("/opponent/:id", async (req, res) => {
 // PRIVATE
 // Gets all users for the 'Top Hackers' page'
 
-router.get("/ladder", async (req, res) => {
+router.get('/ladder', async (req, res) => {
   const dbSelectOptions = {
-    name: "1",
-    alliance: "1",
-    "playerStats.rankName": "1",
-    "playerStats.rank": "1",
-    "playerStats.networth": "1",
-    "fightInformation.shutdowns": "1",
-    "fightInformation.crimesInitiated": "1",
+    name: '1',
+    alliance: '1',
+    'playerStats.rankName': '1',
+    'playerStats.rank': '1',
+    'playerStats.networth': '1',
+    'fightInformation.shutdowns': '1',
+    'fightInformation.crimesInitiated': '1',
   };
   let users;
   try {
     users = await User.find()
       .select(dbSelectOptions)
-      .populate("alliance", "name");
+      .populate('alliance', 'name');
   } catch (e) {
     return res.status(400).json({
       success: true,
@@ -224,7 +230,7 @@ router.get("/ladder", async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "users loaded..",
+    message: 'users loaded..',
     users,
   });
 });
@@ -235,14 +241,14 @@ router.get("/ladder", async (req, res) => {
 
 // extract route criterias and functionality
 
-router.post("/upgradeStats", isLoggedIn, async (req, res) => {
+router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { statPoint } = req.body;
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
-      message: "no more statpoints",
+      message: 'no more statpoints',
     });
   }
 
@@ -255,6 +261,48 @@ router.post("/upgradeStats", isLoggedIn, async (req, res) => {
     message: `${statPoint.toUpperCase()} upgraded`,
     updatedUser,
     success: true,
+  });
+});
+
+// @GET
+// PUBLIC
+// See if the user is loggedin and setup to redirect the user
+// TODO, this should be a middleware
+router.get('/user-setup-status', async (req, res) => {
+  const status = {
+    userInstance: false,
+    isSetup: false,
+  };
+  if (!req.user) {
+    return res.json({
+      status,
+    });
+  }
+  let user;
+  try {
+    user = await User.findById(req.user._id);
+  } catch (e) {
+    return res.status(400).json({
+      success: false,
+      message: `error: ${JSON.stringify(e)}`,
+    });
+  }
+
+
+  if (!user.account.isSetup) {
+    status.userInstance = true;
+    return res.status(200).json({
+      success: true,
+      status,
+    });
+  }
+
+  status.userInstance = true;
+  status.isSetup = true;
+
+  return res.status(200).json({
+    success: true,
+    status,
   });
 });
 

@@ -1,7 +1,7 @@
 // --------------------
 // Style reusable for all components
 html {
-  background-color: black;
+  background-color: #050505;
 }
 
 body {
@@ -82,30 +82,7 @@ body {
 // Style for App component
 .App {
   text-align: center;
-  background-color: black;
-
-  .App-header {
-    padding: 20px;
-    color: white;
-
-    a {
-      color: white;
-      padding: 0 5px;
-      text-decoration: unset;
-    }
-
-    a.active {
-      font-weight: bold;
-    }
-  }
-
-  .App-title {
-    font-size: 1.5em;
-  }
-
-  .App-intro {
-    font-size: large;
-  }
+  background-color: #050505;
 }
 
 .tableCrimeWrapper {
@@ -189,101 +166,6 @@ body {
     }
   }
 }
-.gameWrapper {
-  background-color: red;
-  width: 100vw;
-  height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.viewport {
-  display: flex;
-  background-color: blue;
-  width: 100%;
-  height: 20vh;
-}
-
-.columns {
-  height: 10vh;
-  width: 100vw;
-  background-size: 100% 100%;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-
-  &.columns-top {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-top.svg");
-  }
-
-  &.columns-center {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-center.svg");
-  }
-
-  &.columns-bottom {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/233661/mario-bottom.svg");
-  }
-
-  &:after {
-    content: "";
-    display: block;
-    padding-top: 12.07%;
-  }
-}
-
-@keyframes ltr-transition-0 {
-  0% {
-    background-position: 0vw;
-  }
-  100% {
-    background-position: 33.3333vw;
-  }
-}
-
-@keyframes ltr-transition-1 {
-  0% {
-    background-position: 33.3333vw;
-  }
-  100% {
-    background-position: 66.6666vw;
-  }
-}
-
-@keyframes ltr-transition-2 {
-  0% {
-    background-position: 66.6666vw;
-  }
-  100% {
-    background-position: 100vw;
-  }
-}
-
-@keyframes rtl-transition-0 {
-  0% {
-    background-position: -33.3333vw;
-  }
-  100% {
-    background-position: -66.6666vw;
-  }
-}
-
-@keyframes rtl-transition-1 {
-  0% {
-    background-position: -100vw;
-  }
-  100% {
-    background-position: -133.3333vw;
-  }
-}
-
-@keyframes rtl-transition-2 {
-  0% {
-    background-position: -166.6666vw;
-  }
-  100% {
-    background-position: -200vw;
-  }
-}
 
 .avatarSelectImages {
   width: 115px;
@@ -291,18 +173,6 @@ body {
   cursor: pointer;
 }
 
-#navbarReplacer {
-  -webkit-mask-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(rgba(0, 0, 0, 1)),
-    to(rgba(0, 0, 0, 0))
-  );
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-  width: 100%;
-  height: 30vh;
-}
 .myprofile-statpoint {
   padding: 2px;
 }

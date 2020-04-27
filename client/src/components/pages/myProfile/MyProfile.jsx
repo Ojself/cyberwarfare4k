@@ -112,7 +112,7 @@ const MyProfile = () => {
       <div className="">
         <div>
           <img
-            style={{ maxWidth: "200px", width: "65%" }}
+            style={{ maxWidth: "200px", width: "65%", borderRadius: "50%" }}
             src={
               myProfileState.loading
                 ? profilePlaceHolderAvatar
@@ -161,10 +161,9 @@ const MyProfile = () => {
         <div className="my-4"></div>
         {["CPU", "AntiVirus", "Encryption"].map((h, i) => {
           return (
-            <div>
+            <div key={i}>
               <ProgressBarHackSkill
                 upgrade={(e) => handleUpgrade(e)}
-                key={i}
                 name={h}
                 value={myProfileState.user.hackSkill[h]}
                 hasStatPoints={!!myProfileState.user.playerStats.statPoints}
@@ -232,7 +231,7 @@ const MyProfile = () => {
           <Nav tabs>
             {["Items", "Currencies", "Stash"].map((t, i) => {
               return (
-                <NavItem>
+                <NavItem key={i}>
                   <NavLink
                     className={classnames({ active: activeTab === i + 1 + "" })}
                     onClick={() => {
@@ -332,8 +331,8 @@ const MyProfile = () => {
                 <Col sm="12">
                   <div className="d-flex row">
                     {!myProfileState.loading &&
-                      Object.keys(myProfileState.user.stash).map((s) => (
-                        <div>
+                      Object.keys(myProfileState.user.stash).map((s, i) => (
+                        <div key={i}>
                           <img
                             style={{ maxWidth: "75px", width: "100%" }}
                             src={`/stashPics/${s}/${getStashColor()}.png`}
