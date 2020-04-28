@@ -3,52 +3,119 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const mongoose = require('mongoose');
 const ForumThread = require('../models/ForumThread');
+const Forum = require('../models/Forum');
 const User = require('../models/User');
 
 require('../configs/database');
 
 let admin;
+let forums;
 
-const getCreator = async () => {
+const getAdminandForums = async () => {
   admin = await User.findOne({ name: 'AdminTor' });
+  forums = await Forum.find({});
 };
 
-const threads = [{
-  creator: null,
-  name: 'News and Announcements',
-  description: 'News and Announcements from the developers will be posted here',
-  allianceThread: false,
-  locked: true,
-},
-{
-  creator: null,
-  name: 'General discussion',
-  description: 'Anything CHW4K',
-  allianceThread: false,
-},
-{
-  creator: null,
-  name: 'FAQ',
-  description: 'Frequently Asked Question',
-  allianceThread: false,
-},
-{
-  creator: null,
-  name: 'Beginners Corner',
-  description: 'Come on in and introduce yourself',
-  allianceThread: false,
-},
-{
-  creator: null,
-  name: 'Support',
-  description: 'Have a question from your fellow hackers or developers? ',
-  allianceThread: false,
-},
 
-];
+// todo. render something on frontend when no threads / forums / comments
+const GlobalThreads = [
+  {
+    creator: null,
+    title: 'Which pc games to try in 2020? ',
+    forum: null, // misc
+  },
+  {
+    creator: null,
+    title: 'Pokémon ultimate pokedex',
+    forum: null, // misc
+  },
+  {
+    creator: null,
+    title: 'Organized shutdown discussion',
+    forum: null, // Game-play discussions
+  },
+  {
+    creator: null,
+    title: 'Why bodyguards are too op',
+    forum: null, // Game-play discussions
+  },
+  {
+    creator: null,
+    title: 'How to come to level 3 on your first 100% battery',
+    forum: null, // Strategy and player guide
+  },
+  {
+    creator: null,
+    title: 'New meta: petty hacking',
+    forum: null, // Strategy and player guide
+  },
+  {
+    creator: null,
+    title: 'Cryptocurrency market is broken?',
+    forum: null, // Community suggestions
+  },
+  {
+    creator: null,
+    title: 'Add Devotion into this game, plz!',
+    forum: null, // Community suggestions
+  },
+  {
+    creator: null,
+    title: 'Hey everyone, I\'m Tor',
+    forum: null, // Introduction
+  },
+  {
+    creator: null,
+    title: 'First time playing this game, nice to meet you all!',
+    forum: null, // Introduction
+  },
+  {
+    creator: null,
+    title: 'New feature: Minigame to reload your battery!',
+    forum: null, // Announcements
+  },
+  {
+    creator: null,
+    title: 'NEWS: Game launch delayed, yet again',
+    forum: null, // Announcements
+  },
+  {
+    creator: null,
+    title: 'Before you ask, read this first',
+    forum: null, // Help desk
+    sticky: true,
+  },
+  {
+    creator: null,
+    title: 'HELP: How do I create an alliance?',
+    forum: null, // Help desk
+  }, {
+    creator: null,
+    title: 'Share your waifu',
+    forum: null, // b
+  },
+  {
+    creator: null,
+    title: '10 reasons why to try Tide pods today',
+    forum: null, // b
+  }];
+
+const allianceThreads = [{
+  creator: null,
+  title: '',
+  forum: null,
+  allianceThread: true,
+  alliance: null,
+}, {
+  creator: null,
+  title: '',
+  forum: null,
+  allianceThread: true,
+  alliance: null,
+}];
 
 ForumThread.deleteMany()
-  .then(() => getCreator())
+  .then(() => getAdminandForums())
   .then(() => {
     threads.forEach((t) => {
       t.creator = admin._id;

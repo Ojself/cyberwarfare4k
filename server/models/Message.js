@@ -24,4 +24,5 @@ messageSchema.methods.readMe = function () {
   this.save();
 };
 
+
 module.exports = mongoose.model('Message', messageSchema);

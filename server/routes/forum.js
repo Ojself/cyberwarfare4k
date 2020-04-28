@@ -2,10 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/User');
-/* const Forum = require('../models/Forum'); */
+const Forum = require('../models/Forum');
+const ForumThread = require('../models/ForumThread');
+const ForumComment = require('../models/ForumComment');
 
 /* not pretty, refactor this */
-function checkForumPostCriteria(comment) {
+function checkCommentPostCriteria(comment) {
   if (comment.length > 250) {
     return 'Your post is too long..';
   }
@@ -18,15 +20,61 @@ function checkForumPostCriteria(comment) {
     return 'no need for your script tags here..';
   }
 
-  /* if (idChecker) {
-    if (!userId.toString() === commentId.toString()) {
-      return 'You can\'t do changes to other posts but your own.';
-    }
-  } */
+
   return null;
 }
 
+// gets forums and threads
 router.get('/', async (req, res) => {
+  let forums;
+  let threads;
+
+  try {
+    forums = await Forum.find();
+    threads = await ForumThread.find();
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: `error: ${JSON.stringify(e)}`,
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+  });
+});
+
+// gets comments of certain thread
+router.get('/:thread', async (req, res) => {
+  const forums = await Forum.find().populate('userId', 'name');
+  return res.status(200).json({
+    success: true,
+    message: 'Forums loaded....',
+    forums,
+  });
+});
+
+// create thread
+router.post('/', async (req, res) => {
+  const userId = req.user._id;
+  return res.status(200).json({
+    success: true,
+    message: 'Your thread has been posted',
+  });
+});
+
+// deletes thread
+router.delete('/', async (req, res) => {
+  const userId = req.user._id;
+
+  return res.status(200).json({
+    success: true,
+    message: 'thread deleted',
+  });
+});
+
+// gets comments
+router.get('/:thread', async (req, res) => {
   const forums = await Forum.find().populate('userId', 'name');
   return res.status(200).json({
     success: true,
@@ -35,13 +83,14 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+// create comment
+router.post('/:thread', async (req, res) => {
   const userId = req.user._id;
   const user = User.findById(userId);
   const { comment } = req.body;
   const now = new Date();
 
-  const message = checkForumPostCriteria(comment, user);
+  const message = checkCommentPostCriteria(comment);
 
   if (message) {
     return res.status(400).json({
@@ -64,7 +113,7 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/:thread', async (req, res) => {
   const userId = req.user._id;
   const { commentId } = req.body;
   const forumPost = await Forum.findById(commentId);
@@ -86,7 +135,7 @@ router.delete('/', async (req, res) => {
   });
 });
 
-router.patch('/', async (req, res) => {
+router.patch('/:thread', async (req, res) => {
   // const userId = req.user._id;
   const userId = '5d6591fa87b7cfdc1b2c39a0';
   const { commentId, comment } = req.body;
