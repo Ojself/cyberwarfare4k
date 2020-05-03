@@ -17,19 +17,37 @@ const getUsersAndThreads = async () => {
 };
 
 const generateRandomText = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-const randomBool = () => Math.random() > 0.75;
+const randomBool = (x = 0.5) => Math.random() > x;
+const getCommentLikes = () => {
+  if (randomBool()) {
+    return [];
+  }
+  const usersWhoLiked = [];
+  const likeLimit = Math.floor(Math.random() * 8);
+  for (let i = 0; i < likeLimit; i += 1) {
+    usersWhoLiked.push(users[Math.floor(Math.random() * users.length)]._id);
+  }
+  return usersWhoLiked;
+};
+const getRandomDate = () => {
+  const now = Date.now() - Math.floor(Math.random() * 1000 * 60 * 60 * 24 * 7 * 4);
+  return new Date(now);
+};
 
 const comments = [];
 
 ForumComment.deleteMany()
   .then(() => getUsersAndThreads())
   .then(() => {
-    for (let i = 0; i < 30; i += 1) {
+    for (let i = 0; i < 100; i += 1) {
       comments.push({
         userId: users[Math.floor(Math.random() * users.length)]._id,
         comment: generateRandomText(),
         forumThread: threads[Math.floor(Math.random() * threads.length)]._id,
-        edited: randomBool(),
+        edited: randomBool(0.75),
+        deleted: randomBool(0.95),
+        likes: getCommentLikes(),
+        createdAt: getRandomDate(),
       });
     }
   })

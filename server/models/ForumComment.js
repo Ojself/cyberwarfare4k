@@ -5,10 +5,7 @@ const { Schema } = mongoose;
 const forumCommentSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   comment: { type: String, required: true },
-  initialComment: {
-    type: Boolean,
-    default: false,
-  },
+
   forumThread: { type: Schema.Types.ObjectId, ref: 'ForumThread', required: true },
   edited: {
     type: Boolean,

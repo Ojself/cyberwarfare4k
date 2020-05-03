@@ -138,7 +138,7 @@ Forum.deleteMany()
   })
   .then(() => {
     forums.forEach((f) => {
-      f.creator = user._id;
+      f.creator = '5ea717d8b3e02b1e635f897c';
       allForums.push(f);
     });
   })

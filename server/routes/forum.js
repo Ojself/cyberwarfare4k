@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 const User = require('../models/User');
@@ -19,19 +20,18 @@ function checkCommentPostCriteria(comment) {
   if (comment.toLowerCase().includes('script>')) {
     return 'no need for your script tags here..';
   }
-
-
   return null;
 }
 
-// gets forums and threads
+// gets forums and thread count
 router.get('/', async (req, res) => {
   let forums;
   let threads;
 
+
   try {
-    forums = await Forum.find();
-    threads = await ForumThread.find();
+    forums = await Forum.find({ allianceForum: false }).lean();
+    threads = await ForumThread.find({ allianceThread: false }).lean();
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -39,8 +39,11 @@ router.get('/', async (req, res) => {
     });
   }
 
+
   return res.status(200).json({
     success: true,
+    forums,
+    threads,
   });
 });
 
