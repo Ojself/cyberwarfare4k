@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const forumCommentSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  creator: { type: Schema.Types.ObjectId, ref: 'User' },
   comment: { type: String, required: true },
 
   forumThread: { type: Schema.Types.ObjectId, ref: 'ForumThread', required: true },
@@ -24,9 +24,9 @@ const forumCommentSchema = new Schema({
   },
 });
 
-forumCommentSchema.methods.editComment = function (comment) {
-  console.log('forumpost editPost triggered', comment);
-  this.comment = comment;
+forumCommentSchema.methods.editComment = function (newComment) {
+  console.log('forumpost editPost triggered', newComment);
+  this.comment = newComment;
   this.edited = true;
   this.save();
 };
@@ -38,7 +38,7 @@ forumCommentSchema.methods.deleteComment = function () {
 };
 
 forumCommentSchema.methods.addRemoveLike = function (userId) {
-  console.log(addRemoveLike, 'addRemoveLike');
+  console.log(userId, 'addRemoveLike');
   const index = this.likes.indexOf(userId);
   if (index !== -1) {
     this.likes.splice(index, 1);

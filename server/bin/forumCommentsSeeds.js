@@ -41,7 +41,7 @@ ForumComment.deleteMany()
   .then(() => {
     for (let i = 0; i < 100; i += 1) {
       comments.push({
-        userId: users[Math.floor(Math.random() * users.length)]._id,
+        creator: users[Math.floor(Math.random() * users.length)]._id,
         comment: generateRandomText(),
         forumThread: threads[Math.floor(Math.random() * threads.length)]._id,
         edited: randomBool(0.75),

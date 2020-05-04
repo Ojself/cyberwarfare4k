@@ -10,3 +10,6 @@ todo, make a file that runs all the seeds in this order:
 8. datacenters
 9. user
 10. message
+11. forum
+12. forumThreads
+13. forumComments

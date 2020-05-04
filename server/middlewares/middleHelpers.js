@@ -90,6 +90,16 @@ function nullifyValues(obj, valuesArray) {
   return obj;
 }
 
+
+// Removes blanks from an object
+function removeBlankValuesFromObject(obj) {
+  for (const propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+}
+
 module.exports = {
   checkFunds,
   stashDropChance,
@@ -100,4 +110,5 @@ module.exports = {
   checkOccuranceLimit,
   checkSameValue,
   nullifyValues,
+  removeBlankValuesFromObject,
 };
