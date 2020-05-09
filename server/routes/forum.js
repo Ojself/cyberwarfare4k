@@ -7,6 +7,9 @@ const ForumThread = require('../models/ForumThread');
 const ForumComment = require('../models/ForumComment');
 
 const { removeBlankValuesFromObject } = require('../middlewares/middleHelpers');
+const {
+  putOriginalCommentFirst, checkCommentPostCriteria, checkCommentDeleteCriteria, checkCommentEditCriteria,
+} = require('../middlewares/middleForum');
 
 /* TODO:
 fix routes, no need for params in .patch,post,delete
@@ -16,47 +19,6 @@ finish routes for creating,editing and deleting forums and threads
 
 */
 
-
-// put in helper
-
-
-// to ensure newest comments ontop, except the orignal comment
-function putOriginalCommentFirst(comments) {
-  if (!Array.isArray(comments) || comments.length < 1) {
-    return;
-  }
-  comments.unshift(comments.pop(comments[comments.length - 1]));
-}
-
-/* not pretty, refactor this */
-function checkCommentPostCriteria(comment) {
-  if (comment.length > 250) {
-    return 'Your post is too long..';
-  }
-
-  if (comment.length < 2) {
-    return 'Your post is too short..';
-  }
-
-  if (comment.toLowerCase().includes('script>')) {
-    return 'no need for your script tags here..';
-  }
-  return null;
-}
-
-function checkCommentDeleteCriteria(comment, userId) {
-  if (JSON.stringify(comment.creator) !== JSON.stringify(userId)) {
-    return 'You can only delete your own comments..';
-  }
-  return null;
-}
-
-function checkCommentEditCriteria(newComment, comment, userId) {
-  if (JSON.stringify(comment.creator) !== JSON.stringify(userId)) {
-    return 'You can only edit your own comments..';
-  }
-  return checkCommentPostCriteria(newComment);
-}
 
 // gets forums and thread count
 router.get('/', async (req, res) => {
@@ -90,55 +52,13 @@ router.get('/', async (req, res) => {
   });
 });
 
-/*
-router.get('/:forumId', async (req, res) => {
-  const { forumId } = req.params;
-  // 5eaef284408c92c9660c7edc
-  let threads;
-  let comments;
-  const commentCount = {};
-
-  try {
-    threads = await ForumThread
-      .find({ forum: forumId }, { allianceThread: false })
-      .lean()
-      .populate('creator', 'name')
-      .populate('forum', 'title');
-    comments = await ForumComment.find().lean();
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: `error: ${JSON.stringify(e)}`,
-    });
-  }
-
-
-  threads.forEach((t) => {
-    commentCount[t._id] = 0;
-  });
-  comments.forEach((c) => {
-    commentCount[c.forumThread] += 1;
-  });
-
-  removeBlankValuesFromObject(commentCount);
-
-  return res.status(200).json({
-    success: true,
-    message: 'Forumthreads loaded..',
-    threads,
-    commentCount,
-
-  });
-}); */
-
 router.get('/thread', async (req, res) => {
   const { forumId } = req.body;
-  // 5eaef284408c92c9660c7edc
+
   let threads;
   let comments;
   const commentCount = {};
 
-  // todo, find query is wrong syntax
   try {
     threads = await ForumThread
       .find({ forum: forumId, allianceThread: false })
@@ -153,7 +73,6 @@ router.get('/thread', async (req, res) => {
     });
   }
 
-
   threads.forEach((t) => {
     commentCount[t._id] = 0;
   });
@@ -168,7 +87,6 @@ router.get('/thread', async (req, res) => {
     message: 'Forumthreads loaded..',
     threads,
     commentCount,
-
   });
 });
 

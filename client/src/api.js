@@ -326,4 +326,11 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+
+  getForums() {
+    return service
+      .get("./forum")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
 };

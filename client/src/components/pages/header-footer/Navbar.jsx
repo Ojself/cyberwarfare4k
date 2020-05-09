@@ -124,7 +124,7 @@ const NavbarComp = (props) => {
                     <DropdownItem divider />
                   </>
                 )}
-                <DropdownItem>Public Forum</DropdownItem>
+                <DropdownItem href="/forum">Public Forum</DropdownItem>
                 <DropdownItem
                   style={{
                     color: checkInbox("messages") ? "red" : null,

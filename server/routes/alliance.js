@@ -62,9 +62,18 @@ router.get('/ladder', async (req, res) => {
 router.post('/create', async (req, res) => {
   const userId = req.user_id;
   const { allianceChoise } = req.body;
+  let alliance;
+  let user;
 
-  const user = await User.findById(userId);
-  const alliance = await Alliance.findOne({ name: allianceChoise });
+  try {
+    alliance = await Alliance.findOne({ name: allianceChoise });
+    user = await User.findById(userId);
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: `error: ${JSON.stringify(e)}`,
+    });
+  }
 
   const message = checkCreateAllianceCriteria(user, alliance);
 
@@ -103,6 +112,16 @@ router.post('/invite', async (req, res) => {
     success: true,
     message: `invitation sent to ${player.name}`,
   });
+});
+
+router.get('/test', async (req, res) => {
+  // const userId = req.user._id;
+  // const user = await User.findById(userId);
+
+
+  const alliances = await Alliance.find({});
+
+  alliances[0].kickMember();
 });
 
 // router.delete('/unInvite', async (req, res) => {

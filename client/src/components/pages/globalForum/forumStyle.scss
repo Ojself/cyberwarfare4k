@@ -1,0 +1,21 @@
+.forumComponentWrapper {
+  background-color: grey;
+  display: flex;
+  flex-direction: row;
+
+  margin: 5px;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  .threadCount {
+    font-size: 1.5vmin;
+  }
+  .infoWrapper {
+    max-width: 50%;
+  }
+  .createdWrapper {
+    text-align: right;
+    margin-left: auto;
+  }
+}

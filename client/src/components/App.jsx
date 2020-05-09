@@ -8,6 +8,7 @@ import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
+import Forum from "./pages/globalForum/Forum";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
@@ -40,7 +41,7 @@ const App = (props) => {
 
   useEffect(async () => {
     const apiUser = await api.getUser();
-    console.log(apiUser, "apiuser");
+
     SetAppState({
       ...appState,
       user: apiUser.user,
@@ -148,7 +149,12 @@ const App = (props) => {
               />
             )}
           />
-
+          <Route
+            path="/forum"
+            render={() => (
+              <Forum loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/notifications" component={Notifications} />
           <Route render={() => <h2>404</h2>} />
         </Switch>

@@ -127,7 +127,7 @@ const Ladder = () => {
   };
 
   return (
-    <div className="page-container ">
+    <div className="page-container">
       <h2>Ladder</h2>
       <Table className="content" striped dark>
         <thead>

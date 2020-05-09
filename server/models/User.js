@@ -64,20 +64,6 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Alliance',
     },
-    allianceRole: {
-      type: String,
-      enum: [
-        'Boss',
-        'CTO',
-        'Analyst',
-        'Lead0',
-        'Lead1',
-        'Code Monkey0',
-        'Code Monkey1',
-        '',
-      ],
-      default: '',
-    },
 
     hackSkill: {
       CPU: {
