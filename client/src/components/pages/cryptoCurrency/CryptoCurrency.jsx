@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./cryptoStyle.scss";
 import {
   UncontrolledTooltip,
   InputGroup,
@@ -27,16 +28,19 @@ const CryptoCurrencies = (props) => {
   });
 
   useEffect(() => {
-    api.getCrypto().then((result) => {
-      const massagedCurrency = result.currency.map((el) => dataMassager(el));
+    async function fetchCryptoData() {
+      api.getCrypto().then((result) => {
+        const massagedCurrency = result.currency.map((el) => dataMassager(el));
 
-      setCryptoState({
-        ...cryptoState,
-        currencies: result.currency,
-        massagedCurrency,
-        loading: false,
+        setCryptoState({
+          ...cryptoState,
+          currencies: result.currency,
+          massagedCurrency,
+          loading: false,
+        });
       });
-    });
+    }
+    fetchCryptoData();
   }, []);
 
   const dataMassager = (apiData) => {
@@ -201,10 +205,40 @@ const CryptoCurrencies = (props) => {
 
           {/* Charts */}
           {/* possible issue is length of ccc array */}
-
-          {cryptoState.massagedCurrency.map((c, i) => {
-            return <CryptoCurrenciesChart data={[c]} />;
-          })}
+          <div className="chartsRow text-dark">
+            <div className="chartContainer">
+              <CryptoCurrenciesChart
+                key={0}
+                data={[cryptoState.massagedCurrency[0]]}
+              />
+            </div>
+            <div className="chartContainer ">
+              <CryptoCurrenciesChart
+                key={1}
+                data={[cryptoState.massagedCurrency[1]]}
+              />
+            </div>
+            <div className="chartContainer">
+              <CryptoCurrenciesChart
+                key={2}
+                data={[cryptoState.massagedCurrency[2]]}
+              />
+            </div>
+          </div>
+          <div className="chartsRow">
+            <div className="chartContainer">
+              <CryptoCurrenciesChart
+                key={3}
+                data={[cryptoState.massagedCurrency[3]]}
+              />
+            </div>
+            <div className="chartContainer">
+              <CryptoCurrenciesChart
+                key={4}
+                data={[cryptoState.massagedCurrency[4]]}
+              />
+            </div>
+          </div>
         </>
       )}
     </div>

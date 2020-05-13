@@ -9,6 +9,8 @@ import CreateHacker from "./pages/createHacker/CreateHacker";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
 import Forum from "./pages/globalForum/Forum";
+import ForumOverview from "./pages/globalForum/ForumOverview";
+import ForumThread from "./pages/globalForum/ForumThread";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
@@ -40,14 +42,17 @@ const App = (props) => {
   });
 
   useEffect(async () => {
-    const apiUser = await api.getUser();
+    async function fetchUserData() {
+      const apiUser = await api.getUser();
 
-    SetAppState({
-      ...appState,
-      user: apiUser.user,
-      messages: apiUser.messages,
-      loading: false,
-    });
+      SetAppState({
+        ...appState,
+        user: apiUser.user,
+        messages: apiUser.messages,
+        loading: false,
+      });
+    }
+    fetchUserData();
   }, []);
 
   const setUser = (user) => {
@@ -96,6 +101,17 @@ const App = (props) => {
             )}
           />
           <Route path="/datacenters" component={DataCenters} />
+          <Route
+            path="/forum/:forumId/:threadId"
+            render={() => <ForumThread />}
+          />
+          <Route path="/forum/:forumId" render={() => <Forum />} />
+          <Route
+            path="/forum"
+            render={() => (
+              <ForumOverview loading={appState.loading} user={appState.user} />
+            )}
+          />
           <Route path="/hack-crimes" component={HackCrimes} />
           <Route path="/hack-player" component={HackPlayer} />
           <Route path="/hacker/:id" component={HackerProfile} />
@@ -149,12 +165,7 @@ const App = (props) => {
               />
             )}
           />
-          <Route
-            path="/forum"
-            render={() => (
-              <Forum loading={appState.loading} user={appState.user} />
-            )}
-          />
+
           <Route path="/notifications" component={Notifications} />
           <Route render={() => <h2>404</h2>} />
         </Switch>

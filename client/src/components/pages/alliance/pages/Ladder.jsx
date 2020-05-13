@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table, NavLink, Button } from "reactstrap";
+import { Table } from "reactstrap";
+import { Link } from "react-router-dom";
 import api from "../../../../api";
 /* todo styling */
 const Ladder = () => {
@@ -154,9 +155,7 @@ const Ladder = () => {
           {ladderState.alliances.map((alliance) => (
             <tr key={alliance._id}>
               <th scope="row">
-                <NavLink href={`/alliance/${alliance._id}`}>
-                  {alliance.name}
-                </NavLink>
+                <Link to={`/alliance/${alliance._id}`}>{alliance.name}</Link>
               </th>
 
               <td>{alliance.members}</td>

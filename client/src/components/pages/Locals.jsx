@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
-
-import { Table, NavLink } from "reactstrap";
+import { Link } from "react-router-dom";
+import { Table } from "reactstrap";
 import api from "../../api";
 /* todo, fix right online status. probably time difference between db and node */
 /* indicate online status */
@@ -60,12 +60,12 @@ const Locals = (props) => {
             : localState.cityLocals.residents.map((user, i) => (
                 <tr key={user._id}>
                   <th scope="row">
-                    <NavLink href={`/hacker/${user._id}`}>
+                    <Link to={`/hacker/${user._id}`}>
                       {checkIfOnline(user._id) && (
                         <FontAwesomeIcon icon={faWifi} />
                       )}{" "}
                       {user.name}
-                    </NavLink>
+                    </Link>
                   </th>
 
                   <td>{user.playerStats.rankName}</td>

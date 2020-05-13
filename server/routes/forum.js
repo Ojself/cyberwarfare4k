@@ -52,8 +52,8 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.get('/thread', async (req, res) => {
-  const { forumId } = req.body;
+router.get('/:forumId', async (req, res) => {
+  const { forumId } = req.params;
 
   let threads;
   let comments;
@@ -93,8 +93,8 @@ router.get('/thread', async (req, res) => {
 
 // Gets comments
 // security issue. will be available for everyone if someone knows the objectId of thread
-router.get('/thread/comment', async (req, res) => {
-  const { threadId } = req.body;
+router.get('/thread/:threadId', async (req, res) => {
+  const { threadId } = req.params;
 
   let comments;
   try {
@@ -102,7 +102,7 @@ router.get('/thread/comment', async (req, res) => {
       .find({ forumThread: threadId, deleted: false })
       .lean()
       .sort({ createdAt: -1 })
-      .populate('creator', 'name')
+      .populate('creator', ['name', 'account.avatar'])
       .populate('forumThread', 'title')
       .populate('likes', 'name');
   } catch (e) {

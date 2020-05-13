@@ -3,13 +3,14 @@ import ForumComponent from "./ForumComponent";
 
 const CategoryComponent = (props) => {
   return (
-    <div className="content text-left">
+    <div className="categoryComponent">
       <h2 style={{ textTransform: "capitalize" }}>{props.category}</h2>
 
-      {props.forums.map((f) => {
-        console.log(f, "fs");
+      {props.forums.map((f, i) => {
         return (
           <ForumComponent
+            key={i}
+            id={f._id}
             description={f.description}
             threadCount={f.threadCount}
             createdAt={f.createdAt}

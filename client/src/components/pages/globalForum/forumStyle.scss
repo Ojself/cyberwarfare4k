@@ -1,21 +1,50 @@
+.categoryComponent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 3%;
+  padding-top: 2%;
+  padding-bottom: 3%;
+  text-align: left;
+
+  background-color: darkslategrey;
+  border-radius: 25px;
+}
+
 .forumComponentWrapper {
   background-color: grey;
   display: flex;
-  flex-direction: row;
-
   margin: 5px;
+  width: 85%;
+  border-radius: 15px;
+  .logoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 10%;
+  }
   img {
     width: 50px;
-    height: 50px;
+    height: auto;
+  }
+  .forumTitle {
+    margin-bottom: 0;
   }
   .threadCount {
-    font-size: 1.5vmin;
+    font-size: 1.3vmin;
   }
   .infoWrapper {
     max-width: 50%;
   }
   .createdWrapper {
+    display: flex;
+    flex-direction: column;
     text-align: right;
     margin-left: auto;
+    justify-content: space-around;
+    font-size: 1.5vmin;
   }
 }

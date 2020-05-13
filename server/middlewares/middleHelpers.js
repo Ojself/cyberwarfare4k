@@ -94,7 +94,7 @@ function nullifyValues(obj, valuesArray) {
 // Removes blanks from an object
 function removeBlankValuesFromObject(obj) {
   for (const propName in obj) {
-    if (obj[propName] === null || obj[propName] === undefined) {
+    if (obj[propName] === null || obj[propName] === undefined || isNaN(obj[propName])) {
       delete obj[propName];
     }
   }

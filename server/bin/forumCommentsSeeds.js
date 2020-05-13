@@ -39,7 +39,7 @@ const comments = [];
 ForumComment.deleteMany()
   .then(() => getUsersAndThreads())
   .then(() => {
-    for (let i = 0; i < 100; i += 1) {
+    for (let i = 0; i < 200; i += 1) {
       comments.push({
         creator: users[Math.floor(Math.random() * users.length)]._id,
         comment: generateRandomText(),
@@ -47,7 +47,7 @@ ForumComment.deleteMany()
         edited: randomBool(0.75),
         deleted: randomBool(0.95),
         likes: getCommentLikes(),
-        createdAt: getRandomDate(),
+        updatedAt: getRandomDate(),
       });
     }
   })

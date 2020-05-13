@@ -2,15 +2,23 @@ import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import Select from "react-select";
 import images from "../_helpers/images.js";
+import "./createStyle.scss";
 
 import {
   Form,
   FormGroup,
   Label,
   Input,
-  FormFeedback,
   Button,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  Col,
 } from "reactstrap";
+import classnames from "classnames";
 
 const CreateHacker = (props) => {
   const [createState, setCreateState] = useState({
@@ -19,8 +27,14 @@ const CreateHacker = (props) => {
     selectedAvatar: null,
     name: null,
   });
+  const [activeTab, setActiveTab] = useState("1");
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab);
+  };
 
   useEffect(() => {
+    setActiveTab(Math.ceil(Math.random() * 8) + "");
     redirectToCorrectPage().then((result) => {});
   }, []);
 
@@ -41,7 +55,6 @@ const CreateHacker = (props) => {
   };
 
   //todo, create something that handles invalid name
-  //todo, check statpoints
 
   const handleSelectChange = (selectedCity) => {
     setCreateState({ ...createState, selectedCity });
@@ -56,6 +69,7 @@ const CreateHacker = (props) => {
   };
 
   const selectAvatar = (e) => {
+    console.log(e.target);
     let avatar = e.target.name || null;
     if (createState.selectedAvatar === avatar) {
       avatar = null;
@@ -85,6 +99,15 @@ const CreateHacker = (props) => {
       );
   };
 
+  const createButtonEnabled = () => {
+    return (
+      !createState.selectedAvatar ||
+      !createState.selectedCity ||
+      !createState.name ||
+      createState.name.length < 3
+    );
+  };
+
   const cities = [
     { value: "Phoenix", label: "Phoenix" },
     { value: "Hanoi", label: "Hanoi" },
@@ -92,9 +115,68 @@ const CreateHacker = (props) => {
     { value: "Novosibirsk", label: "Novosibirsk" },
     { value: "Shanghai", label: "Shanghai" },
   ];
+  const avatarCategories = [
+    "Catz",
+    "irl",
+    "Matrix",
+    "Waifu",
+    "NCIS",
+    "Misc",
+    "Mr. Robot",
+    "Anon",
+  ];
+  const avatarTabs = (
+    <div>
+      <Nav className="justify-content-center" tabs>
+        {avatarCategories.map((a, i) => {
+          return (
+            <NavItem>
+              <NavLink
+                className={classnames({
+                  active: activeTab === i + 1 + "",
+                })}
+                onClick={() => {
+                  toggle(i + 1 + "");
+                }}
+              >
+                {a}
+              </NavLink>
+            </NavItem>
+          );
+        })}
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        {avatarCategories.map((tabContent, i) => {
+          return (
+            <TabPane tabId={i + 1 + ""}>
+              <Row>
+                <Col>
+                  <h4>{tabContent}</h4>
+                  {images.playerAvatars[i].map((a, i) => (
+                    <img
+                      key={a.src}
+                      name={a.src}
+                      onClick={selectAvatar}
+                      className={
+                        createState.selectedAvatar === a.src
+                          ? "selectedAvatarImage m-4 "
+                          : "avatarSelectImages m-4"
+                      }
+                      src={a.src}
+                      alt={a.title}
+                    />
+                  ))}
+                </Col>
+              </Row>
+            </TabPane>
+          );
+        })}
+      </TabContent>
+    </div>
+  );
 
   return (
-    <div style={{ marginTop: "-100px" }} className="page-container">
+    <div className="page-container">
       {
         <div className="content">
           <div className="">
@@ -112,13 +194,6 @@ const CreateHacker = (props) => {
                   onChange={handleInputChange}
                   placeholder="Name"
                 />
-                <FormFeedback invalid>
-                  Your character name requires
-                </FormFeedback>
-                <FormFeedback invalid>- more than 3 characters</FormFeedback>
-                <FormFeedback invalid>
-                  - not more than 15 characters
-                </FormFeedback>
               </FormGroup>
             </Form>
           </div>
@@ -135,28 +210,14 @@ const CreateHacker = (props) => {
           </div>
 
           <h3>Select Your Avatar</h3>
-          <div className="d-flex justify-content-center flex-wrap">
-            {images.playerAvatars.map((el, i) => (
-              <img
-                key={el.src}
-                name={el.src}
-                onClick={selectAvatar}
-                className={
-                  createState.selectedAvatar === el.src
-                    ? "avatarSelectImages m-4 active"
-                    : "avatarSelectImages m-4"
-                }
-                src={el.src}
-                alt={el.title}
-              />
-            ))}
+          <div
+            style={{ margin: "0 auto", width: "65%" }}
+            className="d-flex justify-content-center flex-wrap"
+          >
+            {avatarTabs}
           </div>
           <Button
-            disabled={
-              !createState.selectedAvatar ||
-              !createState.selectedCity ||
-              !createState.name
-            }
+            disabled={createButtonEnabled()}
             className="m-5 p-3"
             onClick={handleCreate}
             color="primary"

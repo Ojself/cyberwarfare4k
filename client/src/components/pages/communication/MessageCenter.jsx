@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import api from "../../../api";
 import Typist from "react-typist";
+import { Link } from "react-router-dom";
 import {
   Form,
   FormGroup,
@@ -158,45 +159,46 @@ const MessageCenter = (props) => {
             <Row>
               <Col>
                 <ListGroup>
-                  {props.loading
-                    ? "loading.."
-                    : props.messages.inbox.map((m, i) => {
-                        const name = m.from.name;
-                        const id = m.from._id;
-                        const date = m.dateSent;
-                        const read = m.read;
-                        const message = m.text;
+                  {props.loading ? (
+                    "loading.."
+                  ) : props.messages.inbox.length ? (
+                    props.messages.inbox.map((m, i) => {
+                      const name = m.from.name;
+                      const id = m.from._id;
+                      const date = m.dateSent;
+                      const read = m.read;
+                      const message = m.text;
 
-                        const inboxClass = read
-                          ? "mt-2 text-dark"
-                          : "mt-2 text-light";
+                      const inboxClass = read
+                        ? "mt-2 text-dark"
+                        : "mt-2 text-light";
 
-                        return (
-                          <ListGroupItem
-                            className={inboxClass}
-                            active={!read}
-                            key={i}
+                      return (
+                        <ListGroupItem
+                          className={inboxClass}
+                          active={!read}
+                          key={i}
+                        >
+                          <ListGroupItemHeading>
+                            From:{" "}
+                            <Link className={inboxClass} to={`/hacker/${id}`}>
+                              {name}
+                            </Link>
+                          </ListGroupItemHeading>
+                          <ListGroupItemText>{`${date}: ${message}`}</ListGroupItemText>
+                          <Button
+                            onClick={() => {
+                              handleReply(name);
+                            }}
                           >
-                            <ListGroupItemHeading>
-                              From:{" "}
-                              <NavLink
-                                className={inboxClass}
-                                href={`/hacker/${id}`}
-                              >
-                                {name}
-                              </NavLink>
-                            </ListGroupItemHeading>
-                            <ListGroupItemText>{`${date}: ${message}`}</ListGroupItemText>
-                            <Button
-                              onClick={() => {
-                                handleReply(name);
-                              }}
-                            >
-                              Reply
-                            </Button>
-                          </ListGroupItem>
-                        );
-                      })}
+                            Reply
+                          </Button>
+                        </ListGroupItem>
+                      );
+                    })
+                  ) : (
+                    <p>Your inbox is empty</p>
+                  )}
                 </ListGroup>
               </Col>
             </Row>
@@ -216,8 +218,7 @@ const MessageCenter = (props) => {
                         return (
                           <ListGroupItem className="mt-2" key={i}>
                             <ListGroupItemHeading className="text-dark">
-                              To:{" "}
-                              {<NavLink href={`/hacker/${id}`}>{name}</NavLink>}
+                              To: {<Link to={`/hacker/${id}`}>{name}</Link>}
                             </ListGroupItemHeading>
                             <ListGroupItemText className="text-dark">
                               {`${date}: ${message}`}

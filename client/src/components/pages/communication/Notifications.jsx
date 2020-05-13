@@ -7,8 +7,11 @@ const Notification = () => {
   }, []);
 
   return (
-    <div>
+    <div className="page-container">
       <h2>Notification</h2>
+      <div className="content">
+        <h6>Content</h6>
+      </div>
     </div>
   );
 };

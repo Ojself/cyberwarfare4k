@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 import Select from "react-select";
-
+import { Link } from "react-router-dom";
 import {
   Button,
   Form,
@@ -9,7 +9,6 @@ import {
   Input,
   InputGroupAddon,
   InputGroupText,
-  NavLink,
   PopoverBody,
   Table,
   UncontrolledPopover,
@@ -41,16 +40,19 @@ const WantedList = () => {
     });
   };
 
-  useEffect(async () => {
-    const apiWantedUsers = await api.getWantedUsers();
-    const massagedUser = dataMassagerForSelectComponent(apiWantedUsers.users);
-    setWantedState({
-      ...wantedState,
-      users: massagedUser,
-      bountyUsers: apiWantedUsers.bountyUsers,
-      message: apiWantedUsers.message,
-      loading: false,
-    });
+  useEffect(() => {
+    async function fetchWantedUsers() {
+      const apiWantedUsers = await api.getWantedUsers();
+      const massagedUser = dataMassagerForSelectComponent(apiWantedUsers.users);
+      setWantedState({
+        ...wantedState,
+        users: massagedUser,
+        bountyUsers: apiWantedUsers.bountyUsers,
+        message: apiWantedUsers.message,
+        loading: false,
+      });
+    }
+    fetchWantedUsers();
   }, []);
 
   /* todo, this is being used many times */
@@ -161,13 +163,13 @@ const WantedList = () => {
         {wantedState.bountyUsers.map((user, i) => (
           <tr key={user._id}>
             <th scope="row">
-              <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
+              <Link to={`/hacker/${user._id}`}>{user.name}</Link>
             </th>
             <td>
               {user.alliance && (
-                <NavLink href={`/alliance/${user.alliance._id}`}>
+                <Link to={`/alliance/${user.alliance._id}`}>
                   {user.alliance.name}
-                </NavLink>
+                </Link>
               )}
             </td>
             <td>{user.playerStats.rankName}</td>
@@ -181,15 +183,19 @@ const WantedList = () => {
               >
                 <PopoverBody>
                   {user.playerStats.bountyDonors.map((d, j) => (
-                    <NavLink key={j} href={`/hacker/${d._id}`}>
+                    /* needs styling so it's an actual list */
+                    <Link key={j} to={`/hacker/${d._id}`}>
                       {d.name}
-                    </NavLink>
+                    </Link>
                   ))}
                 </PopoverBody>
               </UncontrolledPopover>
             </td>
 
-            <td>{user.playerStats.bounty}</td>
+            <td className="text-right">
+              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              {user.playerStats.bounty}
+            </td>
             <td>
               <InputGroup>
                 <Input

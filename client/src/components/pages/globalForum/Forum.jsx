@@ -1,59 +1,94 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import ForumComponent from "./molecules/ForumComponent";
 import api from "../../../api";
-import CategoryComponent from "./molecules/CategoryComponent";
-import "./forumStyle.scss";
 
-const Forum = (props) => {
-  const [forumState, setforumState] = useState({
+const SingleForum = (props) => {
+  const [singleForumState, setsingleForumState] = useState({
     loading: true,
-    forums: [],
+    forumName: "Forum",
+    threads: [],
   });
 
-  useEffect(async () => {
-    const apiResponse = await api.getForums();
+  const forumId = window.location.pathname.match(/[a-f\d]{24}$/);
+  useEffect(() => {
+    async function fetchSingleForumData(forumId) {
+      const apiResponse = await api.getThreads(forumId);
+      console.log(apiResponse, "response");
+      const forumName = apiResponse.threads[0].forum.title
+        ? apiResponse.threads[0].forum.title
+        : "Forum";
+      const threads = apiResponse.threads;
 
-    const forums = forumDataMassager(
-      apiResponse.forums,
-      apiResponse.threadCount
-    );
-    setforumState({
-      ...forumState,
-      forums: forums,
-      loading: false,
-    });
+      threads.forEach((t) => {
+        t.commentCount = apiResponse.commentCount[t._id];
+      });
+
+      setsingleForumState({
+        ...singleForumState,
+        forumName,
+        threads,
+        loading: false,
+      });
+    }
+
+    fetchSingleForumData(forumId[0]);
   }, []);
 
-  // sorts forums into categories and attach x threads
-  const forumDataMassager = (apiForums, threadCount) => {
-    const forums = {};
-    apiForums.forEach((f) => {
-      if (!forums[f.category]) {
-        forums[f.category] = [];
-      }
-      f.threadCount = threadCount[f._id];
-
-      forums[f.category].push(f);
-    });
-
-    return forums;
-  };
-
-  const forumPage = Object.keys(forumState.forums).map((forum, i) => {
-    // ['administration','general','offtopic']
+  const ThreadComponent = (props) => {
     return (
-      <div key={i}>
-        <CategoryComponent category={forum} forums={forumState.forums[forum]} />
+      <div>
+        <div>
+          <Link to={`/forum/${props.forumId}/${props.id}`}>
+            <h5>{`${props.sticky ? "STICKY: " : ""}${props.title}`}</h5>
+          </Link>
+          <p>
+            <i>{props.commentCount} comments</i>
+          </p>
+        </div>
+        <div>
+          <p>
+            Created by
+            <Link
+              style={{ display: "inline-block", padding: "1vmin" }}
+              to={`/hacker/${props.creator._id}`}
+            >
+              {" " + props.creator.name}
+            </Link>
+          </p>
+          <p>Created at {props.createdAt.toString().slice(0, 10)}</p>
+        </div>
       </div>
     );
-  });
+  };
 
-  console.log(forumState, "forumState");
   return (
     <div className="page-container">
-      <h1>Forum</h1>
-      {forumState.loading ? <p>loading..</p> : forumPage}
+      <h1>{singleForumState.forumName}</h1>
+      <div className="content">
+        {singleForumState.loading ? (
+          <p>loading...</p>
+        ) : (
+          singleForumState.threads.map((t, i) => {
+            console.log(t, "t");
+            return (
+              <ThreadComponent
+                key={i}
+                id={t._id}
+                forumId={t.forum._id}
+                commentCount={t.commentCount}
+                createdAt={t.createdAt}
+                creator={t.creator}
+                title={t.title}
+                sticky={t.sticky}
+                locked={t.locked}
+              />
+            );
+          })
+        )}
+      </div>
     </div>
   );
 };
 
-export default Forum;
+export default SingleForum;

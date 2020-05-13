@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Table, NavLink } from "reactstrap";
+import { Table } from "reactstrap";
 import api from "../../api";
+import { Link } from "react-router-dom";
 
 /* Todo
 styling
@@ -156,13 +157,13 @@ const Ladder = () => {
           {ladderState.users.map((user) => (
             <tr key={user._id}>
               <th scope="row">
-                <NavLink href={`/hacker/${user._id}`}>{user.name}</NavLink>
+                <Link to={`/hacker/${user._id}`}>{user.name}</Link>
               </th>
               <td>
                 {user.alliance ? (
-                  <NavLink href={`/alliance/${user.alliance._id}`}>
+                  <Link to={`/alliance/${user.alliance._id}`}>
                     {user.alliance.name}
-                  </NavLink>
+                  </Link>
                 ) : (
                   "none"
                 )}

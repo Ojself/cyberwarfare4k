@@ -64,12 +64,11 @@ body {
   align-items: center;
 }
 
-/* Ladder.jsx */
-
 .page-container {
   margin: 0 auto;
   margin-top: 3%;
-  height: 100vh;
+  height: 100%;
+  min-height: 60vh;
 
   .content {
     width: 75%;
@@ -165,12 +164,6 @@ body {
       }
     }
   }
-}
-
-.avatarSelectImages {
-  width: 115px;
-  height: 130px;
-  cursor: pointer;
 }
 
 .myprofile-statpoint {

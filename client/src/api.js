@@ -326,10 +326,25 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
-
+  /* FORUM */
+  /* FORUM */
+  /* FORUM */
   getForums() {
     return service
-      .get("./forum")
+      .get("/forum")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  getThreads(forumId) {
+    return service
+      .get(`/forum/${forumId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  getComments(threadId) {
+    return service
+      .get(`/forum/thread/${threadId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
