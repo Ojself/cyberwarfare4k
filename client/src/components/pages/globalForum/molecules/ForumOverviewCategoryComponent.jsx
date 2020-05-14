@@ -1,7 +1,7 @@
 import React from "react";
 import ForumComponent from "./ForumComponent";
 
-const CategoryComponent = (props) => {
+const ForumOverviewCategoryComponent = (props) => {
   return (
     <div className="categoryComponent">
       <h2 style={{ textTransform: "capitalize" }}>{props.category}</h2>
@@ -23,4 +23,4 @@ const CategoryComponent = (props) => {
   );
 };
 
-export default CategoryComponent;
+export default ForumOverviewCategoryComponent;

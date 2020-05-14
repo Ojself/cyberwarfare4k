@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
-import CategoryComponent from "./molecules/CategoryComponent";
+import ForumOverviewCategoryComponent from "./molecules/ForumOverviewCategoryComponent";
 import "./forumStyle.scss";
 
 const ForumOverview = (props) => {
@@ -45,7 +45,7 @@ const ForumOverview = (props) => {
       // ['administration','general','offtopic']
       return (
         <div key={i}>
-          <CategoryComponent
+          <ForumOverviewCategoryComponent
             category={forum}
             forums={forumOverviewState.forums[forum]}
           />

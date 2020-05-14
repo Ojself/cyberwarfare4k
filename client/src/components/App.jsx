@@ -8,7 +8,7 @@ import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
-import Forum from "./pages/globalForum/Forum";
+import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread";
 import HackerProfile from "./pages/HackerProfile";
@@ -105,7 +105,7 @@ const App = (props) => {
             path="/forum/:forumId/:threadId"
             render={() => <ForumThread />}
           />
-          <Route path="/forum/:forumId" render={() => <Forum />} />
+          <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
           <Route
             path="/forum"
             render={() => (

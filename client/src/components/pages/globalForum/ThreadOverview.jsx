@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ForumComponent from "./molecules/ForumComponent";
+
 import api from "../../../api";
 
 const SingleForum = (props) => {

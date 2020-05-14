@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../../api";
-
-import { Button, PopoverBody, UncontrolledPopover } from "reactstrap";
+import dateConverter from "../_helpers";
+import { PopoverBody, UncontrolledPopover, Button } from "reactstrap";
 
 const ForumThread = (props) => {
   const [threadState, setThreadState] = useState({
     loading: true,
-    title: "Thread",
+    threadTitle: "Thread",
+    threadCreatorName: "AdminTor",
+    threadCreatorId: "5e2b267941eacc1d425b35d7",
+    threadCreatedAt: "01 Jan 1970",
+
     comments: [],
   });
 
@@ -15,43 +19,74 @@ const ForumThread = (props) => {
     const likes = JSON.parse(props.likes);
 
     return (
-      <div>
-        <div>
-          <img src={props.creator.account.avatar} alt="Hacker Avatar" />
+      <div className="commentWrapper">
+        <div className="commentInfoLeft">
+          <img
+            className="commentAvatar"
+            src={props.creator.account.avatar}
+            alt="Hacker Avatar"
+          />
           <Link to={`/hacker/${props.creator._id}`}>
-            {/* TODO something wrogn with link */}
+            {/* TODO something wrong with link */}
             <p>{props.creator.name}</p>
           </Link>
         </div>
-        <p>{props.createdAt}</p> {props.edited && <span>edited</span>}
-        <p>{props.comment}</p>
-        {props.edited && (
-          <p>{`Last edited at: ${props.updatedAt.slice(
-            0,
-            10
-          )}:${props.updatedAt.slice(11, 16)}`}</p>
-        )}
-        <span id={`PopoverFocus${props.i}`} type="button">
-          {likes.length}
-        </span>
-        <span>Like{likes.length !== 1 && "s"}</span>
-        <UncontrolledPopover
-          placement="right"
-          target={`PopoverFocus${props.i}`}
-        >
-          <PopoverBody>
-            {likes.map((d, j) => {
-              /* needs styling so it's an actual list */
-              return (
-                <Link key={j} to={`/hacker/${d._id}`}>
-                  {d.name}
-                </Link>
-              );
-            })}
-          </PopoverBody>
-        </UncontrolledPopover>
-        <p>{props.updatedAt}</p>
-        {/* <p>{likes.length && likes}</p> */}
+        <div className="commentSection">
+          <div className="commentInfoTop">
+            <span>
+              {props.createdAt}
+              {props.edited && (
+                <img
+                  src="../../forumIcons/white/baseline_create_white_48dp.png"
+                  alt="Like icon"
+                  title="edited"
+                />
+              )}
+            </span>
+
+            <span>#{props.hash}</span>
+          </div>
+
+          <div className="comment">
+            <p>{props.comment}</p>
+          </div>
+
+          <div className="commentInfoBottom">
+            <div className="likeInformation">
+              <img
+                src="../../forumIcons/white/baseline_thumb_up_white_48dp.png"
+                alt="Like icon"
+                title={`${likes.length} likes`}
+              />
+
+              <span id={`PopoverFocus${props.i}`} type="button">
+                {likes.length}
+              </span>
+              {/* <Button style={{ height: "10px" }} outline color="primary">
+                primary
+              </Button> */}
+
+              <UncontrolledPopover
+                placement="right"
+                target={`PopoverFocus${props.i}`}
+              >
+                <PopoverBody>
+                  {likes.map((d, j) => {
+                    /* needs styling so it's an actual list */
+                    return (
+                      <Link key={j} to={`/hacker/${d._id}`}>
+                        {d.name}
+                      </Link>
+                    );
+                  })}
+                </PopoverBody>
+              </UncontrolledPopover>
+            </div>
+            <div className="lastUpdate">
+              {props.edited && <p>Last updated: {props.updatedAt}</p>}
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -61,12 +96,18 @@ const ForumThread = (props) => {
   useEffect(() => {
     async function fetchData(threadId) {
       const apiResponse = await api.getComments(threadId);
+      const apiComments = apiResponse.comments;
+
+      const threadCreatedAt = dateConverter(apiComments[0].createdAt);
 
       console.log(apiResponse, "response");
       setThreadState({
         ...threadState,
-        comments: apiResponse.comments,
-        title: apiResponse.comments[0].forumThread.title,
+        comments: apiComments,
+        threadTitle: apiComments[0].forumThread.title,
+        threadCreatorName: apiComments[0].creator.name,
+        threadCreatorId: apiComments[0].creator._id,
+        threadCreatedAt,
         loading: false,
       });
     }
@@ -74,30 +115,42 @@ const ForumThread = (props) => {
   }, []);
   return (
     <div className="page-container">
-      <h1>{threadState.title}</h1>
-
       <div className="content">
-        {threadState.loading ? (
-          <p>loading..</p>
-        ) : (
-          threadState.comments.map((c, i) => {
-            return (
-              <div key={i}>
+        <div className="singleThreadTitleWrapper">
+          <div className="singleThreadTitle">
+            <h1>{threadState.threadTitle}</h1>
+          </div>
+          <div className="singleThreadNameDateWrapper">
+            <Link to={`/hacker/${threadState.threadCreatorId}`}>
+              {threadState.threadCreatorName}
+            </Link>
+            <p>{threadState.threadCreatedAt.slice(0, 11)}</p>
+          </div>
+        </div>
+
+        <div className="commentsWrapper">
+          {threadState.loading ? (
+            <p>loading..</p>
+          ) : (
+            threadState.comments.map((c, i) => {
+              return (
                 <CommentComponent
+                  key={i}
                   comment={c.comment}
-                  createdAt={c.createdAt}
-                  updatedAt={c.updatedAt}
+                  createdAt={dateConverter(c.createdAt)}
+                  updatedAt={dateConverter(c.updatedAt)}
                   creator={c.creator}
                   edited={c.edited}
                   likes={JSON.stringify(c.likes)}
                   id={c._id}
                   threadId={c.forumThread._id}
                   i={i}
+                  hash={i === 0 ? 1 : threadState.comments.length + 1 - i}
                 />
-              </div>
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );

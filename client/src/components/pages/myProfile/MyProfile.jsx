@@ -88,7 +88,7 @@ const MyProfile = (props) => {
           <h3>{props.user.name}</h3>
         )}
       </div>
-      <div className=""></div>
+
       <div className="">
         <div>
           <img
