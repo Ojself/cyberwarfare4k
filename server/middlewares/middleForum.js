@@ -7,7 +7,8 @@ function putOriginalCommentFirst(comments) {
 }
 
 /* not pretty, refactor this */
-function checkCommentPostCriteria(comment) {
+function checkCommentPostCriteria(comment, thread, user) {
+  console.log(thread, 'th');
   if (comment.length > 250) {
     return 'Your post is too long..';
   }
@@ -19,6 +20,11 @@ function checkCommentPostCriteria(comment) {
   if (comment.toLowerCase().includes('script>')) {
     return 'no need for your script tags here..';
   }
+  // todo, see if this works.
+  if (thread.allianceThread && JSON.stringify(thread.allianceThread) !== JSON.stringify(user.alliance)) {
+    return 'You don\'t belong to this alliance..';
+  }
+
   return null;
 }
 

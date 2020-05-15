@@ -1,6 +1,5 @@
 const dateConverter = (isoDate) => {
-  console.log(isoDate, "isodate");
-  //2020-04-16T03:41:31.996Z
+  //2020-04-16T03:41:31.996Z <-- input
   isoDate = isoDate.toString();
   const months = {
     "01": "Jan",

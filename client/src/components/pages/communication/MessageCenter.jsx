@@ -244,7 +244,7 @@ const MessageCenter = (props) => {
                     <FormGroup className="text-dark">
                       <Label for="messageText">Message</Label>
                       <Input
-                        maxLength={250} /* .substr(0,250) */
+                        maxLength={250}
                         value={textArea}
                         onChange={handleTextAreaChange}
                         required={true}

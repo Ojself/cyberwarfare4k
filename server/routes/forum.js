@@ -149,9 +149,11 @@ router.post('/thread/comment', async (req, res) => {
   const { comment, threadId } = req.body;
 
   let user;
+  let thread;
 
   try {
     user = await User.findById(userId);
+    thread = await ForumThread.findById(threadId);
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -159,7 +161,7 @@ router.post('/thread/comment', async (req, res) => {
     });
   }
 
-  const message = checkCommentPostCriteria(comment);
+  const message = checkCommentPostCriteria(comment, thread, user);
 
   if (message) {
     return res.status(400).json({
@@ -175,11 +177,13 @@ router.post('/thread/comment', async (req, res) => {
     forumThread: threadId,
   });
 
-  forumComment.save();
-
-  return res.status(200).json({
-    success: true,
-    message: 'Your comment has been posted',
+  forumComment.save().then((commentSaveResult) => {
+    commentSaveResult.populate('creator', ['name', 'account.avatar']).execPopulate()
+      .then((result) => res.status(200).json({
+        success: true,
+        message: 'Your comment has been posted',
+        comment: result,
+      }));
   });
 });
 

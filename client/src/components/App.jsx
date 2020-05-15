@@ -103,7 +103,9 @@ const App = (props) => {
           <Route path="/datacenters" component={DataCenters} />
           <Route
             path="/forum/:forumId/:threadId"
-            render={() => <ForumThread />}
+            render={() => (
+              <ForumThread loading={appState.loading} user={appState.user} />
+            )}
           />
           <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
           <Route

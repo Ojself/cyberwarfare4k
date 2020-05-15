@@ -348,4 +348,11 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+
+  postComment(comment, threadId) {
+    return service
+      .post(`/forum/thread/comment`, { comment, threadId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
 };
