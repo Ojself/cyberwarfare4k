@@ -669,9 +669,7 @@ userSchema.methods.readAllmessages = function (communication) {
 };
  */
 userSchema.methods.handleNewStatpoint = async function (statName) {
-  console.log('hello from mongo', statName);
   this.playerStats.statPoints -= 1;
-  console.log(this.hackSkill, this.playerStats.exp, 'before');
   switch (statName) {
     case 'Firewall':
       this.playerStats.maxFirewall += 15;
@@ -713,7 +711,6 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
   }
-  this.save();
 };
 
 const User = mongoose.model('User', userSchema);

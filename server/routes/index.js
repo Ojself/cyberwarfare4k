@@ -54,12 +54,9 @@ const getShuffledArr = (arr) => {
 // create route criterias
 
 router.post('/createUser', isLoggedIn, async (req, res) => {
-  console.log('you are now in the create user route');
-
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { name, cityString, avatar } = req.body;
-  console.log(name, 'name', cityString, 'cs', avatar, 'avatar');
 
   if (user.account.isSetup) {
     return res.status(400).json({
@@ -243,12 +240,10 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
     });
   }
 
-  await user.handleNewStatpoint(statPoint).then((result) => {
-    console.log(result, 'resuilt from saving statpoint');
-  });
+  await user.handleNewStatpoint(statPoint);
 
   /* todo nullify user info */
-  const updatedUser = await User.findById(userId).exec();
+  const updatedUser = await user.save();
 
   return res.status(200).json({
     message: `${statPoint} skill upgraded..`,
