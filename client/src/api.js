@@ -42,7 +42,6 @@ export default {
     return service
       .post("/signup", userInfo)
       .then((res) => {
-        console.log(res.data, "res data ");
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
       })
@@ -71,7 +70,6 @@ export default {
     return service
       .post("/createUser", body)
       .then((res) => {
-        console.log(res, "res");
         localStorage.setItem("user", JSON.stringify(res.data));
         return res.data;
       })
@@ -310,7 +308,6 @@ export default {
   },
 
   sendMessage(body) {
-    console.log(body, "body");
     return service
       .post(`/communication/`, body)
       .then((res) => res.data)

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 // import api from "../../api";
 
 const Information = () => {
-  useEffect(() => {
-    console.log("using effect");
-  }, []);
 
   return (
     <div>

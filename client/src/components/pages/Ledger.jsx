@@ -78,7 +78,6 @@ const Ledger = (props) => {
         depositAmount,
       })
       .then((result) => {
-        console.log(result, "result");
         setLedgerState({
           ...ledgerState,
           depositAmount: null,
@@ -93,7 +92,6 @@ const Ledger = (props) => {
         depositAmount,
       })
       .then((result) => {
-        console.log(result, "result");
         setLedgerState({
           ...ledgerState,
           depositAmount: null,

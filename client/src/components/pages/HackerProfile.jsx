@@ -19,7 +19,7 @@ const HackerProfile = props => {
       });
     }
     fetchPlayerData(opponentId);
-  }, [console.log(opponentState.opponent)]);
+  }, []);
 
   const profilePage = (
     <div className="playerWrapper">

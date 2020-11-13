@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="text-center py-3">
         © {currentYear} Copyright
         <div className="py-2">
-          <a href="http://flesjoe.com/">Flesjoe.com</a>
+          <a target="_blank" rel="noreferrer" href="http://flesjoe.com/">Flesjoe.com</a>
         </div>
       </div>
     </footer>

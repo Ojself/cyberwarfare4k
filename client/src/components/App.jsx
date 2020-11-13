@@ -33,15 +33,15 @@ import SystemRepair from "./pages/SystemRepair";
 import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
-const App = (props) => {
+const App = () => {
   const [appState, SetAppState] = useState({
-    isOpen: false,
     loading: true,
     messages: null,
     user: null,
   });
 
   useEffect(async () => {
+    console.log('use effect app')
     async function fetchUserData() {
       const apiUser = await api.getUser();
 
@@ -58,7 +58,7 @@ const App = (props) => {
   const setUser = (user) => {
     SetAppState({
       ...appState,
-      user: user,
+      user,
       loading: false,
     });
   };

@@ -12,7 +12,6 @@ const DataCenter = () => {
 
   useEffect(async () => {
     api.getDataCenters().then((result) => {
-      console.log(result);
       setDataCenterState({
         ...dataCenterState,
         dataCenters: result.dataCenters,
@@ -23,18 +22,14 @@ const DataCenter = () => {
 
   const handleDataCenterPurchase = (e) => {
     const dataCenterName = e.target.name;
-    console.log(dataCenterName, "centername");
     api.purchaseDataCenter({ dataCenterName }).then((result) => {
-      console.log(result, "result purchase");
     });
     // todo, set datacenter state
   };
 
   const handleDataCenterAttack = (e) => {
     const dataCenterName = e.target.name;
-    console.log(dataCenterName, "centername");
     api.purchaseDataCenter({ dataCenterName }).then((result) => {
-      console.log(result, "result purchase");
     });
   };
 

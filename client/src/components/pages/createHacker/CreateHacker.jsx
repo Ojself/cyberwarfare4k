@@ -22,10 +22,10 @@ import classnames from "classnames";
 
 const CreateHacker = (props) => {
   const [createState, setCreateState] = useState({
-    message: null,
-    selectedCity: null,
-    selectedAvatar: null,
-    name: null,
+    message: '',
+    selectedCity: '',
+    selectedAvatar: '',
+    name: '',
   });
   const [activeTab, setActiveTab] = useState("1");
 
@@ -61,7 +61,6 @@ const CreateHacker = (props) => {
   };
 
   const handleInputChange = (e) => {
-    console.log(e.target.name, "e");
     setCreateState({
       ...createState,
       [e.target.name]: e.target.value,
@@ -69,7 +68,7 @@ const CreateHacker = (props) => {
   };
 
   const selectAvatar = (e) => {
-    console.log(e.target);
+    console.log(e.target.name);
     let avatar = e.target.name || null;
     if (createState.selectedAvatar === avatar) {
       avatar = null;
@@ -130,7 +129,7 @@ const CreateHacker = (props) => {
       <Nav className="justify-content-center" tabs>
         {avatarCategories.map((a, i) => {
           return (
-            <NavItem>
+            <NavItem key={a}>
               <NavLink
                 className={classnames({
                   active: activeTab === i + 1 + "",
@@ -148,7 +147,7 @@ const CreateHacker = (props) => {
       <TabContent activeTab={activeTab}>
         {avatarCategories.map((tabContent, i) => {
           return (
-            <TabPane tabId={i + 1 + ""}>
+            <TabPane key={tabContent} tabId={i + 1 + ""}>
               <Row>
                 <Col>
                   <h4>{tabContent}</h4>

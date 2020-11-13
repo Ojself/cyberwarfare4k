@@ -27,22 +27,20 @@ import classnames from "classnames";
 /* Stat upgrade only listen to to parts of the component. eg, you have to click the progressbar, but not the color itself */
 /* TODO important, click on upgrades is inconsistent. clicks has to be perf */
 
-const MyProfile = (props) => {
-  const [activeTab, setActiveTab] = useState("1");
+const MyProfile = ({loading,user,setUser}) => {
+  useEffect(()=>{
+    console.log('use effect my profile')
 
-  useEffect(() => {}, []);
+  },[])
+  const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const handleUpgrade = (upgradeName) => {
-    api
-      .upgradeStats(upgradeName)
-      .then((result) => {
-        props.setUser(result.updatedUser);
-      })
-      .catch((err) => console.warn("err", err));
+  const handleUpgrade = async (upgradeName) => {
+    const result = await api.upgradeStats(upgradeName)
+    setUser(result)
   };
 
   const getStashColor = (color) => {
@@ -55,72 +53,52 @@ const MyProfile = (props) => {
 
   const getMarketPlaceItemValue = (type, value) => {
     if (
-      props.loading ||
-      !props.user.marketPlaceItems[type] ||
-      !props.user.marketPlaceItems[type][value]
+      loading ||
+      !user.marketPlaceItems[type] ||
+      !user.marketPlaceItems[type][value]
     ) {
-      return false;
+      return 0;
     }
-    return props.user.marketPlaceItems[type][value];
+    return user.marketPlaceItems[type][value];
   };
 
   const getCurrency = (name) => {
-    if (props.loading || !props.user.currencies[name]) {
+    if (!user || !user.currencies[name]) {
       return "0";
     }
-    const result = props.user.currencies[name];
-    return result;
+    return user.currencies[name];
   };
 
-  const profilePlaceHolderAvatar =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS4CL6AEUtKQPO1nNCqjLvd7tGL1K_ALxiqO8MbmaA5yQcxymQn";
-  const profilePage = props.loading ? (
-    "loading.."
-  ) : (
-    <div className="">
-      <div className="">
-        {props.user.playerStats.statPoints ? (
-          <div>
-            <h2 style={{ color: "#F08F18" }}>UPGRADES AVAILABLE!</h2>
-            <p>Upgrade your desired skill by clicking it</p>
-          </div>
-        ) : (
-          <h3>{props.user.name}</h3>
-        )}
-      </div>
-
-      <div className="">
-        <div>
-          <img
-            style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
-            src={
-              props.loading
-                ? profilePlaceHolderAvatar
-                : props.user.account.avatar
-            }
-            alt="hackerPic"
-            title="This is you!"
-          />
-        </div>
-        {/* <div className="mt-4"> //allianceavatar
-          {props.loading ? (
+  const profileAvatars = (
+    !loading &&
+    <div className="d-flex justify-content-center">
+        {/* <div >
             <img
               style={{ maxWidth: "200px", width: "65%" }}
               src={
-                props.user.alliance &&
-                props.user.alliance.name
-                  ? `/alliancePics/${props.user.alliance.name}.png`
+                user.alliance &&
+                user.alliance.name
+                  ? `/alliancePics/${user.alliance.name}.png`
                   : ""
               }
               alt={"Alliance"}
               title="Alliance"
             />
-          ) : (
-            <img alt=""></img>
-          )}
         </div> */}
+        <div>
+          <img
+            style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
+            src={user.account.avatar}
+            alt="hackerPic"
+            title="This is you!"
+          />
+        </div>
       </div>
-      <div style={{ width: "20%" }} className=" ">
+  );
+
+  const profileSkills = (
+    !loading && 
+    <div className="d-flex flex-column col-4">
         {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
           (c, i) => {
             return (
@@ -129,9 +107,9 @@ const MyProfile = (props) => {
                 upgrade={(e) => handleUpgrade(e)}
                 key={i}
                 name={c}
-                value={props.user.crimeSkill[c]}
+                value={user.crimeSkill[c]}
                 max={100}
-                hasStatPoints={!!props.user.playerStats.statPoints}
+                hasStatPoints={!!user.playerStats.statPoints}
               />
             );
           }
@@ -145,8 +123,8 @@ const MyProfile = (props) => {
               <ProgressBarHackSkill
                 upgrade={(e) => handleUpgrade(e)}
                 name={h}
-                value={props.user.hackSkill[h]}
-                hasStatPoints={!!props.user.playerStats.statPoints}
+                value={user.hackSkill[h]}
+                hasStatPoints={!!user.playerStats.statPoints}
                 bonus={getMarketPlaceItemValue(h, "bonus")}
               />
             </div>
@@ -160,49 +138,54 @@ const MyProfile = (props) => {
           color="warning"
           upgrade={(e) => handleUpgrade(e)}
           name={"exp"}
-          value={props.user.playerStats.exp}
-          max={props.user.playerStats.expToLevel}
-          hasStatPoints={!!props.user.playerStats.statPoints}
+          value={user.playerStats.exp}
+          max={user.playerStats.expToLevel}
+          hasStatPoints={!!user.playerStats.statPoints}
         />
 
         <ProgressBarFirewallSkill
           upgrade={(e) => handleUpgrade(e)}
           name="Firewall"
-          value={props.user.playerStats.currentFirewall}
-          max={props.user.playerStats.maxFirewall}
-          hasStatPoints={!!props.user.playerStats.statPoints}
+          value={user.playerStats.currentFirewall}
+          max={user.playerStats.maxFirewall}
+          hasStatPoints={!!user.playerStats.statPoints}
         />
       </div>
-      {/* grey rank overiew */}
-      <div style={{ width: "15%" }} className="col">
+  )
+
+  const profileRankOverview = (
+    <div className="col-4">
         <ul className="list-group">
           <li className="list-group-item bg-dark mb-2 ">
-            {props.loading ? "Rank" : props.user.playerStats.rankName}
+            {loading ? "Rank" : user.playerStats.rankName}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
-            {props.user.playerStats.networth}
+            {loading ? "0" : user.playerStats.networth}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks initiated: {props.user.fightInformation.attacksInitiated}
+            Attacks initiated: {loading ? "0" : user.fightInformation.attacksInitiated}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks received: {props.user.fightInformation.attacksVictim}
+            Attacks received: {loading ? "0" : user.fightInformation.attacksVictim}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Shutdowns: {props.user.fightInformation.shutdowns}
+            Shutdowns: {loading ? "0" : user.fightInformation.shutdowns}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
-            {props.user.playerStats.bounty}
+            {loading ? "0" : user.playerStats.bounty}
           </li>
           {/* todo clickable with bounty donor? module */}
           <li className="list-group-item bg-dark mb-2">
-            Available Statpoints: {props.user.playerStats.statPoints}
+            Available Statpoints: {loading ? "0" : user.playerStats.statPoints}
           </li>
         </ul>
       </div>
-      <div style={{ width: "18%" }} className="px-0">
+  )
+
+  const profileBelongings = (
+    <div  className="col-4">
         <div>
           <Nav tabs>
             {["Items", "Currencies", "Stash"].map((t, i) => {
@@ -306,8 +289,8 @@ const MyProfile = (props) => {
               <Row>
                 <Col sm="12">
                   <div className="d-flex row">
-                    {!props.loading &&
-                      Object.keys(props.user.stash).map((s, i) => (
+                    {!loading &&
+                      Object.keys(user.stash).map((s, i) => (
                         <div key={i}>
                           <img
                             style={{ maxWidth: "75px", width: "100%" }}
@@ -316,7 +299,7 @@ const MyProfile = (props) => {
                             alt={"Stash"}
                           />
 
-                          <p>{props.user.stash[s]}</p>
+                          <p>{user.stash[s]}</p>
                         </div>
                       ))}
                   </div>
@@ -326,12 +309,38 @@ const MyProfile = (props) => {
           </TabContent>
         </div>
       </div>
+  )
+
+  const profileHeader= (
+    !loading && 
+    <div>
+        {user.playerStats.statPoints ? (
+          <div>
+            <h2 style={{ color: "#F08F18" }}>UPGRADES AVAILABLE!</h2>
+            <p>Upgrade your desired skill by clicking it</p>
+          </div>
+        ) : (
+          <h3>{user.name}</h3>
+        )}
+      </div>
+  )
+
+
+  const profilePage = (
+    <div className="container d-flex flex-column">
+      {profileHeader}
+      {profileAvatars}
+      <div className="d-flex">
+      {profileSkills}
+      {profileRankOverview}
+      {profileBelongings}
+      </div>
     </div>
   );
 
   return (
-    <div className="  mt-5">
-      {props.loading ? <p>loading..</p> : profilePage}
+    <div className="mt-5">
+      {loading ? <p>loading..</p> : profilePage}
     </div>
   );
 };

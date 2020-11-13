@@ -15,10 +15,11 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = (props) => {
+const NavbarComp = ({loading,messages,user}) => {
   const [toolOpen, setToolOpen] = useState(false);
 
-  const currentCity = props.loading ? "City" : props.user.playerStats.city.name;
+  //const currentCity = loading ? "City" : user.playerStats.city.name;
+  const currentCity = 'Jarle'
 
   const handleLogoutClick = (e) => {
     api.logout();
@@ -29,10 +30,8 @@ const NavbarComp = (props) => {
   };
 
   const checkInbox = () => {
-    if (props.loading) {
-      return false;
-    }
-    return props.messages.inbox.length && !props.messages.inbox[0].read;
+    if (loading) return false
+    return messages.inbox.length && !messages.inbox[0].read;
   };
 
   const toggle = () => {
@@ -44,7 +43,7 @@ const NavbarComp = (props) => {
       <Navbar color="dark" dark expand="md">
         <NavbarBrand href="/">CHW4K</NavbarBrand>
         <NavbarToggler onClick={toggle} />
-        <Collapse isOpen={props.isOpen} navbar>
+        <Collapse navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink href="/create-hacker">Create</NavLink>
@@ -79,7 +78,7 @@ const NavbarComp = (props) => {
               <DropdownToggle nav caret>
                 Alliance
               </DropdownToggle>
-              {props.user && props.user.alliance ? (
+              {user && user.alliance ? (
                 <DropdownMenu right>
                   <DropdownItem href="/">Overview</DropdownItem>
                   <DropdownItem href="/">Leave Alliance</DropdownItem>
@@ -118,7 +117,7 @@ const NavbarComp = (props) => {
                 Communication
               </DropdownToggle>
               <DropdownMenu right>
-                {props.user && props.user.alliance && (
+                {user && user.alliance && (
                   <>
                     <DropdownItem>Alliance Forum</DropdownItem>
                     <DropdownItem divider />
