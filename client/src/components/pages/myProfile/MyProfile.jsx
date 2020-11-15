@@ -18,20 +18,11 @@ import ProgressBarExp from "./molecules/ProgressBarExp";
 import api from "../../../api";
 import classnames from "classnames";
 
-/* Todo / known bugs */
-
-/* listening to user will cause an infinite api calls */
 /* set condition if user does not belong to an alliance */
 /* add pictures of stash in stash-tab with correct colors */
-/* change or remove placeholder picture */
-/* Stat upgrade only listen to to parts of the component. eg, you have to click the progressbar, but not the color itself */
-/* TODO important, click on upgrades is inconsistent. clicks has to be perf */
 
-const MyProfile = ({loading,user,setUser}) => {
-  useEffect(()=>{
-    console.log('use effect my profile')
-
-  },[])
+const MyProfile = ({loading,user,updateGlobalValues}) => {
+  
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
@@ -40,7 +31,7 @@ const MyProfile = ({loading,user,setUser}) => {
 
   const handleUpgrade = async (upgradeName) => {
     const result = await api.upgradeStats(upgradeName)
-    setUser(result)
+    updateGlobalValues(result)
   };
 
   const getStashColor = (color) => {
@@ -68,10 +59,9 @@ const MyProfile = ({loading,user,setUser}) => {
     }
     return user.currencies[name];
   };
-
   const profileAvatars = (
     !loading &&
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center mb-2">
         {/* <div >
             <img
               style={{ maxWidth: "200px", width: "65%" }}
@@ -100,12 +90,12 @@ const MyProfile = ({loading,user,setUser}) => {
     !loading && 
     <div className="d-flex flex-column col-4">
         {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
-          (c, i) => {
+          c => {
             return (
               <ProgressBarCrimeSkill
                 color="success"
-                upgrade={(e) => handleUpgrade(e)}
-                key={i}
+                upgrade={(e)=>handleUpgrade(e)}
+                key={c}
                 name={c}
                 value={user.crimeSkill[c]}
                 max={100}
@@ -114,26 +104,20 @@ const MyProfile = ({loading,user,setUser}) => {
             );
           }
         )}
-
-        {/* Seperator between crime- and hackprogressbars */}
         <div className="my-4"></div>
-        {["CPU", "AntiVirus", "Encryption"].map((h, i) => {
+        {["CPU", "AntiVirus", "Encryption"].map(h => {
           return (
-            <div key={i}>
               <ProgressBarHackSkill
+                key={h}
                 upgrade={(e) => handleUpgrade(e)}
                 name={h}
                 value={user.hackSkill[h]}
                 hasStatPoints={!!user.playerStats.statPoints}
                 bonus={getMarketPlaceItemValue(h, "bonus")}
               />
-            </div>
           );
         })}
-
-        {/* Seperator between hack- and otherprogressbar */}
         <div className="my-4"></div>
-
         <ProgressBarExp
           color="warning"
           upgrade={(e) => handleUpgrade(e)}
@@ -154,34 +138,36 @@ const MyProfile = ({loading,user,setUser}) => {
   )
 
   const profileRankOverview = (
+    !loading && (
     <div className="col-4">
         <ul className="list-group">
-          <li className="list-group-item bg-dark mb-2 ">
-            {loading ? "Rank" : user.playerStats.rankName}
+          <li className="list-group-item bg-dark mb-2">
+            {user.playerStats.rankName}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
-            {loading ? "0" : user.playerStats.networth}
+            {user.playerStats.bitCoins.toLocaleString()}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks initiated: {loading ? "0" : user.fightInformation.attacksInitiated}
+            Attacks initiated: {user.fightInformation.attacksInitiated}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Attacks received: {loading ? "0" : user.fightInformation.attacksVictim}
+            Attacks received: {user.fightInformation.attacksVictim}
           </li>
           <li className="list-group-item bg-dark mb-2">
-            Shutdowns: {loading ? "0" : user.fightInformation.shutdowns}
+            Shutdowns: {user.fightInformation.shutdowns}
           </li>
           <li className="list-group-item bg-dark mb-2">
             Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
-            {loading ? "0" : user.playerStats.bounty}
+            {user.playerStats.bounty}
           </li>
           {/* todo clickable with bounty donor? module */}
           <li className="list-group-item bg-dark mb-2">
-            Available Statpoints: {loading ? "0" : user.playerStats.statPoints}
+            Available Statpoints: {user.playerStats.statPoints}
           </li>
         </ul>
       </div>
+    )
   )
 
   const profileBelongings = (
@@ -328,8 +314,8 @@ const MyProfile = ({loading,user,setUser}) => {
 
   const profilePage = (
     <div className="container d-flex flex-column">
-      {profileHeader}
       {profileAvatars}
+      {profileHeader}
       <div className="d-flex">
       {profileSkills}
       {profileRankOverview}

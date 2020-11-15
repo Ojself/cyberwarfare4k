@@ -19,64 +19,63 @@ import {
 /* rerender after add */
 /* styling */
 
-const WantedList = () => {
+const WantedList = ({updateGlobalValues}) => {
   const [wantedState, setWantedState] = useState({
     users: [],
     bountyUsers: [],
     loading: true,
-    message: null,
+    bountyTopInput: ''
   });
-
   const [selectedOption, setSelectedOption] = useState(null);
 
-  const handleSelectUserChange = (eventValue) => {
-    setSelectedOption(eventValue);
-  };
-
-  const handleInputChange = (e) => {
-    setWantedState({
-      ...wantedState,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  useEffect(() => {
-    async function fetchWantedUsers() {
+    useEffect(() => {
+    const fetchWantedUsers = async() => {
       const apiWantedUsers = await api.getWantedUsers();
       const massagedUser = dataMassagerForSelectComponent(apiWantedUsers.users);
       setWantedState({
         ...wantedState,
         users: massagedUser,
         bountyUsers: apiWantedUsers.bountyUsers,
-        message: apiWantedUsers.message,
         loading: false,
       });
     }
     fetchWantedUsers();
   }, []);
 
+  const handleSelectUserChange = (eventValue) => {
+    console.log(eventValue,'eventvalue')
+    setSelectedOption(eventValue);
+  };
+
+  const handleInputChange = (e) => {
+    const name = e.target.name
+    setWantedState({
+      ...wantedState,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   /* todo, this is being used many times */
   const dataMassagerForSelectComponent = (userArray) => {
-    const massagedUsers = [];
-    userArray.forEach((u) => {
-      massagedUsers.push({
+    const massagedUsers = userArray.map((u) => {
+      return {
         value: u._id,
         label: u.name,
-      });
+      }
     });
     return massagedUsers;
   };
 
   const addBounty = async (bountyTargetId, bounty, clearName = "") => {
     const result = await api.addBounty({ bounty, bountyTargetId });
+    updateGlobalValues(result)
     const massagedUser = dataMassagerForSelectComponent(result.users);
-    return setWantedState({
+    setWantedState({
       ...wantedState,
-      bountyTopInput: null,
+      bountyTopInput: '',
       users: massagedUser,
       bountyUsers: result.bountyUsers,
       [clearName]: 0,
-      message: result.message,
     });
   };
 

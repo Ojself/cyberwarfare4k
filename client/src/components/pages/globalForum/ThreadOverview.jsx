@@ -12,7 +12,7 @@ const SingleForum = (props) => {
 
   const forumId = window.location.pathname.match(/[a-f\d]{24}$/);
   useEffect(() => {
-    async function fetchSingleForumData(forumId) {
+    const fetchSingleForumData = async(forumId) => {
       const apiResponse = await api.getThreads(forumId);
       console.log(apiResponse, "response");
       const forumName = apiResponse.threads[0].forum.title

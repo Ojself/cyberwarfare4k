@@ -36,7 +36,7 @@ const crimeResultWon = (props) => {
       {props.result.skillGained && skillGainedTag}
       {props.result.legendaryGained && legendaryGainedTag}
       {props.result.stashGained && stashGainedTag}
-      <span>Bitcoins stolen: {props.result.playerGains.bitcoins}</span>
+      <span>??????? correct value? Bitcoins stolen: {props.result.playerGains.bitCoins}</span>
       <span>EXP gained: {props.result.playerGains.exp}</span>
     </div>
   );

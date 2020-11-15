@@ -28,17 +28,15 @@ const CryptoCurrencies = (props) => {
   });
 
   useEffect(() => {
-    async function fetchCryptoData() {
-      api.getCrypto().then((result) => {
-        const massagedCurrency = result.currency.map((el) => dataMassager(el));
-
+    const fetchCryptoData = async ()=> {
+      const data = await api.getCrypto()
+        const massagedCurrency = data.currency.map((currency) => dataMassager(currency));
         setCryptoState({
           ...cryptoState,
-          currencies: result.currency,
+          currencies: data.currency,
           massagedCurrency,
           loading: false,
         });
-      });
     }
     fetchCryptoData();
   }, []);

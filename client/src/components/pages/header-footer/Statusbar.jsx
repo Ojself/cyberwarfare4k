@@ -3,14 +3,14 @@ import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 
 const StatusBar = ({loading,user}) => {
-  const shouldRender = !loading && user
+  const shouldRender = !loading && !!user
   return (
     <div className="statusBar">
      {shouldRender &&
         <div>
           <ul className="list-unstyled">
             {user.alliance && user.alliance.name ? (
-              <li className="list-inline-item" href="#">
+              <li className="list-inline-item">
                 <Link to={`/my-profile`}>
                   <i
                     style={{
@@ -32,7 +32,7 @@ const StatusBar = ({loading,user}) => {
               </strong>
             </li>
 
-            <li className="list-inline-item" href="#">
+            <li className="list-inline-item">
               <span style={{ color: "red" }}>&#9829;</span>
               {(
                 (user.playerStats.currentFirewall /
@@ -41,18 +41,18 @@ const StatusBar = ({loading,user}) => {
               ).toFixed(0)}
               %
             </li>
-            <li className="list-inline-item ml-2" href="#">
+            <li className="list-inline-item ml-2">
               <span>&#9889;{user.playerStats.battery}%</span>
             </li>
-            <li className="list-inline-item ml-2" href="#">
+            <li className="list-inline-item ml-2">
               <span style={{ color: "#F08F18" }}>&#8383;</span>
 
-              {Math.floor(user.playerStats.bitCoins)}
+              {Math.floor(user.playerStats.bitCoins).toLocaleString()}
             </li>
-            <li className="list-inline-item ml-2" href="#">
+            <li className="list-inline-item ml-2">
               {user.playerStats.rankName}
             </li>
-            <li className="list-inline-item ml-2" href="#">
+            <li className="list-inline-item ml-2">
               XP:{/*  {user.playerStats.exp} */}
             </li>
             <li className="list-inline-item navProgressBar">

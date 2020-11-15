@@ -57,7 +57,6 @@ const MessageCenter = (props) => {
     if (!users.length || userName.toLowerCase() === "system") {
       return "";
     }
-
     const user = users.find((u) => {
       return u.label === userName;
     });
@@ -76,7 +75,6 @@ const MessageCenter = (props) => {
         receiverId: selectedOption.value,
       })
       .then((result) => {
-        console.log(result, "sending");
         setTextArea("");
         setSelectedOption("");
         setGlobalInfo(
@@ -92,19 +90,38 @@ const MessageCenter = (props) => {
   };
 
   useEffect(() => {
-    api.getHackerNames().then((result) => {
-      const { users } = result;
+    const fetchHackerNames = async ()=> {
+    const data = await api.getHackerNames()
+      const { users } = data;
       const massagedUsers = dataMassager(users);
 
-      setUsers(massagedUsers);
+      await setUsers(massagedUsers);
       setLoading(false);
       readAllCommunication();
-    });
+      setAutoComposeTo(window.location.pathname,users)
+    }
+  fetchHackerNames()
   }, []);
 
   const readAllCommunication = async () => {
     await api.readAllCommunication("messages");
   };
+
+  const setAutoComposeTo = (path,users) => {
+    if (!path.includes("=")){
+      return
+    }
+    const to = path.split("=")[1]
+    const foundUser = users.find(user => user._id === to)
+    if (foundUser){
+      const userData = {
+        label: foundUser.name,
+        value: foundUser._id
+      }
+      setActiveTab("3")
+      setSelectedOption(userData)
+    }
+    }
 
   const getDisabledSendButton = () => {
     const criterias =

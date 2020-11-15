@@ -4,10 +4,8 @@ import api from "../../../../api";
 import { pettyStrings } from "../../_helpers/pettyStrings";
 import PettyResult from "./pettyResult";
 
-const PettyHack = () => {
+const PettyHack = ({loading, updateGlobalValues}) => {
   const [pettyState, setPettyState] = useState({
-    loading: true,
-    message: null,
     hacking: false,
     hackingPhrases: [], // push Typist components in here
     pettyStringProgress: 0,
@@ -16,7 +14,7 @@ const PettyHack = () => {
   });
 
   useEffect(() => {
-    insertPhrase();
+    insertNewPhrase();
     const pettyInterval = setInterval(() => {
       performHack(pettyState.hacking);
     }, 3000);
@@ -49,18 +47,17 @@ const PettyHack = () => {
     if (!currentlyHacking) {
       return;
     }
-    insertPhrase();
-    const result = await api.pettyHack();
-    if (result.success) {
-      handleSuccess(result.results);
-    } /* else {
-      // errormessage
-    } */
+    insertNewPhrase();
+    const data = await api.pettyHack();
+    console.log(data,'data')
+    updateGlobalValues(data,false)
+    if (data.success) {
+      handleSuccess(data.results);
+    }
   };
 
   // pushes result to the state
   const handleSuccess = (result) => {
-    console.log(result);
     const oldResults = pettyState.results;
     oldResults.unshift(
       <PettyResult
@@ -78,7 +75,7 @@ const PettyHack = () => {
   };
 
   // pushes a typist component into the state
-  const insertPhrase = () => {
+  const insertNewPhrase = () => {
     if (!pettyState.hacking) {
       return;
     }
@@ -86,7 +83,6 @@ const PettyHack = () => {
     if (pettyState.pettyStringProgress === 0) {
       const startPoints = [1, 25, 42, 58, 73, 96, 114, 158];
       randomStart = startPoints[Math.floor(Math.random() * startPoints.length)];
-      console.log(randomStart);
       setPettyState({
         ...pettyState,
         pettyStringProgress: randomStart,
@@ -129,7 +125,7 @@ const PettyHack = () => {
     }
 
     return (
-      <button disabled={buttonDisabled} onClick={toggleHack}>
+      <button style={{"minWidth":"15%"}} disabled={buttonDisabled} onClick={toggleHack}>
         {buttonText}
       </button>
     );
@@ -144,11 +140,10 @@ const PettyHack = () => {
           <div className="terminal">
             {/* phrases */}
             {pettyState.hackingPhrases.map((p, i) => {
-              return <div key={i}>{p}</div>;
+              return <div key={`${p}${i}`}>{p}</div>;
             })}
           </div>
           <div className="result-list">
-             {/* results */}
             {pettyState.results.map((r, i) => {
               return r;
             })}

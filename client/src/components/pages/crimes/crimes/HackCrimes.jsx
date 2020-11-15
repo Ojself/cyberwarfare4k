@@ -4,39 +4,31 @@ import CrimeTerminal from "./crimeTerminal";
 import { Table, UncontrolledTooltip } from "reactstrap";
 
 // props will be deconstr in parameters ({nameOfProp})
-const HackCrimes = () => {
-  const [loading, setLoading] = useState(true);
-  const [apiMessage, setApiMessage] = useState(null);
+const HackCrimes = ({updateGlobalValues}) => {
+
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
 
   useEffect(() => {
-    api
-      .getCrimes()
-      .then((result) => {
-        setApiMessage(result.message);
-        setLoading(false);
-        setCrimes(result.crimes);
-        setTimeout(() => {
-          setApiMessage(null);
-        }, 5000);
-      })
-      .catch((err) => console.log(err));
+    const fetchCrimes = async ()=>{
+      const result = await api.getCrimes()
+      updateGlobalValues(result)
+      setCrimes(result.crimes);
+    }
+    fetchCrimes()
   }, []);
 
   const handleClick = async (crimeId) => {
+    setResult(null)
     const crimeResult = await api.commitCrimes(crimeId);
+    console.log(crimeResult,'crimeResult')
+    updateGlobalValues(crimeResult,false)
 
     const filteredCrimes = crimes
       .filter((c) => c._id !== crimeId)
       .filter((c) => c.available);
-
     setCrimes(filteredCrimes);
     setResult(crimeResult.finalResult);
-
-    setTimeout(() => {
-      setApiMessage(null);
-    }, 2000);
   };
 
   return (
@@ -76,7 +68,7 @@ const HackCrimes = () => {
             ))}
           </tbody>
         </Table>
-        <CrimeTerminal apiMessage={apiMessage} result={result} />
+        <CrimeTerminal result={result} />
       </div>
     </div>
   );

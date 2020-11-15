@@ -11,15 +11,17 @@ const MarketPlace = (props) => {
   });
 
   useEffect(() => {
-    api.getMarketPlaceItems().then((result) => {
-      const { items } = result;
+    const fetchMarketPlaceItems = async ()=> {
+    const data = await api.getMarketPlaceItems()
+      const { items } = data;
       console.log("result", items);
       setMarketPlaceState({
         ...marketPlaceState,
-        items: result.items,
+        items: data.items,
         loading: false,
       });
-    });
+    }
+    fetchMarketPlaceItems()
   }, []);
 
   const handleMarketPlaceItemPurchase = (e) => {

@@ -10,14 +10,16 @@ const DataCenter = () => {
     loading: true,
   });
 
-  useEffect(async () => {
-    api.getDataCenters().then((result) => {
+  useEffect(() => {
+    const fetchDataCenters = async ()=>{
+    const dataCenters = await api.getDataCenters()
       setDataCenterState({
         ...dataCenterState,
-        dataCenters: result.dataCenters,
+        dataCenters: dataCenters.dataCenters,
         loading: false,
       });
-    });
+    }
+    fetchDataCenters()
   }, []);
 
   const handleDataCenterPurchase = (e) => {

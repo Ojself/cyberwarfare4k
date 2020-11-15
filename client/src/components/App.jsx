@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import api from "../api";
+import Typist from "react-typist";
 
 import Alliance from "./pages/alliance/pages/Alliance";
 import AllianceLadder from "./pages/alliance/pages/Ladder";
@@ -34,62 +35,60 @@ import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
 const App = () => {
-  const [appState, SetAppState] = useState({
-    loading: true,
-    messages: null,
-    user: null,
-  });
+  const [user, setUser] = useState(null)
+  const [messages, setMessages] = useState([])
+  const [globalMessage, setGlobalMessage] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  useEffect(async () => {
-    console.log('use effect app')
-    async function fetchUserData() {
+  useEffect(() => {
+    const fetchUserData = async () => {
       const apiUser = await api.getUser();
 
-      SetAppState({
-        ...appState,
-        user: apiUser.user,
-        messages: apiUser.messages,
-        loading: false,
-      });
+      setUser(apiUser.user)
+      setMessages(apiUser.messages)
+      setLoading(false)
     }
     fetchUserData();
   }, []);
 
-  const setUser = (user) => {
-    SetAppState({
-      ...appState,
-      user,
-      loading: false,
-    });
+  const updateGlobalValues = (data, renderMessage = true) => {
+    console.log('updating global',data)
+    if (data.user){
+      console.log('setting user')
+      setUser(data.user)
+    }
+    if (renderMessage && data.message){
+      setGlobalMessage(data.message)
+      setTimeout(() => {
+        setGlobalMessage('')
+      }, 5000);
+    }
   };
 
   const showNavBar = () => {
     const path = window.location.pathname;
-
-    if (
-      path === "/" ||
-      path === "/create-hacker" ||
-      path === "/create-hacker/"
-    ) {
-      return false;
-    }
-    return true;
+    return path !== "/" &&
+      path !== "/create-hacker" &&
+      path !== "/create-hacker/"
   };
 
   return (
-    <div>
       <div className="App text-light">
         {showNavBar() && (
           <>
             <NavbarComp
-              loading={appState.loading}
-              messages={appState.messages}
-              user={appState.user}
+              loading={loading}
+              messages={messages}
+              user={user}
             />
-            <StatusBar loading={appState.loading} user={appState.user} />
+            <StatusBar loading={loading} user={user} />
           </>
         )}
-
+        <div className="globalMessage">
+          {globalMessage && <Typist className="terminalFont " cursor={{ hideWhenDone: true }}>
+          {globalMessage}
+        </Typist>}
+        </div>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/alliance" component={Alliance} />
@@ -97,30 +96,35 @@ const App = () => {
           <Route
             path="/create-hacker"
             render={() => (
-              <CreateHacker loading={appState.loading} user={appState.user} />
+              <CreateHacker loading={loading} user={user} />
             )}
           />
           <Route path="/datacenters" component={DataCenters} />
           <Route
             path="/forum/:forumId/:threadId"
             render={() => (
-              <ForumThread loading={appState.loading} user={appState.user} />
+              <ForumThread loading={loading} user={user} />
             )}
           />
           <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
           <Route
             path="/forum"
             render={() => (
-              <ForumOverview loading={appState.loading} user={appState.user} />
+              <ForumOverview loading={loading} user={user} />
             )}
           />
-          <Route path="/hack-crimes" component={HackCrimes} />
+          <Route
+             path="/hack-crimes"
+             render={()=> (
+               <HackCrimes updateGlobalValues={updateGlobalValues} />
+             )} />
           <Route path="/hack-player" component={HackPlayer} />
-          <Route path="/hacker/:id" component={HackerProfile} />
+          <Route 
+            path="/hacker/:id" component={HackerProfile} />
           <Route
             path="/locals"
             render={() => (
-              <Locals loading={appState.loading} user={appState.user} />
+              <Locals loading={loading} user={user} />
             )}
           />
 
@@ -128,25 +132,36 @@ const App = () => {
             path="/my-profile"
             render={() => (
               <MyProfile
-                loading={appState.loading}
-                user={appState.user}
-                setUser={setUser}
+                loading={loading}
+                user={user}
+                updateGlobalValues={updateGlobalValues}
               />
             )}
           />
-          <Route path="/petty-hacker" component={Petty} />
+          <Route 
+          path="/petty-hacker"
+          render={()=>(
+            <Petty
+              updateGlobalValues={updateGlobalValues}
+              />
+          )}
+          />
           <Route path="/marketplace" component={Marketplace} />
-          <Route path="/wanted-list" component={WantedList} />
+          <Route 
+            path="/wanted-list" 
+            render={()=> (
+              <WantedList updateGlobalValues={updateGlobalValues} />
+            )} />
           <Route
             path="/cryptocurrency"
             render={() => (
-              <CryptoCurrency loading={appState.loading} user={appState.user} />
+              <CryptoCurrency loading={loading} user={user} />
             )}
           />
           <Route
             path="/vpn"
             render={() => (
-              <VPN loading={appState.loading} user={appState.user} />
+              <VPN updateGlobalValues={updateGlobalValues} loading={loading} user={user} />
             )}
           />
           <Route path="/system-repair" component={SystemRepair} />
@@ -154,7 +169,7 @@ const App = () => {
           <Route
             path="/ledger"
             render={() => (
-              <Ledger loading={appState.loading} user={appState.user} />
+              <Ledger loading={loading} user={user} />
             )}
           />
           <Route path="/information" component={Information} />
@@ -162,8 +177,8 @@ const App = () => {
             path="/messages"
             render={() => (
               <MessageCenter
-                loading={appState.loading}
-                messages={appState.messages}
+                loading={loading}
+                messages={messages}
               />
             )}
           />
@@ -173,7 +188,7 @@ const App = () => {
         </Switch>
         <Footer />
       </div>
-    </div>
+    
   );
 };
 

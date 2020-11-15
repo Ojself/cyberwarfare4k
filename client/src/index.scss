@@ -7,6 +7,14 @@ html {
 body {
   margin: 0;
   padding: 0;
+  min-height:100%
+}
+
+.globalMessage{
+  min-height: 4vh;
+  width:50%;
+  margin:auto;
+  color: #06a308;
 }
 
 // for the state.message
@@ -24,7 +32,7 @@ body {
 }
 
 /* PlayerProfile.jsx */
-.playerWrapper {
+/* .playerWrapper {
   height: 50vh;
   width: 50vw;
   div {
@@ -62,7 +70,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .page-container {
   margin: 0 auto;
@@ -126,6 +134,9 @@ body {
 .terminalFont {
   font-family: "Roboto Mono", monospace;
   text-align: left;
+}
+
+.terminalStyle {
   margin-left: 4px;
   margin-top: 4px;
 }

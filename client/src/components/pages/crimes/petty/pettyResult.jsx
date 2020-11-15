@@ -16,7 +16,7 @@ const PettyResult = (props) => {
 
   const userNames = [
     "HawkMaster",
-    "odC",
+    "odCy",
     "Witzer",
     "Fenrew",
     "Darkchamp",
@@ -42,7 +42,7 @@ const PettyResult = (props) => {
       <h6 id="fail-color">Fail!</h6>
       <p>
         <strong>
-          {failStrings[Math.floor(Math.random() * failStrings.length)]}
+          {failStrings[props.index % failStrings.length ]}
         </strong>
       </p>
       <p>Battery -{battery}%</p>
@@ -52,7 +52,7 @@ const PettyResult = (props) => {
   const winStrings = [
     "You succeeded at commiting a petty crime",
     `You scammed someone online named ${
-      userNames[Math.floor(Math.random() * userNames.length)]
+      userNames[props.index % userNames.length]
     }`,
     "You successfully committed an online crime",
   ];
@@ -78,7 +78,7 @@ const PettyResult = (props) => {
         <div className="gains">
           <p>
             <strong>
-              {winStrings[Math.floor(Math.random() * winStrings.length)]}
+              {winStrings[props.index % winStrings.length]}
             </strong>
           </p>
           <p>
@@ -98,7 +98,7 @@ const PettyResult = (props) => {
               gained!
             </p>
           )}
-          <p>Battery: -{battery}%</p>
+          <p> <span>&#9889;</span>-{battery}%</p>
         </div>
       </div>
     </>

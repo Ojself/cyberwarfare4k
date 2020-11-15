@@ -10,11 +10,11 @@ const ForumOverview = (props) => {
   });
 
   useEffect(() => {
-    async function fetchForumOverviewData() {
-      const apiResponse = await api.getForums();
+    const fetchForumOverviewData = async ()=> {
+      const data = await api.getForums();
       const forums = forumDataMassager(
-        apiResponse.forums,
-        apiResponse.threadCount
+        data.forums,
+        data.threadCount
       );
       setforumOverviewState({
         ...forumOverviewState,

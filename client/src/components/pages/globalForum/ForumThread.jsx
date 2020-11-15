@@ -201,7 +201,7 @@ const ForumThread = (props) => {
 
   const threadId = window.location.pathname.match(/[a-f\d]{24}$/);
   useEffect(() => {
-    async function fetchData(threadId) {
+    const fetchData = async (threadId)=> {
       const apiResponse = await api.getComments(threadId);
       const apiComments = apiResponse.comments;
       const threadCreatedAt = dateConverter(apiComments[0].createdAt);

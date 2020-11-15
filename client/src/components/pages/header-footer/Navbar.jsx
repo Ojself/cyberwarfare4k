@@ -18,8 +18,7 @@ import {
 const NavbarComp = ({loading,messages,user}) => {
   const [toolOpen, setToolOpen] = useState(false);
 
-  //const currentCity = loading ? "City" : user.playerStats.city.name;
-  const currentCity = 'Jarle'
+  const currentCity = loading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = (e) => {
     api.logout();
@@ -59,7 +58,7 @@ const NavbarComp = ({loading,messages,user}) => {
                   Top Alliances
                 </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
-                {/* <DropdownItem href='/arcade'>Arcade</DropdownItem> */}
+                <DropdownItem href='/battery'>Earn Battery <span>&#9889;</span></DropdownItem>
                 <DropdownItem href="/information">Information</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

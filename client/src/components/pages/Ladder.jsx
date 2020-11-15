@@ -32,20 +32,19 @@ const Ladder = () => {
   };
 
   useEffect(() => {
-    getUsers().then((result) => {
+    const fetchUsers = async ()=> {
+    const users = await api.getAllLadderUsers()
       setLadderState({
         ...ladderState,
-        users: result.users,
-        message: result.message,
+        users: users.users,
+        message: users.message,
         loading: false,
       });
-    });
+    }
+    fetchUsers()
+
   }, []);
 
-  const getUsers = async () => {
-    const users = await api.getAllLadderUsers();
-    return users;
-  };
 
   const handleSort = (e, sort) => {
     sort = sort.toLowerCase();
@@ -119,6 +118,15 @@ const Ladder = () => {
           return b.playerStats.networth - a.playerStats.networth;
         });
         break;
+      default:
+        toggleSort("networth");
+        sortedUsers = ladderState.users.sort((b, a) => {
+          if (sortState.networth) {
+            return a.playerStats.networth - b.playerStats.networth;
+          }
+          return b.playerStats.networth - a.playerStats.networth;
+        });
+        break;
     }
 
     setLadderState({
@@ -171,7 +179,7 @@ const Ladder = () => {
               <td>{user.playerStats.rankName}</td>
               <td>{user.fightInformation.shutdowns}</td>
               <td>{user.fightInformation.crimesInitiated}</td>
-              <td>{user.playerStats.networth}</td>
+              <td><span style={{ color: "#F08F18" }}>&#8383;</span> {user.playerStats.networth.toLocaleString()}</td>
             </tr>
           ))}
         </tbody>

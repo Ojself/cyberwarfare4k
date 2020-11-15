@@ -5,81 +5,61 @@ import { Progress } from "reactstrap";
 
 import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
-const CrimeTerminal = ({ apiMessage, result }) => {
+const CrimeTerminal = ({ result }) => {
   const [terminalState, setTerminalState] = useState({
     progressMaxHp: 100,
     progressCurrentHp: 0,
-    progressColor: "success",
-    defaultColors: ["success", "success", "info", "warning", "danger"],
-    index: 1,
+    round: 1,
     lostCount: 0,
   });
+  useEffect(()=>{
+    clearState()
+  },[result])
 
-  useEffect(() => {}, []);
+  const clearState = ()=>{
+    setTerminalState({
+      progressMaxHp: 100,
+      progressCurrentHp:0,
+      round: 1,
+      lostCount: 0
+    });
+  }
 
   const giveLostString = () => {
-    //const dotsString = ".......................................................";
-
     return `ERROR: ${errorMessages[giveRandomNumber(errorMessages)]}`;
   };
   const giveWonString = () => {
-    /* if already won, don't give empty span */
-    /* return randomCrimeString[giveRandomNumber(randomCrimeString)]; */
-    return (
-      <span className="terminalFont terminalLost">{giveLostString()}</span>
-    );
+    return `SUCCESS ${randomCrimeString[giveRandomNumber(randomCrimeString)]}`
+
   };
   const giveRandomNumber = (array) => {
     return Math.floor(Math.random() * array.length);
   };
 
-  const createSuccessString = () => {
-    return "Successstring";
-  };
-
   const updateProgressBarValues = () => {
-    console.log(result.roundResult[terminalState.index - 1]);
-    if (result.roundResult[terminalState.index - 1] === "lost") {
-      changeProgressColor();
-    }
-
+    const maxHp = result.roundCrimeRemainingHp[0] > 0 ? result.roundCrimeRemainingHp[0] : 100
+    const currentHp = result.roundCrimeRemainingHp[terminalState.round + 1] > 0 ? result.roundCrimeRemainingHp[0] -
+        result.roundCrimeRemainingHp[terminalState.round + 1] : 100
     setTerminalState({
       ...terminalState,
-      progressMaxHp: result.roundCrimeRemainingHp[0],
-      progressCurrentHp:
-        result.roundCrimeRemainingHp[0] -
-        result.roundCrimeRemainingHp[terminalState.index + 1],
-      index: (terminalState.index += 1),
+      progressMaxHp: maxHp,
+      progressCurrentHp:currentHp,
+      round: terminalState.round + 1,
+      lostCount: result.roundResult[terminalState.round - 1] === "lost" ? (terminalState.lostCount += 1) : terminalState.lostCount
     });
   };
-
-  const changeProgressColor = () => {
-    console.log(terminalState.progressColor[terminalState.lostCount]);
-    setTerminalState({
-      ...terminalState,
-      progressColor: terminalState.defaultColors[terminalState.lostCount],
-      lostCount: (terminalState.lostCount += 1),
-    });
-  };
-
   return (
     <div className="crimeTerminalWrapper">
       <Progress
         animated
-        color={terminalState.defaultColors[terminalState.lostCount]}
+        color="success"
         value={terminalState.progressCurrentHp}
         max={terminalState.progressMaxHp}
         className="customProgressBar"
       />
-      {/* message from server. eg: Crimes loaded.. disappears after 4 seconds */}
-      {apiMessage && !result && (
-        <Typist className=" terminalFont" cursor={{ hideWhenDone: false }}>
-          <span> {apiMessage} </span>
-        </Typist>
-      )}
       {result && (
         <Typist
-          className="terminalFont"
+          className="terminalFont terminalStyle"
           onLineTyped={() => {
             updateProgressBarValues();
           }}
@@ -89,9 +69,9 @@ const CrimeTerminal = ({ apiMessage, result }) => {
           {result.roundResult.map((r, i) => (
             <div key={i}>
               {r === "lost" ? (
-                <span className="terminalLost">{giveLostString()}</span>
+                <p className="terminalLost">{giveLostString()}</p>
               ) : (
-                <span className="terminalWin">{giveWonString()}</span>
+                <p className="terminalWin">{giveWonString()}</p>
               )}
             </div>
           ))}

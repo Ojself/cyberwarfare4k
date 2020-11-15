@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 
 const SystemRepair = () => {
-  useEffect(async () => {
+  useEffect(() => {
     console.log("use effect");
   }, []);
 

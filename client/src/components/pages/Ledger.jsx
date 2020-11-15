@@ -37,17 +37,19 @@ const Ledger = (props) => {
   };
 
   useEffect(() => {
-    api.getLedgerUsers().then((result) => {
-      const { users } = result;
+    const fetchLedgeUsers = async()=>{
+    const data = await api.getLedgerUsers()
+      const { users } = data;
       const massagedUsers = dataMassager(users);
 
       setLedgerState({
         ...ledgerState,
         loading: false,
-        message: result.message,
+        message: data.message,
         users: massagedUsers,
       });
-    });
+    }
+    fetchLedgeUsers()
   }, [console.log("STATE", ledgerState)]);
 
   const dataMassager = (userArray) => {

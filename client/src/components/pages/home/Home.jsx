@@ -24,7 +24,6 @@ const Home = (props) => {
     if (status.userInstance) {
       return redirect("/create-hacker");
     }
-
     return false;
   };
 

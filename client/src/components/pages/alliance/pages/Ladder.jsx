@@ -11,14 +11,16 @@ const Ladder = () => {
   });
 
   useEffect(() => {
-    getAlliances().then((result) => {
+    const fetchAlliances = async ()=> {
+    const data = await api.getAllAlliances();
       setLadderState({
         ...ladderState,
-        alliances: result.totStats,
-        message: result.message,
+        alliances: data.totStats,
+        message: data.message,
         loading: false,
       });
-    });
+    }
+    fetchAlliances()
   }, []);
 
   const [sortState, setSortState] = useState({
@@ -40,11 +42,6 @@ const Ladder = () => {
       ...sortState,
       [sortName]: !sortState[sortName],
     });
-  };
-
-  const getAlliances = async () => {
-    const alliances = await api.getAllAlliances();
-    return alliances;
   };
 
   const handleSort = (e, sort) => {

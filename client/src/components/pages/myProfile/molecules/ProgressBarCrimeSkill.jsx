@@ -10,10 +10,9 @@ const ProgressBarCrimeSkill = props => {
     }
   };
 
-  const blinkMe = e => {
+  const blinkMe = () => {
     if (props.hasStatPoints) {
-      const upgradeName = e.target.getAttribute("name");
-      props.upgrade(upgradeName);
+      props.upgrade(props.name);
       setBlink(true);
       setTimeout(() => {
         setBlink(false);
@@ -52,7 +51,6 @@ const ProgressBarCrimeSkill = props => {
           bar
           name={props.name}
           color={props.color}
-          className=""
           value={props.value}
           max={props.bonus}
         />

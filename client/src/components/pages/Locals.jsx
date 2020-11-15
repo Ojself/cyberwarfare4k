@@ -17,21 +17,20 @@ const Locals = (props) => {
   });
 
   useEffect(() => {
-    getLocals().then((result) => {
+    const fetchLocals = async ()=> {
+      const data = await api.getLocals();
       setLocalState({
         ...localState,
-        cityLocals: result.cityLocals,
-        message: result.message,
-        localOnlineUsers: result.localOnlineUsers,
+        cityLocals: data.cityLocals,
+        message: data.message,
+        localOnlineUsers: data.localOnlineUsers,
         loading: false,
       });
-    });
-  }, [console.log(localState)]);
+    }
+    fetchLocals()
+  }, []);
 
-  const getLocals = async () => {
-    const cityLocals = await api.getLocals();
-    return cityLocals;
-  };
+  
 
   const checkIfOnline = (userId) => {
     if (localState.loading) {

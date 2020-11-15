@@ -97,13 +97,13 @@ export default {
       .catch(errHandler);
   }, */
 
-  /*   getOpponent(opponentId) {
+    getOpponent(opponentId) {
     return service
       .get(`/opponent/${opponentId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
- */
+
   getAllLadderUsers() {
     return service
       .get("/ladder")

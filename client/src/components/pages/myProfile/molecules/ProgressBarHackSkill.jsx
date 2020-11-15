@@ -12,8 +12,7 @@ const ProgressBarHackSkill = props => {
 
   const blinkMe = e => {
     if (props.hasStatPoints) {
-      const upgradeName = e.target.getAttribute("name");
-      props.upgrade(upgradeName);
+      props.upgrade(props.name);
       setBlink(true);
       setTimeout(() => {
         setBlink(false);
