@@ -6,7 +6,6 @@ const City = require('../models/City');
 const {
   changeCityRouteCriterias,
   getCityRouteCriterias,
-  changeCity,
 } = require('../middlewares/middleCity.js');
 
 const { getOnlineUsers } = require('./helper');
@@ -85,7 +84,6 @@ router.post('/', async (req, res) => {
 
   const oldCityId = user.playerStats.city;
   const oldCity = await City.findById(oldCityId);
-  console.log(oldCity, 'oldCity');
 
   const batteryCost = 5;
 
@@ -97,12 +95,20 @@ router.post('/', async (req, res) => {
       message,
     });
   }
+  await newCity.arrival(user._id);
+  await user.changeCity(newCity, batteryCost);
+  await oldCity.departure(user._id);
 
-  changeCity(user, newCity, oldCity, batteryCost);
+
+  const updatedUser = await user.save().then((u) => u.populate('playerStats.city', 'name').execPopulate());
+
+  console.log(updatedUser, '?');
+
 
   return res.status(200).json({
     success: true,
     message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,
+    user: updatedUser,
   });
 });
 

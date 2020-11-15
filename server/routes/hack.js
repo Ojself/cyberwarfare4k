@@ -36,12 +36,12 @@ router.post('/pettyCrime', async (req, res) => {
   }
 
   const batteryCost = 5;
-  const message = pettyHackRouteCriterias(user, batteryCost);
+  const disallowed = pettyHackRouteCriterias(user, batteryCost);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
 
@@ -51,7 +51,8 @@ router.post('/pettyCrime', async (req, res) => {
   return res.status(200).json({
     success: true,
     message: 'pettyCrime commited',
-    results,
+    results: results.pettyResult,
+    user: results.updatedUser,
   });
 });
 
@@ -100,12 +101,12 @@ router.post('/crimes', async (req, res) => {
 
   // commits crime and returns result object
   const finalResult = await fightCrime(user, crime, batteryCost);
-  finalResult.user = null;
 
   return res.status(200).json({
     success: true,
     message: 'Crime commited..',
     finalResult,
+    user: finalResult.user,
   });
 });
 

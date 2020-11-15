@@ -42,16 +42,8 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
   return null;
 }
 
-function changeCity(user, newCity, oldCity, batteryCost) {
-  newCity.arrival(user._id);
-  user.changeCity(newCity, batteryCost);
-  oldCity.departure(user._id);
-}
-
 
 module.exports = {
   getCityRouteCriterias,
   changeCityRouteCriterias,
-  changeCity,
-
 };

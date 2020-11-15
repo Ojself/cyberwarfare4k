@@ -1,6 +1,6 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { getInbox, getAllUsers } = require('./helper');
+const { getInbox, getOpponentInformation } = require('./helper');
 
 const router = express.Router();
 
@@ -11,13 +11,16 @@ const City = require('../models/City');
 // Ensures that email confirmation is been made
 
 function setupPlayer(user, name, city, avatar) {
-  user.account.isSetup = true;
-  user.name = name;
-  user.playerStats.city = city._id;
-  user.account.avatar = avatar;
-  user.save();
-  city.residents.push(user._id);
-  city.save();
+  const updatedUser = user;
+  const updatedCity = city;
+
+  updatedUser.account.isSetup = true;
+  updatedUser.name = name;
+  updatedUser.playerStats.city = city._id;
+  updatedUser.account.avatar = avatar;
+  updatedUser.save();
+  updatedCity.residents.push(user._id);
+  updatedCity.save();
 }
 
 const getShuffledArr = (arr) => {
@@ -121,14 +124,14 @@ router.get('/profile', isLoggedIn, async (req, res) => {
       .populate('alliance', 'name')
       .populate('playerStats.city', 'name');
     const messages = await getInbox(userId);
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       message: 'user loaded..',
       user,
       messages,
     });
   } catch (err) {
-    return res.status(400).json({
+    res.status(400).json({
       success: false,
       message: `error: ${JSON.stringify(err)}`,
     });
@@ -165,19 +168,15 @@ router.get('/opponent/', async (req, res) => {
 
 router.get('/opponent/:id', async (req, res) => {
   const opponentId = req.params.id;
-  try {
-    const opponent = await User.findById(opponentId);
-    res.status(200).json({
-      success: true,
-      message: 'opponent loaded..',
-      opponent,
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: `error: ${JSON.stringify(err)}`,
-    });
-  }
+  const allUsers = await User.find().sort({ 'playerStats.exp': -1 }).populate('alliance', 'name');
+  const opponentInformation = await getOpponentInformation(JSON.stringify(opponentId), allUsers);
+
+  res.status(200).json({
+    success: true,
+    message: 'opponent loaded..',
+    opponentRanking: opponentInformation.ranking,
+    opponent: opponentInformation.opponent,
+  });
 });
 
 // @GET
@@ -223,15 +222,9 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const { statPoint } = req.body;
-  let user;
-  try {
-    user = await User.findById(userId);
-  } catch (e) {
-    return res.status(400).json({
-      success: false,
-      message: `error ${JSON.stringify(e)}`,
-    });
-  }
+
+  /* todo, verify statpoint */
+  const user = await User.findById(userId);
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({
@@ -247,7 +240,7 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
 
   return res.status(200).json({
     message: `${statPoint} skill upgraded..`,
-    updatedUser,
+    user: updatedUser,
     success: true,
   });
 });

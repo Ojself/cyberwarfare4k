@@ -371,7 +371,6 @@ userSchema.methods.batteryGain = function (battery) {
 
 userSchema.methods.bitcoinDrain = function (bitCoins) {
   this.playerStats.bitCoins -= bitCoins;
-  this.save();
 };
 
 userSchema.methods.bitcoinGain = function (bitCoins) {
@@ -433,7 +432,8 @@ userSchema.methods.handlePettyCrime = async function (result) {
   if (result.legendaryGained) {
     this[result.legendaryGained] += 1;
   }
-  if (result.levelUp) {
+  if (this.playerStats.exp >= this.playerStats.expToLevel) {
+    console.log('???!??!??!?');
     this.playerStats.statPoints += 5;
     this.playerStats.rank += 1;
     await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
@@ -441,7 +441,6 @@ userSchema.methods.handlePettyCrime = async function (result) {
       this.playerStats.expToLevel = newRank.expToNewRank;
     });
   }
-  this.save();
 };
 
 userSchema.methods.purchaseCurrency = function (
@@ -475,7 +474,6 @@ userSchema.methods.changeCity = function (city, batteryCost) {
   console.log('changeCity triggered', batteryCost);
   this.playerStats.battery -= batteryCost;
   this.playerStats.city = city._id;
-  this.save();
 };
 
 userSchema.methods.handleCrime = async function (finalResult) {
@@ -495,6 +493,7 @@ userSchema.methods.handleCrime = async function (finalResult) {
     this.legendaryGained[finalResult.playerGains.legendaryGained] += 1;
   }
   if (finalResult.playerGains.levelUp) {
+    console.log('????!??!??!?!?');
     this.playerStats.rank += 1;
     this.playerStats.statPoints += 5; // todo exctract rank functionality. used several times
     await Rank.findOne({ rank: this.playerStats.rank }).then((newRank) => {
@@ -625,49 +624,8 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
     this.playerStats.bountyDonors.push(bountyDonor._id);
   }
   this.playerStats.bounty += parseInt(bounty, 10);
-  this.save();
 };
 
-// exported into a new model
-/* // MESSAGES
-userSchema.methods.receiveMessage = function (message, senderName) {
-  console.log('receiveMessage triggered', message, senderName);
-  const date = Date.now();
-  const newMessage = [
-    `${senderName} ${new Date(date).toString().slice(0, 21)}: ${message}`,
-    true,
-  ];
-
-  this.account.messages.unshift(newMessage);
-
-  this.save();
-};
-
-userSchema.methods.sendMessage = function (message, senderName, self) {
-  const date = Date.now();
-  const newMessage = [`${senderName} ${new Date(date).toString().slice(0, 21)}: ${message} `];
-  this.account.sentMessages.unshift(newMessage);
-  if (self) { // sending message to self
-    newMessage.push(true);
-    this.account.messages.unshift(newMessage);
-  }
-  this.save();
-};
-
-userSchema.methods.readAllmessages = function (communication) {
-
-  const path = this.account[communication];
-
-  for (let i = 0; i < path.length; i += 1) {
-
-    path[i][1] = false;
-    // this to ensure mongoose knows embedded arrays have been modified
-    this.markModified(`account.${communication}.${i.toString()}.1`);
-  }
-  // this.account.messages[0][1]=false
-  this.save();
-};
- */
 userSchema.methods.handleNewStatpoint = async function (statName) {
   this.playerStats.statPoints -= 1;
   switch (statName) {

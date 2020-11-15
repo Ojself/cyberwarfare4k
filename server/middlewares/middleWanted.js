@@ -30,21 +30,15 @@ const getAllWantedUsers = async () => {
     'playerStats.rankName': '1',
   };
 
-  let users;
-  try {
-    users = await User.find()
-      .sort({ 'playerStats.bounty': -1 })
-      .select(dbSelectOptions)
-      .populate('alliance', 'name')
-      .populate('playerStats.bountyDonors', 'name');
-  } catch (e) {
-    console.error('error:', e); // todo, this doesn't seem right
-    throw new Error(e);
-  }
+  const users = await User.find()
+    .sort({ 'playerStats.bounty': -1 })
+    .select(dbSelectOptions)
+    .populate('alliance', 'name')
+    .populate('playerStats.bountyDonors', 'name');
 
   const bountyUsers = users.filter((u) => u.playerStats.bounty > 0);
 
-  return [users, bountyUsers];
+  return { users, bountyUsers };
 };
 
 module.exports = { addBountyCriteria, getAllWantedUsers };

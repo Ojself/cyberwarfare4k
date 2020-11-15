@@ -22,8 +22,8 @@ router.get('/', async (req, res) => {
   res.status(200).json({
     success: true,
     message: 'wanted hackers loaded..',
-    users: allUsers[0],
-    bountyUsers: allUsers[1],
+    users: allUsers.users,
+    bountyUsers: allUsers.bountyUsers,
   });
 });
 
@@ -45,17 +45,18 @@ router.post('/add-bounty', async (req, res) => {
       message: JSON.stringify(e),
     });
   }
-  const message = addBountyCriteria(user, bountyTarget, bounty);
-  if (message) {
+  const disallowed = addBountyCriteria(user, bountyTarget, bounty);
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
 
-  // performs the actual action in db
   user.bitcoinDrain(bounty);
+  await user.save();
   bountyTarget.addBounty(user, bounty);
+  await bountyTarget.save();
 
   let allUsers;
   try {
@@ -70,8 +71,9 @@ router.post('/add-bounty', async (req, res) => {
   return res.status(200).json({
     success: true,
     message: `${bounty} added to ${bountyTarget.name}s bounty`,
-    users: allUsers[0],
-    bountyUsers: allUsers[1],
+    users: allUsers.users,
+    bountyUsers: allUsers.bountyUsers,
+    user,
   });
 });
 

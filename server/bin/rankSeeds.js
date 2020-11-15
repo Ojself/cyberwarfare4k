@@ -8,7 +8,7 @@ require('../configs/database');
 
 const ranks = [
   {
-    name: 'Script Kiddie',
+    name: 'Script kiddie',
     rank: 0,
     expToNewRank: 10000,
   },

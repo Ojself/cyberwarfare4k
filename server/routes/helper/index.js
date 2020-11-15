@@ -3,6 +3,8 @@ const User = require('../../models/User');
 const Session = require('../../models/Session');
 const Message = require('../../models/Message');
 
+const monthsOverview = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dev'];
+
 const getAllUsers = async (filterArray = [], select = null) => {
   if (select) {
     // {name:'1'}
@@ -58,4 +60,42 @@ const getInbox = async (userId) => {
   return { inbox, sent };
 };
 
-module.exports = { getAllUsers, getOnlineUsers, getInbox };
+const getOpponentInformation = async (opponentId, allUsers) => {
+  const sumAllSkillValues = (skill) => Object.values(skill).reduce((a, c) => a + c);
+  const findPosition = (list, id) => {
+    const position = list.findIndex((user) => JSON.stringify(user._id) === id);
+
+    return position + 1;
+  };
+  const opponent = allUsers.find((user) => JSON.stringify(user._id) === opponentId);
+
+  const ranking = {
+    exp: null,
+    crimeSkill: null,
+    hackSkill: null,
+    networth: null,
+    online: null,
+    createdAt: null,
+    shutdowns: null,
+  };
+  ranking.exp = findPosition(allUsers, opponentId);
+  allUsers.sort((a, b) => sumAllSkillValues(b.crimeSkill) - sumAllSkillValues(a.crimeSkill));
+  ranking.crimeSkill = findPosition(allUsers, opponentId);
+  allUsers.sort((a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill));
+  ranking.hackSkill = findPosition(allUsers, opponentId);
+  allUsers.sort((a, b) => sumAllSkillValues({ bitCoins: b.playerStats.bitCoins, ledger: b.playerStats.bitCoins }) - sumAllSkillValues({ bitCoins: a.playerStats.bitCoins, ledger: a.playerStats.bitCoins }));
+  ranking.networth = findPosition(allUsers, opponentId);
+  const onlineUsers = await getOnlineUsers();
+  ranking.online = onlineUsers.some((id) => JSON.stringify(id) === opponentId);
+  allUsers.sort((a, b) => b.fightInformation.shutdowns - a.fightInformation.shutdowns);
+  ranking.shutdowns = findPosition(allUsers, opponentId);
+
+  ranking.createdAt = `${monthsOverview[opponent.createdAt.getMonth()]} ${opponent.createdAt.getFullYear()}`;
+  console.log(ranking, 'ranking');
+  return { opponent, ranking };
+};
+
+
+module.exports = {
+  getAllUsers, getOnlineUsers, getInbox, getOpponentInformation,
+};

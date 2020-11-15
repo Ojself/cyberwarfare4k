@@ -73,8 +73,9 @@ async function pettyCrime(user) {
   }
 
   await user.handlePettyCrime(pettyResult);
+  const updatedUser = await user.save();
 
-  return pettyResult;
+  return { pettyResult, updatedUser };
 }
 
 module.exports = {
