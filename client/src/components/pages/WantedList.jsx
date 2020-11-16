@@ -150,12 +150,9 @@ const WantedList = ({updateGlobalValues}) => {
     <Table dark>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Alliance</th>
-          <th>Rank</th>
-          <th>Donors</th>
-          <th>Bounty</th>
-          <th>Add bounty</th>
+          {["Name","Alliance","Bank","Donors","Bounty","Add Bounty"].map(header=>{
+            return (<th key={header}>{header}</th>)
+          })}
         </tr>
       </thead>
       <tbody>

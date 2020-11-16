@@ -12,6 +12,7 @@ import Footer from "./pages/header-footer/Footer";
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread";
+import EarnBattery from "./pages/EarnBattery"
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import HackPlayer from "./pages/HackPlayer";
@@ -121,6 +122,8 @@ const App = () => {
           <Route path="/hack-player" component={HackPlayer} />
           <Route 
             path="/hacker/:id" component={HackerProfile} />
+          <Route
+            path="/earn-battery" component={EarnBattery} />
           <Route
             path="/locals"
             render={() => (

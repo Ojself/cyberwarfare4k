@@ -58,7 +58,7 @@ const NavbarComp = ({loading,messages,user}) => {
                   Top Alliances
                 </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
-                <DropdownItem href='/battery'>Earn Battery <span>&#9889;</span></DropdownItem>
+                <DropdownItem href='/earn-battery'>Earn Battery <span>&#9889;</span></DropdownItem>
                 <DropdownItem href="/information">Information</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
