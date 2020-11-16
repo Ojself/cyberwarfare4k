@@ -109,6 +109,10 @@ const userSchema = new Schema(
     // Player stats
     playerStats: {
       city: { type: Schema.Types.ObjectId, ref: 'City' },
+      bodyguards: {
+        alive: { type: Number, default: 0 },
+        bought: { type: Number, default: 0 },
+      },
       statPoints: {
         type: Number,
         default: 5,
@@ -227,33 +231,25 @@ const userSchema = new Schema(
 
     // Figth accessories
     fightInformation: {
-      gracePeriod: {
-        type: Boolean,
-        default: false,
+      gracePeriod: { type: Boolean, default: false },
+      shutdowns: { type: Number, default: 0 },
+      attacksInitiated: { type: Number, default: 0 },
+      attacksVictim: { type: Number, default: 0 },
+      crimesInitiated: { type: Number, default: 0 },
+      vpnChanges: { type: Number, default: 0 },
+      currencyPurchases: { type: Number, default: 0 },
+    },
+    // Earn energy
+    earnEnergy: {
+      githubUserName: { type: String, default: '' },
+      githubStar: { type: Boolean, default: false },
+      megarpg: {
+        code: { type: String, default: '' },
+        expires: { type: Date },
       },
-      shutdowns: {
-        type: Number,
-        default: 0,
-      },
-      attacksInitiated: {
-        type: Number,
-        default: 0,
-      },
-      attacksVictim: {
-        type: Number,
-        default: 0,
-      },
-      crimesInitiated: {
-        type: Number,
-        default: 0,
-      },
-      vpnChanges: {
-        type: Number,
-        default: 0,
-      },
-      currencyPurchases: {
-        type: Number,
-        default: 0,
+      chessathor: {
+        code: { type: String, default: '' },
+        expires: { type: Date },
       },
     },
   },
@@ -265,7 +261,7 @@ const userSchema = new Schema(
   },
 );
 
-// from marketplace
+
 // this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function (item) {
   console.log('handleItemPurchase triggered', item);
@@ -348,8 +344,6 @@ userSchema.methods.giveLegendary = function (itemName = 'emp') {
 };
 
 userSchema.methods.giveSkill = function (skill = 'technical') {
-  console.log('give crimeskill triggered', skill);
-  console.log(this.crimeSkill, 'this.crimeSkill');
   this.crimeSkill[skill] += 1;
   this.save();
 };
@@ -366,7 +360,6 @@ userSchema.methods.batteryGain = function (battery) {
   if (this.playerStats.battery > 100) {
     this.playerStats.battery = 100;
   }
-  this.save();
 };
 
 userSchema.methods.bitcoinDrain = function (bitCoins) {
