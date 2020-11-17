@@ -17,7 +17,7 @@ const Locals = (props) => {
   });
 
   useEffect(() => {
-    const fetchLocals = async ()=> {
+    const fetchLocals = async () => {
       const data = await api.getLocals();
       setLocalState({
         ...localState,
@@ -26,11 +26,9 @@ const Locals = (props) => {
         localOnlineUsers: data.localOnlineUsers,
         loading: false,
       });
-    }
-    fetchLocals()
+    };
+    fetchLocals();
   }, []);
-
-  
 
   const checkIfOnline = (userId) => {
     if (localState.loading) {
@@ -42,10 +40,10 @@ const Locals = (props) => {
 
   return (
     <div className="page-container ">
-      <h2>
+      <h1 className="display-4">
         Locals in{" "}
         {props.loading ? "your city!" : props.user.playerStats.city.name}
-      </h2>
+      </h1>
       <Table striped dark className="content">
         <thead>
           <tr>
@@ -59,9 +57,12 @@ const Locals = (props) => {
             : localState.cityLocals.residents.map((user, i) => (
                 <tr key={user._id}>
                   <th scope="row">
-                    <Link to={`/hacker/${user._id}`}>
+                    <Link className="text-light" to={`/hacker/${user._id}`}>
                       {checkIfOnline(user._id) && (
-                        <FontAwesomeIcon icon={faWifi} />
+                        <FontAwesomeIcon
+                          className="text-warning"
+                          icon={faWifi}
+                        />
                       )}{" "}
                       {user.name}
                     </Link>

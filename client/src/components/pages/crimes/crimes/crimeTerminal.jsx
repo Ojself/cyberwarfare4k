@@ -55,7 +55,7 @@ const CrimeTerminal = ({ result }) => {
         color="success"
         value={terminalState.progressCurrentHp}
         max={terminalState.progressMaxHp}
-        className="customProgressBar"
+        style={{margin:"20px"}}
       />
       {result && (
         <Typist
@@ -69,9 +69,9 @@ const CrimeTerminal = ({ result }) => {
           {result.roundResult.map((r, i) => (
             <div key={i}>
               {r === "lost" ? (
-                <p className="terminalLost">{giveLostString()}</p>
+                <p className="terminalTextLost">{giveLostString()}</p>
               ) : (
-                <p className="terminalWin">{giveWonString()}</p>
+                <p className="terminalTextGreen">{giveWonString()}</p>
               )}
             </div>
           ))}

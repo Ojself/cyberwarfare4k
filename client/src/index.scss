@@ -7,13 +7,13 @@ html {
 body {
   margin: 0;
   padding: 0;
-  min-height:100%
+  min-height: 100%;
 }
 
-.globalMessage{
+.globalMessage {
   min-height: 4vh;
-  width:50%;
-  margin:auto;
+  width: 50%;
+  margin: auto;
   color: #06a308;
 }
 
@@ -30,47 +30,6 @@ body {
 .info.info-danger {
   background-color: #e73f3f;
 }
-
-/* PlayerProfile.jsx */
-/* .playerWrapper {
-  height: 50vh;
-  width: 50vw;
-  div {
-    border: solid black 1px;
-  }
-}
-
-.playerInfoWrapper {
-  display: flex;
-  height: auto;
-  width: auto;
-}
-
-.playerAvatarWrapper {
-  display: flex;
-  width: 35%;
-  flex-flow: column;
-}
-
-.playerStatsWrapper {
-  width: 35%;
-  li {
-    list-style-type: none;
-  }
-}
-.playerActionWrapper {
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-}
-
-.playerActionButton {
-  height: 33%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
 
 .page-container {
   margin: 0 auto;
@@ -92,10 +51,6 @@ body {
   background-color: #050505;
 }
 
-.tableCrimeWrapper {
-  display: flex;
-}
-
 .crimeTerminalWrapper {
   color: white;
   background-color: black;
@@ -106,7 +61,7 @@ body {
 
 .statusBar {
   height: 5vh;
-  background-color: #343a40;
+  background-color: #32334a;
   color: white;
 }
 
@@ -123,38 +78,17 @@ body {
   background-color: #ff8a9d !important;
 }
 
-.progress-bar-animated {
-  background-color: #aa94ec !important;
-}
-
-.progress-bar-danger {
-  background-color: #aa94ec !important;
-}
-
 .terminalFont {
   font-family: "Roboto Mono", monospace;
   text-align: left;
 }
 
-.terminalStyle {
-  margin-left: 4px;
-  margin-top: 4px;
-}
-
-.terminalWin {
+.terminalTextGreen {
   color: #06a308;
 }
 
-.terminalLost {
+.terminalTextLost {
   color: #8b0503;
-}
-
-.customProgressBar {
-  margin: 20px;
-}
-
-.navProgressBar {
-  width: 10vw;
 }
 
 .Typist .Cursor {

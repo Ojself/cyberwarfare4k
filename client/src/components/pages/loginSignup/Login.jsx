@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Button } from "reactstrap";
+
 import api from "../../../api";
 
 const Login = (props) => {
@@ -15,16 +17,15 @@ const Login = (props) => {
     });
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
+    /* try catch todo */
     e.preventDefault();
-    api
-      .login(loginState.email, loginState.password)
-      .then((result) => {
-        props.redirect("/my-profile/");
-      })
-      .catch((err) =>
-        setLoginState({ ...loginState, message: err.toString() })
-      );
+    try {
+      await api.login(loginState.email, loginState.password);
+    } catch (err) {
+      console.log(err);
+    }
+    props.redirect("/my-profile/");
   };
 
   return (
@@ -51,12 +52,13 @@ const Login = (props) => {
           onChange={handleInputChange}
         />
         <br />
-        <button
-          className="btn btn-primary w-100 mt-2"
+        <Button
+          className="btn btn-outline w-100 mt-2"
+          color="outline-success"
           onClick={(e) => handleClick(e)}
         >
           Login
-        </button>
+        </Button>
       </form>
       <p className="text-center mt-3">Forgot Password?</p>
       {/* Todo, do something here. */}

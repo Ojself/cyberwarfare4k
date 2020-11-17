@@ -314,8 +314,8 @@ const MyProfile = ({loading,user,updateGlobalValues}) => {
 
   const profilePage = (
     <div className="container d-flex flex-column">
-      {profileAvatars}
       {profileHeader}
+      {profileAvatars}
       <div className="d-flex">
       {profileSkills}
       {profileRankOverview}

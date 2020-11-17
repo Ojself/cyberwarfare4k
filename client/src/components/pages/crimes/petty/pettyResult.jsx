@@ -41,11 +41,11 @@ const PettyResult = (props) => {
     <>
       <h6 id="fail-color">Fail!</h6>
       <p>
-        <strong>
-          {failStrings[props.index % failStrings.length ]}
-        </strong>
+        <strong>{failStrings[props.index % failStrings.length]}</strong>
       </p>
-      <p>Battery -{battery}%</p>
+      <p>
+        <span>&#9889;</span> -{battery}%
+      </p>
     </>
   );
 
@@ -77,9 +77,7 @@ const PettyResult = (props) => {
         )}
         <div className="gains">
           <p>
-            <strong>
-              {winStrings[props.index % winStrings.length]}
-            </strong>
+            <strong>{winStrings[props.index % winStrings.length]}</strong>
           </p>
           <p>
             + <span style={{ color: "#F08F18" }}>&#8383;</span>
@@ -98,7 +96,10 @@ const PettyResult = (props) => {
               gained!
             </p>
           )}
-          <p> <span>&#9889;</span>-{battery}%</p>
+          <p>
+            {" "}
+            <span>&#9889;</span>-{battery}%
+          </p>
         </div>
       </div>
     </>

@@ -22,10 +22,10 @@ import classnames from "classnames";
 
 const CreateHacker = (props) => {
   const [createState, setCreateState] = useState({
-    message: '',
-    selectedCity: '',
-    selectedAvatar: '',
-    name: '',
+    message: "",
+    selectedCity: "",
+    selectedAvatar: "",
+    name: "",
   });
   const [activeTab, setActiveTab] = useState("1");
 
@@ -179,7 +179,7 @@ const CreateHacker = (props) => {
       {
         <div className="content">
           <div className="">
-            <h1>Create A Haxx0r</h1>
+            <h1 className="display-4">Create A Haxx0r</h1>
           </div>
 
           <div className="mb-5">
@@ -198,7 +198,7 @@ const CreateHacker = (props) => {
           </div>
 
           <div className="mb-5">
-            <h3>Select Your City</h3>
+            <h1 className="display-4">Select Your City</h1>
 
             <Select
               className="text-dark w-25 m-auto"
@@ -208,7 +208,7 @@ const CreateHacker = (props) => {
             />
           </div>
 
-          <h3>Select Your Avatar</h3>
+          <h1 className="display-4">Select Your Avatar</h1>
           <div
             style={{ margin: "0 auto", width: "65%" }}
             className="d-flex justify-content-center flex-wrap"
@@ -217,10 +217,9 @@ const CreateHacker = (props) => {
           </div>
           <Button
             disabled={createButtonEnabled()}
-            className="m-5 p-3"
+            className="my-5 p-3 w-25"
             onClick={handleCreate}
             color="primary"
-            size="lg"
           >
             Create!
           </Button>

@@ -3,8 +3,9 @@ import Typist from "react-typist";
 import api from "../../../../api";
 import { pettyStrings } from "../../_helpers/pettyStrings";
 import PettyResult from "./pettyResult";
+import { Button } from "reactstrap";
 
-const PettyHack = ({loading, updateGlobalValues}) => {
+const PettyHack = ({ user, loading, updateGlobalValues }) => {
   const [pettyState, setPettyState] = useState({
     hacking: false,
     hackingPhrases: [], // push Typist components in here
@@ -49,8 +50,8 @@ const PettyHack = ({loading, updateGlobalValues}) => {
     }
     insertNewPhrase();
     const data = await api.pettyHack();
-    console.log(data,'data')
-    updateGlobalValues(data,false)
+    console.log(data, "data");
+    updateGlobalValues(data, false);
     if (data.success) {
       handleSuccess(data.results);
     }
@@ -91,7 +92,7 @@ const PettyHack = ({loading, updateGlobalValues}) => {
     const oldArray = pettyState.hackingPhrases;
     oldArray.push(
       <Typist
-        className="mt-5 terminal-font"
+        className="mt-3 terminal-font"
         avgTypingDelay={40}
         cursor={{ show: false }}
       >
@@ -123,20 +124,30 @@ const PettyHack = ({loading, updateGlobalValues}) => {
       buttonText = "Stopping..";
       buttonDisabled = true;
     }
+    console.log(user, "user");
+    if (loading || user.playerStats.battery <= 0) {
+      buttonDisabled = true;
+    }
 
     return (
-      <button style={{"minWidth":"15%"}} disabled={buttonDisabled} onClick={toggleHack}>
+      <Button
+        style={{ minWidth: "15%" }}
+        className={"btn-outline-danger"}
+        color={"outline-danger"}
+        disabled={buttonDisabled}
+        onClick={toggleHack}
+      >
         {buttonText}
-      </button>
+      </Button>
     );
   };
 
   return (
     <div className="page-container">
-      <h2>Petty hackr</h2>
+      <h1 className="display-4">Petty hackr</h1>
       <div className="content">
         {getActionButton(pettyState)}
-        <div className="petty-container">
+        <div className="d-flex w-100 mt-3">
           <div className="terminal">
             {/* phrases */}
             {pettyState.hackingPhrases.map((p, i) => {

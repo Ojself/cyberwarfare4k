@@ -34,7 +34,7 @@ const HackCrimes = ({updateGlobalValues}) => {
   return (
     <div className="page-container">
       <h2>Hack Crimes</h2>
-      <div className="content tableCrimeWrapper">
+      <div className="content d-flex">
         <Table dark striped>
           <thead>
             <tr>

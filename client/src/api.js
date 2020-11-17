@@ -97,7 +97,7 @@ export default {
       .catch(errHandler);
   }, */
 
-    getOpponent(opponentId) {
+  getOpponent(opponentId) {
     return service
       .get(`/opponent/${opponentId}`)
       .then((res) => res.data)
@@ -349,6 +349,15 @@ export default {
   postComment(comment, threadId) {
     return service
       .post(`/forum/thread/comment`, { comment, threadId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  /* earn energy */
+
+  createBatteryQuery(game) {
+    return service
+      .post(`/earnBattery`, { game })
       .then((res) => res.data)
       .catch(errHandler);
   },

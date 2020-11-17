@@ -1,38 +1,38 @@
 import React, { useState } from "react";
+import { Button } from "reactstrap";
 
 import api from "../../../api";
 
-const Signup = props => {
+const Signup = (props) => {
   const [signupState, setSignupState] = useState({
     email: "",
     password: "",
-    message: null
+    message: null,
   });
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setSignupState({
       ...signupState,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleClick = e => {
+  const handleClick = async (e) => {
     e.preventDefault();
     const data = {
       email: signupState.email,
-      password: signupState.password
+      password: signupState.password,
     };
-    api
-      .signup(data)
-      .then(result => {
-        props.redirect("/create-hacker/");
-      })
-      .catch(err =>
-        setSignupState({
+    try {
+      await api.signup(data);
+      props.redirect("/create-hacker/");
+    } catch (err) {
+      console.log(err, "err");
+    }
+    /* setSignupState({
           ...signupState,
           message: err.toString()
-        })
-      );
+        }) */
   };
 
   return (
@@ -41,7 +41,7 @@ const Signup = props => {
         <div className="info info-danger">{signupState.message}</div>
       )}
       <h2 className="text-left">
-        Register <span style={{ color: "#FFCC00" }}>- IT'S FREE!</span>
+        Register {/* <p style={{ color: "#FFCC00" }}>- IT'S FREE!</p> */}
       </h2>
       <form>
         <p>E-Mail Address</p>
@@ -62,12 +62,13 @@ const Signup = props => {
           onChange={handleInputChange}
         />
         <br />
-        <button
-          className="btn btn-primary w-100 mt-2"
-          onClick={e => handleClick(e)}
+        <Button
+          className="btn btn-outline w-100 mt-2"
+          color="outline-success"
+          onClick={(e) => handleClick(e)}
         >
-          Signup
-        </button>
+          Sign up
+        </Button>
       </form>
     </div>
   );

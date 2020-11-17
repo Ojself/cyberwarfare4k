@@ -2,11 +2,11 @@ import React from "react";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const StatusBar = ({loading,user}) => {
-  const shouldRender = !loading && !!user
+const StatusBar = ({ loading, user }) => {
+  const shouldRender = !loading && !!user;
   return (
     <div className="statusBar">
-     {shouldRender &&
+      {shouldRender && (
         <div>
           <ul className="list-unstyled">
             {user.alliance && user.alliance.name ? (
@@ -55,18 +55,17 @@ const StatusBar = ({loading,user}) => {
             <li className="list-inline-item ml-2">
               XP:{/*  {user.playerStats.exp} */}
             </li>
-            <li className="list-inline-item navProgressBar">
+            <li style={{ width: "10vw" }} className="list-inline-item">
               <Progress
                 color="warning"
                 value={
-                  (user.playerStats.exp /
-                    user.playerStats.expToLevel) *
-                  100
+                  (user.playerStats.exp / user.playerStats.expToLevel) * 100
                 }
               />
             </li>
           </ul>
-        </div>}
+        </div>
+      )}
     </div>
   );
 };

@@ -74,7 +74,7 @@ const HackerProfile = props => {
           <ul className="list-group">
           <ListGroupItem className="justify-content-between bg-dark"><Badge pill>{opponentState.ranking.createdAt}</Badge> Morbi leo risus </ListGroupItem>
             <li className="list-group-item bg-dark mb-2"></li>
-            <li className="list-group-item bg-dark mb-2">{opponentState.ranking.online? <span className="terminalWin">online</span>: <span className="terminalLost">offline</span>}</li>
+            <li className="list-group-item bg-dark mb-2">{opponentState.ranking.online? <span className="terminalTextGreen">online</span>: <span className="terminalTextLost">offline</span>}</li>
           </ul>
    */}
 
@@ -85,8 +85,8 @@ const HackerProfile = props => {
         <ListGroupItem className="justify-content-between bg-dark"> {opponentState.opponent.playerStats.rankName} </ListGroupItem>
 
         {opponentState.ranking.online
-        ? <ListGroupItem className="justify-content-between bg-dark terminalWin"> Online </ListGroupItem>
-        : <ListGroupItem className="justify-content-between bg-dark terminalLost"> Offline </ListGroupItem>
+        ? <ListGroupItem className="justify-content-between bg-dark terminalTextGreen"> Online </ListGroupItem>
+        : <ListGroupItem className="justify-content-between bg-dark terminalTextLost"> Offline </ListGroupItem>
         }
     </ListGroup>
         </div>

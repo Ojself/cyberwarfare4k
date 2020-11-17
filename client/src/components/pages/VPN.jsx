@@ -3,7 +3,7 @@ import api from "../../api";
 import { Button, Form, FormGroup, Label } from "reactstrap";
 import Select from "react-select";
 
-const VPN = ({updateGlobalValues}) => {
+const VPN = ({ updateGlobalValues }) => {
   const [vpnState, setVpnState] = useState({
     cities: null,
     massagedCities: null,
@@ -13,28 +13,28 @@ const VPN = ({updateGlobalValues}) => {
   });
 
   useEffect(() => {
-   const fetchCities = async() =>{
-     const data = await api.getCities()
-     const massagedCities = dataMassager(data.cities);
-     setVpnState({
+    const fetchCities = async () => {
+      const data = await api.getCities();
+      const massagedCities = dataMassager(data.cities);
+      setVpnState({
         ...vpnState,
         cities: data.cities,
         massagedCities: massagedCities,
         loading: false,
       });
-   }
-   fetchCities()
+    };
+    fetchCities();
   }, []);
   // todo. add price in here somewhere
   const handleChange = (selectedOption) => {
     setVpnState({ ...vpnState, selectedOption });
-    console.log(vpnState,'vpnState',selectedOption,'selected')
+    console.log(vpnState, "vpnState", selectedOption, "selected");
   };
 
   const handleTravel = async () => {
     const cityId = vpnState.selectedOption.value;
-    const result = await api.changeCity({ cityId })
-    updateGlobalValues(result)
+    const result = await api.changeCity({ cityId });
+    updateGlobalValues(result);
   };
 
   const dataMassager = (cityArray) => {
@@ -50,18 +50,23 @@ const VPN = ({updateGlobalValues}) => {
     return massagedCities;
   };
 
-  const priceOverview = (
-    vpnState.selectedOption && (
+  const priceOverview = vpnState.selectedOption && (
     <div>
-      <h6> <span style={{ color: "#F08F18" }}>&#8383;</span> {vpnState.selectedOption.price.toLocaleString()}</h6>
-      <h6> <span>&#9889;5%</span> </h6>
+      <h6>
+        {" "}
+        <span style={{ color: "#F08F18" }}>&#8383;</span>{" "}
+        {vpnState.selectedOption.price.toLocaleString()}
+      </h6>
+      <h6>
+        {" "}
+        <span>&#9889;5%</span>{" "}
+      </h6>
     </div>
-    )
-  )
+  );
 
   return (
     <div className="page-container">
-      <h2>VPN</h2>
+      <h1 className="display-4">VPN</h1>
 
       <Form style={{ width: "25%" }} className="content">
         <FormGroup>
@@ -71,9 +76,11 @@ const VPN = ({updateGlobalValues}) => {
             onChange={handleChange}
             options={vpnState.loading ? "" : vpnState.massagedCities}
           />
-           {priceOverview} 
+          {priceOverview}
         </FormGroup>
-        <Button onClick={() => handleTravel()}>Change VPN</Button>
+        <Button color="outline-info" onClick={() => handleTravel()}>
+          Change VPN
+        </Button>
       </Form>
     </div>
   );

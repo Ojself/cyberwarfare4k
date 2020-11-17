@@ -32,19 +32,17 @@ const Ladder = () => {
   };
 
   useEffect(() => {
-    const fetchUsers = async ()=> {
-    const users = await api.getAllLadderUsers()
+    const fetchUsers = async () => {
+      const users = await api.getAllLadderUsers();
       setLadderState({
         ...ladderState,
         users: users.users,
         message: users.message,
         loading: false,
       });
-    }
-    fetchUsers()
-
+    };
+    fetchUsers();
   }, []);
-
 
   const handleSort = (e, sort) => {
     sort = sort.toLowerCase();
@@ -137,8 +135,8 @@ const Ladder = () => {
 
   return (
     <div className="page-container">
-      <h2>Ladder</h2>
-      <Table className="content" striped dark>
+      <h1 className="display-3">Ladder</h1>
+      <Table className="content " striped dark>
         <thead>
           <tr>
             {[
@@ -165,21 +163,29 @@ const Ladder = () => {
           {ladderState.users.map((user) => (
             <tr key={user._id}>
               <th scope="row">
-                <Link to={`/hacker/${user._id}`}>{user.name}</Link>
+                <Link className="text-light" to={`/hacker/${user._id}`}>
+                  {user.name}
+                </Link>
               </th>
               <td>
                 {user.alliance ? (
-                  <Link to={`/alliance/${user.alliance._id}`}>
+                  <Link
+                    className="text-light"
+                    to={`/alliance/${user.alliance._id}`}
+                  >
                     {user.alliance.name}
                   </Link>
                 ) : (
-                  "none"
+                  "-"
                 )}
               </td>
               <td>{user.playerStats.rankName}</td>
               <td>{user.fightInformation.shutdowns}</td>
               <td>{user.fightInformation.crimesInitiated}</td>
-              <td><span style={{ color: "#F08F18" }}>&#8383;</span> {user.playerStats.networth.toLocaleString()}</td>
+              <td>
+                {user.playerStats.networth.toLocaleString()}
+                <span style={{ color: "#F08F18" }}>&#8383;</span>
+              </td>
             </tr>
           ))}
         </tbody>
