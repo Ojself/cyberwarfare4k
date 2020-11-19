@@ -33,17 +33,17 @@ const Login = (props) => {
       {loginState.message && (
         <div className="info info-danger">{loginState.message}</div>
       )}
-      <h2 className="text-left">Login</h2>
+      <h2 className="text-left mb-4">Login</h2>
       <form>
-        <p>E-Mail Address</p>
+        <p className="mb-0">E-Mail Address</p>
         <input
-          className="w-100"
+          className="w-100 mb-4"
           type="text"
           value={loginState.email}
           name="email"
           onChange={handleInputChange}
         />
-        <p>Password</p>
+        <p className="mb-0">Password</p>
         <input
           className="w-100"
           type="password"
@@ -51,7 +51,7 @@ const Login = (props) => {
           name="password"
           onChange={handleInputChange}
         />
-        <br />
+
         <Button
           className="btn btn-outline w-100 mt-2"
           color="outline-success"

@@ -53,13 +53,11 @@ const VPN = ({ updateGlobalValues }) => {
   const priceOverview = vpnState.selectedOption && (
     <div>
       <h6>
-        {" "}
-        <span style={{ color: "#F08F18" }}>&#8383;</span>{" "}
+        <span style={{ color: "#F08F18" }}>&#8383;</span>
         {vpnState.selectedOption.price.toLocaleString()}
       </h6>
       <h6>
-        {" "}
-        <span>&#9889;5%</span>{" "}
+        <span>&#9889;5%</span>
       </h6>
     </div>
   );

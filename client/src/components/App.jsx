@@ -38,7 +38,7 @@ import WantedList from "./pages/WantedList";
 const App = () => {
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [globalMessage, setGlobalMessage] = useState("");
+  const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -59,9 +59,12 @@ const App = () => {
       setUser(data.user);
     }
     if (renderMessage && data.message) {
-      setGlobalMessage(data.message);
+      setGlobalMessage({
+        message: data.message,
+        success: data.success || false,
+      });
       setTimeout(() => {
-        setGlobalMessage("");
+        setGlobalMessage({ message: "", success: true });
       }, 5000);
     }
   };
@@ -72,22 +75,28 @@ const App = () => {
       path !== "/" && path !== "/create-hacker" && path !== "/create-hacker/"
     );
   };
-
   return (
     <div className="App text-light">
       {showNavBar() && (
         <>
           <NavbarComp loading={loading} messages={messages} user={user} />
           <StatusBar loading={loading} user={user} />
+          <div className="globalMessage">
+            {globalMessage.message && (
+              <Typist
+                className={`terminalFont ${
+                  globalMessage.success
+                    ? "terminalTextGreen"
+                    : "terminalTextLost"
+                }`}
+                cursor={{ hideWhenDone: true }}
+              >
+                {globalMessage.message}
+              </Typist>
+            )}
+          </div>
         </>
       )}
-      <div className="globalMessage">
-        {globalMessage && (
-          <Typist className="terminalFont " cursor={{ hideWhenDone: true }}>
-            {globalMessage}
-          </Typist>
-        )}
-      </div>
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/alliance" component={Alliance} />

@@ -15,7 +15,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = ({loading,messages,user}) => {
+const NavbarComp = ({ loading, messages, user }) => {
   const [toolOpen, setToolOpen] = useState(false);
 
   const currentCity = loading ? "City" : user.playerStats.city.name;
@@ -29,7 +29,7 @@ const NavbarComp = ({loading,messages,user}) => {
   };
 
   const checkInbox = () => {
-    if (loading) return false
+    if (loading) return false;
     return messages.inbox.length && !messages.inbox[0].read;
   };
 
@@ -39,7 +39,7 @@ const NavbarComp = ({loading,messages,user}) => {
 
   return (
     <div>
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="dark" expand="md">
         <NavbarBrand href="/">CHW4K</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse navbar>
@@ -51,14 +51,16 @@ const NavbarComp = ({loading,messages,user}) => {
               <DropdownToggle nav caret>
                 Info
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 <DropdownItem href="/my-profile">My Profile</DropdownItem>
                 <DropdownItem href="/ladder">Top Hackers</DropdownItem>
                 <DropdownItem href="/alliance-ladder">
                   Top Alliances
                 </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
-                <DropdownItem href='/earn-battery'>Earn Battery <span>&#9889;</span></DropdownItem>
+                <DropdownItem href="/earn-battery">
+                  Earn Battery <span>&#9889;</span>
+                </DropdownItem>
                 <DropdownItem href="/information">Information</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -66,7 +68,7 @@ const NavbarComp = ({loading,messages,user}) => {
               <DropdownToggle nav caret>
                 Hack
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 <DropdownItem href="/petty-hacker">Petty</DropdownItem>
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                 <DropdownItem>Organized Crime</DropdownItem>
@@ -78,12 +80,12 @@ const NavbarComp = ({loading,messages,user}) => {
                 Alliance
               </DropdownToggle>
               {user && user.alliance ? (
-                <DropdownMenu right>
+                <DropdownMenu>
                   <DropdownItem href="/">Overview</DropdownItem>
                   <DropdownItem href="/">Leave Alliance</DropdownItem>
                 </DropdownMenu>
               ) : (
-                <DropdownMenu id="allianceCreateNav" right>
+                <DropdownMenu id="allianceCreateNav">
                   <DropdownItem href="/alliance/create">Create..</DropdownItem>
                 </DropdownMenu>
               )}
@@ -92,7 +94,7 @@ const NavbarComp = ({loading,messages,user}) => {
               <DropdownToggle nav caret>
                 {currentCity}
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 <DropdownItem href="/locals">Local Hackers</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
                 {/* <DropdownItem divider /> */}
@@ -107,15 +109,13 @@ const NavbarComp = ({loading,messages,user}) => {
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle
-                style={{
-                  color: checkAllCommunication() ? "red" : null,
-                }}
+                className={checkAllCommunication() ? "text-danger" : null}
                 nav
                 caret
               >
                 Communication
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu>
                 {user && user.alliance && (
                   <>
                     <DropdownItem>Alliance Forum</DropdownItem>
@@ -124,19 +124,13 @@ const NavbarComp = ({loading,messages,user}) => {
                 )}
                 <DropdownItem href="/forum">Public Forum</DropdownItem>
                 <DropdownItem
-                  style={{
-                    color: checkInbox("messages") ? "red" : null,
-                  }}
+                  className={checkInbox("messages") ? "text-danger" : null}
                   href="/messages"
                 >
                   Messages
                 </DropdownItem>
                 <DropdownItem
-                  style={
-                    {
-                      /* color: checkCommunication("notifications") ? "red" : null, */
-                    }
-                  }
+                  /* className={checkInbox("notifications") ? "text-danger" : null */
                   href="/notifications"
                 >
                   Notifications
@@ -144,14 +138,12 @@ const NavbarComp = ({loading,messages,user}) => {
               </DropdownMenu>
             </UncontrolledDropdown>
             {/* todo, probably dont need this because you wont see the navbar anyway */}
-            {api.isLoggedIn() && (
-              <NavItem>
-                <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
-                  Logout
-                  <p style={{ fontSize: "0.5em" }}>sudo rm -rf </p>
-                </NavLink>
-              </NavItem>
-            )}
+            <NavItem>
+              <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
+                Logout
+                <p style={{ fontSize: "0.5em" }}>sudo rm -rf </p>
+              </NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

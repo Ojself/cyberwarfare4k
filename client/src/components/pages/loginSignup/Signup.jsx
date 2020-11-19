@@ -40,20 +40,20 @@ const Signup = (props) => {
       {signupState.message && (
         <div className="info info-danger">{signupState.message}</div>
       )}
-      <h2 className="text-left">
+      <h2 className="text-left mb-4">
         Register {/* <p style={{ color: "#FFCC00" }}>- IT'S FREE!</p> */}
       </h2>
       <form>
-        <p>E-Mail Address</p>
+        <p className="mb-0">E-Mail Address</p>
         <input
-          className="w-100"
+          className="w-100 mb-4"
           type="text"
           value={signupState.email}
           name="email"
           onChange={handleInputChange}
         />
-        <br />
-        <p>Password</p>
+
+        <p className="mb-0">Password</p>
         <input
           className="w-100"
           type="password"
@@ -61,7 +61,7 @@ const Signup = (props) => {
           name="password"
           onChange={handleInputChange}
         />
-        <br />
+
         <Button
           className="btn btn-outline w-100 mt-2"
           color="outline-success"

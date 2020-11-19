@@ -11,16 +11,16 @@ const Ladder = () => {
   });
 
   useEffect(() => {
-    const fetchAlliances = async ()=> {
-    const data = await api.getAllAlliances();
+    const fetchAlliances = async () => {
+      const data = await api.getAllAlliances();
       setLadderState({
         ...ladderState,
         alliances: data.totStats,
         message: data.message,
         loading: false,
       });
-    }
-    fetchAlliances()
+    };
+    fetchAlliances();
   }, []);
 
   const [sortState, setSortState] = useState({
@@ -152,7 +152,9 @@ const Ladder = () => {
           {ladderState.alliances.map((alliance) => (
             <tr key={alliance._id}>
               <th scope="row">
-                <Link to={`/alliance/${alliance._id}`}>{alliance.name}</Link>
+                <Link className="text-light" to={`/alliance/${alliance._id}`}>
+                  {alliance.name}
+                </Link>
               </th>
 
               <td>{alliance.members}</td>

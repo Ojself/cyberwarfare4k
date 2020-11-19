@@ -19,17 +19,17 @@ import {
 /* rerender after add */
 /* styling */
 
-const WantedList = ({updateGlobalValues}) => {
+const WantedList = ({ updateGlobalValues }) => {
   const [wantedState, setWantedState] = useState({
     users: [],
     bountyUsers: [],
     loading: true,
-    bountyTopInput: ''
+    bountyTopInput: "",
   });
   const [selectedOption, setSelectedOption] = useState(null);
 
-    useEffect(() => {
-    const fetchWantedUsers = async() => {
+  useEffect(() => {
+    const fetchWantedUsers = async () => {
       const apiWantedUsers = await api.getWantedUsers();
       const massagedUser = dataMassagerForSelectComponent(apiWantedUsers.users);
       setWantedState({
@@ -38,17 +38,17 @@ const WantedList = ({updateGlobalValues}) => {
         bountyUsers: apiWantedUsers.bountyUsers,
         loading: false,
       });
-    }
+    };
     fetchWantedUsers();
   }, []);
 
   const handleSelectUserChange = (eventValue) => {
-    console.log(eventValue,'eventvalue')
+    console.log(eventValue, "eventvalue");
     setSelectedOption(eventValue);
   };
 
   const handleInputChange = (e) => {
-    const name = e.target.name
+    const name = e.target.name;
     setWantedState({
       ...wantedState,
       [e.target.name]: e.target.value,
@@ -61,18 +61,18 @@ const WantedList = ({updateGlobalValues}) => {
       return {
         value: u._id,
         label: u.name,
-      }
+      };
     });
     return massagedUsers;
   };
 
   const addBounty = async (bountyTargetId, bounty, clearName = "") => {
     const result = await api.addBounty({ bounty, bountyTargetId });
-    updateGlobalValues(result)
+    updateGlobalValues(result);
     const massagedUser = dataMassagerForSelectComponent(result.users);
     setWantedState({
       ...wantedState,
-      bountyTopInput: '',
+      bountyTopInput: "",
       users: massagedUser,
       bountyUsers: result.bountyUsers,
       [clearName]: 0,
@@ -150,20 +150,27 @@ const WantedList = ({updateGlobalValues}) => {
     <Table dark>
       <thead>
         <tr>
-          {["Name","Alliance","Bank","Donors","Bounty","Add Bounty"].map(header=>{
-            return (<th key={header}>{header}</th>)
-          })}
+          {["Name", "Alliance", "Bank", "Donors", "Bounty", "Add Bounty"].map(
+            (header) => {
+              return <th key={header}>{header}</th>;
+            }
+          )}
         </tr>
       </thead>
       <tbody>
         {wantedState.bountyUsers.map((user, i) => (
           <tr key={user._id}>
             <th scope="row">
-              <Link to={`/hacker/${user._id}`}>{user.name}</Link>
+              <Link className="text-light" to={`/hacker/${user._id}`}>
+                {user.name}
+              </Link>
             </th>
             <td>
               {user.alliance && (
-                <Link to={`/alliance/${user.alliance._id}`}>
+                <Link
+                  className="text-light"
+                  to={`/alliance/${user.alliance._id}`}
+                >
                   {user.alliance.name}
                 </Link>
               )}

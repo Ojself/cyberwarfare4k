@@ -4,44 +4,56 @@ import CrimeTerminal from "./crimeTerminal";
 import { Table, UncontrolledTooltip } from "reactstrap";
 
 // props will be deconstr in parameters ({nameOfProp})
-const HackCrimes = ({updateGlobalValues}) => {
-
+const HackCrimes = ({ updateGlobalValues }) => {
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
 
   useEffect(() => {
-    const fetchCrimes = async ()=>{
-      const result = await api.getCrimes()
-      updateGlobalValues(result)
-      setCrimes(result.crimes);
-    }
-    fetchCrimes()
+    const fetchCrimes = async () => {
+      const data = await api.getCrimes();
+      updateGlobalValues(data);
+      setCrimes(data.crimes);
+    };
+    fetchCrimes();
   }, []);
 
   const handleClick = async (crimeId) => {
-    setResult(null)
-    const crimeResult = await api.commitCrimes(crimeId);
-    console.log(crimeResult,'crimeResult')
-    updateGlobalValues(crimeResult,false)
+    setResult(null);
+    let data;
 
-    const filteredCrimes = crimes
-      .filter((c) => c._id !== crimeId)
-      .filter((c) => c.available);
-    setCrimes(filteredCrimes);
-    setResult(crimeResult.finalResult);
+    try {
+      data = await api.commitCrimes(crimeId);
+    } catch (err) {
+      return updateGlobalValues(err);
+    }
+    updateGlobalValues(data, false);
+
+    setCrimes(data.crimes);
+    setResult(data.finalResult);
+  };
+
+  const getDifficultyColor = (diff) => {
+    const lexi = {
+      30: "success",
+      50: "info",
+      70: "primary",
+      90: "warning",
+      150: "danger",
+    };
+    return `text-${lexi[diff]}`;
   };
 
   return (
     <div className="page-container">
       <h2>Hack Crimes</h2>
-      <div className="content d-flex">
-        <Table dark striped>
+      <div className="d-flex mt-3 w-100 justify-content-around align-items-baseline">
+        <Table className="w-50" dark striped>
           <thead>
             <tr>
               <th>Name</th>
               <th>Type</th>
               <th>Difficulty</th>
-              <th>Commit Crime</th>
+              <th>&#9889;5</th>
             </tr>
           </thead>
           <tbody>
@@ -54,8 +66,9 @@ const HackCrimes = ({updateGlobalValues}) => {
                   {cr.description}
                 </UncontrolledTooltip>
                 <td>{cr.crimeType}</td>
-                <td>{cr.difficulty}</td>
-                {/* cr.difficultyString */}
+                <td className={getDifficultyColor(cr.difficulty)}>
+                  {cr.difficultyString}
+                </td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -68,6 +81,7 @@ const HackCrimes = ({updateGlobalValues}) => {
             ))}
           </tbody>
         </Table>
+
         <CrimeTerminal result={result} />
       </div>
     </div>
