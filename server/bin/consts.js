@@ -63,7 +63,7 @@ const forumThreads = {
     }],
     Announcements: [{
       creator: '5ea717d8b3e02b1e635f897c',
-      title: 'New feature: Minigames to earn energy !',
+      title: 'New feature: Minigames to earn battery !',
       forum: null, // Announcements
     },
     {

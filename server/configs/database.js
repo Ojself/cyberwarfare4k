@@ -5,7 +5,7 @@ const currencyPriceInterval = require('../intervals/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../intervals/dataCenterPayoutInterval');
 
 // todo set "MONGODB_URI" in ~/server/.env
-const uri =  process.env.MONGODB_URI
+const uri = process.env.MONGODB_URI
   || 'mongodb://localhost/please-set-process-env-mongodb-uri';
 
 mongoose
@@ -16,7 +16,7 @@ mongoose
     );
   })
   .then(() => {
-    /* Gives user more energy every 30 minute */
+    /* Gives user more battery every 30 minute */
     console.log('SERVER: battery interval started');
     setInterval(batteryInterval, 30 * 60 * 1000);
   })

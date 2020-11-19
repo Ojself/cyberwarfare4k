@@ -1,8 +1,8 @@
 const {
   batteryCheck,
   existingValue,
-  checkOccuranceLimit
-} = require('../middlewares/middleHelpers');
+  checkOccuranceLimit,
+} = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to perform attack
 function attackRouteCriterias(user, opponent, batteryCost) {
@@ -14,7 +14,7 @@ function attackRouteCriterias(user, opponent, batteryCost) {
     return "Crime doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+    return "Insufficent battery";
   }
   if (!checkCityandLevel(user, opponent)) {
     // name doesn't show
@@ -24,7 +24,7 @@ function attackRouteCriterias(user, opponent, batteryCost) {
     return "You can't hack yourself..";
   }
   if (!checkHealth(user)) {
-    return 'You need a Firewall in order to attack others';
+    return "You need a Firewall in order to attack others";
   }
   if (!graceCheck(opponent)) {
     return `${opponent.name} is currently graced, try again later!`;
@@ -74,8 +74,8 @@ function fightHacker(user, opponent, batteryCost) {
       batteryCost,
       exp: 10,
       bitCoins: 10,
-      opponentCurrency: opponent.currencies
-    }
+      opponentCurrency: opponent.currencies,
+    },
   };
   const finalResult = attackRecursiveBattle(result);
 
@@ -85,7 +85,6 @@ function fightHacker(user, opponent, batteryCost) {
     user.playerStats.expToLevel
   ) {
     finalResult.playerGains.levelUp = true;
-    user.newRank();
   }
 
   // check if opponent is dead
@@ -102,7 +101,7 @@ function fightHacker(user, opponent, batteryCost) {
 function attackRecursiveBattle(result) {
   // hack lost
   // if user has lost 4 times, the hack is considered lost
-  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
+  if (checkOccuranceLimit(result.roundResult, "lost", 4)) {
     const newResult = result;
     newResult.playerGains.batteryCost += 10;
     return newResult;
@@ -110,7 +109,7 @@ function attackRecursiveBattle(result) {
 
   // hack lost
   // if user has been encrypted/blocked 4 times, the hack is considered lost
-  if (checkOccuranceLimit(result.roundResult, 'encrypted', 4)) {
+  if (checkOccuranceLimit(result.roundResult, "encrypted", 4)) {
     result.playerGains.batteryCost += 10;
     return result;
   }
@@ -132,7 +131,7 @@ function attackRecursiveBattle(result) {
   // Encryption / blocked
   // attacker got blocked
   if (encryptionChecker(result.user, result.opponent)) {
-    roundLost(result, 'encrypted');
+    roundLost(result, "encrypted");
     return attackRecursiveBattle(result);
   }
 
@@ -140,7 +139,7 @@ function attackRecursiveBattle(result) {
   const defenseNumber = defenseCalulator(result.opponent);
 
   if (attackNumber <= defenseNumber) {
-    roundLost(result, 'lost', defenseNumber);
+    roundLost(result, "lost", defenseNumber);
     // return attackRecursiveBattle(result);
   }
 
@@ -193,7 +192,7 @@ function encryptionChecker(attacker, victim) {
     attacker.hackSkill.Encryption / 1000 + Math.random();
   const encryptionVictim = victim.hackSkill.Encryption / 1000 + Math.random();
 
-  console.log(encryptionAttacker, encryptionVictim, 'jarle');
+  console.log(encryptionAttacker, encryptionVictim, "jarle");
 
   return encryptionAttacker < encryptionVictim;
 }
@@ -201,7 +200,7 @@ function encryptionChecker(attacker, victim) {
 function roundWin(result, damage) {
   const newResult = result;
   newResult.victimHp -= damage;
-  newResult.roundResult.push('win');
+  newResult.roundResult.push("win");
   newResult.roundVictimRemainingHp.push(newResult.victimHp);
   newResult.roundHackerRemainingHp.push(newResult.hackerHp);
   return newResult;

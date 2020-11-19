@@ -1,18 +1,20 @@
 const {
   batteryCheck,
-  existingValue,
   checkOccuranceLimit,
-} = require('../middlewares/middleHelpers');
+} = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to perform crime
 
 // todo do this try catch instead.
 function crimeRouteCriterias(crime, user, batteryCost) {
+  if (!crime) {
+    return `Crime not found with `;
+  }
   if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+    return "Insufficent battery";
   }
   if (!crime.available) {
-    return 'This crime is not available at the moment';
+    return "This crime is not available at the moment";
   }
   return null;
 }
@@ -22,7 +24,7 @@ async function fightCrime(user, crime, batteryCost) {
     user,
     crimeType: crime.crimeType,
     roundResult: [],
-    roundCrimeRemainingHp: [],
+    roundCrimeRemainingHp: [crime.currentFirewall],
     crimeHp: crime.currentFirewall,
     won: false,
     playerGains: {
@@ -38,25 +40,21 @@ async function fightCrime(user, crime, batteryCost) {
   const finalResult = crimeRecursiveBattle(user, crime, result);
 
   // sees if player leveled up
-  if (
-    user.playerStats.exp + finalResult.playerGains.exp
-    >= user.playerStats.expToLevel
-  ) {
-    finalResult.playerGains.levelUp = true;
-    console.log(user._id, 'rankup');
-  }
+  finalResult.playerGains.levelUp =
+    user.playerStats.exp + finalResult.playerGains.exp >=
+    user.playerStats.expToLevel;
 
-  if (user.account.role !== 'testUser') {
-    await user.handleCrime(finalResult);
-    await crime.handleCrime(finalResult);
-  }
+  user.handleCrime(finalResult);
+  finalResult.user = await user.save();
+  crime.handleCrime(finalResult);
+  await crime.save();
+
   return finalResult;
 }
 
 // recursive function that runs until the hp of the crime is 0 or the user has lost 4 times
 function crimeRecursiveBattle(user, crime, result) {
   const probability = chanceCalculator(user, crime);
-
   const damage = damageCalulator(user, crime);
 
   // the number that decides the success, lower is better
@@ -64,9 +62,7 @@ function crimeRecursiveBattle(user, crime, result) {
 
   // crime lost
   // if user has lost 4 times, the crime is considered 'lost'
-  // adds more battery as a penalty for lost crime
-  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
-    result.playerGains.batteryCost += 10;
+  if (checkOccuranceLimit(result.roundResult, "lost", 4)) {
     return result;
   }
 
@@ -98,7 +94,8 @@ function chanceCalculator(user, crime) {
   if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
   }
-  const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
+  const probability =
+    (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
   return probability;
 }
 
@@ -114,13 +111,13 @@ function damageCalulator(user, crime) {
 
 function roundWin(result, damage) {
   result.crimeHp -= damage;
-  result.roundResult.push('win');
+  result.roundResult.push("win");
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
 function roundLost(result) {
-  result.roundResult.push('lost');
+  result.roundResult.push("lost");
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
@@ -134,10 +131,10 @@ function crimeWin(result, crime, user, decider) {
   result.playerGains.skillGained = skillGained(
     decider,
     user.playerStats.rank,
-    crime.crimeType,
+    crime.crimeType
   );
   result.playerGains.statGained = statGained(decider, user.playerStats.rank);
-  result.playerGains.legendaryGained = '';
+  result.playerGains.legendaryGained = "";
   return result;
 }
 
@@ -157,20 +154,17 @@ function skillGained(decider, rank, crimeType) {
     return null;
   }
   const crimeTypes = [
-    'Technical',
-    'Social Engineering',
-    'Forensics',
-    'Cryptography',
+    "Technical",
+    "Social Engineering",
+    "Forensics",
+    "Cryptography",
   ].filter((el) => el !== crimeType);
   return crimeTypes[Math.floor(Math.random() * crimeTypes.length)];
 }
 
 // gives user statpoints based on luck and rank. Higher rank gives lower chance
 function statGained(decider, rank) {
-  if (rank === 0) {
-    rank = 1;
-  }
-  if (Math.random() - rank / 8 < decider) {
+  if (Math.random() - rank || 1 / 8 < decider) {
     return null;
   }
   return true;
