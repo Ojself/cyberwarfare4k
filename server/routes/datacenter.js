@@ -1,20 +1,24 @@
-const express = require('express');
+const express = require("express");
 
 const {
   purchaseDataCenterCriterias,
   purchaseDataCenter,
   attackDataCenterCriterias,
   attackDataCenter,
-} = require('../middlewares/middleDataCenter');
+} = require("../middlewares/middleDataCenter");
+
+const saveAndUpdateUser = async (user) => {
+  const savedUser = await user.save();
+  const populatedUser = await savedUser
+    .populate("playerStats.city", "name")
+    .populate("alliance", "name")
+    .execPopulate();
+  return populatedUser;
+};
 
 const router = express.Router();
-const DataCenter = require('../models/DataCenter');
-const User = require('../models/User');
-
-/* todo, one of the special weapons allows anonymousiy */
-/* todo several feedback messages for res.json? */
-/* todo see if models follow same structure on schema.type.objectid and arrays around or nested */
-/* todo see if checkroutescriterias follow the same pattern */
+const DataCenter = require("../models/DataCenter");
+const User = require("../models/User");
 
 // @GET
 // PRIVATE
@@ -23,12 +27,12 @@ const User = require('../models/User');
 
 // todo, allow alliance member to heal eachother datacenter?
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const userId = req.user._id;
   let dataCenters = await DataCenter.find()
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents'])
-    .populate('owner', ['name']);
+    .populate("requiredStash", ["name", "price"])
+    .populate("city", ["name", "residents"])
+    .populate("owner", ["name"]);
 
   // filter out the datacenters that don't belong to the city the user is in
   dataCenters = dataCenters.filter((el) => {
@@ -38,7 +42,7 @@ router.get('/', async (req, res) => {
 
   res.status(200).json({
     dataCenters,
-    message: 'datacenters loaded....',
+    message: "datacenters loaded....",
     success: true,
   });
 });
@@ -47,7 +51,7 @@ router.get('/', async (req, res) => {
 // PRIVATE
 // User purchase a datacenter
 
-router.post('/purchase', async (req, res) => {
+router.post("/purchase", async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -75,38 +79,56 @@ router.post('/purchase', async (req, res) => {
 // PRIVATE
 // User can attack and lower the health of a datacenter he doesnt owe in order to overtake it
 
-router.post('/attack', async (req, res) => {
+router.post("/attack", async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
   const { dataCenterName } = req.body;
-  const dataCenter = await DataCenter.findOne({ name: dataCenterName });
-
+  const dataCenter = await DataCenter.findOne({
+    name: dataCenterName,
+  }).populate("requiredStash", ["name", "price"]);
   const dataCenterOwnerId = dataCenter.owner;
   const dataCenterOwner = await User.findById(dataCenterOwnerId);
 
   const batteryCost = 5;
 
-  const message = attackDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallowed = attackDataCenterCriterias(user, dataCenter, batteryCost);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
 
-  const finalResult = await attackDataCenter(
+  const attack = await attackDataCenter(
     user,
     dataCenter,
     dataCenterOwner,
-    batteryCost,
+    batteryCost
   );
 
+  const updatedUser = await saveAndUpdateUser(attack.user);
+  let dataCenters = await DataCenter.find({
+    city: updatedUser.playerStats.city._id,
+  })
+    .populate("requiredStash", ["name", "price"])
+    .populate("city", ["name", "residents"])
+    .populate("owner", ["name"]);
+
+  let message = attack.result.destroyed
+    ? `You destroyed ${dataCenter.name}`
+    : attack.result.won
+    ? `You attacked ${dataCenter.name} and dealt ${attack.result.damageDealt} damage`
+    : `You failed to attack ${dataCenter.name}`;
+  console.log("too late");
+
   return res.status(200).json({
-    success: true,
-    message: `You attacked ${dataCenter.name} for ${batteryCost} battery and dealt ${finalResult.damageDealt} damage`,
-    finalResult,
+    success: attack.result.won,
+    message,
+    finalResult: attack.result,
+    user: updatedUser,
+    dataCenters,
   });
 });
 

@@ -1,6 +1,6 @@
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-require('../configs/database');
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
+require("../configs/database");
 
 // Seeds file that remove all users and create 2 new users
 
@@ -9,12 +9,12 @@ require('../configs/database');
 // todo, create something that takes care of all the relational database stuff
 // or a note of how to run the seeds in which order.
 
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
-const City = require('../models/City');
-const Alliance = require('../models/Alliance');
-const avatars = require('./avatars');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const User = require("../models/User");
+const City = require("../models/City");
+const Alliance = require("../models/Alliance");
+const avatars = require("./avatars");
 
 const bcryptSalt = 10;
 
@@ -41,15 +41,14 @@ async function getAlliances() {
 }
 
 async function pushAllNpcToAlliance() {
-  await Alliance.findOneAndUpdate({ name: 'Grey' }).then((npcAlliance) => {
-    console.log(npcAlliance, 'this should be grey');
+  await Alliance.findOneAndUpdate({ name: "Grey" }).then((npcAlliance) => {
+    /* todo. something is wrong here */
     this.members = npcIds;
     this.save();
   });
 }
 
 function randomCityId() {
-  console.log(cityIds);
   return cityIds[Math.floor(Math.random() * cityIds.length)];
 }
 
@@ -59,194 +58,194 @@ User.deleteMany()
   .then(() => {
     const users = [
       {
-        email: 'alice@email.com',
+        email: "alice@email.com",
         account: {
-          password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 0,
-          rankName: 'Script kiddie',
+          rankName: "Script kiddie",
         },
-        name: 'npc_alice_level1',
+        name: "npc_alice_level1",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Code Monkey0',
+        allianceRole: "Code Monkey0",
       },
       {
-        email: 'bob@email.com',
+        email: "bob@email.com",
         account: {
-          password: bcrypt.hashSync('bob', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 1,
-          rankName: 'Family IT-Support',
+          rankName: "Family IT-Support",
         },
-        name: 'npc_bob_level2',
+        name: "npc_bob_level2",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Code Monkey0',
+        allianceRole: "Code Monkey0",
       },
       {
-        email: 'chuck@email.com',
+        email: "chuck@email.com",
         account: {
-          password: bcrypt.hashSync('chuck', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("chuck", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 2,
-          rankName: 'Blog Writer',
+          rankName: "Blog Writer",
         },
-        name: 'npc_chuck_level3',
+        name: "npc_chuck_level3",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Code Monkey0',
+        allianceRole: "Code Monkey0",
       },
       {
-        email: 'craig@email.com',
+        email: "craig@email.com",
         account: {
-          password: bcrypt.hashSync('craig', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("craig", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 3,
           rankName: "HTML 'programmer'",
         },
-        name: 'npc_craig_level4',
+        name: "npc_craig_level4",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Code Monkey1',
+        allianceRole: "Code Monkey1",
       },
       {
-        email: 'eve@email.com',
+        email: "eve@email.com",
         account: {
-          password: bcrypt.hashSync('eve', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("eve", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 4,
-          rankName: 'Jr. Web Dev',
+          rankName: "Jr. Web Dev",
         },
-        name: 'npc_eve_level5',
+        name: "npc_eve_level5",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Code Monkey1',
+        allianceRole: "Code Monkey1",
       },
       {
-        email: 'faythe@email.com',
+        email: "faythe@email.com",
         account: {
-          password: bcrypt.hashSync('faythe', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("faythe", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 5,
-          rankName: 'Sr. Web Dev',
+          rankName: "Sr. Web Dev",
         },
-        name: 'npc_faythe_level6',
+        name: "npc_faythe_level6",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Lead0',
+        allianceRole: "Lead0",
       },
       {
-        email: 'mallory@email.com',
+        email: "mallory@email.com",
         account: {
-          password: bcrypt.hashSync('mallory', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("mallory", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 6,
-          rankName: 'System Dev',
+          rankName: "System Dev",
         },
-        name: 'npc_mallory_level7',
+        name: "npc_mallory_level7",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Lead1',
+        allianceRole: "Lead1",
       },
       {
-        email: 'sybil@email.com',
+        email: "sybil@email.com",
         account: {
-          password: bcrypt.hashSync('sybil', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("sybil", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 7,
-          rankName: 'Cyber Security Dev',
+          rankName: "Cyber Security Dev",
         },
-        name: 'npc_sybil_level8',
+        name: "npc_sybil_level8",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Analyst',
+        allianceRole: "Analyst",
       },
       {
-        email: 'trudy@email.com',
+        email: "trudy@email.com",
         account: {
-          password: bcrypt.hashSync('trudy', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("trudy", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 8,
-          rankName: 'Basement Dweller',
+          rankName: "Basement Dweller",
         },
-        name: 'npc_trudy_level9',
+        name: "npc_trudy_level9",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'CTO',
+        allianceRole: "CTO",
       },
       {
-        email: 'gerald@email.com',
+        email: "gerald@email.com",
         account: {
-          password: bcrypt.hashSync('gerald', bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync("gerald", bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
+          subscription: "Bronze",
+          ip: ["192.168.1.1", "192.168.1.2"],
           isSetup: true,
-          role: 'npc',
+          role: "npc",
         },
         playerStats: {
           city: randomCityId(),
           rank: 9,
-          rankName: 'Anonymous',
+          rankName: "Anonymous",
         },
-        name: 'npc_gerald_level10',
+        name: "npc_gerald_level10",
         alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: 'Boss',
+        allianceRole: "Boss",
       },
     ];
     return User.create(users);

@@ -45,7 +45,17 @@ async function fightCrime(user, crime, batteryCost) {
     user.playerStats.expToLevel;
 
   user.handleCrime(finalResult);
-  finalResult.user = await user.save();
+
+  await user.save().then((userSaved) => {
+    userSaved
+      .populate("playerStats.city", "name")
+      .execPopulate()
+      .then((result) => {
+        console.log(result, "result");
+        finalResult.user = result;
+      });
+  });
+  console.log(finalResult.user.playerStats, "thig onse");
   crime.handleCrime(finalResult);
   await crime.save();
 

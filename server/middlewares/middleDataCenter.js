@@ -3,7 +3,7 @@ const {
   checkFunds,
   checkSameValue,
   existingValue,
-} = require('../middlewares/middleHelpers');
+} = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to buy dataCenter
 function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
@@ -14,47 +14,47 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+    return "Insufficent battery";
   }
   if (
     checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
   ) {
-    return 'You can\'t purchase a datacenter outside your city';
+    return "You can't purchase a datacenter outside your city";
   }
   if (dataCenter.owner) {
-    return 'This datacenter already has an owner';
+    return "This datacenter already has an owner";
   }
   if (dataCenter.gracePeriod) {
-    return 'This datacenter is not available at the moment';
+    return "This datacenter is not available at the moment";
   }
   if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
-    return 'Insufficient funds';
+    return "Insufficient funds";
   }
   return null;
 }
 
 // Sees if everything is in order to attack datacenter
-function attackDataCenterCriterias() {
-  if (!existingValue(user)) {
+function attackDataCenterCriterias(user, dataCenter, batteryCost) {
+  if (!user) {
     return "User doesn't exist";
   }
-  if (!existingValue(dataCenter)) {
+  if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+    return "Insufficent battery";
   }
-  if (!existingValue(dataCenter.gracePeriod)) {
-    return 'This datacenterd is graced at the moment';
+  if (dataCenter.gracePeriod) {
+    return "This datacenter is currently graced";
   }
-  if (checkSameValue(user._id.toString(), dataCenter.owner._id.toString())) {
-    return 'You can\'t attack your own datacenter';
+  if (JSON.stringify(user._id) === JSON.stringify(dataCenter.owner._id)) {
+    return "You can't attack your own datacenter";
   }
   if (dataCenter.currentFirewall <= 0) {
-    return 'This datacenter is down for maintance and might be available for purchase soon';
+    return "This datacenter is down for maintance and might be available for purchase soon";
   }
-  if (!checkRequiredStash(user, dataCenter)) {
-    return 'You don\'t have the required items to hack this datacenter';
+  if (!hasRequiredStash(user.stash, dataCenter.requiredStash)) {
+    return "You don't have the required items to hack this datacenter";
   }
 }
 
@@ -63,52 +63,64 @@ function purchaseDataCenter(user, dataCenter, batteryCost) {
   dataCenter.handlePurchase(user);
 }
 
-function attackDataCenter(user, dataCenter, dataCenterOwner, batteryCost) {
-  const userCpuSkill = Object.Values(user.hackSkill.userCpuSkill);
-  const userCrimeSkills = Object.Values(user.CrimeSkill);
+async function attackDataCenter(
+  user,
+  dataCenter,
+  dataCenterOwner,
+  batteryCost
+) {
+  const userCpuSkill = user.hackSkill.CPU;
+  const userCrimeSkills = Object.values(user.crimeSkill).filter(
+    (skill) => typeof skill === "number"
+  );
 
-  // (cpuskill + random crimeskill) / difficulty.
-  const probability = (userCpuSkill / 100
-      + userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)]
-        / 1000)
-    / dataCenter.difficulty;
-  const decider = Math.random();
+  const probability =
+    (userCpuSkill +
+      userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)]) /
+    100;
+  console.log(probability, "probability");
 
+  const decider = Math.random() + (dataCenter.difficulty * 4) / 100;
+  console.log(decider, "decider");
   const result = {
     batteryCost,
-    damageDealt: 10 + Math.ceil(probability * 10),
+    damageDealt: 0,
     won: false,
     destroyed: false,
   };
 
-  if (decider > probability) {
+  if (decider < probability) {
+    result.damageDealt = Math.random() * probability;
     result.won = true;
-    if (dataCenter.currentFirewall - result.damageDealt <= 0) {
-      result.destroyed = true;
-      user.handleDataCenterAttack(dataCenter, result);
-      dataCenter.handleDestroyed(user._id, dataCenterOwner, result);
-      dataCenterOwner.giveNotification(
-        `${dataCenter.name} was attacked and shut down by ${user.name}!`,
-      );
-    } else {
-      user.handleDataCenterAttack(dataCenter, result);
-      dataCenter.handleAttack(user._id, dataCenterOwner, result);
-      dataCenterOwner.giveNotification(
-        `${dataCenter.name} was attacked by ${user.name}!`,
-      );
-    }
+    result.destroyed = dataCenter.currentFirewall - result.damageDealt <= 0;
   }
-  return result;
+  const now = Date.now();
+  user.handleDataCenterAttack(dataCenter, result);
+  dataCenter.handleAttack(user._id, result);
+  dataCenterOwner.giveNotification(
+    `${dataCenter.name} was attacked ${
+      result.destroyed ? "and destroyed" : ""
+    } by ${user.name}!`,
+    now
+  );
+  await dataCenter.save();
+  return { result, user };
 }
 
 // checks if user has the required stash in order to attack a datacenter
-function checkRequiredStash(user, dataCenter) {
-  const requiredItems = dataCenter.requiredStash;
-  const userStash = user.stash;
-  const intersection = requiredItems.filter(
-    (el) => userStash.indexOf(el.toString()) !== -1,
-  );
-  return intersection.length >= requiredItems.length;
+function hasRequiredStash(userStash, requiredStash) {
+  const requiredStashObj = requiredStash.reduce((a, b) => {
+    if (typeof a[b.name] === "undefined") {
+      a[b.name] = 1;
+    } else {
+      a[b.name] += 1;
+    }
+    return a;
+  }, {});
+  const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => {
+    return requiredStashObj[stash] <= userStash[stash];
+  });
+  return userHasRequiredStash;
 }
 module.exports = {
   purchaseDataCenterCriterias,

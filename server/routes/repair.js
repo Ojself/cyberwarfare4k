@@ -1,18 +1,17 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const User = require('../models/User');
-const { repairRouteCriterias } = require('../middlewares/middleRepair');
+const User = require("../models/User");
+const { repairRouteCriterias } = require("../middlewares/middleRepair");
 
 // @POST
 // PRIVATE
 // Lets user repair his Firewall partialy
 
-router.post('/partial', async (req, res) => {
+router.post("/partial", async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  // base repair cost on level, networth, how many times repair has been done etc?
   // price = price * 1.1 ?
   const repairCost = 10000;
   const message = repairRouteCriterias(user, repairCost);
@@ -28,7 +27,8 @@ router.post('/partial', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'You successfully glued together some loose parts from your computer..',
+    message:
+      "You successfully glued together some loose parts from your computer..",
   });
 });
 
@@ -36,7 +36,7 @@ router.post('/partial', async (req, res) => {
 // PRIVATE
 // Lets user repair his Firewall fully
 
-router.post('/full', async (req, res) => {
+router.post("/full", async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const repairCost = 40000;
@@ -53,7 +53,8 @@ router.post('/full', async (req, res) => {
   user.fullRepair(repairCost);
   return res.status(200).json({
     success: true,
-    message: 'You successfully glued together some loose parts from your computer..',
+    message:
+      "You successfully glued together some loose parts from your computer..",
   });
 });
 

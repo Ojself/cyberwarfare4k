@@ -29,12 +29,6 @@ const userSchema = new Schema(
         type: Boolean,
         default: false,
       },
-      role: {
-        type: String,
-        enum: ["user", "npc", "testUser", "admin"],
-        default: "user",
-      },
-
       notifications: {
         type: Array,
         default: [
@@ -63,6 +57,9 @@ const userSchema = new Schema(
     alliance: {
       type: Schema.Types.ObjectId,
       ref: "Alliance",
+    },
+    allianceRole: {
+      type: String,
     },
 
     hackSkill: {
@@ -133,10 +130,6 @@ const userSchema = new Schema(
       bitCoins: {
         type: Number,
         default: 1000,
-      },
-      networth: {
-        type: Number,
-        default: 0,
       },
       ledger: {
         type: Number,
@@ -339,7 +332,9 @@ userSchema.methods.giveSkill = function (skill = "technical") {
 userSchema.methods.batteryDrain = function (battery) {
   console.log("batterydrain triggered", battery);
   this.playerStats.battery -= battery;
-  this.save();
+  if (this.playerStats.battery <= 0) {
+    this.playerStats.battery = 0;
+  }
 };
 
 userSchema.methods.batteryGain = function (battery) {
@@ -398,9 +393,8 @@ userSchema.methods.withdrawLedger = function (bitCoins, fee) {
 };
 
 userSchema.methods.handlePettyCrime = async function (result) {
-  this.playerStats.battery -= result.battery;
+  this.batteryDrain(result.battery);
   this.playerStats.bitCoins += result.bitCoins;
-  this.playerStats.networth += result.bitCoins;
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
@@ -441,18 +435,17 @@ userSchema.methods.sellCurrency = function (
   this.battery -= batteryCost;
   this.currencies[currency.name] -= amount;
   this.playerStats.bitCoins += totalPrice;
-  this.playerStats.networth += totalPrice;
   this.save();
 };
 
 userSchema.methods.changeCity = function (city, batteryCost) {
   console.log("changeCity triggered", batteryCost);
-  this.playerStats.battery -= batteryCost;
+  this.batteryDrain(batteryCost);
   this.playerStats.city = city._id;
 };
 
 userSchema.methods.handleCrime = async function (finalResult) {
-  this.playerStats.battery -= finalResult.playerGains.batteryCost;
+  this.batteryDrain(finalResult.playerGains.batteryCost);
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
   this.playerStats.networth += finalResult.playerGains.bitCoins;
   this.playerStats.exp += finalResult.playerGains.exp;
@@ -487,7 +480,6 @@ userSchema.methods.setRank = async function (rank = undefined) {
 userSchema.methods.handleAttack = function (finalResult) {
   this.playerStats.battery -= finalResult.playerGains.batteryCost;
   this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
-  this.playerStats.networth += finalResult.playerGains.bitCoins;
   this.playerStats.exp += finalResult.playerGains.exp;
 
   // adds currencies if victim died
@@ -579,20 +571,18 @@ userSchema.methods.handleDataCenterPurchase = function (dataCenter) {
 
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   console.log("handleDataCenterAttack triggered");
-  this.playerStats.battery -= result.batteryCost;
-  dataCenter.requiredStash.forEach((el) => {
-    this.stash.pop(el);
+  this.batteryDrain(result.batteryCost);
+  console.log(dataCenter.requiredStash, "dataCenter.requiredStash");
+  dataCenter.requiredStash.forEach((stash) => {
+    this.stash[stash] -= 1;
   });
-  this.save();
 };
 
-userSchema.methods.giveNotification = function (message) {
-  const date = Date.now();
-  this.account.notifications[date] = [
-    `${message} ${new Date(date).toString().slice(0, 21)}`,
+userSchema.methods.giveNotification = function (message, now = Date.now()) {
+  this.account.notifications[now] = [
+    `${message} ${new Date(now).toString().slice(0, 21)}`,
     true,
   ];
-  this.save();
 };
 
 // WANTEDLIST

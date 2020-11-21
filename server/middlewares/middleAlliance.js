@@ -1,19 +1,26 @@
-const { existingValue } = require('../middlewares/middleHelpers');
-
-function checkCreateAllianceCriteria(user, alliance) {
-  if (!existingValue(user)) {
-    return 'ùser not found';
+const checkCreateAllianceCriteria = (user, alliance, createCost) => {
+  if (!user) {
+    return "ùser not found";
   }
-  if (!existingValue(alliance)) {
-    return 'alliance already exist';
+  if (!alliance) {
+    return "alliance already exist";
   }
-  // if user doesn't have 1000000
-  // if user doesn't have level 5
+  const allianceMembers = alliance.members();
+  if (allianceMembers.length) {
+    return "This alliance already have members";
+  }
+  if (user.playerStats.rank < 4) {
+    return "You are too unexperienced to create your own alliance..";
+  }
+  if (user.playerStats.bitCoins < createCost) {
+    return "Insufficent bitcoins..";
+  }
 
   return null;
-}
+};
 
-const getShuffledArr = (arr) => { // TODO, put in helper
+const getShuffledArr = (arr) => {
+  // TODO, put in helper
   if (arr.length === 1) {
     return arr;
   }
@@ -43,40 +50,41 @@ const findAllianceStats = (alliances) => {
 
     for (let j = 0; j < alliances[i].members.length; j += 1) {
       allianceStats.totSkills = Object.values(
-        alliances[i].members[j].hackSkill,
+        alliances[i].members[j].hackSkill
       ).reduce((t, n) => t + n);
 
       allianceStats.totSkills = Object.values(
-        alliances[i].members[j].crimeSkill,
+        alliances[i].members[j].crimeSkill
       ).reduce((t, n) => t + n);
 
       allianceStats.totCurrencies = Object.values(
-        alliances[i].members[j].currencies,
+        alliances[i].members[j].currencies
       ).reduce((t, n) => t + n);
 
-      allianceStats.totWealth += alliances[i].members[j].playerStats.networth;
+      allianceStats.totWealth += alliances[i].members[j].playerStats.bitCoins;
+      allianceStats.totWealth += alliances[i].members[j].playerStats.ledger;
 
       allianceStats.totBounty += alliances[i].members[j].playerStats.bounty;
 
       allianceStats.totRank += alliances[i].members[j].playerStats.rank;
 
-      allianceStats.totShutdowns
-          += alliances[i].members[j].fightInformation.shutdowns;
+      allianceStats.totShutdowns +=
+        alliances[i].members[j].fightInformation.shutdowns;
 
-      allianceStats.totAttacksInitiated
-          += alliances[i].members[j].fightInformation.attacksInitiated;
+      allianceStats.totAttacksInitiated +=
+        alliances[i].members[j].fightInformation.attacksInitiated;
 
-      allianceStats.totAttacksVictim
-          += alliances[i].members[j].fightInformation.attacksVictim;
+      allianceStats.totAttacksVictim +=
+        alliances[i].members[j].fightInformation.attacksVictim;
 
-      allianceStats.totCrimesInitiated
-          += alliances[i].members[j].fightInformation.crimesInitiated;
+      allianceStats.totCrimesInitiated +=
+        alliances[i].members[j].fightInformation.crimesInitiated;
 
-      allianceStats.totVpnChanges
-          += alliances[i].members[j].fightInformation.vpnChanges;
+      allianceStats.totVpnChanges +=
+        alliances[i].members[j].fightInformation.vpnChanges;
 
-      allianceStats.totCurrencyPurchases
-          += alliances[i].members[j].fightInformation.currencyPurchases;
+      allianceStats.totCurrencyPurchases +=
+        alliances[i].members[j].fightInformation.currencyPurchases;
     }
     result.push(allianceStats);
   }
@@ -84,9 +92,7 @@ const findAllianceStats = (alliances) => {
   return result;
 };
 
-
 module.exports = {
   checkCreateAllianceCriteria,
   findAllianceStats,
-
 };

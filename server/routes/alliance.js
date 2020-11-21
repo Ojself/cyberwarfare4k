@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
-const User = require('../models/User');
-const Alliance = require('../models/Alliance');
+const User = require("../models/User");
+const Alliance = require("../models/Alliance");
 const {
   checkCreateAllianceCriteria,
   findAllianceStats,
-} = require('../middlewares/middleAlliance');
+} = require("../middlewares/middleAlliance");
 
 // TODO SEEDS ARE NOT WORKING. alliances do not have members in it
 
@@ -14,89 +14,66 @@ const {
 // PRIVATE
 // Retrives all alliances with stats
 
-/* **********UNUSED?? */
-
-/* router.get('/', async (req, res) => {
-  const alliances = await Alliance.find().populate('members');
-  console.log(alliances);
-
-  const totStats = findAllianceStats(alliances);
-  stats = getShuffledArr(stats);
+router.get("/", async (req, res) => {
+  const alliances = await Alliance.find();
   res.status(200).json({
     success: true,
-    message: 'alliances loaded..',
-    totStats,
+    message: "Alliances loaded..",
+    alliances,
   });
 });
-
- */
 // @GET
 // PRIVATE
 // Retrives all alliances with stats
 
-router.get('/ladder', async (req, res) => {
-  let alliances;
-  try {
-    alliances = await Alliance.find().populate('members', [
-      'hackSkill',
-      'crimeSkill',
-      'currencies',
-      'fightInformation',
-      'playerStats',
-      'name',
-    ]);
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: JSON.stringify(e),
-    });
-  }
+router.get("/ladder", async (req, res) => {
+  const alliances = await Alliance.find().populate("members", [
+    "hackSkill",
+    "crimeSkill",
+    "currencies",
+    "fightInformation",
+    "playerStats",
+    "name",
+  ]);
   const totStats = findAllianceStats(alliances);
   res.status(200).json({
     success: true,
-    message: 'alliances ladder loaded..',
+    message: "alliances ladder loaded..",
     totStats,
   });
 });
 
-router.post('/create', async (req, res) => {
-  const userId = req.user_id;
-  const { allianceChoise } = req.body;
-  let alliance;
-  let user;
+// creating an alliance
+router.post("/", async (req, res) => {
+  const userId = req.user._id;
+  const { allianceId } = req.body;
 
-  try {
-    alliance = await Alliance.findOne({ name: allianceChoise });
-    user = await User.findById(userId);
-  } catch (e) {
-    res.status(400).json({
-      success: false,
-      message: `error: ${JSON.stringify(e)}`,
-    });
-  }
+  const createCost = 1000000;
 
-  const message = checkCreateAllianceCriteria(user, alliance);
+  const alliance = await Alliance.findById(allianceId);
+  const user = await User.findById(userId);
 
-  if (message) {
+  const disallowed = checkCreateAllianceCriteria(user, alliance, createCost);
+
+  if (disallowed) {
     return res.status(403).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
-
-  const newAlliance = new Alliance({
-    name: allianceChoise,
-    members: [userId],
-  });
-  newAlliance.save();
+  alliance.boss = user._id;
+  user.alliance = alliance._id;
+  user.bitcoinDrain(createCost);
+  await alliance.save();
+  await user.save();
 
   return res.status(200).json({
     success: true,
-    message: `${allianceChoise} hats created`,
+    message: `${alliance.name} has been created!`,
   });
 });
 
-router.post('/invite', async (req, res) => {
+router.post("/invite", async (req, res) => {
   // const userId = req.user._id;
   // const user = await User.findById(userId);
 
@@ -114,10 +91,9 @@ router.post('/invite', async (req, res) => {
   });
 });
 
-router.get('/test', async (req, res) => {
+router.get("/test", async (req, res) => {
   // const userId = req.user._id;
   // const user = await User.findById(userId);
-
 
   const alliances = await Alliance.find({});
 
@@ -192,7 +168,7 @@ router.get('/test', async (req, res) => {
 // });
 // });
 
-router.get('/:allianceId', async (req, res) => {
+router.get("/:allianceId", async (req, res) => {
   const { allianceId } = req.params;
   const alliance = await Alliance.findById(allianceId);
 
@@ -202,6 +178,5 @@ router.get('/:allianceId', async (req, res) => {
     alliance,
   });
 });
-
 
 module.exports = router;
