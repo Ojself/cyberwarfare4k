@@ -101,7 +101,7 @@ const WantedList = ({ updateGlobalValues }) => {
   const ComponentAddUnlistedPlayer = (
     <div className="pt-4 w-100 flex-column d-flex justify-content-center align-items-center">
       <h6>Add an unlisted player</h6>
-      <div className="w-50">
+      <div className="w-25">
         <Form>
           <Select
             className="text-dark "
@@ -111,7 +111,7 @@ const WantedList = ({ updateGlobalValues }) => {
           />
         </Form>
       </div>
-      <div className="w-50">
+      <div className="w-25">
         <InputGroup>
           <InputGroupAddon addonType="prepend">
             <InputGroupText style={{ color: "#F08F18" }}>

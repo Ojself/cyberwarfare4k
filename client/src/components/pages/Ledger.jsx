@@ -37,8 +37,9 @@ const Ledger = (props) => {
   };
 
   useEffect(() => {
-    const fetchLedgeUsers = async()=>{
-    const data = await api.getLedgerUsers()
+    const fetchLedgeUsers = async () => {
+      const data = await api.getLedgerUsers();
+      console.log(data, "data");
       const { users } = data;
       const massagedUsers = dataMassager(users);
 
@@ -48,8 +49,8 @@ const Ledger = (props) => {
         message: data.message,
         users: massagedUsers,
       });
-    }
-    fetchLedgeUsers()
+    };
+    fetchLedgeUsers();
   }, [console.log("STATE", ledgerState)]);
 
   const dataMassager = (userArray) => {
@@ -102,22 +103,20 @@ const Ledger = (props) => {
       });
   };
 
-  const handleTransfer = (transferAmount, receiverId) => {
+  const handleTransfer = async (transferAmount, receiverId) => {
     console.log("handling transfer");
-    api
-      .transferBitCoins({
-        transferAmount,
-        receiverId,
-      })
-      .then((result) => {
-        console.log(result, "result");
-        setLedgerState({
-          ...ledgerState,
-          selectedOption: null,
-          transferAmount: null,
-          message: result.message,
-        });
-      });
+    const data = await api.transferBitCoins({
+      transferAmount,
+      receiverId,
+    });
+
+    console.log(data, "result");
+    setLedgerState({
+      ...ledgerState,
+      selectedOption: null,
+      transferAmount: null,
+      message: data.message,
+    });
   };
   /* todo center ledger in browser */
   return (
@@ -148,7 +147,7 @@ const Ledger = (props) => {
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
-              <Card body className="text-dark">
+              <Card body className="text-light">
                 <CardTitle>5% admission fee </CardTitle>
                 <CardText>
                   In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
@@ -196,15 +195,15 @@ const Ledger = (props) => {
         <TabPane tabId="2">
           <Row>
             <Col sm="12">
-              <Card body className="text-dark">
+              <Card body className="text-light">
                 <CardTitle>Transfer Bitcoins</CardTitle>
                 <CardText>5% admission fee </CardText>
                 <CardText>
                   In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
                   {props.loading ? 0 : props.user.playerStats.ledger}
                 </CardText>
-                {/* isDisabled isSearchable todo */}
                 <Select
+                  className="text-dark"
                   value={ledgerState.selectedOption}
                   onChange={handleChange}
                   options={ledgerState.loading ? "" : ledgerState.users}

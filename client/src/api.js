@@ -90,13 +90,6 @@ export default {
       .catch(errHandler);
   },
 
-  /* getNavUser() {
-    return service
-      .get("/user")
-      .then((res) => res.data)
-      .catch(errHandler);
-  }, */
-
   getOpponent(opponentId) {
     return service
       .get(`/opponent/${opponentId}`)
@@ -111,7 +104,7 @@ export default {
       .catch(errHandler);
   },
 
-  getAllAlliances() {
+  getAllianceLadder() {
     return service
       .get("/alliance/ladder")
       .then((res) => res.data)
@@ -358,6 +351,23 @@ export default {
   createBatteryQuery(game) {
     return service
       .post(`/earnBattery`, { game })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  // ALLIANCE
+  // ALLIANCE
+
+  getAlliances() {
+    return service
+      .get("/alliance")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  createAlliance(allianceId) {
+    return service
+      .post("/alliance", { allianceId })
       .then((res) => res.data)
       .catch(errHandler);
   },

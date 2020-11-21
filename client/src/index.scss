@@ -54,14 +54,6 @@ body {
   background-color: #050505;
 }
 
-.crimeTerminalWrapper {
-  background-color: black;
-  border-top: #08fe00 12px solid;
-  border-left: #08fe00 1px solid;
-  border-right: #08fe00 1px solid;
-  border-bottom: #08fe00 3px solid;
-}
-
 .statusBar {
   height: 5vh;
   background-color: #32334a;
@@ -103,6 +95,17 @@ body {
 
 .terminalTextLost {
   color: #8b0503;
+}
+
+.crimeTerminalResultWrapper {
+  margin: auto;
+  width: 50%;
+  padding-left: 0.5rem;
+  p,
+  h5 {
+    text-align: center;
+    font-size: 0.75;
+  }
 }
 
 .Typist .Cursor {

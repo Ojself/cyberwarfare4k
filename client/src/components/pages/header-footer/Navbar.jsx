@@ -54,7 +54,7 @@ const NavbarComp = ({ loading, messages, user }) => {
               <DropdownMenu>
                 <DropdownItem href="/my-profile">My Profile</DropdownItem>
                 <DropdownItem href="/ladder">Top Hackers</DropdownItem>
-                <DropdownItem href="/alliance-ladder">
+                <DropdownItem href="/alliance/ladder">
                   Top Alliances
                 </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>

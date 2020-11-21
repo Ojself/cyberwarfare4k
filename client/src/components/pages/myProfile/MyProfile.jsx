@@ -142,7 +142,7 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
         </li>
         <li className="list-group-item bg-dark mb-2">
           Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
-          {user.playerStats.bitCoins.toLocaleString()}
+          {user.playerStats.bitCoins}
         </li>
         <li className="list-group-item bg-dark mb-2">
           Attacks initiated: {user.fightInformation.attacksInitiated}

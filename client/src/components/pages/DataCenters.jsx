@@ -1,121 +1,173 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
 
-import { Table, Button, UncontrolledTooltip } from "reactstrap";
+import { Table, Button, UncontrolledTooltip, Progress } from "reactstrap";
 
-const DataCenter = () => {
+/* const checkHealth = (current, max) => {
+  const percentage = (current / max) * 100;
+  let result;
+
+  
+  return result;
+}; */
+
+const getHealthBar = (dc) => {
+  const percentage = (dc.currentFirewall / dc.maxFirewall) * 100;
+  let color;
+  switch (true) {
+    case percentage > 79:
+      color = "success";
+      break;
+    case percentage > 39:
+      color = "warning";
+      break;
+    case percentage > 24:
+      color = "danger";
+      break;
+    default:
+      color = "danger";
+  }
+  console.log(color, "color");
+  return (
+    <Progress
+      className="mt-2"
+      color={color}
+      max={dc.maxFirewall}
+      value={dc.currentFirewall}
+    />
+  );
+};
+
+const DataCenter = ({ loading, user, updateGlobalValues }) => {
   const [dataCenterState, setDataCenterState] = useState({
     dataCenters: [],
-    message: null,
     loading: true,
   });
 
   useEffect(() => {
-    const fetchDataCenters = async ()=>{
-    const dataCenters = await api.getDataCenters()
+    const fetchDataCenters = async () => {
+      const data = await api.getDataCenters();
       setDataCenterState({
         ...dataCenterState,
-        dataCenters: dataCenters.dataCenters,
+        dataCenters: data.dataCenters,
         loading: false,
       });
-    }
-    fetchDataCenters()
+    };
+    fetchDataCenters();
   }, []);
 
-  const handleDataCenterPurchase = (e) => {
+  const handleDataCenterPurchase = async (e) => {
     const dataCenterName = e.target.name;
-    api.purchaseDataCenter({ dataCenterName }).then((result) => {
-    });
-    // todo, set datacenter state
-  };
-
-  const handleDataCenterAttack = (e) => {
-    const dataCenterName = e.target.name;
-    api.purchaseDataCenter({ dataCenterName }).then((result) => {
-    });
-  };
-
-  const checkHealth = (current, max) => {
-    const percentage = (current / max) * 100;
     let result;
+    try {
+      result = await api.purchaseDataCenter({ dataCenterName });
+    } catch (err) {
+      return updateGlobalValues(err);
+    }
+    console.log(result, "result?!");
+  };
 
-    switch (true) {
-      case percentage > 99:
-        result = "Full";
-        break;
-      case percentage > 90:
-        result = "High";
-        break;
-      case percentage > 74:
-        result = "Medium/high";
-        break;
-      case percentage > 49:
-        result = "Medium";
-        break;
-      case percentage > 24:
-        result = "Medium/low";
-        break;
-      case percentage > 0:
-        result = "low";
-        break;
-      default:
-        result = "broken";
+  const handleDataCenterAttack = async (e) => {
+    const dataCenterName = e.target.name;
+    let result;
+    try {
+      result = await api.attackDataCenter({ dataCenterName });
+    } catch (err) {
+      return updateGlobalValues(err);
+    }
+    setDataCenterState({
+      ...dataCenterState,
+      dataCenters: result.dataCenters,
+    });
+    updateGlobalValues(result);
+  };
+  const getDataCenterActionButton = (dc) => {
+    if (loading) return;
+    console.log(dc.status, "dc.status");
+    let innerText = "Buy";
+    let onClick = () => {};
+    let disabled = false;
+    let buttonColor = "primary";
+
+    if (dc.status === "Owned" && dc.owner.name === user.name) {
+      disabled = true;
+      innerText = "Yours";
+      buttonColor = "success";
+    } else if (dc.status === "Malfunctioning" || dc.status === "Resetting") {
+      disabled = true;
+    } else if (dc.status === "Owned") {
+      buttonColor = "outline-danger";
+      innerText = "Attack";
+      onClick = (e) => handleDataCenterAttack(e);
+    } else {
+      innerText = "Buy";
+      onClick = (e) => handleDataCenterPurchase(e);
     }
 
-    return result;
+    return (
+      <Button
+        color={buttonColor}
+        disabled={disabled}
+        name={dc.name}
+        onClick={onClick}
+      >
+        {innerText}
+      </Button>
+    );
   };
 
-  const dataCenterTable = (
+  const dataCenterTable = !dataCenterState.loading && (
     <Table className="content" dark>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Price</th> {/* prettify number */}
-          <th>Status</th>
-          <th>Required Stash</th>
-          <th>Action</th>
-          <th>Health</th>
+          {[
+            "Name",
+            "Price",
+            "Status",
+            "Required Stash",
+            "Action",
+            "Health",
+          ].map((header) => (
+            <th key={header}>{header}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
         {dataCenterState.dataCenters.map((dc, i) => (
           <tr key={dc._id}>
             <th scope="row">{dc.name}</th>
-            <td id={`revenueTip${i}`}>{dc.price}</td>
+            <td id={`revenueTip${i}`}> {dc.price}</td>
             <td id={`ownerTip${i}`}>{dc.status}</td>
-            <tr>
-              {/* shouldn't be visible if it's not purchased yet */}
-              <td>{dc.requiredStash[0].name}</td>
-              <td>{dc.requiredStash[1].name}</td>
-              <td>{dc.requiredStash[2].name}</td>
-            </tr>
-
-            <td>
-              {/* todo, two different buttons */}
-              {dc.status === "Owned" ? (
-                <Button
-                  name={dc.name}
-                  onClick={(e) => handleDataCenterAttack(e)}
-                >
-                  Attack
-                </Button>
-              ) : (
-                <Button
-                  name={dc.name}
-                  onClick={(e) => handleDataCenterPurchase(e)}
-                >
-                  Buy
-                </Button>
+            <td className="d">
+              {dc.status === "Owned" && (
+                <>
+                  {dc.requiredStash.map((stash) => (
+                    <img
+                      title={stash.name}
+                      key={stash._id}
+                      style={{ width: "50px" }}
+                      src={`../../stashPics/${stash.name}/blue.png`}
+                    ></img>
+                  ))}
+                </>
               )}
             </td>
-            <td>{checkHealth(dc.currentFirewall, dc.maxFirewall)}</td>
+
+            <td>{getDataCenterActionButton(dc)}</td>
+
+            <td>{getHealthBar(dc)}</td>
+
             <UncontrolledTooltip placement="top" target={`revenueTip${i}`}>
-              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              <span style={{ fontSize: "1rem", color: "#F08F18" }}>
+                &#8383;
+              </span>
               {dc.minutlyrevenue} per minute
             </UncontrolledTooltip>
-            <UncontrolledTooltip placement="top" target={`ownerTip${i}`}>
-              {dc.status === "Owned" && dc.owner.name}
-            </UncontrolledTooltip>
+            {dc.status === "Owned" && (
+              <UncontrolledTooltip placement="top" target={`ownerTip${i}`}>
+                {dc.owner.name}
+              </UncontrolledTooltip>
+            )}
           </tr>
         ))}
       </tbody>

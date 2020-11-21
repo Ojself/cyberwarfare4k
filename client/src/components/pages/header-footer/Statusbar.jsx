@@ -47,7 +47,7 @@ const StatusBar = ({ loading, user }) => {
             <li className="list-inline-item ml-2">
               <span style={{ color: "#F08F18" }}>&#8383;</span>
 
-              {Math.floor(user.playerStats.bitCoins).toLocaleString()}
+              {Math.floor(user.playerStats.bitCoins)}
             </li>
             <li className="list-inline-item ml-2">
               {user.playerStats.rankName}

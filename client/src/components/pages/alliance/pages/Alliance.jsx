@@ -3,19 +3,14 @@ import React, { useState, useEffect } from "react";
 
 const Alliance = () => {
   const [overviewState, setOverviewState] = useState({
-    name: ""
+    name: "",
   });
 
   useEffect(() => {
     //get Overview from url
-    console.log("using effect");
   }, []);
 
-  return (
-    <div>
-
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Alliance;

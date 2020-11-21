@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { ListGroup, ListGroupItem, Badge, Button } from "reactstrap";
+import {
+  ListGroup,
+  ListGroupItem,
+  Badge,
+  Button,
+  Input,
+  InputGroupAddon,
+  InputGroup,
+} from "reactstrap";
 
 import api from "../../api";
 
@@ -63,23 +71,35 @@ const HackerProfile = (props) => {
           </strong>
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge pill>{opponentState.ranking.crimeSkill}</Badge> Crime skills
+          <Badge color="primary" pill>
+            #{opponentState.ranking.crimeSkill}
+          </Badge>{" "}
+          Crime skills
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge pill>{opponentState.ranking.hackSkill}</Badge> Hack Skills
+          <Badge color="success" pill>
+            #{opponentState.ranking.hackSkill}
+          </Badge>{" "}
+          Hack Skills
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge pill>{opponentState.ranking.networth}</Badge> Networth
+          <Badge color="warning" pill>
+            #{opponentState.ranking.networth}
+          </Badge>{" "}
+          Networth
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge pill>{opponentState.ranking.shutdowns}</Badge> Shutdowns
+          <Badge color="info" pill>
+            #{opponentState.ranking.shutdowns}
+          </Badge>{" "}
+          Shutdowns
         </ListGroupItem>
       </ListGroup>
     </div>
   );
 
   const opponentOverview = !opponentState.loading && (
-    <div className="col-3">
+    <div className="col-3 d-flex flex-column justify-content-between">
       <ListGroup className="text-center">
         <ListGroupItem className="justify-content-between bg-dark">
           {" "}
@@ -98,18 +118,24 @@ const HackerProfile = (props) => {
           </ListGroupItem>
         )}
       </ListGroup>
+
+      <div className="d-flex flex-column">
+        <InputGroup>
+          <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
+          <Input type="number" min={0} step="1" placeholder="Amount" />
+        </InputGroup>
+        <Button color="outline-info">Add Bounty</Button>
+      </div>
     </div>
   );
 
   const opponentActions = !opponentState.loading && (
     <div className="d-flex flex-column justify-content-between col-3">
       <div className="d-flex justify-content-around">
-        <Button onClick={() => handleClick()}>Message</Button>
-        <Button>Attack</Button>
-      </div>
-      <div className="d-flex flex-column">
-        <input type="number" />
-        <Button>Add Bounty</Button>
+        <Button color="outline-info" onClick={() => handleClick()}>
+          Message
+        </Button>
+        <Button color="outline-danger">Attack</Button>
       </div>
     </div>
   );

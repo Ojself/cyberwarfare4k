@@ -5,8 +5,9 @@ import Typist from "react-typist";
 
 import Alliance from "./pages/alliance/pages/Alliance";
 import AllianceLadder from "./pages/alliance/pages/Ladder";
-import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import CreateHacker from "./pages/createHacker/CreateHacker";
+import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
+import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
@@ -84,6 +85,7 @@ const App = () => {
           <div className="globalMessage">
             {globalMessage.message && (
               <Typist
+                avgTypingDelay={5}
                 className={`terminalFont ${
                   globalMessage.success
                     ? "terminalTextGreen"
@@ -99,13 +101,32 @@ const App = () => {
       )}
       <Switch>
         <Route path="/" exact component={Home} />
+        <Route
+          path="/alliance/create"
+          render={() => (
+            <CreateAlliance
+              loading={loading}
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+            />
+          )}
+        />
         <Route path="/alliance" component={Alliance} />
-        <Route path="/alliance-ladder" component={AllianceLadder} />
+        <Route path="/alliance/ladder" component={AllianceLadder} />
         <Route
           path="/create-hacker"
           render={() => <CreateHacker loading={loading} user={user} />}
         />
-        <Route path="/datacenters" component={DataCenters} />
+        <Route
+          path="/datacenters"
+          render={() => (
+            <DataCenters
+              loading={loading}
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+            />
+          )}
+        />
         <Route
           path="/forum/:forumId/:threadId"
           render={() => <ForumThread loading={loading} user={user} />}

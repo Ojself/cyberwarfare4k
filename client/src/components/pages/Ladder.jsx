@@ -110,19 +110,23 @@ const Ladder = () => {
       case "networth":
         toggleSort("networth");
         sortedUsers = ladderState.users.sort((b, a) => {
+          const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
+          const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
           if (sortState.networth) {
-            return a.playerStats.networth - b.playerStats.networth;
+            return aNetWorth - bNetWorth;
           }
-          return b.playerStats.networth - a.playerStats.networth;
+          return bNetWorth - aNetWorth;
         });
         break;
       default:
         toggleSort("networth");
         sortedUsers = ladderState.users.sort((b, a) => {
+          const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
+          const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
           if (sortState.networth) {
-            return a.playerStats.networth - b.playerStats.networth;
+            return aNetWorth - bNetWorth;
           }
-          return b.playerStats.networth - a.playerStats.networth;
+          return bNetWorth - aNetWorth;
         });
         break;
     }
@@ -183,7 +187,7 @@ const Ladder = () => {
               <td>{user.fightInformation.shutdowns}</td>
               <td>{user.fightInformation.crimesInitiated}</td>
               <td>
-                {user.playerStats.networth.toLocaleString()}
+                {user.playerStats.bitCoins + user.playerStats.ledger}
                 <span style={{ color: "#F08F18" }}>&#8383;</span>
               </td>
             </tr>

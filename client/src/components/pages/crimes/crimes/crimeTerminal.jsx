@@ -12,6 +12,7 @@ const CrimeTerminal = ({ result }) => {
     progressCurrentHp: 0,
     round: 1,
     lostCount: 0,
+    decorationColor: "#08fe00",
   });
   useEffect(() => {
     clearState();
@@ -24,6 +25,7 @@ const CrimeTerminal = ({ result }) => {
       progressCurrentHp: 0,
       round: 1,
       lostCount: 0,
+      decorationColor: "#08fe00",
     });
   };
 
@@ -32,6 +34,7 @@ const CrimeTerminal = ({ result }) => {
       ...terminalState,
       showResults: true,
     });
+    blinkDecorationColor();
   };
 
   const giveLostString = () => {
@@ -65,20 +68,50 @@ const CrimeTerminal = ({ result }) => {
     <div
       className={`text-${
         result.won ? "warning" : "danger"
-      } text-left w-50 pl-2`}
+      } crimeTerminalResultWrapper`}
     >
-      <h6>Results</h6>
-      <p>bitcoins: {result.playerGains.bitCoins}</p>
-      <p>exp: {result.playerGains.exp}</p>
+      <h5>Results</h5>
+      <p>
+        <span style={{ fontSize: "1rem", color: "#F08F18" }}>&#8383;</span>{" "}
+        {result.playerGains.bitCoins}
+      </p>
+      <p>XP: {result.playerGains.exp}</p>
       {result.playerGains.levelUp && <strong>NEW RANK!</strong>}
       {/* <p>skill: {result.playerGains.skillGained}</p>
       <p>stashGained: {result.playerGains.skillGained}</p> */}
     </div>
   );
+  const blinkDecorationColor = () => {
+    if (result.won) return;
+    setTerminalState({
+      ...terminalState,
+      decorationColor: "#ab0000",
+    });
+    setTimeout(() => {
+      setTerminalState({
+        ...terminalState,
+        decorationColor: "#08fe00",
+      });
+    }, 350);
+  };
+
+  const terminalHeader = {
+    color: "black",
+    backgroundColor: terminalState.decorationColor,
+  };
+  const terminalBorder = {
+    borderLeft: `1px solid ${terminalState.decorationColor}`,
+    borderRight: `1px solid ${terminalState.decorationColor}`,
+    borderBottom: `3px solid ${terminalState.decorationColor}`,
+  };
+
   return (
-    <div className="col-5 mt-3">
+    <div className="col-5">
       {result && (
-        <div className="crimeTerminalWrapper w-100">
+        <div style={terminalBorder} className="w-100">
+          <div style={terminalHeader}>
+            <strong>Compiling Code</strong>
+          </div>
           <Progress
             animated
             color="success"

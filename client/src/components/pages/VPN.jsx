@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
 import api from "../../api";
-import { Button, Form, FormGroup, Label } from "reactstrap";
+import { Button, Form, FormGroup } from "reactstrap";
 import Select from "react-select";
+
+const dataMassager = (cities) => {
+  const massagedCities = cities.map((city) => {
+    return {
+      value: city._id,
+      label: city.name,
+      price: city.price,
+    };
+  });
+
+  return massagedCities;
+};
 
 const VPN = ({ updateGlobalValues }) => {
   const [vpnState, setVpnState] = useState({
@@ -37,24 +49,11 @@ const VPN = ({ updateGlobalValues }) => {
     updateGlobalValues(result);
   };
 
-  const dataMassager = (cityArray) => {
-    const massagedCities = [];
-    cityArray.forEach((c) => {
-      massagedCities.push({
-        value: c._id,
-        label: c.name,
-        price: c.price,
-      });
-    });
-
-    return massagedCities;
-  };
-
   const priceOverview = vpnState.selectedOption && (
     <div>
       <h6>
         <span style={{ color: "#F08F18" }}>&#8383;</span>
-        {vpnState.selectedOption.price.toLocaleString()}
+        {vpnState.selectedOption.price}
       </h6>
       <h6>
         <span>&#9889;5%</span>

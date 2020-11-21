@@ -46,7 +46,7 @@ const HackCrimes = ({ updateGlobalValues }) => {
   return (
     <div className="page-container">
       <h2>Hack Crimes</h2>
-      <div className="d-flex mt-3 w-100 justify-content-around align-items-baseline">
+      <div className="d-flex mt-3 w-100 justify-content-around align-items-start">
         <Table className="w-50" dark striped>
           <thead>
             <tr>
