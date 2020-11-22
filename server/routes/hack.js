@@ -47,7 +47,6 @@ router.post("/pettyCrime", async (req, res) => {
 
   const results = await pettyCrime(user);
 
-  /* Todo send back user? */
   return res.status(200).json({
     success: true,
     message: "pettyCrime commited",
@@ -120,7 +119,6 @@ router.post("/:opponentId", async (req, res) => {
   const { userId } = req.body; // remove this. only for testing purposes
   const { opponentId } = req.params;
   const batteryCost = 10;
-  // todo try catch
 
   const user = await User.findById(userId);
   const opponent = await User.findById(opponentId);

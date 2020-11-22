@@ -153,7 +153,12 @@ const App = () => {
           path="/hack-crimes"
           render={() => <HackCrimes updateGlobalValues={updateGlobalValues} />}
         />
-        <Route path="/hacker/:id" component={HackerProfile} />
+        <Route
+          path="/hacker/:id"
+          render={(props) => (
+            <HackerProfile {...props} updateGlobalValues={updateGlobalValues} />
+          )}
+        />
         <Route
           path="/locals"
           render={() => <Locals loading={loading} user={user} />}

@@ -1,16 +1,15 @@
 const {
   batteryCheck,
-  existingValue,
   checkOccuranceLimit,
 } = require("../middlewares/middleHelpers");
 
 // Sees if everything is in order to perform attack
 function attackRouteCriterias(user, opponent, batteryCost) {
-  if (!existingValue(user)) {
+  if (!user) {
     // todo, caught in the try catch
     return "User doesn't exist";
   }
-  if (!existingValue(opponent)) {
+  if (!opponent) {
     return "Crime doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {

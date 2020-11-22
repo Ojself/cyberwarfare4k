@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
 
-# Environment Variables should NEVER be published
 .env
 .env.local
 .env.development.local
@@ -13,8 +12,3 @@ yarn-debug.log*
 yarn-error.log*
 
 /client/build
-
-
-# Temp
-client-old
-server-old

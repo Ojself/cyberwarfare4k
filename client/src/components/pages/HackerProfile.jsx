@@ -11,16 +11,17 @@ import {
 
 import api from "../../api";
 
-const HackerProfile = (props) => {
+const HackerProfile = ({ history, match, updateGlobalValues }) => {
   const [opponentState, setOpponentState] = useState({
     opponent: null,
+    ranking: null,
     loading: true,
+    bountyInput: 0,
   });
   useEffect(() => {
-    const opponentId = props.match.params.id;
+    const opponentId = match.params.id;
     const fetchPlayerData = async (opponentId) => {
       const data = await api.getOpponent(opponentId);
-      console.log(data, "data");
       setOpponentState({
         ...opponentState,
         opponent: data.opponent,
@@ -32,8 +33,36 @@ const HackerProfile = (props) => {
   }, []);
 
   const handleClick = (event) => {
-    const messageUserId = window.location.pathname.match(/[a-f\d]{24}$/);
-    props.history.push(`/messages/to=${messageUserId}`);
+    const opponentId = opponentState.opponent._id;
+    history.push(`/messages/to=${opponentId}`);
+  };
+
+  const handleBountyChange = (e) => {
+    setOpponentState({
+      ...opponentState,
+      bountyInput: e.target.value,
+    });
+  };
+
+  const addBounty = async () => {
+    const opponentId = opponentState.opponent._id;
+    console.log(opponentId, "opponentId");
+    let data;
+    const { bountyInput } = opponentState;
+    try {
+      data = await api.addBounty({
+        bounty: bountyInput,
+        bountyTargetId: opponentId,
+      });
+    } catch (err) {
+      console.log("error:", err);
+      return;
+    }
+    updateGlobalValues(data);
+    setOpponentState({
+      ...opponentState,
+      bountyInput: 0,
+    });
   };
 
   const playerName = !opponentState.loading && (
@@ -122,9 +151,18 @@ const HackerProfile = (props) => {
       <div className="d-flex flex-column">
         <InputGroup>
           <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
-          <Input type="number" min={0} step="1000" placeholder="Amount" />
+          <Input
+            type="number"
+            value={opponentState.bountyInput}
+            onChange={handleBountyChange}
+            min={0}
+            step="1000"
+            placeholder="Amount"
+          />
         </InputGroup>
-        <Button color="outline-info">Add Bounty</Button>
+        <Button onClick={addBounty} color="outline-info">
+          Add Bounty
+        </Button>
       </div>
     </div>
   );

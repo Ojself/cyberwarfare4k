@@ -5,7 +5,6 @@ const {
 
 // Sees if everything is in order to perform crime
 
-// todo do this try catch instead.
 function crimeRouteCriterias(crime, user, batteryCost) {
   if (!crime) {
     return `Crime not found with `;
