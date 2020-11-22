@@ -129,7 +129,10 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
         <CardBody style={styles.cardBody}>
           <CardTitle tag="h5">Star the game!</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
-            Hourly bonus <span>&#9889;</span>
+            Hourly bonus{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
           </CardSubtitle>
           <CardText>
             Type in your github username and star the{" "}
@@ -151,7 +154,10 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
         <CardBody style={styles.cardBody}>
           <CardTitle tag="h5">MEGA rpg</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
-            10 <span>&#9889;</span>
+            10{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
           </CardSubtitle>
           <CardText>
             Join the{" "}
@@ -173,7 +179,10 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
         <CardBody style={styles.cardBody}>
           <CardTitle tag="h5">Chessathor</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
-            15 <span>&#9889;</span>
+            15{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
           </CardSubtitle>
           <CardText>
             {" "}

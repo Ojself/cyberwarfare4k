@@ -53,7 +53,12 @@ const HackCrimes = ({ updateGlobalValues }) => {
               <th>Name</th>
               <th>Type</th>
               <th>Difficulty</th>
-              <th>&#9889;5</th>
+              <th>
+                <span role="img" aria-label="battery">
+                  &#9889;
+                </span>
+                5
+              </th>
             </tr>
           </thead>
           <tbody>

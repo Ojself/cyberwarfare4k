@@ -73,7 +73,10 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
                 </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
                 <DropdownItem href="/earn-battery">
-                  Earn Battery <span>&#9889;</span>
+                  Earn Battery{" "}
+                  <span role="img" aria-label="battery">
+                    &#9889;
+                  </span>
                 </DropdownItem>
                 <DropdownItem href="/information">Information</DropdownItem>
               </DropdownMenu>

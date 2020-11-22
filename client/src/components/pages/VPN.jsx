@@ -56,7 +56,9 @@ const VPN = ({ updateGlobalValues }) => {
         {vpnState.selectedOption.price}
       </h6>
       <h6>
-        <span>&#9889;5%</span>
+        <span role="img" aria-label="battery">
+          &#9889;
+        </span>
       </h6>
     </div>
   );

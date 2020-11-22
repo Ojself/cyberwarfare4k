@@ -74,7 +74,7 @@ const AllianceOverview = (props) => {
               </>
             ))
           ) : (
-            <h6></h6>
+            <h6>-</h6>
           )}
         </div>
         <div>
@@ -86,7 +86,7 @@ const AllianceOverview = (props) => {
               </>
             ))
           ) : (
-            <h6></h6>
+            <h6>-</h6>
           )}
         </div>
       </div>

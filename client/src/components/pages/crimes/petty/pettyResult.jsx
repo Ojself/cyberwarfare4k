@@ -43,7 +43,10 @@ const PettyResult = (props) => {
         <strong>{failStrings[props.index % failStrings.length]}</strong>
       </p>
       <p>
-        <span>&#9889;</span> -{battery}%
+        <span role="img" aria-label="battery">
+          &#9889;
+        </span>{" "}
+        -{battery}%
       </p>
     </>
   );
@@ -97,7 +100,10 @@ const PettyResult = (props) => {
           )}
           <p>
             {" "}
-            <span>&#9889;</span>-{battery}%
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
+            -{battery}%
           </p>
         </div>
       </div>
