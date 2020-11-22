@@ -3,14 +3,6 @@ import api from "../../api";
 
 import { Table, Button, UncontrolledTooltip, Progress } from "reactstrap";
 
-/* const checkHealth = (current, max) => {
-  const percentage = (current / max) * 100;
-  let result;
-
-  
-  return result;
-}; */
-
 const getHealthBar = (dc) => {
   const percentage = (dc.currentFirewall / dc.maxFirewall) * 100;
   let color;
@@ -58,13 +50,17 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
 
   const handleDataCenterPurchase = async (e) => {
     const dataCenterName = e.target.name;
-    let result;
+    let data;
     try {
-      result = await api.purchaseDataCenter({ dataCenterName });
+      data = await api.purchaseDataCenter({ dataCenterName });
     } catch (err) {
       return updateGlobalValues(err);
     }
-    console.log(result, "result?!");
+    console.log(data, "data");
+    setDataCenterState({
+      ...dataCenterState,
+      dataCenters: data.dataCenters,
+    });
   };
 
   const handleDataCenterAttack = async (e) => {
@@ -141,12 +137,13 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
             <td className="d">
               {dc.status === "Owned" && (
                 <>
-                  {dc.requiredStash.map((stash) => (
+                  {dc.requiredStash.map((stash, i) => (
                     <img
                       title={stash.name}
-                      key={stash._id}
+                      key={`${stash._id}${i}`}
                       style={{ width: "50px" }}
                       src={`../../stashPics/${stash.name}/blue.png`}
+                      alt={stash.name}
                     ></img>
                   ))}
                 </>

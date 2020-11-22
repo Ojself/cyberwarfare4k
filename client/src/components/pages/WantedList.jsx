@@ -48,7 +48,6 @@ const WantedList = ({ updateGlobalValues }) => {
   };
 
   const handleInputChange = (e) => {
-    const name = e.target.name;
     setWantedState({
       ...wantedState,
       [e.target.name]: e.target.value,

@@ -3,8 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import api from "../api";
 import Typist from "react-typist";
 
-import Alliance from "./pages/alliance/pages/Alliance";
 import AllianceLadder from "./pages/alliance/pages/Ladder";
+import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
@@ -16,21 +16,17 @@ import ForumThread from "./pages/globalForum/ForumThread";
 import EarnBattery from "./pages/EarnBattery";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
-import HackPlayer from "./pages/HackPlayer";
 import Home from "./pages/home/Home";
 import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
 import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
-
 import Marketplace from "./pages/Marketplace";
-
 import MyProfile from "./pages/myProfile/MyProfile";
 import MessageCenter from "./pages/communication/MessageCenter";
 import NavbarComp from "./pages/header-footer/Navbar";
 import Notifications from "./pages/communication/Notifications";
 import Petty from "./pages/crimes/petty/Petty";
-
 import StatusBar from "./pages/header-footer/Statusbar";
 import SystemRepair from "./pages/SystemRepair";
 import VPN from "./pages/VPN";
@@ -80,7 +76,12 @@ const App = () => {
     <div className="App text-light">
       {showNavBar() && (
         <>
-          <NavbarComp loading={loading} messages={messages} user={user} />
+          <NavbarComp
+            updateGlobalValues={updateGlobalValues}
+            loading={loading}
+            messages={messages}
+            user={user}
+          />
           <StatusBar loading={loading} user={user} />
           <div className="globalMessage">
             {globalMessage.message && (
@@ -103,16 +104,16 @@ const App = () => {
         <Route path="/" exact component={Home} />
         <Route
           path="/alliance/create"
-          render={() => (
+          render={(props) => (
             <CreateAlliance
+              {...props}
               loading={loading}
-              user={user}
               updateGlobalValues={updateGlobalValues}
             />
           )}
         />
-        <Route path="/alliance" component={Alliance} />
         <Route path="/alliance/ladder" component={AllianceLadder} />
+        <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
           path="/create-hacker"
           render={() => <CreateHacker loading={loading} user={user} />}
@@ -152,7 +153,6 @@ const App = () => {
           path="/hack-crimes"
           render={() => <HackCrimes updateGlobalValues={updateGlobalValues} />}
         />
-        <Route path="/hack-player" component={HackPlayer} />
         <Route path="/hacker/:id" component={HackerProfile} />
         <Route
           path="/locals"

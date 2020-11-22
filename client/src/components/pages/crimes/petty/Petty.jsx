@@ -49,8 +49,17 @@ const PettyHack = ({ user, loading, updateGlobalValues }) => {
       return;
     }
     insertNewPhrase();
-    const data = await api.pettyHack();
-    console.log(data, "data");
+    let data;
+    try {
+      data = await api.pettyHack();
+    } catch (err) {
+      setPettyState({
+        ...pettyState,
+        hacking: false,
+      });
+      console.log(err, "err");
+      return;
+    }
     updateGlobalValues(data, false);
     if (data.success) {
       handleSuccess(data.results);

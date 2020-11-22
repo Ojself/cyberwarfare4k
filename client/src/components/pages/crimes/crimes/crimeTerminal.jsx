@@ -63,7 +63,6 @@ const CrimeTerminal = ({ result }) => {
           : terminalState.lostCount,
     });
   };
-  console.log(result ? result.playerGains : null);
   const resultsOverview = result && (
     <div
       className={`text-${

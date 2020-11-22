@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import api from "../../api";
 
 const Information = () => {
-
   return (
     <div>
       <h1>INFORMATION</h1>

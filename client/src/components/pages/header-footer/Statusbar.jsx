@@ -42,7 +42,10 @@ const StatusBar = ({ loading, user }) => {
               %
             </li>
             <li className="list-inline-item ml-2">
-              <span>&#9889;{user.playerStats.battery}%</span>
+              <span role="img" aria-label="battery">
+                &#9889;
+              </span>
+              {user.playerStats.battery}%
             </li>
             <li className="list-inline-item ml-2">
               <span style={{ color: "#F08F18" }}>&#8383;</span>

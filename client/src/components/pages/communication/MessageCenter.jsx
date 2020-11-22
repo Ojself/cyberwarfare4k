@@ -90,38 +90,38 @@ const MessageCenter = (props) => {
   };
 
   useEffect(() => {
-    const fetchHackerNames = async ()=> {
-    const data = await api.getHackerNames()
+    const fetchHackerNames = async () => {
+      const data = await api.getHackerNames();
       const { users } = data;
       const massagedUsers = dataMassager(users);
 
       await setUsers(massagedUsers);
       setLoading(false);
       readAllCommunication();
-      setAutoComposeTo(window.location.pathname,users)
-    }
-  fetchHackerNames()
+      setAutoComposeTo(window.location.pathname, users);
+    };
+    fetchHackerNames();
   }, []);
 
   const readAllCommunication = async () => {
     await api.readAllCommunication("messages");
   };
 
-  const setAutoComposeTo = (path,users) => {
-    if (!path.includes("=")){
-      return
+  const setAutoComposeTo = (path, users) => {
+    if (!path.includes("=")) {
+      return;
     }
-    const to = path.split("=")[1]
-    const foundUser = users.find(user => user._id === to)
-    if (foundUser){
+    const to = path.split("=")[1];
+    const foundUser = users.find((user) => user._id === to);
+    if (foundUser) {
       const userData = {
         label: foundUser.name,
-        value: foundUser._id
-      }
-      setActiveTab("3")
-      setSelectedOption(userData)
+        value: foundUser._id,
+      };
+      setActiveTab("3");
+      setSelectedOption(userData);
     }
-    }
+  };
 
   const getDisabledSendButton = () => {
     const criterias =
@@ -187,8 +187,8 @@ const MessageCenter = (props) => {
                       const message = m.text;
 
                       const inboxClass = read
-                        ? "mt-2 text-dark"
-                        : "mt-2 text-light";
+                        ? "mt-2 text-light"
+                        : "mt-2 text-success";
 
                       return (
                         <ListGroupItem
@@ -233,11 +233,11 @@ const MessageCenter = (props) => {
                         const message = m.text;
 
                         return (
-                          <ListGroupItem className="mt-2" key={i}>
-                            <ListGroupItemHeading className="text-dark">
+                          <ListGroupItem className="mt-2 text-warning" key={i}>
+                            <ListGroupItemHeading className="text-warning">
                               To: {<Link to={`/hacker/${id}`}>{name}</Link>}
                             </ListGroupItemHeading>
-                            <ListGroupItemText className="text-dark">
+                            <ListGroupItemText className="">
                               {`${date}: ${message}`}
                             </ListGroupItemText>
                           </ListGroupItem>

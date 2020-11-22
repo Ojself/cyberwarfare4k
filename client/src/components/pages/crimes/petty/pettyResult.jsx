@@ -11,7 +11,6 @@ const PettyResult = (props) => {
     battery,
     stashGained,
     crimeSkillGained,
-    legenedaryGained, // for later usage
   } = props.result;
 
   const userNames = [

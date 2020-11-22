@@ -32,12 +32,12 @@ const CreateAlliance = (props) => {
     console.log(allianceId, "allianceId");
     let data;
     try {
-      await api.createAlliance(allianceId);
-      props.history.push(`/my-profile`);
+      data = await api.createAlliance(allianceId);
+      props.updateGlobalValues(data);
+      props.history.push("/my-profile");
     } catch (err) {
       console.log(err, "err");
     }
-    console.log(data, "data");
   };
 
   useEffect(() => {

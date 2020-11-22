@@ -122,7 +122,7 @@ const HackerProfile = (props) => {
       <div className="d-flex flex-column">
         <InputGroup>
           <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
-          <Input type="number" min={0} step="1" placeholder="Amount" />
+          <Input type="number" min={0} step="1000" placeholder="Amount" />
         </InputGroup>
         <Button color="outline-info">Add Bounty</Button>
       </div>

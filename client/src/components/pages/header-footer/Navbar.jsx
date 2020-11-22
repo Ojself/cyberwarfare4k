@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import api from "../../../api";
 
 import {
+  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
@@ -12,16 +13,29 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = ({ loading, messages, user }) => {
+const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
   const [toolOpen, setToolOpen] = useState(false);
+
+  const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
 
   const currentCity = loading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = (e) => {
     api.logout();
+  };
+
+  const leaveAlliance = async () => {
+    const data = await api.leaveAlliance();
+    setModal(!modal);
+    updateGlobalValues(data);
   };
 
   const checkAllCommunication = () => {
@@ -81,8 +95,12 @@ const NavbarComp = ({ loading, messages, user }) => {
               </DropdownToggle>
               {user && user.alliance ? (
                 <DropdownMenu>
-                  <DropdownItem href="/">Overview</DropdownItem>
-                  <DropdownItem href="/">Leave Alliance</DropdownItem>
+                  <DropdownItem href={`/alliance/${user.alliance._id}`}>
+                    Overview
+                  </DropdownItem>
+                  <DropdownItem onClick={toggleModal}>
+                    Leave Alliance
+                  </DropdownItem>
                 </DropdownMenu>
               ) : (
                 <DropdownMenu id="allianceCreateNav">
@@ -97,7 +115,6 @@ const NavbarComp = ({ loading, messages, user }) => {
               <DropdownMenu>
                 <DropdownItem href="/locals">Local Hackers</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                {/* <DropdownItem divider /> */}
                 <DropdownItem href="/vpn">VPN</DropdownItem>
                 <DropdownItem href="/cryptocurrency">
                   Crypto Currency
@@ -147,6 +164,21 @@ const NavbarComp = ({ loading, messages, user }) => {
           </Nav>
         </Collapse>
       </Navbar>
+      <Modal isOpen={modal} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Leave Alliance</ModalHeader>
+        <ModalBody>
+          You are about to leave your alliance, you can not get back unless you
+          are invited. Are you sure?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={leaveAlliance}>
+            Leave Alliance
+          </Button>{" "}
+          <Button color="secondary" onClick={toggleModal}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

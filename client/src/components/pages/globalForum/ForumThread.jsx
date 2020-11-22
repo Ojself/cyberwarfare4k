@@ -7,7 +7,6 @@ import {
   UncontrolledPopover,
   Button,
   FormGroup,
-  Label,
   Input,
 } from "reactstrap";
 
@@ -201,7 +200,7 @@ const ForumThread = (props) => {
 
   const threadId = window.location.pathname.match(/[a-f\d]{24}$/);
   useEffect(() => {
-    const fetchData = async (threadId)=> {
+    const fetchData = async (threadId) => {
       const apiResponse = await api.getComments(threadId);
       const apiComments = apiResponse.comments;
       const threadCreatedAt = dateConverter(apiComments[0].createdAt);
@@ -214,7 +213,7 @@ const ForumThread = (props) => {
         threadCreatedAt,
         loading: false,
       });
-    }
+    };
     fetchData(threadId[0]);
   }, []);
   return (

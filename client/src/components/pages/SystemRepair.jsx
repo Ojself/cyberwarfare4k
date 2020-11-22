@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import api from "../../api";
 
 const SystemRepair = () => {
@@ -7,13 +7,13 @@ const SystemRepair = () => {
   }, []);
 
   const handlePartial = () => {
-    api.repairPartial().then(result => {
+    api.repairPartial().then((result) => {
       console.log(result, "result");
     });
   };
 
   const handleFull = () => {
-    api.repairFull().then(result => {
+    api.repairFull().then((result) => {
       console.log(result, "result");
     });
   };

@@ -365,6 +365,20 @@ export default {
       .catch(errHandler);
   },
 
+  getAlliance(allianceId) {
+    return service
+      .get(`/alliance/${allianceId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  leaveAlliance() {
+    return service
+      .patch(`/alliance/leave`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   createAlliance(allianceId) {
     return service
       .post("/alliance", { allianceId })
