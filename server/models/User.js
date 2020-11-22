@@ -347,6 +347,9 @@ userSchema.methods.batteryGain = function (battery) {
 
 userSchema.methods.bitcoinDrain = function (bitCoins) {
   this.playerStats.bitCoins -= bitCoins;
+  if (this.playerStats.bitCoins < 0) {
+    this.playerStats.bitCoins = 0;
+  }
 };
 
 userSchema.methods.bitcoinGain = function (bitCoins) {
@@ -442,6 +445,11 @@ userSchema.methods.changeCity = function (city, batteryCost) {
   console.log("changeCity triggered", batteryCost);
   this.batteryDrain(batteryCost);
   this.playerStats.city = city._id;
+};
+
+userSchema.methods.leaveAlliance = function (city, batteryCost) {
+  this.alliance = null;
+  this.allianceRole = null;
 };
 
 userSchema.methods.handleCrime = async function (finalResult) {
@@ -562,12 +570,6 @@ userSchema.methods.fullRepair = function (repairCost) {
 
 // DATACENTER
 // DATACENTER
-
-userSchema.methods.handleDataCenterPurchase = function (dataCenter) {
-  console.log("handlePurchase triggered");
-  this.playerStats.bitCoins -= dataCenter.price;
-  this.save();
-};
 
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   console.log("handleDataCenterAttack triggered");

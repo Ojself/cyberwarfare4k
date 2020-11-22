@@ -1,9 +1,22 @@
-const { nullifyValues } = require('../../middlewares/middleHelpers.js');
-const User = require('../../models/User');
-const Session = require('../../models/Session');
-const Message = require('../../models/Message');
+const { nullifyValues } = require("../../middlewares/middleHelpers.js");
+const User = require("../../models/User");
+const Session = require("../../models/Session");
+const Message = require("../../models/Message");
 
-const monthsOverview = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dev'];
+const monthsOverview = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dev",
+];
 
 const getAllUsers = async (filterArray = [], select = null) => {
   if (select) {
@@ -12,9 +25,9 @@ const getAllUsers = async (filterArray = [], select = null) => {
     return usersWithSelect;
   }
   let users = await User.find()
-    .populate('playerStats.bountyDonors', 'name')
-    .populate('alliance', 'name')
-    .populate('playerStats.city', 'name');
+    .populate("playerStats.bountyDonors", "name")
+    .populate("alliance", "name")
+    .populate("playerStats.city", "name");
 
   // todo, select information instead of nullify?
   // todo apply filter
@@ -40,11 +53,11 @@ const getOnlineUsers = async () => {
   await Session.find().then((result) => {
     const filteredIds = result
       .filter((x) => x.expires > limitTime)
-      .map((y) => y.session.match(/[a-f\d]{24}/g, ''))
+      .map((y) => y.session.match(/[a-f\d]{24}/g, ""))
       .filter((el) => el != null);
     onlineIds = [].concat(...filteredIds);
   });
-  console.log('onlineIds: ', onlineIds, 'stop');
+  console.log("onlineIds: ", onlineIds, "stop");
   // const onlinePlayers = await User.find({ _id: { $in: onlineIds } });
 
   return onlineIds;
@@ -52,22 +65,25 @@ const getOnlineUsers = async () => {
 
 const getInbox = async (userId) => {
   const inbox = await Message.find({ to: userId })
-    .populate('from', 'name')
+    .populate("from", "name")
     .sort({ createdAt: -1 });
   const sent = await Message.find({ from: userId })
-    .populate('to', 'name')
+    .populate("to", "name")
     .sort({ createdAt: -1 });
   return { inbox, sent };
 };
 
 const getOpponentInformation = async (opponentId, allUsers) => {
-  const sumAllSkillValues = (skill) => Object.values(skill).reduce((a, c) => a + c);
+  const sumAllSkillValues = (skill) =>
+    Object.values(skill).reduce((a, c) => a + c);
   const findPosition = (list, id) => {
     const position = list.findIndex((user) => JSON.stringify(user._id) === id);
 
     return position + 1;
   };
-  const opponent = allUsers.find((user) => JSON.stringify(user._id) === opponentId);
+  const opponent = allUsers.find(
+    (user) => JSON.stringify(user._id) === opponentId
+  );
 
   const ranking = {
     exp: null,
@@ -79,23 +95,53 @@ const getOpponentInformation = async (opponentId, allUsers) => {
     shutdowns: null,
   };
   ranking.exp = findPosition(allUsers, opponentId);
-  allUsers.sort((a, b) => sumAllSkillValues(b.crimeSkill) - sumAllSkillValues(a.crimeSkill));
+  allUsers.sort(
+    (a, b) => sumAllSkillValues(b.crimeSkill) - sumAllSkillValues(a.crimeSkill)
+  );
   ranking.crimeSkill = findPosition(allUsers, opponentId);
-  allUsers.sort((a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill));
+  allUsers.sort(
+    (a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill)
+  );
   ranking.hackSkill = findPosition(allUsers, opponentId);
-  allUsers.sort((a, b) => sumAllSkillValues({ bitCoins: b.playerStats.bitCoins, ledger: b.playerStats.bitCoins }) - sumAllSkillValues({ bitCoins: a.playerStats.bitCoins, ledger: a.playerStats.bitCoins }));
+  allUsers.sort(
+    (a, b) =>
+      sumAllSkillValues({
+        bitCoins: b.playerStats.bitCoins,
+        ledger: b.playerStats.bitCoins,
+      }) -
+      sumAllSkillValues({
+        bitCoins: a.playerStats.bitCoins,
+        ledger: a.playerStats.bitCoins,
+      })
+  );
   ranking.networth = findPosition(allUsers, opponentId);
   const onlineUsers = await getOnlineUsers();
   ranking.online = onlineUsers.some((id) => JSON.stringify(id) === opponentId);
-  allUsers.sort((a, b) => b.fightInformation.shutdowns - a.fightInformation.shutdowns);
+  allUsers.sort(
+    (a, b) => b.fightInformation.shutdowns - a.fightInformation.shutdowns
+  );
   ranking.shutdowns = findPosition(allUsers, opponentId);
 
-  ranking.createdAt = `${monthsOverview[opponent.createdAt.getMonth()]} ${opponent.createdAt.getFullYear()}`;
-  console.log(ranking, 'ranking');
+  ranking.createdAt = `${
+    monthsOverview[opponent.createdAt.getMonth()]
+  } ${opponent.createdAt.getFullYear()}`;
+  console.log(ranking, "ranking");
   return { opponent, ranking };
 };
 
+const saveAndUpdateUser = async (user) => {
+  const savedUser = await user.save();
+  const populatedUser = await savedUser
+    .populate("playerStats.city", "name")
+    .populate("alliance", "name")
+    .execPopulate();
+  return populatedUser;
+};
 
 module.exports = {
-  getAllUsers, getOnlineUsers, getInbox, getOpponentInformation,
+  getAllUsers,
+  getOnlineUsers,
+  getInbox,
+  getOpponentInformation,
+  saveAndUpdateUser,
 };

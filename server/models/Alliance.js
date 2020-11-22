@@ -25,13 +25,10 @@ const allianceSchema = new Schema({
 allianceSchema.methods.leaveAlliance = function (playerId) {
   // player.sendNotication
 
-  // splices
-  const playerIndex = this.members.indexOf(playerId);
-  this.members.splice(playerIndex, 1);
-
   [
     "firstMonkeys",
     "secondMonkeys",
+    "invitedMembers",
     "organizePermission",
     "forumModeratorPermission",
   ].forEach((r) => {
@@ -47,7 +44,39 @@ allianceSchema.methods.leaveAlliance = function (playerId) {
     }
   });
 
-  this.save();
+  this.replaceBoss();
+};
+
+allianceSchema.methods.replaceBoss = function () {
+  if (this.boss) return;
+  let replacer;
+  switch (true) {
+    case !!this.analyst:
+      replacer = this.analyst;
+      this.analyst = null;
+      break;
+    case !!this.cto:
+      replacer = this.cto;
+      this.cto = null;
+    case !!this.firstLead:
+      replacer = this.firstLead;
+      this.firstLead = null;
+    case !!this.secondLead:
+      replacer = this.secondLead;
+      this.secondLead = null;
+    case !!this.firstMonkeys.length:
+      replacer = this.firstMonkeys[0];
+      this.firstMonkeys.shift();
+    case !!this.secondMonkeys.length:
+      replacer = this.secondMonkeys[0];
+      this.secondMonkeys.shift();
+    default:
+      this.abandonAlliance();
+  }
+};
+
+allianceSchema.methods.abandonAlliance = function () {
+  console.log("abandon");
 };
 
 allianceSchema.methods.inviteMember = function (playerId) {

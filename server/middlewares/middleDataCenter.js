@@ -58,10 +58,11 @@ function attackDataCenterCriterias(user, dataCenter, batteryCost) {
   }
 }
 
-function purchaseDataCenter(user, dataCenter, batteryCost) {
-  user.handleDataCenterPurchase(dataCenter, batteryCost);
-  dataCenter.handlePurchase(user);
-}
+const purchaseDataCenter = async (user, dataCenter) => {
+  user.bitcoinDrain(dataCenter.price);
+  dataCenter.handlePurchase(user._id);
+  await dataCenter.save();
+};
 
 async function attackDataCenter(
   user,

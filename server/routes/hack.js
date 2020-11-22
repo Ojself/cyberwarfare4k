@@ -26,7 +26,7 @@ router.post("/pettyCrime", async (req, res) => {
   const userId = req.user._id;
   let user;
   try {
-    user = await User.findById(userId);
+    user = await User.findById(userId).populate("playerStats.city", "name");
   } catch (e) {
     console.error("error: ", e);
     res.status(400).json({

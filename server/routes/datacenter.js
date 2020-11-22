@@ -7,15 +7,7 @@ const {
   attackDataCenter,
 } = require("../middlewares/middleDataCenter");
 
-const saveAndUpdateUser = async (user) => {
-  const savedUser = await user.save();
-  const populatedUser = await savedUser
-    .populate("playerStats.city", "name")
-    .populate("alliance", "name")
-    .execPopulate();
-  return populatedUser;
-};
-
+const { saveAndUpdateUser } = require("./helper");
 const router = express.Router();
 const DataCenter = require("../models/DataCenter");
 const User = require("../models/User");
@@ -67,11 +59,25 @@ router.post("/purchase", async (req, res) => {
     });
   }
 
-  purchaseDataCenter(user, dataCenter, batteryCost);
+  await purchaseDataCenter(user, dataCenter);
+
+  let dataCenters = await DataCenter.find()
+    .populate("requiredStash", ["name", "price"])
+    .populate("city", ["name", "residents"])
+    .populate("owner", ["name"]);
+
+  // filter out the datacenters that don't belong to the city the user is in
+  dataCenters = dataCenters.filter((dataCenter) => {
+    const stringifiedObjectId = JSON.stringify(dataCenter.city.residents);
+    return stringifiedObjectId.includes(userId.toString());
+  });
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `You purchased ${dataCenter.name} for ${dataCenter.price}`,
+    dataCenters,
+    user: updatedUser,
   });
 });
 

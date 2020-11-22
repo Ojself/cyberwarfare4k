@@ -7,12 +7,13 @@ const {
   checkCreateAllianceCriteria,
   findAllianceStats,
 } = require("../middlewares/middleAlliance");
+const { saveAndUpdateUser } = require("./helper");
 
 // TODO SEEDS ARE NOT WORKING. alliances do not have members in it
 
 // @GET
 // PRIVATE
-// Retrives all alliances with stats
+// Retrives all alliances
 
 router.get("/", async (req, res) => {
   const alliances = await Alliance.find();
@@ -22,6 +23,7 @@ router.get("/", async (req, res) => {
     alliances,
   });
 });
+
 // @GET
 // PRIVATE
 // Retrives all alliances with stats
@@ -62,14 +64,16 @@ router.post("/", async (req, res) => {
     });
   }
   alliance.boss = user._id;
+  alliance.active = true;
   user.alliance = alliance._id;
   user.bitcoinDrain(createCost);
   await alliance.save();
-  await user.save();
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `${alliance.name} has been created!`,
+    user: updatedUser,
   });
 });
 
@@ -109,25 +113,21 @@ router.get("/test", async (req, res) => {
 //   /* if you are not boss, consig ub, or cpt */
 // })
 
-// router.get('/accept/:allianceName', async (req, res) => {
+// router.get('/invitation/:allianceName', async (req, res) => {
 // const userId = req.user._id;
 // const { allianceName } = req.params;
 //
 // const user = await User.findById(userId);
 // });
 //
-// router.delete('/decline/:allianceName', async (req, res) => {
+// router.delete('/invitation/:allianceName', async (req, res) => {
 // const userId = req.user._id;
 // const { allianceName } = req.params;
 //
 // const user = await User.findById(userId);
 // });
 //
-// router.post('/leave', async (req, res) => {
-// const userId = req.user._id;
-// const user = await User.findById(userId);
-// // send notification to boss
-// });
+
 //
 // router.post('/kick', async (req, res) => {
 // const userId = req.user._id;
@@ -168,14 +168,43 @@ router.get("/test", async (req, res) => {
 // });
 // });
 
-router.get("/:allianceId", async (req, res) => {
-  const { allianceId } = req.params;
-  const alliance = await Alliance.findById(allianceId);
+// @GET
+// PRIVATE
+// Retrives one alliance
+
+router.get("/:id", async (req, res) => {
+  console.log("this id");
+  const alliance = await Alliance.findById(req.params.id)
+    .populate("boss", "name")
+    .populate("cto", "name")
+    .populate("analyst", "name")
+    .populate("firstLead", "name")
+    .populate("secondLead", "name")
+    .populate("firstMonkeys", "name")
+    .populate("secondMonkeys", "name");
 
   res.status(200).json({
     success: true,
-    message: `${alliance.name} loaded....`,
+    message: "Alliance loaded..",
     alliance,
+  });
+});
+
+router.patch("/leave", async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+  // todo criterias
+  // todo send notification
+  const alliance = await Alliance.findById(user.alliance);
+  alliance.leaveAlliance(req.user._id, user.allianceRole);
+  user.leaveAlliance();
+  alliance.leaveAlliance(userId);
+  await alliance.save();
+  const updatedUser = await saveAndUpdateUser(user);
+  res.status(200).json({
+    success: true,
+    message: `You left ${alliance.name}..`,
+    user: updatedUser,
   });
 });
 

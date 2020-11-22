@@ -36,16 +36,10 @@ const dataCenterSchema = new Schema({
   },
 });
 
-dataCenterSchema.methods.handlePurchase = function (user) {
-  console.log("handlePurchase method triggered");
-  this.owner = user._id;
+dataCenterSchema.methods.handlePurchase = function (userId) {
+  this.owner = userId;
   this.status = "Owned";
   this.attacker = null;
-
-  // might not work because only allows objectId. maybe set to same as owner
-  // gracePeriod for x minutes to let user enjoy some revenue?
-
-  this.save();
 };
 
 dataCenterSchema.methods.handleAttack = async function (attackerId, result) {
