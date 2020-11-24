@@ -153,7 +153,7 @@ const PettyHack = ({ user, loading, updateGlobalValues }) => {
 
   return (
     <div className="page-container">
-      <h1 className="display-4">Petty hackr</h1>
+      <h1 className="">Petty hackr</h1>
       <div className="content">
         {getActionButton(pettyState)}
         <div className="d-flex w-100 mt-3">

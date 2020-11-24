@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Progress } from "reactstrap";
 
-const ProgressBarHackSkill = props => {
+const ProgressBarHackSkill = (props) => {
   const [hovered, setHovered] = useState(false);
   const [blink, setBlink] = useState(false);
   const toggleHover = () => {
@@ -10,10 +10,10 @@ const ProgressBarHackSkill = props => {
     }
   };
 
-  const blinkMe = e => {
+  const blinkMe = (e) => {
     if (props.hasStatPoints) {
-      props.upgrade(props.name);
       setBlink(true);
+      props.upgrade(props.name);
       setTimeout(() => {
         setBlink(false);
       }, 100);
@@ -36,7 +36,7 @@ const ProgressBarHackSkill = props => {
       className={whatsMyClass()}
       onMouseEnter={toggleHover}
       onMouseLeave={toggleHover}
-      onClick={e => blinkMe(e)}
+      onClick={(e) => blinkMe(e)}
     >
       <div style={{ fontSize: "0.7rem" }} className="text-center text-light">
         {`${props.name} ${props.value}% ${

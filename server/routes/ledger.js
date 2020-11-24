@@ -1,54 +1,82 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
-const User = require("../models/User");
+const User = require('../models/User');
 
-const { tranfserCriteria } = require("../middlewares/middleLedger.js");
-const { getAllUsers } = require("./helper"); // move to middleware?
+const { tranfserCriteria } = require('../middlewares/middleLedger.js');
+const { saveAndUpdateUser } = require('./helper'); // move to middleware?
+
+const depositCriteria = (user, amount) => {
+  if (!user) {
+    return 'No user found';
+  }
+  if (!amount) {
+    return 'Missing input';
+  }
+  if (amount > user.playerStats.bitCoins) {
+    return 'You can\'t deposit money you don\'t have..';
+  }
+  return null;
+};
+
+const withdrawCriteria = (user, amount) => {
+  if (!user) {
+    return 'No user found';
+  }
+  if (!amount) {
+    return 'Missing input';
+  }
+  if (amount > user.playerStats.ledger) {
+    return 'You can\'t withdraw money you don\'t have..';
+  }
+  return null;
+};
 
 // @GET
 // PRIVATE
 // Retrives all users
 
-router.get("/", async (req, res) => {
-  const users = await getAllUsers(null, { name: "1" });
+router.get('/', async (req, res) => {
+  const users = await User.find({}).select({ name: '1' });
   if (!users) {
     return res.status(400).json({
       success: false,
-      message: "no hackers found, try again later..",
+      message: 'no hackers found, try again later..',
     });
   }
 
   return res.status(200).json({
     success: true,
-    message: "hackers loaded..",
+    message: 'hackers loaded..',
     users,
   });
 });
 
 // @POST
 // PRIVATE
-// Withdraws money from ledger to hand
+// Deposit money from ledger to hand
 
-router.post("/deposit", async (req, res) => {
+router.post('/deposit', async (req, res) => {
   // const fee = 1.05;
-  const { amount } = req.body;
+  const { depositAmount } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  let message;
+  const disallowed = depositCriteria(user, depositAmount);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
-  user.depositLedger(amount);
+  user.depositLedger(depositAmount);
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
-    message: `${amount} was withdrawed from your ledger`,
+    message: `${depositAmount} was deposited to your ledger`,
+    user: updatedUser,
   });
 });
 
@@ -56,25 +84,28 @@ router.post("/deposit", async (req, res) => {
 // PRIVATE
 // Withdraws money from ledger to hand
 
-router.post("/withdraw", async (req, res) => {
-  const fee = 1.05;
-  const { amount } = req.body;
+router.post('/withdraw', async (req, res) => {
+  // const fee = 1.05;
+  const { withdrawAmount } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  let message;
+  const disallowed = withdrawCriteria(user, withdrawAmount);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
-  user.withdrawLedger(amount, fee);
+
+  user.withdrawLedger(withdrawAmount);
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
-    message: `${amount} was withdrawed from your ledger`,
+    message: `${withdrawAmount} was withdrawed from your ledger`,
+    user: updatedUser,
   });
 });
 
@@ -82,15 +113,17 @@ router.post("/withdraw", async (req, res) => {
 // PRIVATE
 // Transfer money from hacker x to hacker y
 
-router.post("/transfer/:id", async (req, res) => {
+router.post('/transfer/:id', async (req, res) => {
   const { receiverId, transferAmount } = req.body;
   const fee = 1.05;
+
+  const amount = transferAmount * fee;
 
   const userId = req.user._id;
   const user = await User.findById(userId);
   const receiver = await User.findById(receiverId);
 
-  const message = tranfserCriteria(user, receiver, transferAmount * fee);
+  const message = tranfserCriteria(user, receiver, amount);
 
   if (message) {
     return res.status(400).json({
@@ -98,13 +131,22 @@ router.post("/transfer/:id", async (req, res) => {
       message,
     });
   }
-
-  user.ledgerDrainFromTransfer(transferAmount * fee);
-  receiver.ledgerGainFromTransfer(transferAmount, user.name);
+  const notification = [
+    `You received ${transferAmount} from ${user.name} at ${new Date(Date.now())
+      .toString()
+      .slice(0, 21)}`,
+    true,
+  ];
+  receiver.sendNotification(notification);
+  user.ledgerDrain(amount);
+  receiver.ledgerGain(transferAmount);
+  await receiver.save();
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `${transferAmount} was sent to ${receiver.name}`,
+    user: updatedUser,
   });
 });
 

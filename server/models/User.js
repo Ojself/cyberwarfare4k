@@ -323,67 +323,55 @@ userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
 };
 
 userSchema.methods.batteryDrain = function (battery) {
-  this.playerStats.battery -= battery;
-  if (this.playerStats.battery <= 0) {
+  this.playerStats.battery -= parseInt(battery, 10);
+  if (this.playerStats.battery < 0) {
     this.playerStats.battery = 0;
   }
 };
 
 userSchema.methods.batteryGain = function (battery) {
-  this.playerStats.battery += battery;
+  this.playerStats.battery += parseInt(battery, 10);
   if (this.playerStats.battery > 100) {
     this.playerStats.battery = 100;
   }
 };
 
 userSchema.methods.bitcoinDrain = function (bitCoins) {
-  this.playerStats.bitCoins -= bitCoins;
+  this.playerStats.bitCoins -= parseInt(bitCoins, 10);
   if (this.playerStats.bitCoins < 0) {
     this.playerStats.bitCoins = 0;
   }
 };
 
 userSchema.methods.bitCoinGain = function (bitCoins) {
-  this.playerStats.bitCoins += bitCoins;
-  this.save();
+  this.playerStats.bitCoins += parseInt(bitCoins, 10);
 };
 
 // LEDGER
 // LEDGER
 
-userSchema.methods.ledgerDrainFromTransfer = function (bitCoins) {
-  console.log('ledgerDrain triggered', bitCoins);
-  this.playerStats.ledger -= bitCoins;
-  this.save();
+userSchema.methods.ledgerDrain = function (bitCoins) {
+  this.playerStats.ledger -= parseInt(bitCoins, 10);
 };
 
-userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
-  console.log('ledgerGain triggered', bitCoins);
-  this.playerStats.ledger += bitCoins;
-
-  const date = Date.now();
-  const newNotifications = [
-    `You received ${bitCoins} from ${senderName} at ${new Date(date)
-      .toString()
-      .slice(0, 21)}`,
-    true,
-  ];
-  this.account.notifications.push(newNotifications);
-  this.save();
+userSchema.methods.ledgerGain = function (bitCoins) {
+  this.playerStats.ledger += parseInt(bitCoins, 10);
 };
 
-userSchema.methods.depositLedger = function (bitCoins, fee) {
-  console.log('depositLedger triggered');
-  this.playerStats.ledger += bitCoins;
-  this.playerStats.bitCoins -= bitCoins * fee;
-  this.save();
+userSchema.methods.depositLedger = function (bitCoins) {
+  this.bitcoinDrain(bitCoins);
+  this.ledgerGain(bitCoins);
+  // this.playerStats.bitCoins -= bitCoins * fee;
 };
 
-userSchema.methods.withdrawLedger = function (bitCoins, fee) {
-  console.log('withdrawLedger triggered');
-  this.playerStats.ledger += bitCoins;
-  this.playerStats.bitCoins -= bitCoins * fee;
-  this.save();
+userSchema.methods.withdrawLedger = function (bitCoins) {
+  this.bitCoinGain(bitCoins);
+  this.ledgerDrain(bitCoins);
+  // todo fee?
+};
+
+userSchema.methods.sendNotification = function (msg) {
+  this.account.notifications.push(msg);
 };
 
 userSchema.methods.handlePettyCrime = async function (result) {

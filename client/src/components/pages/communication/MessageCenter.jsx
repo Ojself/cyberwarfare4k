@@ -29,11 +29,10 @@ import classnames from "classnames";
 // alternate background color for easier reading
 // todo, linking color of names
 
-const MessageCenter = (props) => {
-  const [globalInfo, setGlobalInfo] = useState("");
+const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
   const [textArea, setTextArea] = useState("");
 
@@ -67,26 +66,21 @@ const MessageCenter = (props) => {
     setTextArea(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    api
-      .sendMessage({
+    let data;
+    try {
+      data = await api.sendMessage({
         text: textArea,
         receiverId: selectedOption.value,
-      })
-      .then((result) => {
-        setTextArea("");
-        setSelectedOption("");
-        setGlobalInfo(
-          <Typist className="" cursor={{ show: false }}>
-            <span> {result.message.toLowerCase()} </span>
-          </Typist>
-        );
       });
-
-    setTimeout(() => {
-      setGlobalInfo("");
-    }, 5000);
+    } catch (err) {
+      updateGlobalValues(err);
+      return;
+    }
+    updateGlobalValues(data);
+    setTextArea("");
+    setSelectedOption("");
   };
 
   useEffect(() => {
@@ -96,7 +90,7 @@ const MessageCenter = (props) => {
       const massagedUsers = dataMassager(users);
 
       await setUsers(massagedUsers);
-      setLoading(false);
+      setLoadingUsers(false);
       readAllCommunication();
       setAutoComposeTo(window.location.pathname, users);
     };
@@ -145,12 +139,6 @@ const MessageCenter = (props) => {
 
   return (
     <div className="page-container">
-      <h6
-        className="text-left"
-        style={{ margin: "0 auto", width: "20%", minHeight: "20px" }}
-      >
-        {globalInfo}
-      </h6>
       <h1>MessageCenter</h1>
       <div className="content d-flex flex-column w-50 ">
         <Nav tabs className="">
@@ -176,10 +164,10 @@ const MessageCenter = (props) => {
             <Row>
               <Col>
                 <ListGroup>
-                  {props.loading ? (
+                  {loading ? (
                     "loading.."
-                  ) : props.messages.inbox.length ? (
-                    props.messages.inbox.map((m, i) => {
+                  ) : messages.inbox.length ? (
+                    messages.inbox.map((m, i) => {
                       const name = m.from.name;
                       const id = m.from._id;
                       const date = m.dateSent;
@@ -188,7 +176,7 @@ const MessageCenter = (props) => {
 
                       const inboxClass = read
                         ? "mt-2 text-light"
-                        : "mt-2 text-success";
+                        : "mt-2 bg-light text-dark";
 
                       return (
                         <ListGroupItem
@@ -224,25 +212,29 @@ const MessageCenter = (props) => {
             <Row>
               <Col>
                 <ListGroup>
-                  {props.loading
-                    ? "loading.."
-                    : props.messages.sent.map((m, i) => {
-                        const name = m.to.name;
-                        const id = m.to._id;
-                        const date = m.dateSent;
-                        const message = m.text;
+                  {loading ? (
+                    "loading.."
+                  ) : messages.sent.length ? (
+                    messages.sent.map((m, i) => {
+                      const name = m.to.name;
+                      const id = m.to._id;
+                      const date = m.dateSent;
+                      const message = m.text;
 
-                        return (
-                          <ListGroupItem className="mt-2 text-warning" key={i}>
-                            <ListGroupItemHeading className="text-warning">
-                              To: {<Link to={`/hacker/${id}`}>{name}</Link>}
-                            </ListGroupItemHeading>
-                            <ListGroupItemText className="">
-                              {`${date}: ${message}`}
-                            </ListGroupItemText>
-                          </ListGroupItem>
-                        );
-                      })}
+                      return (
+                        <ListGroupItem className="mt-2 text-warning" key={i}>
+                          <ListGroupItemHeading className="text-warning">
+                            To: {<Link to={`/hacker/${id}`}>{name}</Link>}
+                          </ListGroupItemHeading>
+                          <ListGroupItemText className="">
+                            {`${date}: ${message}`}
+                          </ListGroupItemText>
+                        </ListGroupItem>
+                      );
+                    })
+                  ) : (
+                    <p>Your sent folder is empty</p>
+                  )}
                 </ListGroup>
               </Col>
             </Row>
@@ -256,7 +248,7 @@ const MessageCenter = (props) => {
                       className="text-dark w-50 mb-5"
                       value={selectedOption}
                       onChange={handleChange}
-                      options={loading ? "" : users}
+                      options={loadingUsers ? "" : users}
                     />
                     <FormGroup className="text-dark">
                       <Label for="messageText">Message</Label>

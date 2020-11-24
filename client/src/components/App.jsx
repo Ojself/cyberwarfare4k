@@ -118,7 +118,7 @@ const App = () => {
           path="/create-hacker"
           render={() => <CreateHacker loading={loading} user={user} />}
         />
-             <Route
+        <Route
           path="/cryptocurrency"
           render={() => <CryptoCurrency loading={loading} user={user} />}
         />
@@ -193,15 +193,32 @@ const App = () => {
         <Route path="/ladder" component={Ladder} />
         <Route
           path="/ledger"
-          render={() => <Ledger loading={loading} user={user} />}
+          render={() => (
+            <Ledger
+              updateGlobalValues={updateGlobalValues}
+              loading={loading}
+              user={user}
+            />
+          )}
         />
         <Route
           path="/messages"
-          render={() => <MessageCenter loading={loading} messages={messages} />}
+          render={() => (
+            <MessageCenter
+              updateGlobalValues={updateGlobalValues}
+              loading={loading}
+              messages={messages}
+            />
+          )}
         />
 
         <Route path="/notifications" component={Notifications} />
-        <Route path="/repair-shop" render={()=> <RepairShop user={user} updateGlobalValues={updateGlobalValues}/>} />
+        <Route
+          path="/repair-shop"
+          render={() => (
+            <RepairShop user={user} updateGlobalValues={updateGlobalValues} />
+          )}
+        />
         <Route
           path="/vpn"
           render={() => (

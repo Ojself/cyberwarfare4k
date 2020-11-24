@@ -40,7 +40,7 @@ const Locals = (props) => {
 
   return (
     <div className="page-container ">
-      <h1 className="display-4">
+      <h1 className="">
         Locals in{" "}
         {props.loading ? "your city!" : props.user.playerStats.city.name}
       </h1>

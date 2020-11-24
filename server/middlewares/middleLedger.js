@@ -1,17 +1,18 @@
-const { existingValue, checkFunds } = require('../middlewares/middleHelpers');
-
 // Sees if everything is in order to transfer bitcoins
-function tranfserCriteria(user, receiver, amount) {
-  if (!existingValue(user)) {
+const tranfserCriteria = (user, receiver, amount) => {
+  if (!user) {
     return "User doesn't exist";
   }
-  if (!existingValue(receiver)) {
-    return "Opponent doesn't exist";
+  if (!receiver) {
+    return "Receiver doesn't exist";
   }
-  if (!checkFunds(user.playerStats.ledger, amount)) {
+  if (user._id.toString() === receiver._id.toString()) {
+    return "You can't transfer money to yourself";
+  }
+  if (amount > user.playerStats.ledger) {
     return 'Insufficent bitcoins in your ledger';
   }
   return null;
-}
+};
 
 module.exports = { tranfserCriteria };
