@@ -19,7 +19,6 @@ const getHealthBar = (dc) => {
     default:
       color = "danger";
   }
-  console.log(color, "color");
   return (
     <Progress
       className="mt-2"
@@ -79,7 +78,7 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
   };
   const getDataCenterActionButton = (dc) => {
     if (loading) return;
-    console.log(dc.status, "dc.status");
+
     let innerText = "Buy";
     let onClick = () => {};
     let disabled = false;
@@ -173,7 +172,8 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
 
   return (
     <div className="page-container">
-      <h2>Data centers</h2>
+      <h1>Data centers</h1>
+      {<h6>{user ? user.playerStats.city.name: "City"}</h6>}
       {dataCenterState.loading ? <p>loading..</p> : dataCenterTable}
     </div>
   );

@@ -1,16 +1,17 @@
 const DataCenter = require('../models/DataCenter');
 const User = require('../models/User');
 
-function dataCenterPayoutInterval() {
-  DataCenter.find().then(d => {
-    d.map(d => {
-      if (d.status === 'Owned') {
-        const user = User.findById(d.owner).then(u => {
+const dataCenterPayoutInterval = async () => {
+  const dataCenters = await DataCenter.find();
+  dataCenters.map((d) => {
+    if (d.status === 'Owned') {
+      User.findById(d.owner).then((u) => {
+        if (u) {
           u.bitcoinGain(d.minutlyrevenue);
-        });
-      }
-    });
+        }
+      });
+    }
   });
-}
+};
 
 module.exports = dataCenterPayoutInterval;

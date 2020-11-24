@@ -7,30 +7,6 @@ const utilImages = [
   { id: 3, src: "/utilPics/navbarreplace.jpg", title: "010000101010000101110" },
 ];
 
-const catzAvatars = [
-  {
-    id: 0,
-    src: "/hackerAvatars/Catz/cat0.jpg",
-    title: "Cat 0",
-  },
-  {
-    id: 1,
-    src: "/hackerAvatars/Catz/cat1.jpeg",
-    title: "Cat 1",
-  },
-  {
-    id: 2,
-    src: "/hackerAvatars/Catz/cat2.jpg",
-    title: "Cat 2",
-  },
-];
-const irlAvatars = [
-  {
-    id: 0,
-    src: "/hackerAvatars/irl/albertgonzalez.jpg",
-    title: "Cat 0",
-  },
-];
 const anonAvatars = [
   {
     id: 0,
@@ -94,6 +70,88 @@ const anonAvatars = [
   },
 ];
 
+const catzAvatars = [
+  {
+    id: 0,
+    src: "/hackerAvatars/Catz/cat0.jpg",
+    title: "Cat 0",
+  },
+  {
+    id: 1,
+    src: "/hackerAvatars/Catz/cat1.jpeg",
+    title: "Cat 1",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/Catz/cat2.jpg",
+    title: "Cat 2",
+  },
+
+  {
+    id: 4,
+    src: "/hackerAvatars/Catz/cat4.jpg",
+    title: "Cat 4",
+  },
+  {
+    id: 5,
+    src: "/hackerAvatars/Catz/cat5.jpeg",
+    title: "Cat 5",
+  },
+  
+];
+const irlAvatars = [
+  {
+    id: 0,
+    src: "/hackerAvatars/irl/albertgonzalez.jpg",
+    title: "Albert Gonzalez",
+  },
+  {
+    id: 1,
+    src: "/hackerAvatars/irl/billgatesold.jpg",
+    title: "Bill Gates",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/irl/elonmusk.jpg",
+    title: "Elon Musk",
+  },
+  {
+    id: 3,
+    src: "/hackerAvatars/irl/elonmuskyoung.png",
+    title: "Elon Musk young",
+  },
+  {
+    id: 4,
+    src: "/hackerAvatars/irl/garymckinnon.jpg",
+    title: "Gary McKinnon",
+  },
+  {
+    id: 5,
+    src: "/hackerAvatars/irl/julianassagne.png",
+    title: "Julian Assagne",
+  },
+  {
+    id: 6,
+    src: "/hackerAvatars/irl/kevinmitnick.jpg",
+    title: "Kevin Mitnick",
+  },
+  {
+    id: 7,
+    src: "/hackerAvatars/irl/kevinpoulsen.png",
+    title: "Kevin Poulsen",
+  },
+  {
+    id: 8,
+    src: "/hackerAvatars/irl/loydblankenship.jpg",
+    title: "Loyd Blankenship",
+  },
+  {
+    id: 9,
+    src: "/hackerAvatars/irl/roberttappanmorris.jpg",
+    title: "Robert Tappan Morris ",
+  },
+];
+
 const matrixAvatars = [
   {
     id: 0,
@@ -117,6 +175,21 @@ const miscAvatars = [
     src: "/hackerAvatars/Misc/404-notfound.png",
     title: "404 notfound0",
   },
+  {
+    id: 1,
+    src: "/hackerAvatars/Misc/android-black.jpg",
+    title: "Black Android",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/Misc/apple-skull.jpg",
+    title: "Apple Skull",
+  },
+  {
+    id: 3,
+    src: "/hackerAvatars/Misc/blackhat.png",
+    title: "Black Hat",
+  },
 ];
 const mrrobotAvatars = [
   {
@@ -124,12 +197,28 @@ const mrrobotAvatars = [
     src: "/hackerAvatars/Mr. Robot/mrrobot.png",
     title: "Mr Robot",
   },
+  
 ];
 const NCISAvatars = [
   {
     id: 0,
-    src: "/hackerAvatars/Mr. Robot/mrrobotdad.png",
-    title: "Mr Robot Dad",
+    src: "/hackerAvatars/NCIS/abbyncis2.png",
+    title: "Abby",
+  },
+  {
+    id: 1,
+    src: "/hackerAvatars/NCIS/sunglasses.jpg",
+    title: "Sunglasses",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/NCIS/sunglasses2.png",
+    title: "Sunglasses 2",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/NCIS/markHarmon.jpg",
+    title: "Mark Harmon",
   },
 ];
 const waifuAvatars = [
@@ -142,6 +231,26 @@ const waifuAvatars = [
     id: 1,
     src: "/hackerAvatars/Waifu/waifu-hacker2.jpg",
     title: "Waifu Hacker 1",
+  },
+  {
+    id: 2,
+    src: "/hackerAvatars/Waifu/waifu-hacker3.jpg",
+    title: "Waifu Hacker 2",
+  },
+  {
+    id: 3,
+    src: "/hackerAvatars/Waifu/akasaka.jpg",
+    title: "Akasaka",
+  },
+  {
+    id: 4,
+    src: "/hackerAvatars/Waifu/cyka.jpg",
+    title: "Cyka",
+  },
+  {
+    id: 5,
+    src: "/hackerAvatars/Waifu/greenblack.png",
+    title: "Green black",
   },
 ];
 

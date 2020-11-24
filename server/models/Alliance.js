@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+/* eslint-disable func-names */
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -6,31 +7,31 @@ const allianceSchema = new Schema({
   name: {
     type: String,
     required: true,
-    enum: ["Black", "White", "Red", "Grey", "Brown"],
+    enum: ['Black', 'White', 'Red', 'Grey', 'Brown'],
   },
   active: { type: Boolean, default: false },
-  invitedMembers: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  boss: { type: Schema.Types.ObjectId, ref: "User" },
-  cto: { type: Schema.Types.ObjectId, ref: "User" },
-  analyst: { type: Schema.Types.ObjectId, ref: "User" },
-  firstLead: { type: Schema.Types.ObjectId, ref: "User" },
-  secondLead: { type: Schema.Types.ObjectId, ref: "User" },
-  firstMonkeys: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  secondMonkeys: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  invitedMembers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  boss: { type: Schema.Types.ObjectId, ref: 'User' },
+  cto: { type: Schema.Types.ObjectId, ref: 'User' },
+  analyst: { type: Schema.Types.ObjectId, ref: 'User' },
+  firstLead: { type: Schema.Types.ObjectId, ref: 'User' },
+  secondLead: { type: Schema.Types.ObjectId, ref: 'User' },
+  firstMonkeys: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  secondMonkeys: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 
-  organizePermission: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  forumModeratorPermission: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  organizePermission: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  forumModeratorPermission: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
 allianceSchema.methods.leaveAlliance = function (playerId) {
   // player.sendNotication
 
   [
-    "firstMonkeys",
-    "secondMonkeys",
-    "invitedMembers",
-    "organizePermission",
-    "forumModeratorPermission",
+    'firstMonkeys',
+    'secondMonkeys',
+    'invitedMembers',
+    'organizePermission',
+    'forumModeratorPermission',
   ].forEach((r) => {
     const playerRoleIndex = this[r].indexOf(playerId);
     if (playerRoleIndex !== -1) {
@@ -38,7 +39,7 @@ allianceSchema.methods.leaveAlliance = function (playerId) {
     }
   });
 
-  ["cto", "analyst", "firstLead", "secondLead"].forEach((r) => {
+  ['cto', 'analyst', 'firstLead', 'secondLead'].forEach((r) => {
     if (this[r] === playerId) {
       this[r] = null;
     }
@@ -58,25 +59,31 @@ allianceSchema.methods.replaceBoss = function () {
     case !!this.cto:
       replacer = this.cto;
       this.cto = null;
+      break;
     case !!this.firstLead:
       replacer = this.firstLead;
       this.firstLead = null;
+      break;
     case !!this.secondLead:
       replacer = this.secondLead;
       this.secondLead = null;
+      break;
     case !!this.firstMonkeys.length:
-      replacer = this.firstMonkeys[0];
+      [replacer] = this.firstMonkeys;
       this.firstMonkeys.shift();
+      break;
     case !!this.secondMonkeys.length:
-      replacer = this.secondMonkeys[0];
+      [replacer] = this.secondMonkeys;
       this.secondMonkeys.shift();
+      break;
     default:
       this.abandonAlliance();
   }
+  this.boss = replacer;
 };
 
 allianceSchema.methods.abandonAlliance = function () {
-  console.log("abandon");
+  console.log('abandon');
 };
 
 allianceSchema.methods.inviteMember = function (playerId) {
@@ -99,7 +106,7 @@ allianceSchema.methods.acceptInvitation = function (playerId) {
   const invitedPlayerIndex = this.invitedMembers.indexOf(playerId);
   this.invitedMembers.splice(invitedPlayerIndex, 1);
 
-  this.members.push(playerId);
+  // this.members.push(playerId);
   const randomBool = Math.random() > 0.5;
   if (randomBool) {
     this.firstMonkeys.push(playerId);
@@ -136,7 +143,7 @@ allianceSchema.methods.toggleForumModeratorPermission = function (playerId) {
 allianceSchema.methods.changeAllianceRole = function (playerId, newPosition) {
   // player.sendNotication
   if (
-    ["boss", "cto", "analyst", "firstLead", "secondLead"].includes(newPosition)
+    ['boss', 'cto', 'analyst', 'firstLead', 'secondLead'].includes(newPosition)
   ) {
     // sees if there is an existing player in the newposition and demotes this user to codemonkeys
     if (this[newPosition]) {
@@ -149,14 +156,14 @@ allianceSchema.methods.changeAllianceRole = function (playerId, newPosition) {
     }
     this[newPosition] = playerId;
   }
-  if (["firstMonkeys", "secondMonkeys"].includes(newPosition)) {
+  if (['firstMonkeys', 'secondMonkeys'].includes(newPosition)) {
     this[newPosition].push(playerId);
   }
   this.save();
 };
 
-allianceSchema.methods.members = function () {
-  return [
+allianceSchema.methods.members = function (length = false) {
+  const members = [
     this.boss,
     this.cto,
     this.analyst,
@@ -165,6 +172,7 @@ allianceSchema.methods.members = function () {
     ...this.firstMonkeys,
     ...this.secondMonkeys,
   ].filter(Boolean);
+  return length ? members.length : members;
 };
 
-module.exports = mongoose.model("Alliance", allianceSchema);
+module.exports = mongoose.model('Alliance', allianceSchema);

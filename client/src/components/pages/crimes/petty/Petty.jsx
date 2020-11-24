@@ -24,10 +24,10 @@ const PettyHack = ({ user, loading, updateGlobalValues }) => {
 
   // toggle active hacking
   const toggleHack = () => {
-    let newStopValue = false;
+    let shouldStop = false;
     // timeout to ensure 'stopping' on button while phrases are being typed
     if (pettyState.hacking) {
-      newStopValue = true;
+      shouldStop = true;
       setTimeout(() => {
         setPettyState({
           ...pettyState,
@@ -39,7 +39,7 @@ const PettyHack = ({ user, loading, updateGlobalValues }) => {
     setPettyState({
       ...pettyState,
       hacking: !pettyState.hacking,
-      stopping: newStopValue,
+      stopping: shouldStop,
     });
   };
 

@@ -7,8 +7,8 @@ const Login = (props) => {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
-    message: null,
   });
+  const [failMessage, setFailMessage] = useState("")
 
   const handleInputChange = (e) => {
     setLoginState({
@@ -18,27 +18,32 @@ const Login = (props) => {
   };
 
   const handleClick = async (e) => {
-    /* try catch todo */
+    console.log(props)
+    const {email,password} = loginState
+    if (!email || !password)return
     e.preventDefault();
     try {
       await api.login(loginState.email, loginState.password);
     } catch (err) {
-      console.log(err);
+      setFailMessage(err)
+      setLoginState({
+      ...loginState,
+      password:""
+    });
+      setTimeout(()=>setFailMessage(""),5000)
+      return
     }
     props.redirect("/my-profile/");
   };
 
   return (
     <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
-      {loginState.message && (
-        <div className="info info-danger">{loginState.message}</div>
-      )}
       <h2 className="text-left mb-4">Login</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
           className="w-100 mb-4"
-          type="text"
+          type="email"
           value={loginState.email}
           name="email"
           onChange={handleInputChange}
@@ -60,8 +65,10 @@ const Login = (props) => {
           Login
         </Button>
       </form>
-      <p className="text-center mt-3">Forgot Password?</p>
-      {/* Todo, do something here. */}
+      {/* <p className="text-center mt-3">Forgot Password?</p> */}
+      
+        <div style={{minHeight:"8vh"}}className="text-danger">{failMessage}</div>
+      
     </div>
   );
 };

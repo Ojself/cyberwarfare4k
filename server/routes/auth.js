@@ -29,11 +29,7 @@ router.post('/signup', (req, res, next) => {
   }
 
   const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let confirmationCode = '';
-  for (let i = 0; i < 25; i += 1) {
-    confirmationCode
-      += characters[Math.floor(Math.random() * characters.length)];
-  }
+  const confirmationCode = Array.from({ length: 25 }, ((_) => characters[Math.floor(Math.random() * characters.length)])).join('');
 
   User.findOne({ 'account.email': email })
     .then((userDoc) => {
@@ -78,19 +74,16 @@ router.post('/login', (req, res, next) => {
     .then((userDoc) => {
       // "userDoc" will be empty if the email is wrong (no document in database)
       if (!userDoc) {
-        next(new Error('Incorrect email '));
+        res.status(403).json('Password or email is wrong');
+        // next(new Error('Password or email is wrong'));
         return;
       }
       if (!bcrypt.compareSync(password, userDoc.account.password)) {
-        next(new Error('Password is wrong'));
+        res.status(403).json('Password or email is wrong');
+        // next(new Error('Password or email is wrong'));
         return;
       }
-      // sendConfirmation(email, confirmationCode, username)
-      // LOG IN THIS USER
-      // "req.logIn()" is a Passport method that calls "serializeUser()"
-      // (that saves the USER ID in the session)
       req.logIn(userDoc, () => {
-        // hide "encryptedPassword" before sending the JSON (it's a security risk)
         userDoc.password = undefined;
         res.json(userDoc);
       });

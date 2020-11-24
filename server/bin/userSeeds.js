@@ -1,6 +1,6 @@
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
-require("../configs/database");
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('../configs/database');
 
 // Seeds file that remove all users and create 2 new users
 
@@ -9,44 +9,37 @@ require("../configs/database");
 // todo, create something that takes care of all the relational database stuff
 // or a note of how to run the seeds in which order.
 
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const City = require("../models/City");
-const Alliance = require("../models/Alliance");
-const avatars = require("./avatars");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+const City = require('../models/City');
+const Alliance = require('../models/Alliance');
+const avatars = require('./avatars');
 
 const bcryptSalt = 10;
 
 const cityIds = [];
-const allianceIds = [];
-const npcIds = [];
+let greyAlliance;
 
 function giveRandomAvatar() {
   return avatars[Math.floor(Math.random() * avatars.length)];
 }
 
-async function getCities() {
+const getUserId = (users, role) => {
+  const user = users.find((u) => u.allianceRole === role);
+  return user._id;
+};
+
+const getCities = async () => {
   const cities = await City.find();
   cities.forEach((c) => {
     cityIds.push(c._id);
   });
-}
+};
 
-async function getAlliances() {
-  const alliances = await Alliance.find();
-  alliances.forEach((element) => {
-    allianceIds.push(element._id);
-  });
-}
-
-async function pushAllNpcToAlliance() {
-  await Alliance.findOneAndUpdate({ name: "Grey" }).then((npcAlliance) => {
-    /* todo. something is wrong here */
-    this.members = npcIds;
-    this.save();
-  });
-}
+const getAlliances = async () => {
+  greyAlliance = await Alliance.findOne({ name: 'Grey' });
+};
 
 function randomCityId() {
   return cityIds[Math.floor(Math.random() * cityIds.length)];
@@ -58,211 +51,316 @@ User.deleteMany()
   .then(() => {
     const users = [
       {
-        email: "alice@email.com",
+        email: 'alice@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 100000,
+          maxFireWall: 150,
+          currentFirewall: 150,
           city: randomCityId(),
           rank: 0,
-          rankName: "Script kiddie",
+          rankName: 'Script kiddie',
         },
-        name: "npc_alice_level1",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Code Monkey0",
+        name: 'npc_alice',
+        alliance: greyAlliance._id,
+        allianceRole: 'firstMonkeys',
       },
       {
-        email: "bob@email.com",
+        email: 'bob@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('bob', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 100000,
+          maxFireWall: 150,
+          currentFirewall: 150,
           city: randomCityId(),
           rank: 1,
-          rankName: "Family IT-Support",
+          rankName: 'Family IT-Support',
         },
-        name: "npc_bob_level2",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Code Monkey0",
+        name: 'npc_bob',
+        alliance: greyAlliance._id,
+        allianceRole: 'firstMonkeys',
       },
       {
-        email: "chuck@email.com",
+        email: 'chuck@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("chuck", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('chuck', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 100000,
+          maxFireWall: 150,
+          currentFirewall: 150,
           city: randomCityId(),
           rank: 2,
-          rankName: "Blog Writer",
+          rankName: 'Blog Writer',
         },
-        name: "npc_chuck_level3",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Code Monkey0",
+        name: 'npc_chuck',
+        alliance: greyAlliance._id,
+        allianceRole: 'firstMonkeys',
       },
       {
-        email: "craig@email.com",
+        email: 'craig@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("craig", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('craig', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 100000,
+          maxFireWall: 150,
+          currentFirewall: 150,
           city: randomCityId(),
           rank: 3,
           rankName: "HTML 'programmer'",
         },
-        name: "npc_craig_level4",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Code Monkey1",
+        name: 'npc_craig',
+        alliance: greyAlliance._id,
+        allianceRole: 'secondMonkeys',
       },
       {
-        email: "eve@email.com",
+        email: 'eve@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("eve", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('eve', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 100000,
+          maxFireWall: 150,
+          currentFirewall: 150,
           city: randomCityId(),
           rank: 4,
-          rankName: "Jr. Web Dev",
+          rankName: 'Jr. Web Dev',
         },
-        name: "npc_eve_level5",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Code Monkey1",
+        name: 'npc_eve',
+        alliance: greyAlliance._id,
+        allianceRole: 'secondMonkeys',
       },
       {
-        email: "faythe@email.com",
+        email: 'faythe@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("faythe", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('faythe', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 250000,
+          maxFireWall: 250,
+          currentFirewall: 250,
           city: randomCityId(),
           rank: 5,
-          rankName: "Sr. Web Dev",
+          rankName: 'Sr. Web Dev',
         },
-        name: "npc_faythe_level6",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Lead0",
+        name: 'npc_fayth',
+        alliance: greyAlliance._id,
+        allianceRole: 'firstLead',
       },
       {
-        email: "mallory@email.com",
+        email: 'mallory@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("mallory", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('mallory', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 250000,
+          maxFireWall: 250,
+          currentFirewall: 250,
           city: randomCityId(),
           rank: 6,
-          rankName: "System Dev",
+          rankName: 'System Dev',
         },
-        name: "npc_mallory_level7",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Lead1",
+        name: 'npc_mallory',
+        alliance: greyAlliance._id,
+        allianceRole: 'secondLead',
       },
       {
-        email: "sybil@email.com",
+        email: 'sybil@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("sybil", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('sybil', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 500000,
+          maxFireWall: 500,
+          currentFirewall: 500,
           city: randomCityId(),
           rank: 7,
-          rankName: "Cyber Security Dev",
+          rankName: 'Cyber Security Dev',
         },
-        name: "npc_sybil_level8",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Analyst",
+        name: 'npc_sybil',
+        alliance: greyAlliance._id,
+        allianceRole: 'analyst',
       },
       {
-        email: "trudy@email.com",
+        email: 'trudy@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("trudy", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('trudy', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 800000,
+          maxFireWall: 800,
+          currentFirewall: 800,
           city: randomCityId(),
           rank: 8,
-          rankName: "Basement Dweller",
+          rankName: 'Basement Dweller',
         },
-        name: "npc_trudy_level9",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "CTO",
+        name: 'npc_trudy',
+        alliance: greyAlliance._id,
+        allianceRole: 'cto',
       },
       {
-        email: "gerald@email.com",
+        email: 'gerald@email.com',
+        fightInformation: {
+          shutdowns: Math.floor(Math.random() * 4),
+          attacksInitiated: Math.floor(Math.random() * 10),
+          attacksVictim: Math.floor(Math.random() * 5),
+          crimesInitiated: Math.floor(Math.random() * 10),
+          vpnChanges: Math.floor(Math.random() * 5),
+          currencyPurchases: Math.floor(Math.random() * 5),
+        },
         account: {
-          password: bcrypt.hashSync("gerald", bcrypt.genSaltSync(bcryptSalt)),
+          password: bcrypt.hashSync('gerald', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
-          subscription: "Bronze",
-          ip: ["192.168.1.1", "192.168.1.2"],
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
-          role: "npc",
         },
         playerStats: {
+          bounty: 1000000,
+          maxFireWall: 1000,
+          currentFirewall: 1000,
           city: randomCityId(),
           rank: 9,
-          rankName: "Anonymous",
+          rankName: 'Anonymous',
         },
-        name: "npc_gerald_level10",
-        alliance: allianceIds[allianceIds.length - 1],
-        allianceRole: "Boss",
+        name: 'npc_gerald',
+        alliance: greyAlliance._id,
+        allianceRole: 'boss',
       },
     ];
     return User.create(users);
   })
-  .then((usersCreated) => {
+  .then(async (usersCreated) => {
     console.log(`${usersCreated.length} users created with the following id:`);
-    console.log(usersCreated.map((u) => u._id));
-    usersCreated.forEach((el) => npcIds.push(el._id));
+    greyAlliance.boss = getUserId(usersCreated, 'boss');
+    greyAlliance.cto = getUserId(usersCreated, 'cto');
+    greyAlliance.analyst = getUserId(usersCreated, 'analyst');
+    greyAlliance.firstLead = getUserId(usersCreated, 'firstLead');
+    greyAlliance.secondLead = getUserId(usersCreated, 'secondLead');
+    greyAlliance.firstMonkeys = usersCreated.filter((user) => user.allianceRole === 'firstMonkeys');
+    greyAlliance.secondMonkeys = usersCreated.filter((user) => user.allianceRole === 'secondMonkeys');
+    greyAlliance.active = true;
+    await greyAlliance.save();
   })
   .then(() => {
-    // Close properly the connection to Mongoose
     mongoose.disconnect();
+    process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    throw err;
+    console.error(err);
+    process.exit(1);
   });
-
-/* todo, this might be exported elsewhere too */
-module.exports = { getCities };

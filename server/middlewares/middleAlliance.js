@@ -1,19 +1,22 @@
 const checkCreateAllianceCriteria = (user, alliance, createCost) => {
   if (!user) {
-    return "ùser not found";
+    return 'ùser not found';
   }
   if (!alliance) {
-    return "alliance already exist";
+    return 'alliance already exist';
+  }
+  if (user.alliance || user.allianceRole) {
+    return 'You are already in an alliance';
   }
   const allianceMembers = alliance.members();
   if (allianceMembers.length) {
-    return "This alliance already have members";
+    return 'This alliance already have members';
   }
   if (user.playerStats.rank < 4) {
-    return "You are too unexperienced to create your own alliance..";
+    return 'You are too unexperienced to create your own alliance..';
   }
   if (user.playerStats.bitCoins < createCost) {
-    return "Insufficent bitcoins..";
+    return 'Insufficent bitcoins..';
   }
 
   return null;
@@ -30,11 +33,11 @@ const getShuffledArr = (arr) => {
 
 const findAllianceStats = (alliances) => {
   let result = [];
-  for (let i = 0; i < alliances.length; i += 1) {
+  alliances.forEach((alliance) => {
     const allianceStats = {
-      name: alliances[i].name,
-      members: alliances[i].members.length,
-      _id: alliances[i]._id,
+      name: alliance.name,
+      members: alliance.members(true),
+      _id: alliance._id,
       totSkills: 0,
       totCurrencies: 0,
       totWealth: 0,
@@ -47,48 +50,51 @@ const findAllianceStats = (alliances) => {
       totVpnChanges: 0,
       totCurrencyPurchases: 0,
     };
-
-    for (let j = 0; j < alliances[i].members.length; j += 1) {
-      allianceStats.totSkills = Object.values(
-        alliances[i].members[j].hackSkill
+    const currentMembers = alliance.members();
+    currentMembers.forEach((mem) => {
+      console.log(mem.name);
+      allianceStats.totSkills += Object.values(
+        mem.hackSkill,
       ).reduce((t, n) => t + n);
 
-      allianceStats.totSkills = Object.values(
-        alliances[i].members[j].crimeSkill
+      allianceStats.totSkills += Object.values(
+        mem.crimeSkill,
       ).reduce((t, n) => t + n);
 
-      allianceStats.totCurrencies = Object.values(
-        alliances[i].members[j].currencies
+      allianceStats.totCurrencies += Object.values(
+        mem.currencies,
       ).reduce((t, n) => t + n);
 
-      allianceStats.totWealth += alliances[i].members[j].playerStats.bitCoins;
-      allianceStats.totWealth += alliances[i].members[j].playerStats.ledger;
+      allianceStats.totWealth += mem.playerStats.bitCoins;
+      allianceStats.totWealth += mem.playerStats.ledger;
 
-      allianceStats.totBounty += alliances[i].members[j].playerStats.bounty;
+      allianceStats.totBounty += mem.playerStats.bounty;
 
-      allianceStats.totRank += alliances[i].members[j].playerStats.rank;
+      allianceStats.totRank += mem.playerStats.rank;
 
-      allianceStats.totShutdowns +=
-        alliances[i].members[j].fightInformation.shutdowns;
+      allianceStats.totShutdowns
+      += mem.fightInformation.shutdowns;
 
-      allianceStats.totAttacksInitiated +=
-        alliances[i].members[j].fightInformation.attacksInitiated;
+      allianceStats.totAttacksInitiated
+      += mem.fightInformation.attacksInitiated;
 
-      allianceStats.totAttacksVictim +=
-        alliances[i].members[j].fightInformation.attacksVictim;
+      allianceStats.totAttacksVictim
+      += mem.fightInformation.attacksVictim;
 
-      allianceStats.totCrimesInitiated +=
-        alliances[i].members[j].fightInformation.crimesInitiated;
+      allianceStats.totCrimesInitiated
+        += mem.fightInformation.crimesInitiated;
 
-      allianceStats.totVpnChanges +=
-        alliances[i].members[j].fightInformation.vpnChanges;
+      allianceStats.totVpnChanges
+        += mem.fightInformation.vpnChanges;
 
-      allianceStats.totCurrencyPurchases +=
-        alliances[i].members[j].fightInformation.currencyPurchases;
-    }
+      allianceStats.totCurrencyPurchases
+        += mem.fightInformation.currencyPurchases;
+    });
+
     result.push(allianceStats);
-  }
+  });
   result = getShuffledArr(result);
+  console.log(result, 'result');
   return result;
 };
 

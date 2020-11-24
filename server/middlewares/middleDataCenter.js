@@ -3,7 +3,7 @@ const {
   checkFunds,
   checkSameValue,
   existingValue,
-} = require("../middlewares/middleHelpers");
+} = require('./middleHelpers');
 
 // Sees if everything is in order to buy dataCenter
 function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
@@ -14,7 +14,7 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return "Insufficent battery";
+    return 'Insufficent battery';
   }
   if (
     checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
@@ -22,13 +22,13 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
     return "You can't purchase a datacenter outside your city";
   }
   if (dataCenter.owner) {
-    return "This datacenter already has an owner";
+    return 'This datacenter already has an owner';
   }
   if (dataCenter.gracePeriod) {
-    return "This datacenter is not available at the moment";
+    return 'This datacenter is not available at the moment';
   }
   if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
-    return "Insufficient funds";
+    return 'Insufficient funds';
   }
   return null;
 }
@@ -42,19 +42,19 @@ function attackDataCenterCriterias(user, dataCenter, batteryCost) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
-    return "Insufficent battery";
+    return 'Insufficent battery';
   }
   if (dataCenter.gracePeriod) {
-    return "This datacenter is currently graced";
+    return 'This datacenter is currently graced';
   }
   if (JSON.stringify(user._id) === JSON.stringify(dataCenter.owner._id)) {
     return "You can't attack your own datacenter";
   }
   if (dataCenter.currentFirewall <= 0) {
-    return "This datacenter is down for maintance and might be available for purchase soon";
+    return 'This datacenter is down for maintance and might be available for purchase soon';
   }
   if (!hasRequiredStash(user.stash, dataCenter.requiredStash)) {
-    return "You don't have the required items to hack this datacenter";
+    return "You don't have the required stash to hack this datacenter";
   }
 }
 
@@ -68,21 +68,20 @@ async function attackDataCenter(
   user,
   dataCenter,
   dataCenterOwner,
-  batteryCost
+  batteryCost,
 ) {
   const userCpuSkill = user.hackSkill.CPU;
   const userCrimeSkills = Object.values(user.crimeSkill).filter(
-    (skill) => typeof skill === "number"
+    (skill) => typeof skill === 'number',
   );
 
-  const probability =
-    (userCpuSkill +
-      userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)]) /
-    100;
-  console.log(probability, "probability");
+  const probability = (userCpuSkill
+      + userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)])
+    / 100;
+  console.log(probability, 'probability');
 
   const decider = Math.random() + (dataCenter.difficulty * 4) / 100;
-  console.log(decider, "decider");
+  console.log(decider, 'decider');
   const result = {
     batteryCost,
     damageDealt: 0,
@@ -100,9 +99,9 @@ async function attackDataCenter(
   dataCenter.handleAttack(user._id, result);
   dataCenterOwner.giveNotification(
     `${dataCenter.name} was attacked ${
-      result.destroyed ? "and destroyed" : ""
+      result.destroyed ? 'and destroyed' : ''
     } by ${user.name}!`,
-    now
+    now,
   );
   await dataCenter.save();
   return { result, user };
@@ -111,16 +110,14 @@ async function attackDataCenter(
 // checks if user has the required stash in order to attack a datacenter
 function hasRequiredStash(userStash, requiredStash) {
   const requiredStashObj = requiredStash.reduce((a, b) => {
-    if (typeof a[b.name] === "undefined") {
+    if (typeof a[b.name] === 'undefined') {
       a[b.name] = 1;
     } else {
       a[b.name] += 1;
     }
     return a;
   }, {});
-  const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => {
-    return requiredStashObj[stash] <= userStash[stash];
-  });
+  const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => requiredStashObj[stash] <= userStash[stash]);
   return userHasRequiredStash;
 }
 module.exports = {

@@ -12,11 +12,11 @@ const ProgressBarCrimeSkill = props => {
 
   const blinkMe = () => {
     if (props.hasStatPoints) {
-      props.upgrade(props.name);
       setBlink(true);
       setTimeout(() => {
         setBlink(false);
       }, 100);
+      props.upgrade(props.name);
     }
   };
 

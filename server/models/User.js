@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
+/* eslint-disable func-names */
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const Stash = require("../models/Stash");
-const Rank = require("../models/Rank");
+const Item = require('./Item');
+const Rank = require('./Rank');
 
 const userSchema = new Schema(
   {
@@ -12,18 +13,18 @@ const userSchema = new Schema(
       ip: [String],
       status: {
         type: String,
-        enum: ["Pending Confirmation", "Active"],
-        default: "Pending Confirmation",
+        enum: ['Pending Confirmation', 'Active'],
+        default: 'Pending Confirmation',
       },
       avatar: {
         type: String,
-        default: "",
+        default: '',
       },
       confirmationCode: String,
       subscription: {
         type: String,
-        enum: ["Bronze", "Silver", "Gold", "Platinum"],
-        default: "Bronze",
+        enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
+        default: 'Bronze',
       },
       isSetup: {
         type: Boolean,
@@ -34,7 +35,7 @@ const userSchema = new Schema(
         default: [
           [
             `System ${new Date(
-              Date.now().toString().slice(0, 21)
+              Date.now().toString().slice(0, 21),
             )}:, This is your first notification`,
             false,
           ],
@@ -46,20 +47,21 @@ const userSchema = new Schema(
       },
       bannedReason: {
         type: String,
-        default: "",
+        default: '',
       },
     },
     name: {
       type: String,
-      default: "",
+      default: '',
       unique: true,
     },
     alliance: {
       type: Schema.Types.ObjectId,
-      ref: "Alliance",
+      ref: 'Alliance',
     },
     allianceRole: {
       type: String,
+      // enum: ['boss', 'cto', 'analyst', 'firstLead', 'secondLead', 'firstMonkeys', 'secondMonkeys'],
     },
 
     hackSkill: {
@@ -81,7 +83,7 @@ const userSchema = new Schema(
         type: Number,
         default: 2,
       },
-      "Social Engineering": {
+      'Social Engineering': {
         type: Number,
         default: 1,
       },
@@ -105,7 +107,8 @@ const userSchema = new Schema(
 
     // Player stats
     playerStats: {
-      city: { type: Schema.Types.ObjectId, ref: "City" },
+      city: { type: Schema.Types.ObjectId, ref: 'City' },
+      repairCost: { type: Number, default: 50000 },
       bodyguards: {
         alive: { type: Number, default: 0 },
         bought: { type: Number, default: 0 },
@@ -141,7 +144,7 @@ const userSchema = new Schema(
       },
       bountyDonors: {
         type: [Schema.Types.ObjectId],
-        ref: "User",
+        ref: 'User',
       },
       rank: {
         type: Number,
@@ -149,7 +152,7 @@ const userSchema = new Schema(
       },
       rankName: {
         type: String,
-        default: "Script kiddie",
+        default: 'Script kiddie',
       },
       exp: {
         type: Number,
@@ -164,22 +167,22 @@ const userSchema = new Schema(
     marketPlaceItems: {
       CPU: {
         type: Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
         default: null,
       },
       Firewall: {
         type: Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
         default: null,
       },
       AntiVirus: {
         type: Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
         default: null,
       },
       Encryption: {
         type: Schema.Types.ObjectId,
-        ref: "Item",
+        ref: 'Item',
         default: null,
       },
     },
@@ -187,7 +190,7 @@ const userSchema = new Schema(
     specialWeapons: {
       equipped: {
         type: String,
-        default: "",
+        default: '',
       },
       emp: {
         type: Number,
@@ -207,19 +210,19 @@ const userSchema = new Schema(
 
     stash: {
       Cables: { type: Number, default: 5 },
-      "Linux for dummies": { type: Number, default: 1 },
-      "Lock pick set": { type: Number, default: 1 },
-      "Proxmark3 Kit": { type: Number, default: 0 },
-      "Rubber Ducky": { type: Number, default: 0 },
+      'Linux for dummies': { type: Number, default: 1 },
+      'Lock pick set': { type: Number, default: 1 },
+      'Proxmark3 Kit': { type: Number, default: 0 },
+      'Rubber Ducky': { type: Number, default: 0 },
       Keylogger: { type: Number, default: 0 },
-      "EyeSpy Digital Spy Recorder": { type: Number, default: 0 },
-      "WiFi Pineapple": { type: Number, default: 0 },
-      "HackRf One": { type: Number, default: 0 },
+      'EyeSpy Digital Spy Recorder': { type: Number, default: 0 },
+      'WiFi Pineapple': { type: Number, default: 0 },
+      'HackRf One': { type: Number, default: 0 },
       Computer: { type: Number, default: 0 },
-      "Ubertooth One": { type: Number, default: 0 },
+      'Ubertooth One': { type: Number, default: 0 },
       Magspoof: { type: Number, default: 0 },
-      "Raspberry Pi": { type: Number, default: 0 },
-      "Mini Hidden Camera": { type: Number, default: 0 },
+      'Raspberry Pi': { type: Number, default: 0 },
+      'Mini Hidden Camera': { type: Number, default: 0 },
     },
 
     // Figth accessories
@@ -234,44 +237,44 @@ const userSchema = new Schema(
     },
 
     earnBattery: {
-      githubUserName: { type: String, default: "" },
+      githubUserName: { type: String, default: '' },
       githubStar: { type: Boolean, default: false },
       megarpg: {
-        code: { type: String, default: "" },
+        code: { type: String, default: '' },
         expires: { type: Date },
       },
       chessathor: {
-        code: { type: String, default: "" },
+        code: { type: String, default: '' },
         expires: { type: Date },
       },
     },
   },
   {
     timestamps: {
-      createdAt: "createdAt",
-      updatedAt: "updatedAt",
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
     },
-  }
+  },
 );
 
 // this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function (item) {
-  console.log("handleItemPurchase triggered", item);
+  console.log('handleItemPurchase triggered', item);
   const currentItem = this.marketPlaceItems[item.type];
   if (currentItem) {
     // lower the stats so items doesn't stack
     switch (currentItem.type) {
-      case "CPU":
+      case 'CPU':
         this.hackSkill.CPU -= currentItem.bonus;
         break;
-      case "AntiVirus":
+      case 'AntiVirus':
         this.hackSkill.AntiVirus -= currentItem.bonus;
         break;
-      case "Firewall":
+      case 'Firewall':
         this.playerStats.maxFirewall -= currentItem.bonus;
         this.playerStats.currentFirewall -= currentItem.bonus;
         break;
-      case "Encryption":
+      case 'Encryption':
         this.hackSkill.Encryption -= currentItem.bonus;
         break;
       default:
@@ -284,17 +287,17 @@ userSchema.methods.handleItemPurchase = function (item) {
   this.marketPlaceItems[item.type] = item;
   // adds the bonus to user
   switch (item.type) {
-    case "CPU":
+    case 'CPU':
       this.hackSkill.CPU += item.bonus;
       break;
-    case "AntiVirus":
+    case 'AntiVirus':
       this.hackSkill.AntiVirus += item.bonus;
       break;
-    case "Firewall":
+    case 'Firewall':
       this.playerStats.maxFirewall += item.bonus;
       this.playerStats.currentFirewall += item.bonus;
       break;
-    case "Encryption":
+    case 'Encryption':
       this.hackSkill.Encryption += item.bonus;
       break;
     default:
@@ -303,34 +306,23 @@ userSchema.methods.handleItemPurchase = function (item) {
   return this.save();
 };
 
-/* todo unused function */
-userSchema.methods.giveStash = function (stashName = "Cables") {
-  console.log("give stash method triggered", stashName);
-  Stash.findOne({ name: stashName }).then((newStash) => {
-    this.stash.push(newStash._id);
-  });
-  this.save();
-};
-
-userSchema.methods.giveExp = function (exp = 1) {
-  console.log("give exp method triggered", exp);
-  this.playerStats.exp += exp;
-  this.save();
-};
-
-userSchema.methods.giveLegendary = function (itemName = "emp") {
-  console.log("give legendary method triggered", itemName);
+userSchema.methods.giveLegendary = function (itemName = 'emp') {
+  console.log('give legendary method triggered', itemName);
   this[itemName] += 1;
   this.save();
 };
 
-userSchema.methods.giveSkill = function (skill = "technical") {
-  this.crimeSkill[skill] += 1;
-  this.save();
+userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
+  if (!this.crimeSkill[skill]) {
+    return;
+  }
+  this.crimeSkill[skill] += amount;
+  if (this.crimeSkill[skill] < 200) {
+    this.crimeSkill[skill] = 200;
+  }
 };
 
 userSchema.methods.batteryDrain = function (battery) {
-  console.log("batterydrain triggered", battery);
   this.playerStats.battery -= battery;
   if (this.playerStats.battery <= 0) {
     this.playerStats.battery = 0;
@@ -338,7 +330,6 @@ userSchema.methods.batteryDrain = function (battery) {
 };
 
 userSchema.methods.batteryGain = function (battery) {
-  console.log("batteryGain triggered", battery);
   this.playerStats.battery += battery;
   if (this.playerStats.battery > 100) {
     this.playerStats.battery = 100;
@@ -352,7 +343,7 @@ userSchema.methods.bitcoinDrain = function (bitCoins) {
   }
 };
 
-userSchema.methods.bitcoinGain = function (bitCoins) {
+userSchema.methods.bitCoinGain = function (bitCoins) {
   this.playerStats.bitCoins += bitCoins;
   this.save();
 };
@@ -361,13 +352,13 @@ userSchema.methods.bitcoinGain = function (bitCoins) {
 // LEDGER
 
 userSchema.methods.ledgerDrainFromTransfer = function (bitCoins) {
-  console.log("ledgerDrain triggered", bitCoins);
+  console.log('ledgerDrain triggered', bitCoins);
   this.playerStats.ledger -= bitCoins;
   this.save();
 };
 
 userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
-  console.log("ledgerGain triggered", bitCoins);
+  console.log('ledgerGain triggered', bitCoins);
   this.playerStats.ledger += bitCoins;
 
   const date = Date.now();
@@ -382,14 +373,14 @@ userSchema.methods.ledgerGainFromTransfer = function (bitCoins, senderName) {
 };
 
 userSchema.methods.depositLedger = function (bitCoins, fee) {
-  console.log("depositLedger triggered");
+  console.log('depositLedger triggered');
   this.playerStats.ledger += bitCoins;
   this.playerStats.bitCoins -= bitCoins * fee;
   this.save();
 };
 
 userSchema.methods.withdrawLedger = function (bitCoins, fee) {
-  console.log("withdrawLedger triggered");
+  console.log('withdrawLedger triggered');
   this.playerStats.ledger += bitCoins;
   this.playerStats.bitCoins -= bitCoins * fee;
   this.save();
@@ -397,7 +388,7 @@ userSchema.methods.withdrawLedger = function (bitCoins, fee) {
 
 userSchema.methods.handlePettyCrime = async function (result) {
   this.batteryDrain(result.battery);
-  this.playerStats.bitCoins += result.bitCoins;
+  this.bitCoinGain(result.bitCoins);
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
@@ -405,7 +396,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
     this.stash[stashName] += 1;
   }
   if (result.crimeSkillGained) {
-    this.crimeSkill[result.crimeSkillGained] += 1;
+    this.giveCrimeSkill(1, result.crimeSkillGained);
   }
   if (result.legendaryGained) {
     this[result.legendaryGained] += 1;
@@ -419,9 +410,9 @@ userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice
+  totalPrice,
 ) {
-  console.log("purchaseCurrency triggered");
+  console.log('purchaseCurrency triggered');
   this.playerStats.battery -= batteryCost;
   this.playerStats.bitCoins -= totalPrice;
   this.currencies[currency.name] += amount;
@@ -432,9 +423,9 @@ userSchema.methods.sellCurrency = function (
   currency,
   amount,
   batteryCost,
-  totalPrice
+  totalPrice,
 ) {
-  console.log("sellCurrency triggered");
+  console.log('sellCurrency triggered');
   this.battery -= batteryCost;
   this.currencies[currency.name] -= amount;
   this.playerStats.bitCoins += totalPrice;
@@ -442,30 +433,34 @@ userSchema.methods.sellCurrency = function (
 };
 
 userSchema.methods.changeCity = function (city, batteryCost) {
-  console.log("changeCity triggered", batteryCost);
   this.batteryDrain(batteryCost);
   this.playerStats.city = city._id;
 };
 
-userSchema.methods.leaveAlliance = function (city, batteryCost) {
+userSchema.methods.leaveAlliance = function () {
   this.alliance = null;
   this.allianceRole = null;
 };
 
-userSchema.methods.handleCrime = async function (finalResult) {
-  this.batteryDrain(finalResult.playerGains.batteryCost);
-  this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
-  this.playerStats.networth += finalResult.playerGains.bitCoins;
-  this.playerStats.exp += finalResult.playerGains.exp;
-  this.crimeSkill[finalResult.crimeType] += 1;
+userSchema.methods.createAlliance = function (cost, allianceId) {
+  this.bitcoinDrain(cost);
+  this.alliance = allianceId;
+  this.allianceRole = 'boss';
+};
 
-  if (finalResult.playerGains.stashGained) {
-    const stashName = finalResult.playerGains.stashGained;
+userSchema.methods.handleCrime = async function (result) {
+  this.batteryDrain(result.playerGains.batteryCost);
+  this.playerStats.bitCoins += result.playerGains.bitCoins;
+  this.playerStats.exp += result.playerGains.exp;
+  this.giveCrimeSkill(1, result.crimeType);
+
+  if (result.playerGains.stashGained) {
+    const stashName = result.playerGains.stashGained;
     this.stash[stashName] += 1;
   }
 
-  if (finalResult.playerGains.legendaryGained) {
-    this.legendaryGained[finalResult.playerGains.legendaryGained] += 1;
+  if (result.playerGains.legendaryGained) {
+    this.legendaryGained[result.playerGains.legendaryGained] += 1;
   }
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
     await this.setRank();
@@ -502,7 +497,7 @@ userSchema.methods.handleAttack = function (finalResult) {
     `You attacked ${finalResult.opponent.name} at ${new Date(finalResult.date)
       .toString()
       .slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? " and he was shutdown!" : "!"
+      finalResult.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
   ];
@@ -511,14 +506,14 @@ userSchema.methods.handleAttack = function (finalResult) {
 };
 
 userSchema.methods.handleAttackDefense = function (finalResult) {
-  console.log("userschema handleAttackDefense", finalResult);
+  console.log('userschema handleAttackDefense', finalResult);
   // todo, graceperiod
 
   const newNotifications = [
     `${finalResult.user.name} attacked you at ${new Date(finalResult.date)
       .toString()
       .slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? " and you were shutdown!" : "!"
+      finalResult.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
   ];
@@ -551,30 +546,23 @@ userSchema.methods.handleAttackDefense = function (finalResult) {
 // REPAIR
 // REPAIR
 
-userSchema.methods.partialRepair = function (repairCost) {
-  console.log("partialRepair triggered");
-  this.playerStats.bitCoins -= repairCost;
-  this.playerStats.currentFirewall += (20 * this.playerStats.maxFirewall) / 100;
+userSchema.methods.repair = function (percentage, cost) {
+  this.bitcoinDrain(cost);
+  this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
   if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
     this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   }
-  this.save();
-};
-
-userSchema.methods.fullRepair = function (repairCost) {
-  this.playerStats.bitCoins -= repairCost;
-  this.playerStats.currentFirewall = this.playerStats.maxFirewall;
-  this.save();
+  this.playerStats.repairCost = Math.round(this.playerStats.repairCost * 1.15);
 };
 
 // DATACENTER
 // DATACENTER
 
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
-  console.log("handleDataCenterAttack triggered");
+  console.log('handleDataCenterAttack triggered');
   this.batteryDrain(result.batteryCost);
-  console.log(dataCenter.requiredStash, "dataCenter.requiredStash");
+  console.log(dataCenter.requiredStash, 'dataCenter.requiredStash');
   dataCenter.requiredStash.forEach((stash) => {
     this.stash[stash] -= 1;
   });
@@ -601,32 +589,32 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
 userSchema.methods.handleNewStatpoint = async function (statName) {
   this.playerStats.statPoints -= 1;
   switch (statName) {
-    case "Firewall":
+    case 'Firewall':
       this.playerStats.maxFirewall += 15;
       this.playerStats.currentFirewall += 15;
       break;
-    case "CPU":
+    case 'CPU':
       this.hackSkill.CPU += 5;
       break;
-    case "AntiVirus":
+    case 'AntiVirus':
       this.hackSkill.AntiVirus += 5;
       break;
-    case "Encryption":
+    case 'Encryption':
       this.hackSkill.Encryption += 5;
       break;
-    case "Technical":
-      this.crimeSkill.Technical += 5;
+    case 'Technical':
+      this.giveCrimeSkill(5, 'Technical');
       break;
-    case "Forensics":
-      this.crimeSkill.Forensics += 5;
+    case 'Forensics':
+      this.giveCrimeSkill(5, 'Forensics');
       break;
-    case "Social Engineering":
-      this.crimeSkill["Social Engineering"] += 5;
+    case 'Social Engineering':
+      this.giveCrimeSkill(5, 'Social Engineering');
       break;
-    case "Cryptography":
-      this.crimeSkill.Cryptography += 5;
+    case 'Cryptography':
+      this.giveCrimeSkill(5, 'Cryptography');
       break;
-    case "exp":
+    case 'exp':
       this.playerStats.exp += this.playerStats.expToLevel * 0.08;
       break;
     default:
@@ -638,5 +626,5 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
   }
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 module.exports = User;

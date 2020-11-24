@@ -76,7 +76,8 @@ const Ladder = () => {
 
   return (
     <div className="page-container ">
-      <h2>Alliance Ladder</h2>
+      <h1>Alliance Ladder</h1>
+      <h6>Average</h6>
       <Table striped dark className="content">
         <thead>
           <tr>

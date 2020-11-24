@@ -4,11 +4,11 @@ const {
   legendaryDropChance,
   batteryCheck,
   existingValue,
-} = require('../middlewares/middleHelpers');
+} = require('./middleHelpers');
 
-const pettyWinBitcoins = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 1000)));
+const pettyWinBitcoins = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 500)));
 
-const pettyWinExp = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 1000)));
+const pettyWinExp = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 750)));
 
 // Sees if everything is in order to perform petty crime
 const pettyHackRouteCriterias = (user, batteryCost) => {
@@ -21,7 +21,7 @@ const pettyHackRouteCriterias = (user, batteryCost) => {
   return null;
 };
 
-async function pettyCrime(user) {
+const pettyCrime = async (user, batteryCost) => {
   const decider = Math.random();
 
   // sums up the crimeskills
@@ -33,7 +33,7 @@ async function pettyCrime(user) {
     won: false,
     bitCoins: 0,
     exp: 0,
-    battery: 5,
+    battery: batteryCost,
     stashGained: '',
     crimeSkillGained: '',
     legendaryGained: '',
@@ -60,8 +60,7 @@ async function pettyCrime(user) {
     pettyResult.won = true;
     pettyResult.bitCoins = pettyWinBitcoins(user.playerStats.rank);
     pettyResult.exp = pettyWinExp(user.playerStats.rank);
-    if (probabiltiy > decider + 0.1) {
-      /* bonus success */
+    if (probabiltiy > (decider + 0.35)) {
       pettyResult.stashGained = stashDropChance(user, values);
       pettyResult.crimeSkillGained = crimeSkillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);
@@ -76,7 +75,7 @@ async function pettyCrime(user) {
   const updatedUser = await user.save();
 
   return { pettyResult, updatedUser };
-}
+};
 
 module.exports = {
   pettyCrime,

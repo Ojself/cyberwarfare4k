@@ -1,41 +1,41 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
 
 const {
   pettyCrime,
   pettyHackRouteCriterias,
-} = require("../middlewares/middlePettyHack");
+} = require('../middlewares/middlePettyHack');
 const {
   crimeRouteCriterias,
   fightCrime,
-} = require("../middlewares/middleCrime");
+} = require('../middlewares/middleCrime');
 const {
   attackRouteCriterias,
   fightHacker,
-} = require("../middlewares/middleAttack");
+} = require('../middlewares/middleAttack');
 
-const User = require("../models/User");
-const Crime = require("../models/Crime");
+const User = require('../models/User');
+const Crime = require('../models/Crime');
 
 // @POST
 // PRIVATE
 // User starts interval that calls this route every x sec and commit petty crime
 
-router.post("/pettyCrime", async (req, res) => {
+router.post('/pettyCrime', async (req, res) => {
   const userId = req.user._id;
   let user;
   try {
-    user = await User.findById(userId).populate("playerStats.city", "name");
+    user = await User.findById(userId).populate('playerStats.city', 'name');
   } catch (e) {
-    console.error("error: ", e);
+    console.error('error: ', e);
     res.status(400).json({
       success: false,
       message: JSON.stringify(e),
     });
   }
 
-  const batteryCost = 5;
+  const batteryCost = 2;
   const disallowed = pettyHackRouteCriterias(user, batteryCost);
 
   if (disallowed) {
@@ -45,11 +45,11 @@ router.post("/pettyCrime", async (req, res) => {
     });
   }
 
-  const results = await pettyCrime(user);
+  const results = await pettyCrime(user, batteryCost);
 
   return res.status(200).json({
     success: true,
-    message: "pettyCrime commited",
+    message: 'pettyCrime commited',
     results: results.pettyResult,
     user: results.updatedUser,
   });
@@ -59,12 +59,12 @@ router.post("/pettyCrime", async (req, res) => {
 // PRIVATE
 // Retrieves all crimes that are available
 
-router.get("/crimes", async (req, res) => {
+router.get('/crimes', async (req, res) => {
   try {
     const crimes = await Crime.find({ available: true });
     return res.status(200).json({
       success: true,
-      message: "Crimes loaded..",
+      message: 'Crimes loaded..',
       crimes,
     });
   } catch (err) {
@@ -79,8 +79,8 @@ router.get("/crimes", async (req, res) => {
 // PRIVATE
 // Commit crime route.
 
-router.post("/crimes", async (req, res) => {
-  console.log("crime");
+router.post('/crimes', async (req, res) => {
+  console.log('crime');
   const userId = req.user._id;
   const { crimeId } = req.body;
   const batteryCost = 5;
@@ -103,7 +103,7 @@ router.post("/crimes", async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: "Crime commited..",
+    message: 'Crime commited..',
     finalResult,
     user: finalResult.user,
     crimes,
@@ -114,7 +114,7 @@ router.post("/crimes", async (req, res) => {
 // PRIVATE
 // User can hack another plater.
 // /opponentId/attack
-router.post("/:opponentId", async (req, res) => {
+router.post('/:opponentId', async (req, res) => {
   // const userId = req.user._id
   const { userId } = req.body; // remove this. only for testing purposes
   const { opponentId } = req.params;

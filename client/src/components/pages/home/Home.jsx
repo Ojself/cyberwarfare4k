@@ -11,7 +11,7 @@ import Signup from "../loginSignup/Signup";
 import "./homeStyling.scss";
 const Home = (props) => {
   useEffect(() => {
-    redirectToCorrectPage().then((result) => {});
+    redirectToCorrectPage().then(() => {});
   }, []);
 
   const redirectToCorrectPage = async () => {
@@ -36,7 +36,7 @@ const Home = (props) => {
     const hackerQuote = (
       <div>
         <blockquote className="blockquote text-center">
-          <p className="mb-0">
+          <p className="mb-0 ">
             {hackerComments[Math.floor(Math.random() * hackerComments.length)]}
           </p>
           <footer className="blockquote-footer">
@@ -60,7 +60,7 @@ const Home = (props) => {
       <div className="d-flex  justify-content-center">
         <div className="d-flex flex-column w-25">
           <img
-            style={{ marginTop: "-50px", width: "80%" }}
+            style={{ zIndex:"1", marginTop: "-50px", width: "80%" }}
             src={images.utilImages[0].src}
             alt="Hacker Home"
           />

@@ -88,8 +88,9 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
               <DropdownMenu>
                 <DropdownItem href="/petty-hacker">Petty</DropdownItem>
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-                <DropdownItem>Organized Crime</DropdownItem>
-                <DropdownItem href="/">Hack player</DropdownItem>
+                <DropdownItem disabled >Organized Crime</DropdownItem>
+                <DropdownItem href="/datacenters">Datacenters</DropdownItem>
+                <DropdownItem disabled href="/">Hack player</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -117,7 +118,7 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem href="/locals">Local Hackers</DropdownItem>
-                <DropdownItem href="/datacenters">Datacenters</DropdownItem>
+                <DropdownItem href="/repair-shop">Repair Shop</DropdownItem>
                 <DropdownItem href="/vpn">VPN</DropdownItem>
                 <DropdownItem href="/cryptocurrency">
                   Crypto Currency

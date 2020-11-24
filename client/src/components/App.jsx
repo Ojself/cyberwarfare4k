@@ -28,7 +28,7 @@ import NavbarComp from "./pages/header-footer/Navbar";
 import Notifications from "./pages/communication/Notifications";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
-import SystemRepair from "./pages/SystemRepair";
+import RepairShop from "./pages/RepairShop";
 import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
@@ -118,6 +118,10 @@ const App = () => {
           path="/create-hacker"
           render={() => <CreateHacker loading={loading} user={user} />}
         />
+             <Route
+          path="/cryptocurrency"
+          render={() => <CryptoCurrency loading={loading} user={user} />}
+        />
         <Route
           path="/datacenters"
           render={() => (
@@ -185,14 +189,19 @@ const App = () => {
           )}
         />
         <Route path="/marketplace" component={Marketplace} />
+        <Route path="/information" component={Information} />
+        <Route path="/ladder" component={Ladder} />
         <Route
-          path="/wanted-list"
-          render={() => <WantedList updateGlobalValues={updateGlobalValues} />}
+          path="/ledger"
+          render={() => <Ledger loading={loading} user={user} />}
         />
         <Route
-          path="/cryptocurrency"
-          render={() => <CryptoCurrency loading={loading} user={user} />}
+          path="/messages"
+          render={() => <MessageCenter loading={loading} messages={messages} />}
         />
+
+        <Route path="/notifications" component={Notifications} />
+        <Route path="/repair-shop" render={()=> <RepairShop user={user} updateGlobalValues={updateGlobalValues}/>} />
         <Route
           path="/vpn"
           render={() => (
@@ -203,19 +212,10 @@ const App = () => {
             />
           )}
         />
-        <Route path="/system-repair" component={SystemRepair} />
-        <Route path="/ladder" component={Ladder} />
         <Route
-          path="/ledger"
-          render={() => <Ledger loading={loading} user={user} />}
+          path="/wanted-list"
+          render={() => <WantedList updateGlobalValues={updateGlobalValues} />}
         />
-        <Route path="/information" component={Information} />
-        <Route
-          path="/messages"
-          render={() => <MessageCenter loading={loading} messages={messages} />}
-        />
-
-        <Route path="/notifications" component={Notifications} />
         <Route render={() => <h2>404</h2>} />
       </Switch>
       <Footer />

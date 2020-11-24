@@ -1,13 +1,13 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
-const User = require("../models/User");
-const Alliance = require("../models/Alliance");
+const User = require('../models/User');
+const Alliance = require('../models/Alliance');
 const {
   checkCreateAllianceCriteria,
   findAllianceStats,
-} = require("../middlewares/middleAlliance");
-const { saveAndUpdateUser } = require("./helper");
+} = require('../middlewares/middleAlliance');
+const { saveAndUpdateUser } = require('./helper');
 
 // TODO SEEDS ARE NOT WORKING. alliances do not have members in it
 
@@ -15,11 +15,11 @@ const { saveAndUpdateUser } = require("./helper");
 // PRIVATE
 // Retrives all alliances
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   const alliances = await Alliance.find();
   res.status(200).json({
     success: true,
-    message: "Alliances loaded..",
+    message: 'Alliances loaded..',
     alliances,
   });
 });
@@ -28,25 +28,33 @@ router.get("/", async (req, res) => {
 // PRIVATE
 // Retrives all alliances with stats
 
-router.get("/ladder", async (req, res) => {
-  const alliances = await Alliance.find().populate("members", [
-    "hackSkill",
-    "crimeSkill",
-    "currencies",
-    "fightInformation",
-    "playerStats",
-    "name",
-  ]);
+router.get('/ladder', async (req, res) => {
+  const populateValues = [
+    'hackSkill',
+    'crimeSkill',
+    'currencies',
+    'fightInformation',
+    'playerStats',
+    'name',
+  ];
+  const alliances = await Alliance.find()
+    .populate('boss', populateValues)
+    .populate('cto', populateValues)
+    .populate('analyst', populateValues)
+    .populate('firstLead', populateValues)
+    .populate('secondLead', populateValues)
+    .populate('firstMonkeys', populateValues)
+    .populate('secondMonkeys', populateValues);
   const totStats = findAllianceStats(alliances);
   res.status(200).json({
     success: true,
-    message: "alliances ladder loaded..",
+    message: 'alliances ladder loaded..',
     totStats,
   });
 });
 
 // creating an alliance
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { allianceId } = req.body;
 
@@ -65,8 +73,7 @@ router.post("/", async (req, res) => {
   }
   alliance.boss = user._id;
   alliance.active = true;
-  user.alliance = alliance._id;
-  user.bitcoinDrain(createCost);
+  user.createAlliance(createCost, alliance._id);
   await alliance.save();
   const updatedUser = await saveAndUpdateUser(user);
 
@@ -77,7 +84,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.post("/invite", async (req, res) => {
+router.post('/invite', async (req, res) => {
   // const userId = req.user._id;
   // const user = await User.findById(userId);
 
@@ -95,7 +102,7 @@ router.post("/invite", async (req, res) => {
   });
 });
 
-router.get("/test", async (req, res) => {
+router.get('/test', async (req, res) => {
   // const userId = req.user._id;
   // const user = await User.findById(userId);
 
@@ -172,25 +179,25 @@ router.get("/test", async (req, res) => {
 // PRIVATE
 // Retrives one alliance
 
-router.get("/:id", async (req, res) => {
-  console.log("this id");
+router.get('/:id', async (req, res) => {
+  console.log('this id');
   const alliance = await Alliance.findById(req.params.id)
-    .populate("boss", "name")
-    .populate("cto", "name")
-    .populate("analyst", "name")
-    .populate("firstLead", "name")
-    .populate("secondLead", "name")
-    .populate("firstMonkeys", "name")
-    .populate("secondMonkeys", "name");
+    .populate('boss', 'name')
+    .populate('cto', 'name')
+    .populate('analyst', 'name')
+    .populate('firstLead', 'name')
+    .populate('secondLead', 'name')
+    .populate('firstMonkeys', 'name')
+    .populate('secondMonkeys', 'name');
 
   res.status(200).json({
     success: true,
-    message: "Alliance loaded..",
+    message: 'Alliance loaded..',
     alliance,
   });
 });
 
-router.patch("/leave", async (req, res) => {
+router.patch('/leave', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   // todo criterias

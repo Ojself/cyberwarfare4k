@@ -3,12 +3,24 @@ import { Button } from "reactstrap";
 
 import api from "../../../api";
 
+const validateInput = (data)=> {
+      if (!data.email || !data.password){
+        return 'Missing input'
+      }
+      if (data.email.indexOf("@")<0){
+        return "Invalid Email"
+      }
+      if (data.password.length<=5){
+        return "Too short password"
+      }
+    }
+
 const Signup = (props) => {
   const [signupState, setSignupState] = useState({
     email: "",
     password: "",
-    message: null,
   });
+  const [failMessage, setFailMessage] = useState("")
 
   const handleInputChange = (e) => {
     setSignupState({
@@ -23,31 +35,38 @@ const Signup = (props) => {
       email: signupState.email,
       password: signupState.password,
     };
+    const disAllowed = validateInput(data)
+    if (disAllowed){
+      setSignupState({
+      ...signupState,
+      password: "",
+    })
+      setFailMessage(disAllowed)
+
+    setTimeout(()=>{
+    setFailMessage("")
+    },5000)
+    return
+    }
     try {
       await api.signup(data);
       props.redirect("/create-hacker/");
     } catch (err) {
       console.log(err, "err");
     }
-    /* setSignupState({
-          ...signupState,
-          message: err.toString()
-        }) */
   };
 
   return (
     <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
-      {signupState.message && (
-        <div className="info info-danger">{signupState.message}</div>
-      )}
       <h2 className="text-left mb-4">
-        Register {/* <p style={{ color: "#FFCC00" }}>- IT'S FREE!</p> */}
+        Register 
       </h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
+        
           className="w-100 mb-4"
-          type="text"
+          type="email"
           value={signupState.email}
           name="email"
           onChange={handleInputChange}
@@ -55,6 +74,7 @@ const Signup = (props) => {
 
         <p className="mb-0">Password</p>
         <input
+        
           className="w-100"
           type="password"
           value={signupState.password}
@@ -66,9 +86,11 @@ const Signup = (props) => {
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
+          
         >
           Sign up
         </Button>
+        <div style={{minHeight:"8vh"}}className="text-danger">{failMessage}</div>
       </form>
     </div>
   );
