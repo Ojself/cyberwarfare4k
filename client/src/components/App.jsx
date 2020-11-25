@@ -28,7 +28,7 @@ import NavbarComp from "./pages/header-footer/Navbar";
 import Notifications from "./pages/communication/Notifications";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
-import RepairShop from "./pages/RepairShop";
+import ServiceAndSupport from "./pages/ServiceAndSupport";
 import VPN from "./pages/VPN";
 import WantedList from "./pages/WantedList";
 
@@ -214,9 +214,12 @@ const App = () => {
 
         <Route path="/notifications" component={Notifications} />
         <Route
-          path="/repair-shop"
+          path="/service"
           render={() => (
-            <RepairShop user={user} updateGlobalValues={updateGlobalValues} />
+            <ServiceAndSupport
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+            />
           )}
         />
         <Route

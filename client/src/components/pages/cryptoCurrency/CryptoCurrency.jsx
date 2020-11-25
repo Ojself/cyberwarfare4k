@@ -28,16 +28,18 @@ const CryptoCurrencies = (props) => {
   });
 
   useEffect(() => {
-    const fetchCryptoData = async ()=> {
-      const data = await api.getCrypto()
-        const massagedCurrency = data.currency.map((currency) => dataMassager(currency));
-        setCryptoState({
-          ...cryptoState,
-          currencies: data.currency,
-          massagedCurrency,
-          loading: false,
-        });
-    }
+    const fetchCryptoData = async () => {
+      const data = await api.getCrypto();
+      const massagedCurrency = data.currency.map((currency) =>
+        dataMassager(currency)
+      );
+      setCryptoState({
+        ...cryptoState,
+        currencies: data.currency,
+        massagedCurrency,
+        loading: false,
+      });
+    };
     fetchCryptoData();
   }, []);
 
@@ -96,7 +98,7 @@ const CryptoCurrencies = (props) => {
 
   return (
     <div className="page-container">
-      <h2>Currency</h2>
+      <h1>Currency</h1>
       {cryptoState.loading ? (
         <p>loading...</p>
       ) : (

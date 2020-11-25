@@ -1,4 +1,5 @@
 const express = require('express');
+const { getOnlineUsers, saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();
 
@@ -115,29 +116,44 @@ router.post('/crimes', async (req, res) => {
 // User can hack another plater.
 // /opponentId/attack
 router.post('/:opponentId', async (req, res) => {
-  // const userId = req.user._id
-  const { userId } = req.body; // remove this. only for testing purposes
+  const userId = req.user._id;
   const { opponentId } = req.params;
   const batteryCost = 10;
 
   const user = await User.findById(userId);
   const opponent = await User.findById(opponentId);
-  const message = attackRouteCriterias(user, opponent, batteryCost);
+  const now = Date.now();
 
-  if (message) {
+  const userIsOnline = await getOnlineUsers(opponent._id.toString());
+  console.log(userIsOnline, 'userIsOnline');
+
+  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
+  console.log(disallowed, 'disallowed');
+
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
 
-  const finalResult = await fightHacker(user, opponent, batteryCost);
-  // finalresult.user = null
+  const finalResult = await fightHacker(user, opponent, batteryCost, now, userIsOnline);
+
+  const updatedUser = await saveAndUpdateUser(finalResult.user);
+  await finalResult.opponent.save();
+  finalResult.user = null;
+  finalResult.opponent = null;
+
+  const messageEnding = finalResult.bodyguardKilled
+    ? 'killed a bodyguard'
+    : `dealt ${finalResult.damageDealt}`;
 
   return res.status(200).json({
     success: true,
-    message: `You attacked ${opponent._name}`,
+    message: `You attacked ${opponent.name} and ${messageEnding}`,
     finalResult,
+    user: updatedUser,
+
   });
 });
 module.exports = router;

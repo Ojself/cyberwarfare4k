@@ -4,7 +4,7 @@ import ForumComponent from "./ForumComponent";
 const ForumOverviewCategoryComponent = (props) => {
   return (
     <div className="categoryComponent">
-      <h2 style={{ textTransform: "capitalize" }}>{props.category}</h2>
+      <h1 style={{ textTransform: "capitalize" }}>{props.category}</h1>
 
       {props.forums.map((f, i) => {
         return (

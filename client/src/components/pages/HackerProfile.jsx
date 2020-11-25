@@ -32,9 +32,23 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     fetchPlayerData(opponentId);
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     const opponentId = opponentState.opponent._id;
     history.push(`/messages/to=${opponentId}`);
+  };
+
+  const handleAttack = async () => {
+    const opponentId = opponentState.opponent._id;
+    let data;
+    try {
+      data = await api.attackOpponent(opponentId);
+    } catch (err) {
+      console.log("error", err);
+      updateGlobalValues(err);
+      return;
+    }
+    console.log("data", data);
+    updateGlobalValues(data);
   };
 
   const handleBountyChange = (e) => {
@@ -173,7 +187,9 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
         <Button color="outline-info" onClick={() => handleClick()}>
           Message
         </Button>
-        <Button color="outline-danger">Attack</Button>
+        <Button onClick={() => handleAttack()} color="outline-danger">
+          Attack
+        </Button>
       </div>
     </div>
   );

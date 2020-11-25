@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/User');
-const { repairRouteCriterias } = require('../middlewares/middleRepair');
+const { repairRouteCriterias, buyBodyguardCriterias } = require('../middlewares/middleService');
 const { saveAndUpdateUser } = require('./helper');
 
 // @POST
@@ -61,6 +61,31 @@ router.post('/full', async (req, res) => {
     user: updatedUser,
     message:
       'You successfully glued together some loose parts from your computer..',
+  });
+});
+
+router.post('/bodyguard', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const cost = Math.floor(user.playerStats.bodyguards.price);
+  const disallowed = buyBodyguardCriterias(user, cost);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  user.buyBodyguard();
+  const updatedUser = await saveAndUpdateUser(user);
+
+  return res.status(200).json({
+    success: true,
+    user: updatedUser,
+    message:
+      'You successfuly hired a bodyuard..',
   });
 });
 

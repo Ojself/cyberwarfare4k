@@ -63,7 +63,7 @@ app.use('/api/hack', require('./routes/hack'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/marketplace', require('./routes/marketplace'));
 app.use('/api/earnBattery', require('./routes/earnBattery'));
-app.use('/api/repair', require('./routes/repair'));
+app.use('/api/service', require('./routes/service'));
 app.use('/api/wanted', require('./routes/wanted'));
 
 // For any routes that starts with "/api", catch 404 and forward to error handler

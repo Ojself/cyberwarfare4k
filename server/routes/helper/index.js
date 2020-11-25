@@ -39,7 +39,7 @@ const getAllUsers = async (filterArray = [], select = null) => {
 };
 
 // gets all online users based on sesssion
-const getOnlineUsers = async () => {
+const getOnlineUsers = async (userId) => {
   // Default expire for session
   const twoWeeks = 1000 * 60 * 60 * 24 * 7 * 2;
   // only those who have activity from last five minutes
@@ -57,10 +57,8 @@ const getOnlineUsers = async () => {
       .filter((el) => el != null);
     onlineIds = [].concat(...filteredIds);
   });
-  console.log('onlineIds: ', onlineIds, 'stop');
   // const onlinePlayers = await User.find({ _id: { $in: onlineIds } });
-
-  return onlineIds;
+  return userId ? onlineIds.includes(userId) : onlineIds;
 };
 
 const getInbox = async (userId) => {

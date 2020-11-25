@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const [dashboardState, setDashboardState] = useState({
-    name: ""
+    name: "",
   });
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h2> Dashboard</h2>
+      <h1> Dashboard</h1>
 
       {/* Select which */}
       {/* dissolve, invite, uninvite, change position, kick */}

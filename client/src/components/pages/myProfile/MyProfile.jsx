@@ -15,6 +15,8 @@ import ProgressBarHackSkill from "./molecules/ProgressBarHackSkill";
 import ProgressBarFirewallSkill from "./molecules/ProgressBarFirewallSkill";
 import ProgressBarExp from "./molecules/ProgressBarExp";
 
+import { getCorrectAllianceRoleName } from "../_helpers";
+
 import api from "../../../api";
 import classnames from "classnames";
 
@@ -140,6 +142,11 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
         <li className="list-group-item bg-dark mb-2">
           {user.playerStats.rankName}
         </li>
+        {user.alliance && (
+          <li className="list-group-item bg-dark mb-2">
+            {getCorrectAllianceRoleName(user.allianceRole)}
+          </li>
+        )}
         <li className="list-group-item bg-dark mb-2">
           Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
           {user.playerStats.bitCoins}

@@ -102,15 +102,6 @@ router.post('/invite', async (req, res) => {
   });
 });
 
-router.get('/test', async (req, res) => {
-  // const userId = req.user._id;
-  // const user = await User.findById(userId);
-
-  const alliances = await Alliance.find({});
-
-  alliances[0].kickMember();
-});
-
 // router.delete('/unInvite', async (req, res) => {
 //   const userId = req.user._id;
 //   const { invitedPlayer } = req.body;

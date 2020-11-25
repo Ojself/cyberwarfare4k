@@ -11,7 +11,7 @@ const StatusBar = ({ loading, user }) => {
           <ul className="list-unstyled">
             {user.alliance && user.alliance.name ? (
               <li className="list-inline-item">
-                <Link to={`/my-profile`}>
+                <Link to={`/alliance/${user.alliance._id}`}>
                   <i
                     style={{
                       color: user.alliance.name,

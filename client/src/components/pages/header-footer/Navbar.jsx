@@ -58,9 +58,6 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
         <NavbarToggler onClick={toggle} />
         <Collapse navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href="/create-hacker">Create</NavLink>
-            </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Info
@@ -88,9 +85,11 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
               <DropdownMenu>
                 <DropdownItem href="/petty-hacker">Petty</DropdownItem>
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-                <DropdownItem disabled >Organized Crime</DropdownItem>
+                <DropdownItem disabled>Organized Crime</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                <DropdownItem disabled href="/">Hack player</DropdownItem>
+                <DropdownItem disabled href="/">
+                  Hack player
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -118,7 +117,7 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem href="/locals">Local Hackers</DropdownItem>
-                <DropdownItem href="/repair-shop">Repair Shop</DropdownItem>
+                <DropdownItem href="/service">Service & Support</DropdownItem>
                 <DropdownItem href="/vpn">VPN</DropdownItem>
                 <DropdownItem href="/cryptocurrency">
                   Crypto Currency

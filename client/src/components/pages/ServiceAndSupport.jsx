@@ -2,7 +2,7 @@ import React from "react";
 import api from "../../api";
 import { Button } from "reactstrap";
 
-const RepairShop = ({ user, updateGlobalValues }) => {
+const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   const handlePartial = async () => {
     let data;
     try {
@@ -25,12 +25,23 @@ const RepairShop = ({ user, updateGlobalValues }) => {
     updateGlobalValues(data);
   };
 
-  const style = {
-    height: "35vh",
+  const handleBodyguard = async () => {
+    let data;
+    try {
+      data = await api.buyBodyguard();
+    } catch (err) {
+      updateGlobalValues(err);
+      return;
+    }
+    updateGlobalValues(data);
   };
-  const repairShopContent = user && (
+
+  const style = {
+    height: "30vh",
+  };
+  const serviceContent = user && (
     <div className="content d-flex justify-content-around">
-      <div className="d-flex flex-column">
+      <div className="d-flex flex-column ">
         <img
           style={style}
           src="../../../utilPics/partialrepair.jpg"
@@ -51,7 +62,7 @@ const RepairShop = ({ user, updateGlobalValues }) => {
         <img
           style={style}
           src="../../../utilPics/fullrepair.jpg"
-          alt="Partial Repari"
+          alt="Partial Repair"
         />
         <p className="my-0">
           Heals <span style={{ color: "red" }}>&#9829;</span> 100%
@@ -64,15 +75,32 @@ const RepairShop = ({ user, updateGlobalValues }) => {
           Full repair
         </Button>
       </div>
+      <div className="d-flex flex-column">
+        <img
+          style={style}
+          src="../../../utilPics/bodyguard.png"
+          alt="Bodyguard"
+        />
+        <p className="my-0">
+          Hire Bodyguard {user.playerStats.bodyguards.alive}/5
+        </p>
+        <p>
+          <span style={{ color: "#F08F18" }}>&#8383;</span>
+          {Math.round(user.playerStats.bodyguards.price)}
+        </p>
+        <Button color="success" onClick={() => handleBodyguard()}>
+          Hire!
+        </Button>
+      </div>
     </div>
   );
 
   return (
     <div className="page-container">
-      <h1 className="">System Repair</h1>
-      {repairShopContent}
+      <h1>Service & Support</h1>
+      {serviceContent}
     </div>
   );
 };
 
-export default RepairShop;
+export default ServiceAndSupport;

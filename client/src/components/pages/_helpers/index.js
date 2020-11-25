@@ -11,9 +11,9 @@ const dateConverter = (isoDate) => {
     "07": "Jul",
     "08": "Aug",
     "09": "Sep",
-    "10": "Okt",
-    "11": "Nov",
-    "12": "Dec",
+    10: "Okt",
+    11: "Nov",
+    12: "Dec",
   };
   const year = isoDate.slice(0, 4);
   const month = months[isoDate.slice(5, 7)];
@@ -23,4 +23,34 @@ const dateConverter = (isoDate) => {
   return `${day} ${month} ${year} - ${hour}:${min}`;
 };
 
-export default dateConverter;
+const getCorrectAllianceRoleName = (role) => {
+  let output;
+  switch (role) {
+    case "boss":
+      output = "Boss";
+      break;
+    case "analyst":
+      output = "Analyst";
+      break;
+    case "cto":
+      output = "CTO";
+      break;
+    case "firstLead":
+      output = "First Lead";
+      break;
+    case "secondLead":
+      output = "Second Lead";
+      break;
+    case "firstMonkeys":
+      output = "Code Monkey";
+      break;
+    case "secondMonkeys":
+      output = "Code Monkey";
+      break;
+    default:
+      output = "missing role";
+  }
+  return output;
+};
+
+export { dateConverter, getCorrectAllianceRoleName };

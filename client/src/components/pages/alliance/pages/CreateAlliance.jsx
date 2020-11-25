@@ -6,7 +6,6 @@ import { Button, Form, FormGroup } from "reactstrap";
 import Select from "react-select";
 
 const dataMassager = (alliances) => {
-  alliances.forEach((a) => console.log(a.members));
   const massagedAlliances = alliances
     .filter((alliance) => !alliance.active)
     .map((alliance) => {
@@ -36,7 +35,7 @@ const CreateAlliance = (props) => {
       props.updateGlobalValues(data);
       props.history.push("/my-profile");
     } catch (err) {
-      console.log(err, "err");
+      console.log("error", err);
     }
   };
 
@@ -46,11 +45,9 @@ const CreateAlliance = (props) => {
       let data;
       try {
         data = await api.getAlliances();
-        data.alliances = data.alliances.filter(
-          (alliance) => alliance.member.length === 0
-        );
+        data.alliances = data.alliances.filter((alliance) => !alliance.active);
       } catch (e) {
-        console.log(e);
+        console.log("error", e);
       }
       setAlliances(dataMassager(data.alliances));
       setLoading(false);

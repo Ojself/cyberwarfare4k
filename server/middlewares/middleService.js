@@ -17,5 +17,17 @@ const repairRouteCriterias = (user, repairCost) => {
   }
   return null;
 };
+const buyBodyguardCriterias = (user, cost) => {
+  if (!user) {
+    return "User doesn't exist";
+  }
+  if (!checkFunds(user.playerStats.bitCoins, cost)) {
+    return 'Insufficient funds';
+  }
+  if (user.playerStats.bodyguards.alive >= 5) {
+    return 'You can\'t hire more than 5 bodyguards';
+  }
+  return null;
+};
 
-module.exports = { repairRouteCriterias };
+module.exports = { repairRouteCriterias, buyBodyguardCriterias };

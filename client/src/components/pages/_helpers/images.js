@@ -1,5 +1,3 @@
-//repair pics
-//landpage hacker
 const utilImages = [
   { id: 0, src: "/utilPics/hacker_PNG3.png", title: "Hacker Home" },
   { id: 1, src: "/utilPics/fullrepair.jpg", title: "Full Repair" },
@@ -97,7 +95,6 @@ const catzAvatars = [
     src: "/hackerAvatars/Catz/cat5.jpeg",
     title: "Cat 5",
   },
-  
 ];
 const irlAvatars = [
   {
@@ -197,7 +194,6 @@ const mrrobotAvatars = [
     src: "/hackerAvatars/Mr. Robot/mrrobot.png",
     title: "Mr Robot",
   },
-  
 ];
 const NCISAvatars = [
   {

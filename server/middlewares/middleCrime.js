@@ -1,19 +1,19 @@
 const {
   batteryCheck,
   checkOccuranceLimit,
-} = require("../middlewares/middleHelpers");
+} = require('./middleHelpers');
 
 // Sees if everything is in order to perform crime
 
 function crimeRouteCriterias(crime, user, batteryCost) {
   if (!crime) {
-    return `Crime not found with `;
+    return 'Crime not found with ';
   }
   if (!batteryCheck(user, batteryCost)) {
-    return "Insufficent battery";
+    return 'Insufficent battery';
   }
   if (!crime.available) {
-    return "This crime is not available at the moment";
+    return 'This crime is not available at the moment';
   }
   return null;
 }
@@ -39,22 +39,21 @@ async function fightCrime(user, crime, batteryCost) {
   const finalResult = crimeRecursiveBattle(user, crime, result);
 
   // sees if player leveled up
-  finalResult.playerGains.levelUp =
-    user.playerStats.exp + finalResult.playerGains.exp >=
-    user.playerStats.expToLevel;
+  finalResult.playerGains.levelUp = user.playerStats.exp + finalResult.playerGains.exp
+    >= user.playerStats.expToLevel;
 
   user.handleCrime(finalResult);
 
   await user.save().then((userSaved) => {
     userSaved
-      .populate("playerStats.city", "name")
+      .populate('playerStats.city', 'name')
       .execPopulate()
       .then((result) => {
-        console.log(result, "result");
+        console.log(result, 'result');
         finalResult.user = result;
       });
   });
-  console.log(finalResult.user.playerStats, "thig onse");
+  console.log(finalResult.user.playerStats, 'thig onse');
   crime.handleCrime(finalResult);
   await crime.save();
 
@@ -71,7 +70,7 @@ function crimeRecursiveBattle(user, crime, result) {
 
   // crime lost
   // if user has lost 4 times, the crime is considered 'lost'
-  if (checkOccuranceLimit(result.roundResult, "lost", 4)) {
+  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
     return result;
   }
 
@@ -103,8 +102,7 @@ function chanceCalculator(user, crime) {
   if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
   }
-  const probability =
-    (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
+  const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
   return probability;
 }
 
@@ -120,13 +118,13 @@ function damageCalulator(user, crime) {
 
 function roundWin(result, damage) {
   result.crimeHp -= damage;
-  result.roundResult.push("win");
+  result.roundResult.push('win');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
 function roundLost(result) {
-  result.roundResult.push("lost");
+  result.roundResult.push('lost');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
@@ -140,10 +138,10 @@ function crimeWin(result, crime, user, decider) {
   result.playerGains.skillGained = skillGained(
     decider,
     user.playerStats.rank,
-    crime.crimeType
+    crime.crimeType,
   );
   result.playerGains.statGained = statGained(decider, user.playerStats.rank);
-  result.playerGains.legendaryGained = "";
+  result.playerGains.legendaryGained = '';
   return result;
 }
 
@@ -163,10 +161,10 @@ function skillGained(decider, rank, crimeType) {
     return null;
   }
   const crimeTypes = [
-    "Technical",
-    "Social Engineering",
-    "Forensics",
-    "Cryptography",
+    'Technical',
+    'Social Engineering',
+    'Forensics',
+    'Cryptography',
   ].filter((el) => el !== crimeType);
   return crimeTypes[Math.floor(Math.random() * crimeTypes.length)];
 }

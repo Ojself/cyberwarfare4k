@@ -229,7 +229,7 @@ const WantedList = ({ updateGlobalValues }) => {
 
   return (
     <div className="page-container">
-      <h2>Wanted</h2>
+      <h1>Wanted</h1>
       <h3>Cyber Criminals</h3>
       {wantedState.loading ? (
         <p>loading..</p>

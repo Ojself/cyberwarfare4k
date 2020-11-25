@@ -11,8 +11,8 @@ const MarketPlace = (props) => {
   });
 
   useEffect(() => {
-    const fetchMarketPlaceItems = async ()=> {
-    const data = await api.getMarketPlaceItems()
+    const fetchMarketPlaceItems = async () => {
+      const data = await api.getMarketPlaceItems();
       const { items } = data;
       console.log("result", items);
       setMarketPlaceState({
@@ -20,8 +20,8 @@ const MarketPlace = (props) => {
         items: data.items,
         loading: false,
       });
-    }
-    fetchMarketPlaceItems()
+    };
+    fetchMarketPlaceItems();
   }, []);
 
   const handleMarketPlaceItemPurchase = (e) => {
@@ -64,7 +64,7 @@ const MarketPlace = (props) => {
 
   return (
     <div>
-      <h2>Marketplace</h2>
+      <h1>Marketplace</h1>
       {marketPlaceState.loading ? <p>loading..</p> : itemsTable}
     </div>
   );

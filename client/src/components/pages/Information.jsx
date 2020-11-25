@@ -100,9 +100,9 @@ const Information = () => {
         </p>
 
         <p>
-          <strong>SYSTEM REPAIR</strong>: The system repair allows you to fix up
-          your computer for a relatively small fee. Choose between a quick fix
-          or a full repair.
+          <strong>SERVICE</strong>: The service shop allows you to fix up your
+          computer for a relatively small fee. Choose between a quick fix or a
+          full service.
         </p>
 
         <p>

@@ -92,7 +92,7 @@ export default {
 
   getOpponent(opponentId) {
     return service
-      .get(`/opponent/${opponentId}`)
+      .get(`/opponents/${opponentId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -118,7 +118,8 @@ export default {
       .catch(errHandler);
   },
 
-  /* ATTACK */
+  /* HACK */
+  /* HACK */
 
   pettyHack() {
     return service
@@ -126,8 +127,6 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
-
-  /* CRIMES */
 
   getCrimes() {
     return service
@@ -139,6 +138,13 @@ export default {
   commitCrimes(crimeId) {
     return service
       .post("/hack/crimes", { crimeId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  attackOpponent(opponentId) {
+    return service
+      .post(`/hack/${opponentId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -166,17 +172,22 @@ export default {
       .catch(errHandler);
   },
 
-  // REPAIR
   repairPartial() {
     return service
-      .post("/repair/partial")
+      .post("/service/partial")
       .then((res) => res.data)
       .catch(errHandler);
   },
 
   repairFull() {
     return service
-      .post("/repair/full")
+      .post("/service/full")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  buyBodyguard() {
+    return service
+      .post("/service/bodyguard")
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -312,7 +323,7 @@ export default {
   // get all users. only name and _id
   getHackerNames() {
     return service
-      .get("/opponent")
+      .get("/opponents")
       .then((res) => res.data)
       .catch(errHandler);
   },

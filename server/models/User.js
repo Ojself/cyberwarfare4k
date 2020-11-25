@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const Item = require('./Item');
+/* const Item = require('./Item'); */
 const Rank = require('./Rank');
 
 const userSchema = new Schema(
@@ -112,6 +112,7 @@ const userSchema = new Schema(
       bodyguards: {
         alive: { type: Number, default: 0 },
         bought: { type: Number, default: 0 },
+        price: { type: Number, default: 100000 },
       },
       statPoints: {
         type: Number,
@@ -227,7 +228,7 @@ const userSchema = new Schema(
 
     // Figth accessories
     fightInformation: {
-      gracePeriod: { type: Boolean, default: false },
+      gracePeriod: { type: Date, default: Date.now() },
       shutdowns: { type: Number, default: 0 },
       attacksInitiated: { type: Number, default: 0 },
       attacksVictim: { type: Number, default: 0 },
@@ -259,7 +260,6 @@ const userSchema = new Schema(
 
 // this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function (item) {
-  console.log('handleItemPurchase triggered', item);
   const currentItem = this.marketPlaceItems[item.type];
   if (currentItem) {
     // lower the stats so items doesn't stack
@@ -307,7 +307,6 @@ userSchema.methods.handleItemPurchase = function (item) {
 };
 
 userSchema.methods.giveLegendary = function (itemName = 'emp') {
-  console.log('give legendary method triggered', itemName);
   this[itemName] += 1;
   this.save();
 };
@@ -400,9 +399,8 @@ userSchema.methods.purchaseCurrency = function (
   batteryCost,
   totalPrice,
 ) {
-  console.log('purchaseCurrency triggered');
   this.playerStats.battery -= batteryCost;
-  this.playerStats.bitCoins -= totalPrice;
+  this.bitcoinDrain(totalPrice);
   this.currencies[currency.name] += amount;
   this.save();
 };
@@ -413,10 +411,9 @@ userSchema.methods.sellCurrency = function (
   batteryCost,
   totalPrice,
 ) {
-  console.log('sellCurrency triggered');
   this.battery -= batteryCost;
   this.currencies[currency.name] -= amount;
-  this.playerStats.bitCoins += totalPrice;
+  this.bitCoinGain(totalPrice);
   this.save();
 };
 
@@ -468,71 +465,53 @@ userSchema.methods.setRank = async function (rank = undefined) {
   this.playerStats.expToLevel = newRank.expToNewRank;
 };
 
-userSchema.methods.handleAttack = function (finalResult) {
-  this.playerStats.battery -= finalResult.playerGains.batteryCost;
-  this.playerStats.bitCoins += finalResult.playerGains.bitCoins;
-  this.playerStats.exp += finalResult.playerGains.exp;
+userSchema.methods.handleAttack = function (result) {
+  this.batteryDrain(result.playerGains.batteryCost);
 
-  // adds currencies if victim died
-  if (finalResult.victimDead) {
-    for (const i in finalResult.playerGains.currencies) {
-      this.currencies[i] += finalResult.playerGains.currencies[i];
-    }
+  // steals all the currencies when opponent is dead
+  if (result.victimDead) {
+    Object.keys(result.playerGains.currencies).forEach((currency) => {
+      this.currencies[currency] += parseInt(result.playerGains.currencies[currency], 10);
+    });
     this.playerStats.shutdowns += 1;
   }
+  this.playerStats.attacksInitiated += 1;
 
   const newNotifications = [
-    `You attacked ${finalResult.opponent.name} at ${new Date(finalResult.date)
+    `You attacked ${result.opponent.name} at ${new Date(result.now)
       .toString()
-      .slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and he was shutdown!' : '!'
+      .slice(0, 21)} and dealt ${result.damageDealt} damage${
+      result.victimDead ? ' and he was shutdown!' : '!'
     }`,
     true,
   ];
-  this.account.notifications.push(newNotifications);
-  this.save();
+  this.sendNotification(newNotifications);
 };
 
-userSchema.methods.handleAttackDefense = function (finalResult) {
-  console.log('userschema handleAttackDefense', finalResult);
+userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
   // todo, graceperiod
 
   const newNotifications = [
-    `${finalResult.user.name} attacked you at ${new Date(finalResult.date)
+    `${result.user.name} attacked you at ${new Date(result.date)
       .toString()
-      .slice(0, 21)} and dealt ${finalResult.damageDealt} damage${
-      finalResult.victimDead ? ' and you were shutdown!' : '!'
+      .slice(0, 21)} and dealt ${result.damageDealt} damage${
+      result.victimDead ? ' and you were shutdown!' : '!'
     }`,
     true,
   ];
-  this.account.notifications.push(newNotifications);
+  this.sendNotification(newNotifications);
+  this.setGracePeriod(gracePeriod);
 
-  this.playerStats.bitCoins -= finalResult.playerGains.bitCoins;
-  this.playerStats.currentFirewall -= 10; // TODO figure out what number to put here
-
-  // if the player is dead
-  if (finalResult.victimDead) {
-    // empties his current currency
-    Object.keys(this.currencies).forEach(function (el) {
-      this.currencies[el] = 0;
-    });
-
-    // if user rank 8, he is now 4. if user rank 9, he is now 5
-    const newRank = Math.ceil(this.playerStats.rank / 2);
-    Rank.findOne({ rank: newRank }).then((rankResult) => {
-      this.playerStats.rankName = rankResult.name;
-      this.playerStats.expToLevel = rankResult.expToNewRank;
-      this.playerStats.exp = this.playerStats.expToLevel - 20000;
-    });
+  if (result.bodyguardKilled) {
+    this.playerStats.bodyguards.alive -= 1;
+  } else {
+    this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
-
-  // TODO finish this
-
-  this.save();
 };
 
-// REPAIR
-// REPAIR
+userSchema.methods.setGracePeriod = function (now = Date.now()) {
+  this.fightInformation.gracePeriod = now;
+};
 
 userSchema.methods.repair = function (percentage, cost) {
   this.bitcoinDrain(cost);
@@ -541,16 +520,25 @@ userSchema.methods.repair = function (percentage, cost) {
   if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
     this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   }
-  this.playerStats.repairCost = Math.round(this.playerStats.repairCost * 1.15);
+  const multiplier = percentage === 100 ? 1.35 : 1.07;
+  this.playerStats.repairCost = Math.round(this.playerStats.repairCost * multiplier);
+};
+
+userSchema.methods.buyBodyguard = function () {
+  const cost = this.playerStats.bodyguards.price;
+  this.bitcoinDrain(cost);
+  this.playerStats.bodyguards.alive += 1;
+  this.playerStats.bodyguards.bought += 1;
+  if (this.playerStats.bodyguards.bought > 5) {
+    this.playerStats.bodyguards.price *= 1.5;
+  }
 };
 
 // DATACENTER
 // DATACENTER
 
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
-  console.log('handleDataCenterAttack triggered');
   this.batteryDrain(result.batteryCost);
-  console.log(dataCenter.requiredStash, 'dataCenter.requiredStash');
   dataCenter.requiredStash.forEach((stash) => {
     this.stash[stash] -= 1;
   });
@@ -564,7 +552,6 @@ userSchema.methods.giveNotification = function (message, now = Date.now()) {
 };
 
 // WANTEDLIST
-/* todo, erase bounty and  if killed */
 
 userSchema.methods.addBounty = function (bountyDonor, bounty) {
   // todo, change array to set to fix this issue?
@@ -613,6 +600,12 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
     await this.setRank();
   }
 };
+
+// todo remove from city and alliance
+/* userSchema.methods.die = function () {
+  const currentCity = this.playerStats.city;
+  const currentAlliance = this.alliance;
+}; */
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
