@@ -1,52 +1,18 @@
-module.exports = [
-	'/hackerAvatars/404-notfound.png',
-	'/hackerAvatars/android-black.jpg',
-	'/hackerAvatars/apple-skull.jpg',
-	'/hackerAvatars/blue-alien.jpg',
-	'/hackerAvatars/brain-blue.jpg',
-	'/hackerAvatars/anon-fu.jpg',
-	'/hackerAvatars/anon-hoodie.jpg',
-	'/hackerAvatars/anon-legion.jpg',
-	'/hackerAvatars/anon-mask.jpg',
-	'/hackerAvatars/anon-red.jpg',
-	'/hackerAvatars/anon-suit.jpg',
-	'/hackerAvatars/anon.jpg',
-	'/hackerAvatars/abbyncis2.png',
-	'/hackerAvatars/billgatesold.jpg',
-	'/hackerAvatars/billgates.png',
-	'/hackerAvatars/blackhat.png',
-	'/hackerAvatars/anon-armed.jpg',
-	'/hackerAvatars/anon-color.jpg',
-	'/hackerAvatars/cat0.jpg',
-	'/hackerAvatars/cat1.jpeg',
-	'/hackerAvatars/cat2.jpg',
-	'/hackerAvatars/v-mask.jpg',
-	'/hackerAvatars/elonmusk.jpg',
-	'/hackerAvatars/elonmuskyoung.png',
-	'/hackerAvatars/face-palm.jpg',
-	'/hackerAvatars/garymckinnon.jpg',
-	'/hackerAvatars/greyhat.png',
-	'/hackerAvatars/hacked-sitedown.jpg',
-	'/hackerAvatars/hacker-dark.png',
-	'/hackerAvatars/jonathanJames.png',
-	'/hackerAvatars/julianassagne.png',
-	'/hackerAvatars/kali-linux.png',
-	'/hackerAvatars/keep-calm.png',
-    '/hackerAvatars/kevinmitnick.jpg',
-    '/hackerAvatars/kevinpoulsen.png',
-    '/hackerAvatars/legion-anon.png',
-    '/hackerAvatars/linux-penguin.png',
-    '/hackerAvatars/loydblankenship.jpg',
-    '/hackerAvatars/mask-fu.jpg',
-    '/hackerAvatars/mask-words.jpg',
-    '/hackerAvatars/matrix-green.jpg',
-    '/hackerAvatars/morpheus.png',
-    '/hackerAvatars/mrrobot.png',
-    '/hackerAvatars/mrrobotdad.png',
-    '/hackerAvatars/neo.png',
-	'/hackerAvatars/whitehat.png',
-    '/hackerAvatars/roberttappanmorris.jpg',
-    '/hackerAvatars/skull-computer.jpg',
-    '/hackerAvatars/system-failure.png',
-    '/hackerAvatars/trinitymatrix.jpg'
-]
+const fs = require('fs').promises;
+const path = require('path');
+
+/* https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j */
+
+async function walk(dir) {
+  let files = await fs.readdir(dir);
+  files = await Promise.all(files.map(async (file) => {
+    const filePath = path.join(dir, file);
+    const stats = await fs.stat(filePath);
+    if (stats.isDirectory()) return walk(filePath);
+    if (stats.isFile()) return filePath;
+  }));
+
+  return files.reduce((all, folderContents) => all.concat(folderContents), []);
+}
+
+module.exports = { walk };

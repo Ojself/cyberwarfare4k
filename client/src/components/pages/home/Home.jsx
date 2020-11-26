@@ -60,14 +60,14 @@ const Home = (props) => {
       <div className="d-flex  justify-content-center">
         <div className="d-flex flex-column w-25">
           <img
-            style={{ zIndex:"1", marginTop: "-50px", width: "80%" }}
+            style={{ zIndex: "1", marginTop: "-50px", width: "80%" }}
             src={images.utilImages[0].src}
             alt="Hacker Home"
           />
           {getRandomHackerQuote()}
         </div>
         <div className="d-flex flex-column w-50 text-left">
-          <h1 className="display-1 ">CyberWarFare4000</h1>
+          <h1 className="display-1 ">CyberhackerWarfare4000</h1>
           <h3 className="display-5 ">Multiplayer RPG Hacker Game</h3>
           <p className="">
             CyberWareFare4000 is a free multiplyer hacker role playing game.

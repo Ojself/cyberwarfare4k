@@ -52,7 +52,6 @@ const App = () => {
   const updateGlobalValues = (data, renderMessage = true) => {
     console.log("updating global", data);
     if (data.user) {
-      console.log("setting user");
       setUser(data.user);
     }
     if (renderMessage && data.message) {
@@ -212,7 +211,16 @@ const App = () => {
           )}
         />
 
-        <Route path="/notifications" component={Notifications} />
+        <Route
+          path="/notifications"
+          render={() => (
+            <Notifications
+              updateGlobalValues={updateGlobalValues}
+              loading={loading}
+              user={user}
+            />
+          )}
+        />
         <Route
           path="/service"
           render={() => (

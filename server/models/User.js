@@ -32,14 +32,9 @@ const userSchema = new Schema(
       },
       notifications: {
         type: Array,
-        default: [
-          [
-            `System ${new Date(
-              Date.now().toString().slice(0, 21),
-            )}:, This is your first notification`,
-            false,
-          ],
-        ],
+        dateSent: String,
+        read: Boolean,
+        message: String,
       },
       banned: {
         type: Boolean,
@@ -369,10 +364,6 @@ userSchema.methods.withdrawLedger = function (bitCoins) {
   // todo fee?
 };
 
-userSchema.methods.sendNotification = function (msg) {
-  this.account.notifications.push(msg);
-};
-
 userSchema.methods.handlePettyCrime = async function (result) {
   this.batteryDrain(result.battery);
   this.bitCoinGain(result.bitCoins);
@@ -477,29 +468,14 @@ userSchema.methods.handleAttack = function (result) {
   }
   this.playerStats.attacksInitiated += 1;
 
-  const newNotifications = [
-    `You attacked ${result.opponent.name} at ${new Date(result.now)
-      .toString()
-      .slice(0, 21)} and dealt ${result.damageDealt} damage${
-      result.victimDead ? ' and he was shutdown!' : '!'
-    }`,
-    true,
-  ];
-  this.sendNotification(newNotifications);
+  const notificationMessage = `You attacked ${result.opponent.name} and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  /* todo. add message string if opponent is dead */
+
+  this.sendNotification(notificationMessage, result.now);
 };
-
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
-  // todo, graceperiod
-
-  const newNotifications = [
-    `${result.user.name} attacked you at ${new Date(result.date)
-      .toString()
-      .slice(0, 21)} and dealt ${result.damageDealt} damage${
-      result.victimDead ? ' and you were shutdown!' : '!'
-    }`,
-    true,
-  ];
-  this.sendNotification(newNotifications);
+  const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
 
   if (result.bodyguardKilled) {
@@ -511,6 +487,16 @@ userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
 
 userSchema.methods.setGracePeriod = function (now = Date.now()) {
   this.fightInformation.gracePeriod = now;
+};
+
+userSchema.methods.readNotifications = function () {
+  const notificationLength = this.account.notifications.length;
+  for (let i = 0; i < notificationLength; i += 1) {
+    if (!this.account.notifications[i].read) {
+      this.account.notifications[i].read = true;
+      this.markModified(`account.notifications.${i}.read`);
+    }
+  }
 };
 
 userSchema.methods.repair = function (percentage, cost) {
@@ -534,9 +520,6 @@ userSchema.methods.buyBodyguard = function () {
   }
 };
 
-// DATACENTER
-// DATACENTER
-
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   this.batteryDrain(result.batteryCost);
   dataCenter.requiredStash.forEach((stash) => {
@@ -544,14 +527,13 @@ userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   });
 };
 
-userSchema.methods.giveNotification = function (message, now = Date.now()) {
-  this.account.notifications[now] = [
-    `${message} ${new Date(now).toString().slice(0, 21)}`,
-    true,
-  ];
+userSchema.methods.sendNotification = function (message, now = Date.now(), read = false) {
+  this.account.notifications.push({
+    dateSent: new Date(now).toString().slice(0, 21),
+    message,
+    read, // set to true to give passive notification
+  });
 };
-
-// WANTEDLIST
 
 userSchema.methods.addBounty = function (bountyDonor, bounty) {
   // todo, change array to set to fix this issue?

@@ -99,7 +99,7 @@ const attackRecursiveBattle = (result) => {
     } else {
       const maxDamage = result.user.hackSkill.CPU / 3;
       const minDamage = result.user.hackSkill.CPU / 5;
-      newResult.damageDealt = Math.random() * (maxDamage - minDamage) + minDamage;
+      newResult.damageDealt = Math.round(Math.random() * (maxDamage - minDamage) + minDamage);
     }
     return newResult;
   }

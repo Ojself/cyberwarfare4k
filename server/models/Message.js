@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
@@ -18,11 +17,9 @@ const messageSchema = new Schema({
   },
 });
 
-
 messageSchema.methods.readMe = function () {
   this.read = true;
   this.save();
 };
-
 
 module.exports = mongoose.model('Message', messageSchema);

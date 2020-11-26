@@ -97,12 +97,13 @@ async function attackDataCenter(
   const now = Date.now();
   user.handleDataCenterAttack(dataCenter, result);
   dataCenter.handleAttack(user._id, result);
-  dataCenterOwner.giveNotification(
-    `${dataCenter.name} was attacked ${
-      result.destroyed ? 'and destroyed' : ''
-    } by ${user.name}!`,
-    now,
-  );
+
+  const notificationMessage = `${dataCenter.name} was attacked ${
+    result.destroyed ? 'and destroyed' : ''
+  } by ${user.name}!`;
+  dataCenterOwner.sendNotification(notificationMessage, now);
+
+  await dataCenterOwner.save();
   await dataCenter.save();
   return { result, user };
 }

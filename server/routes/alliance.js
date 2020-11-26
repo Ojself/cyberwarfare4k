@@ -171,15 +171,15 @@ router.post('/invite', async (req, res) => {
 // Retrives one alliance
 
 router.get('/:id', async (req, res) => {
-  console.log('this id');
+  const nameAndAvatar = ['name', 'account.avatar'];
   const alliance = await Alliance.findById(req.params.id)
-    .populate('boss', 'name')
-    .populate('cto', 'name')
-    .populate('analyst', 'name')
-    .populate('firstLead', 'name')
-    .populate('secondLead', 'name')
-    .populate('firstMonkeys', 'name')
-    .populate('secondMonkeys', 'name');
+    .populate('boss', nameAndAvatar)
+    .populate('cto', nameAndAvatar)
+    .populate('analyst', nameAndAvatar)
+    .populate('firstLead', nameAndAvatar)
+    .populate('secondLead', nameAndAvatar)
+    .populate('firstMonkeys', nameAndAvatar)
+    .populate('secondMonkeys', nameAndAvatar);
 
   res.status(200).json({
     success: true,

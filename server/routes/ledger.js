@@ -131,13 +131,8 @@ router.post('/transfer/:id', async (req, res) => {
       message,
     });
   }
-  const notification = [
-    `You received ${transferAmount} from ${user.name} at ${new Date(Date.now())
-      .toString()
-      .slice(0, 21)}`,
-    true,
-  ];
-  receiver.sendNotification(notification);
+  const notificationMessage = `You received ${transferAmount} from ${user.name}`;
+  receiver.sendNotification(notificationMessage, Date.now());
   user.ledgerDrain(amount);
   receiver.ledgerGain(transferAmount);
   await receiver.save();

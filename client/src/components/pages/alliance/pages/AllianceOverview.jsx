@@ -19,7 +19,7 @@ const AllianceOverview = (props) => {
       }
     };
     getAlliance();
-  }, []);
+  }, [console.log(alliance, "alliance")]);
 
   const styling = {
     officers: {
@@ -38,15 +38,21 @@ const AllianceOverview = (props) => {
     <div className="content">
       <div style={styling.officers}>
         <h4>Boss</h4>
-        <img src="https://picsum.photos/100/100" alt="Boss" />
-        <h6>
-          {alliance.boss && (
-            <Link to={`/hacker/${alliance.boss._id}`}>
-              {" "}
-              {alliance.boss.name}{" "}
-            </Link>
-          )}
-        </h6>
+        {alliance.boss && (
+          <>
+            <img
+              style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
+              src={`..${alliance.boss.account.avatar}`}
+              alt={alliance.boss.name}
+            />
+            <h6>
+              <Link to={`/hacker/${alliance.boss._id}`}>
+                {" "}
+                {alliance.boss.name}{" "}
+              </Link>
+            </h6>
+          </>
+        )}
       </div>
       <div
         style={styling.officers}
@@ -54,27 +60,47 @@ const AllianceOverview = (props) => {
       >
         <div>
           <h4>Analyst</h4>
-          <img src="https://picsum.photos/100/100" alt="Analyst" />
-          <h6>
-            {alliance.analyst && (
-              <Link to={`/hacker/${alliance.analyst._id}`}>
-                {" "}
-                {alliance.analyst.name}{" "}
-              </Link>
-            )}
-          </h6>
+          {alliance.analyst && (
+            <>
+              <img
+                style={{
+                  maxWidth: "120px",
+                  width: "100%",
+                  borderRadius: "50%",
+                }}
+                src={`..${alliance.analyst.account.avatar}`}
+                alt={alliance.analyst.name}
+              />
+              <h6>
+                <Link to={`/hacker/${alliance.analyst._id}`}>
+                  {" "}
+                  {alliance.analyst.name}{" "}
+                </Link>
+              </h6>
+            </>
+          )}
         </div>
         <div>
           <h4>CTO</h4>
-          <img src="https://picsum.photos/100/100" alt="CTO" />
-          <h6>
-            {alliance.cto && (
-              <Link to={`/hacker/${alliance.cto._id}`}>
-                {" "}
-                {alliance.cto.name}{" "}
-              </Link>
-            )}
-          </h6>
+          {alliance.cto && (
+            <>
+              <img
+                style={{
+                  maxWidth: "120px",
+                  width: "100%",
+                  borderRadius: "50%",
+                }}
+                src={`..${alliance.cto.account.avatar}`}
+                alt={alliance.cto.name}
+              />
+              <h6>
+                <Link to={`/hacker/${alliance.cto._id}`}>
+                  {" "}
+                  {alliance.cto.name}{" "}
+                </Link>
+              </h6>
+            </>
+          )}
         </div>
       </div>
       <div className="d-flex justify-content-around mb-5">

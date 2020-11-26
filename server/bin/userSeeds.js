@@ -14,7 +14,17 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const City = require('../models/City');
 const Alliance = require('../models/Alliance');
-const avatars = require('./avatars');
+const { walk } = require('./avatars');
+
+let avatars;
+const pathToAvatars = '../../client/public/hackerAvatars';
+
+/* Finds all avatars */
+walk(pathToAvatars).then((result) => {
+  avatars = result
+    .filter((avatar) => avatar.includes('DS_Store') === false)
+    .map((avatar) => avatar.slice(19));
+});
 
 const bcryptSalt = 10;
 
@@ -344,7 +354,7 @@ User.deleteMany()
     return User.create(users);
   })
   .then(async (usersCreated) => {
-    console.log(`${usersCreated.length} users created with the following id:`);
+    console.log(`${usersCreated.length} users created`);
     greyAlliance.boss = getUserId(usersCreated, 'boss');
     greyAlliance.cto = getUserId(usersCreated, 'cto');
     greyAlliance.analyst = getUserId(usersCreated, 'analyst');

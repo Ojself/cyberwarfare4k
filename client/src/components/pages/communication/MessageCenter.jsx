@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import api from "../../../api";
-import Typist from "react-typist";
 import { Link } from "react-router-dom";
 import {
   Form,
@@ -36,7 +35,7 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [textArea, setTextArea] = useState("");
 
-  const toggle = (tab) => {
+  const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
   const handleChange = (eventValue) => {
@@ -49,8 +48,8 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
     setSelectedOption({
       value: userId,
       label: name,
-    }); // todo, this does not work
-    toggle("3");
+    });
+    toggleTab("3");
   };
   const getId = (userName) => {
     if (!users.length || userName.toLowerCase() === "system") {
@@ -91,15 +90,11 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
 
       await setUsers(massagedUsers);
       setLoadingUsers(false);
-      readAllCommunication();
+      await api.readAllCommunication("messages");
       setAutoComposeTo(window.location.pathname, users);
     };
     fetchHackerNames();
   }, []);
-
-  const readAllCommunication = async () => {
-    await api.readAllCommunication("messages");
-  };
 
   const setAutoComposeTo = (path, users) => {
     if (!path.includes("=")) {
@@ -150,7 +145,7 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
                     active: activeTab === i + 1 + "",
                   })}
                   onClick={() => {
-                    toggle(i + 1 + "");
+                    toggleTab(i + 1 + "");
                   }}
                 >
                   {t}
