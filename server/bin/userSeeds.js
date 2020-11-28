@@ -16,23 +16,7 @@ const User = require('../models/User');
 const City = require('../models/City');
 const Alliance = require('../models/Alliance');
 
-let avatars;
-
-/* https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j */
-async function walk(dir) {
-  if (dir.endsWith('hackerAvatars/')) {
-    path.join(__dirname, dir);
-  }
-  let files = await fs.readdir(dir);
-  files = await Promise.all(files.map(async (file) => {
-    const filePath = path.join(dir, file);
-    const stats = await fs.stat(filePath);
-    if (stats.isDirectory()) return walk(filePath);
-    if (stats.isFile()) return filePath;
-  }));
-
-  return files.reduce((all, folderContents) => all.concat(folderContents), []);
-}
+const avatars = require('./avatars.json');
 
 const bcryptSalt = 10;
 
@@ -66,12 +50,6 @@ function randomCityId() {
 User.deleteMany()
   .then(() => getCities())
   .then(() => getAlliances())
-  .then(() => walk('./hackerAvatars'))
-  .then((result) => {
-    avatars = result
-      .filter((avatar) => avatar.includes('DS_Store') === false)
-      .map((avatar) => `/${avatar}`);
-  })
   .then(() => {
     const users = [
       {
