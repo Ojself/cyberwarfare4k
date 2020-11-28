@@ -23,7 +23,7 @@ async function walk(dir) {
   const newDir = path.join(__dirname, dir);
   let files = await fs.readdir(newDir);
   files = await Promise.all(files.map(async (file) => {
-    const filePath = path.join(dir, file);
+    const filePath = path.join(newDir, file);
     const stats = await fs.stat(filePath);
     if (stats.isDirectory()) return walk(filePath);
     if (stats.isFile()) return filePath;
