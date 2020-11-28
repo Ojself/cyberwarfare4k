@@ -20,10 +20,12 @@ let avatars;
 
 /* https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j */
 async function walk(dir) {
-  const newDir = path.join(__dirname, dir);
-  let files = await fs.readdir(newDir);
+  if (dir.endsWith('hackerAvatars/')) {
+    path.join(__dirname, dir);
+  }
+  let files = await fs.readdir(dir);
   files = await Promise.all(files.map(async (file) => {
-    const filePath = path.join(newDir, file);
+    const filePath = path.join(dir, file);
     const stats = await fs.stat(filePath);
     if (stats.isDirectory()) return walk(filePath);
     if (stats.isFile()) return filePath;
