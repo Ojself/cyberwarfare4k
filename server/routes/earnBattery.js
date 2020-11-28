@@ -95,6 +95,8 @@ router.post('/redeem', async (req, res) => {
   }
 
   console.log(req.body, 'reqbody');
+  console.log(req.headers);
+  console.log(req.headers['x-hub-signature']);
 
   if (!code) {
     return res.status(403).json({
