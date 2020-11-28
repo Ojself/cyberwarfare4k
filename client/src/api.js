@@ -210,7 +210,7 @@ export default {
 
   getLocals() {
     return service
-      .get("/city/local")
+      .get("/city/locals")
       .then((res) => res.data)
       .catch(errHandler);
   },

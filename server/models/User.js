@@ -253,57 +253,39 @@ const userSchema = new Schema(
   },
 );
 
-// this probably doesn't work. test it
 userSchema.methods.handleItemPurchase = function (item) {
   const currentItem = this.marketPlaceItems[item.type];
+  // lower the stats so items doesn't stack
   if (currentItem) {
-    // lower the stats so items doesn't stack
-    switch (currentItem.type) {
-      case 'CPU':
-        this.hackSkill.CPU -= currentItem.bonus;
-        break;
-      case 'AntiVirus':
-        this.hackSkill.AntiVirus -= currentItem.bonus;
-        break;
-      case 'Firewall':
-        this.playerStats.maxFirewall -= currentItem.bonus;
-        this.playerStats.currentFirewall -= currentItem.bonus;
-        break;
-      case 'Encryption':
-        this.hackSkill.Encryption -= currentItem.bonus;
-        break;
-      default:
-        break;
+    if (['CPU', 'AntiVirus', 'Encryption'].includes(currentItem.type)) {
+      this.giveHackSkill(-currentItem.bonus, item.type);
+    }
+    if (currentItem.type === 'Firewall') {
+      this.playerStats.maxFirewall -= currentItem.bonus;
+      this.playerStats.currentFirewall -= currentItem.bonus;
     }
   }
 
   // gives the user the item
-
   this.marketPlaceItems[item.type] = item;
-  // adds the bonus to user
-  switch (item.type) {
-    case 'CPU':
-      this.hackSkill.CPU += item.bonus;
-      break;
-    case 'AntiVirus':
-      this.hackSkill.AntiVirus += item.bonus;
-      break;
-    case 'Firewall':
-      this.playerStats.maxFirewall += item.bonus;
-      this.playerStats.currentFirewall += item.bonus;
-      break;
-    case 'Encryption':
-      this.hackSkill.Encryption += item.bonus;
-      break;
-    default:
-      break;
+
+  if (['CPU', 'AntiVirus', 'Encryption'].includes(item.type)) {
+    this.giveHackSkill(item.bonus, item.type);
   }
-  return this.save();
+  if (item.type === 'Firewall') {
+    this.playerStats.maxFirewall += item.bonus;
+    this.playerStats.currentFirewall += item.bonus;
+  }
 };
 
-userSchema.methods.giveLegendary = function (itemName = 'emp') {
-  this[itemName] += 1;
-  this.save();
+userSchema.methods.giveHackSkill = function (amount = 1, skill = 'Encryption') {
+  if (!this.hackSkill[skill]) {
+    return;
+  }
+  if (this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
+    return;
+  }
+  this.hackSkill[skill] += amount;
 };
 
 userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
@@ -311,7 +293,7 @@ userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
     return;
   }
   this.crimeSkill[skill] += amount;
-  if (this.crimeSkill[skill] < 200) {
+  if (this.crimeSkill[skill] > 200) {
     this.crimeSkill[skill] = 200;
   }
 };
@@ -551,13 +533,13 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.playerStats.currentFirewall += 15;
       break;
     case 'CPU':
-      this.hackSkill.CPU += 5;
+      this.giveHackSkill(5, 'CPU');
       break;
     case 'AntiVirus':
-      this.hackSkill.AntiVirus += 5;
+      this.giveHackSkill(5, 'AntiVirus');
       break;
     case 'Encryption':
-      this.hackSkill.Encryption += 5;
+      this.giveHackSkill(5, 'Encryption');
       break;
     case 'Technical':
       this.giveCrimeSkill(5, 'Technical');

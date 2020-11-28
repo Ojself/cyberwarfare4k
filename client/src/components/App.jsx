@@ -21,7 +21,7 @@ import Information from "./pages/Information";
 import Ladder from "./pages/Ladder";
 import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
-import Marketplace from "./pages/Marketplace";
+import Marketplace from "./pages/marketplace/Marketplace";
 import MyProfile from "./pages/myProfile/MyProfile";
 import MessageCenter from "./pages/communication/MessageCenter";
 import NavbarComp from "./pages/header-footer/Navbar";
@@ -187,7 +187,6 @@ const App = () => {
             />
           )}
         />
-        <Route path="/marketplace" component={Marketplace} />
         <Route path="/information" component={Information} />
         <Route path="/ladder" component={Ladder} />
         <Route
@@ -198,6 +197,12 @@ const App = () => {
               loading={loading}
               user={user}
             />
+          )}
+        />
+        <Route
+          path="/marketplace"
+          render={() => (
+            <Marketplace user={user} updateGlobalValues={updateGlobalValues} />
           )}
         />
         <Route

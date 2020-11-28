@@ -226,9 +226,19 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const { statPoint } = req.body;
-
-  /* todo, verify statpoint */
-  const user = await User.findById(userId);
+  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption', 'exp', 'Firewall'];
+  if (!possibleStatPoints.includes(statPoint)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Illegal upgrade',
+    });
+  }
+  /* todo, criteria route */
+  const user = await User.findById(userId)
+    .populate('marketPlaceItems.CPU')
+    .populate('marketPlaceItems.Firewall')
+    .populate('marketPlaceItems.AntiVirus')
+    .populate('marketPlaceItems.Encryption');
 
   if (user.playerStats.statPoints <= 0) {
     return res.status(400).json({

@@ -20,7 +20,7 @@ const Notification = ({ loading, user }) => {
   ) : (
     <ListGroup>
       {user.account.notifications.length ? (
-        user.account.notifications.map((notification, i) => (
+        user.account.notifications.reverse().map((notification, i) => (
           <ListGroupItem
             key={`${notification.message}${i}`}
             active={!notification.read}

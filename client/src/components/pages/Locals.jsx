@@ -48,6 +48,7 @@ const Locals = (props) => {
         <thead>
           <tr>
             <th>Hacker</th>
+            <th>Alliance</th>
             <th>Rank</th>
           </tr>
         </thead>
@@ -67,7 +68,7 @@ const Locals = (props) => {
                       {user.name}
                     </Link>
                   </th>
-
+                  <td>{user.alliance ? user.alliance.name : "-"}</td>
                   <td>{user.playerStats.rankName}</td>
                 </tr>
               ))}

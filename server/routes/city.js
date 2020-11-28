@@ -43,12 +43,11 @@ router.get('/', async (req, res) => {
   });
 });
 
-
 // @GET
 // PRIVATE
 // Retrives local players and reviels online status
 
-router.get('/local', async (req, res) => {
+router.get('/locals', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
@@ -67,7 +66,6 @@ router.get('/local', async (req, res) => {
   });
 });
 
-
 // @POST
 // PRIVATE
 // Changes the user city
@@ -76,11 +74,9 @@ router.post('/', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-
   const { cityId } = req.body;
 
   const newCity = await City.findById(cityId);
-
 
   const oldCityId = user.playerStats.city;
   const oldCity = await City.findById(oldCityId);
@@ -99,11 +95,9 @@ router.post('/', async (req, res) => {
   await user.changeCity(newCity, batteryCost);
   await oldCity.departure(user._id);
 
-
   const updatedUser = await user.save().then((u) => u.populate('playerStats.city', 'name').execPopulate());
 
   console.log(updatedUser, '?');
-
 
   return res.status(200).json({
     success: true,

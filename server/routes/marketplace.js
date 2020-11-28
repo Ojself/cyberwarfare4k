@@ -1,5 +1,6 @@
 const express = require('express');
 const { marketPlaceCriterias } = require('../middlewares/middleMarketPlace');
+const { saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();
 const User = require('../models/User');
@@ -31,19 +32,21 @@ router.post('/buy', async (req, res) => {
   const item = await Item.findById(itemId);
   const user = await User.findById(userId);
 
-  const message = marketPlaceCriterias(user, item);
+  const disallowed = marketPlaceCriterias(user, item);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
   user.handleItemPurchase(item);
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `You successfuly purchased ${item.name} for ${item.price}`,
+    user: updatedUser,
   });
 });
 // todo check if if messages actually return the res.json

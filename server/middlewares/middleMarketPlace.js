@@ -1,32 +1,17 @@
-// todo, export and require functions for this and datacenter
-// todo you messed up here check routes
-const {
-  checkFunds,
-  checkSameValue,
-  existingValue,
-} = require('../middlewares/middleHelpers');
-
-// Sees if everything is in order to buy item
-function marketPlaceCriterias(user, item) {
-  if (!existingValue(user)) {
+const marketPlaceCriterias = (user, item) => {
+  if (!user) {
     return "User doesn't exist";
   }
-  if (!existingValue(item)) {
+  if (!item) {
     return "Opponent doesn't exist";
   }
-  if (!checkFunds(user.playerStats.bitCoins, item.price)) {
+  if (user.playerStats.bitCoins < item.price) {
     return 'Insufficient funds';
   }
-  // stringify because tostring of null doesn't work
-  if (
-    !checkSameValue(
-      JSON.stringify(user.marketPlaceItems[item.type]),
-      JSON.stringify(item._id),
-    )
-  ) {
+  if (JSON.stringify(user.marketPlaceItems[item.type]) === JSON.stringify(item._id.toString())) {
     return 'You already own this item';
   }
   return null;
-}
+};
 
 module.exports = { marketPlaceCriterias };

@@ -20,17 +20,21 @@ const URLS = {
   chw4k: "https://github.com/Ojself/cyberwarfare4k",
   megarpg: "https://discord.com/invite/DZXZzC3",
   chessathor: "http://chessathor2.flesjoe.com/",
+  patreon: "https://www.patreon.com/cyberhackerwarfare4000?fan_landing=true",
 };
 
 const styles = {
   ghimg: {
+    paddingTop: "5%",
     margin: "auto",
     maxWidth: "10vw",
   },
   discordImg: {
+    paddingTop: "5%",
     margin: "auto",
   },
   chessImg: {
+    paddingTop: "5%",
     margin: "auto",
     maxWidth: "10vw",
   },
@@ -119,8 +123,8 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
     </InputGroup>
   );
   const cardDeck = (
-    <CardDeck className="text-light">
-      <Card className="d-flex justify-content-center">
+    <CardDeck className="d-flex justify-content-around h-100">
+      <Card>
         <CardImg
           top
           style={styles.ghimg}
@@ -128,7 +132,7 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
           alt="Card image cap"
         />
         <CardBody style={styles.cardBody}>
-          <CardTitle tag="h5">Star the game!</CardTitle>
+          <CardTitle tag="h4">Star the game!</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
             Hourly bonus{" "}
             <span role="img" aria-label="battery">
@@ -136,15 +140,45 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
             </span>
           </CardSubtitle>
           <CardText>
-            Type in your github username and star the{" "}
+            Submit your github username and star the{" "}
             <a target="_blank" rel="noopener noreferrer" href={URLS.chw4k}>
               CyberHackerWarfare4K
             </a>{" "}
-            project at Github to receive an hourly battery bonus!
+            project at Github
           </CardText>
           {githubUsernameInput}
         </CardBody>
       </Card>
+      <Card>
+        <CardImg
+          top
+          style={styles.ghimg}
+          src="/earnBatteryPics/patreon_light.png"
+          alt="Card image cap"
+        />
+        <CardBody className="d-flex" style={styles.cardBody}>
+          <CardTitle tag="h4">Patreon</CardTitle>
+          <CardSubtitle tag="h6" className="mb-2 text-muted">
+            Hourly bonus{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
+          </CardSubtitle>
+          <CardText>
+            Support CyberhackerWarfare4000 at
+            <a target="_blank" rel="noopener noreferrer" href={URLS.patreon}>
+              {" "}
+              Patreon
+            </a>
+          </CardText>
+          <a target="_blank" rel="noopener noreferrer" href={URLS.patreon}>
+            <Button className="w-100" name="Patreon">
+              Support us!
+            </Button>
+          </a>
+        </CardBody>
+      </Card>
+
       <Card>
         <CardImg
           top
@@ -153,7 +187,7 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
           alt="Card image cap"
         />
         <CardBody style={styles.cardBody}>
-          <CardTitle tag="h5">MEGA rpg</CardTitle>
+          <CardTitle tag="h4">MEGA rpg</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
             10{" "}
             <span role="img" aria-label="battery">
@@ -178,7 +212,7 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
           alt="Card image cap"
         />
         <CardBody style={styles.cardBody}>
-          <CardTitle tag="h5">Chessathor</CardTitle>
+          <CardTitle tag="h4">Chessathor</CardTitle>
           <CardSubtitle tag="h6" className="mb-2 text-muted">
             15{" "}
             <span role="img" aria-label="battery">
@@ -198,7 +232,15 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
       </Card>
     </CardDeck>
   );
-  return <div className="container">{cardDeck}</div>;
+  return (
+    <div
+      className="display-flex justify-content-center mx-5"
+      style={{ height: "60vh" }}
+    >
+      <h1>Earn battery</h1>
+      {cardDeck}
+    </div>
+  );
 };
 
 export default EarnBattery;

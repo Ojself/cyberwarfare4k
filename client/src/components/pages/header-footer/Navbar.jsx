@@ -39,10 +39,16 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
   };
 
   const checkAllCommunication = () => {
-    return checkInbox() /* || checkCommunication("notifications") */;
+    return userHasMail() || userHasNotification();
+  };
+  const userHasNotification = () => {
+    if (loading) return false;
+    return user.account.notifications.some(
+      (notification) => notification.read === false
+    );
   };
 
-  const checkInbox = () => {
+  const userHasMail = () => {
     if (loading) return false;
     return messages.inbox.length && !messages.inbox[0].read;
   };
@@ -144,20 +150,19 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
                 )}
                 <DropdownItem href="/forum">Public Forum</DropdownItem>
                 <DropdownItem
-                  className={checkInbox("messages") ? "text-danger" : null}
+                  className={userHasMail() ? "text-danger" : null}
                   href="/messages"
                 >
                   Messages
                 </DropdownItem>
                 <DropdownItem
-                  /* className={checkInbox("notifications") ? "text-danger" : null */
+                  className={userHasNotification() ? "text-danger" : null}
                   href="/notifications"
                 >
                   Notifications
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-            {/* todo, probably dont need this because you wont see the navbar anyway */}
             <NavItem>
               <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
                 Logout

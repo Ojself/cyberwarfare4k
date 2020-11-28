@@ -121,7 +121,6 @@ const getOpponentInformation = async (opponentId, allUsers) => {
   ranking.createdAt = `${
     monthsOverview[opponent.createdAt.getMonth()]
   } ${opponent.createdAt.getFullYear()}`;
-  console.log(ranking, 'ranking');
   return { opponent, ranking };
 };
 
@@ -130,6 +129,10 @@ const saveAndUpdateUser = async (user) => {
   const populatedUser = await savedUser
     .populate('playerStats.city', 'name')
     .populate('alliance', 'name')
+    .populate('marketPlaceItems.CPU')
+    .populate('marketPlaceItems.Firewall')
+    .populate('marketPlaceItems.AntiVirus')
+    .populate('marketPlaceItems.Encryption')
     .execPopulate();
   return populatedUser;
 };
