@@ -70,6 +70,11 @@ User.deleteMany()
           vpnChanges: Math.floor(Math.random() * 5),
           currencyPurchases: Math.floor(Math.random() * 5),
         },
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 25,
+          Encryption: 15,
+        },
         account: {
           password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
           avatar: giveRandomAvatar(),
@@ -91,6 +96,11 @@ User.deleteMany()
       },
       {
         email: 'bob@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 25,
+          Encryption: 15,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -120,6 +130,11 @@ User.deleteMany()
       },
       {
         email: 'chuck@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 25,
+          Encryption: 15,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -149,6 +164,11 @@ User.deleteMany()
       },
       {
         email: 'craig@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 25,
+          Encryption: 15,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -178,6 +198,11 @@ User.deleteMany()
       },
       {
         email: 'eve@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 25,
+          Encryption: 15,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -207,6 +232,11 @@ User.deleteMany()
       },
       {
         email: 'faythe@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 75,
+          Encryption: 55,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -236,6 +266,11 @@ User.deleteMany()
       },
       {
         email: 'mallory@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 75,
+          Encryption: 55,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -265,6 +300,11 @@ User.deleteMany()
       },
       {
         email: 'sybil@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 160,
+          Encryption: 150,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -294,6 +334,11 @@ User.deleteMany()
       },
       {
         email: 'trudy@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 125,
+          Encryption: 100,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -323,6 +368,11 @@ User.deleteMany()
       },
       {
         email: 'gerald@email.com',
+        hackSkill: {
+          CPU: 1,
+          AntiVirus: 200,
+          Encryption: 200,
+        },
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -349,6 +399,25 @@ User.deleteMany()
         name: 'npc_gerald',
         alliance: greyAlliance._id,
         allianceRole: 'boss',
+      },
+      {
+        email: 'tormod@mail.com',
+        name: 'Admin_Tor',
+        account: {
+          password: '$2b$10$dXcx87D2LmkjravCI9UgROSW92oGCIx4qBb9qPiz.MCmlKo882uce',
+          avatar: '/hackerAvatars/Waifu/greenblack.png',
+          subscription: 'Bronze',
+          ip: ['192.168.1.1', '192.168.1.2'],
+          isSetup: true,
+        },
+        playerStats: {
+          bounty: 0,
+          maxFireWall: 100,
+          currentFirewall: 100,
+          city: randomCityId(),
+          rank: 0,
+          rankName: 'Script kiddie',
+        },
       },
     ];
     return User.create(users);

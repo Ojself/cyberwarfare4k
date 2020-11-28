@@ -73,7 +73,6 @@ const forums = [{
   category: 'offtopic',
 }];
 
-
 const allianceForums = [{
   creator: null,
   title: 'Leader',

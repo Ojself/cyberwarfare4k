@@ -162,5 +162,4 @@ const forumThreads = {
   },
 };
 
-
 module.exports = { forumThreads };

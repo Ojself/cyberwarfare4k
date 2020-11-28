@@ -1,15 +1,15 @@
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "../.env") });
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 // To execute this seed, run from the root of the project
 // $ node bin/seeds.js
 
-const mongoose = require("mongoose");
-const DataCenter = require("../models/DataCenter");
-const City = require("../models/City");
-const Stash = require("../models/Stash");
+const mongoose = require('mongoose');
+const DataCenter = require('../models/DataCenter');
+const City = require('../models/City');
+const Stash = require('../models/Stash');
 
-require("../configs/database");
+require('../configs/database');
 
 const cityIds = [];
 const stashesIds = [];
@@ -49,7 +49,7 @@ DataCenter.deleteMany()
       // SHANGHAI
 
       {
-        name: "China Telecom",
+        name: 'China Telecom',
         difficulty: 30,
         currentFirewall: 90,
         maxFirewall: 90,
@@ -59,7 +59,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "China Unicom",
+        name: 'China Unicom',
         difficulty: 50,
         currentFirewall: 150,
         maxFirewall: 150,
@@ -69,7 +69,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "China Mobile Hohot",
+        name: 'China Mobile Hohot',
         difficulty: 70,
         currentFirewall: 210,
         maxFirewall: 210,
@@ -79,7 +79,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Harbin Data Centre",
+        name: 'Harbin Data Centre',
         difficulty: 90,
         currentFirewall: 270,
         maxFirewall: 270,
@@ -89,7 +89,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Range International Data Centre",
+        name: 'Range International Data Centre',
         difficulty: 150,
         currentFirewall: 450,
         maxFirewall: 450,
@@ -102,7 +102,7 @@ DataCenter.deleteMany()
       // HANOI
 
       {
-        name: "Telehouse (KDDI)",
+        name: 'Telehouse (KDDI)',
         difficulty: 30,
         currentFirewall: 90,
         maxFirewall: 90,
@@ -112,7 +112,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "NTT Communications",
+        name: 'NTT Communications',
         difficulty: 50,
         currentFirewall: 150,
         maxFirewall: 150,
@@ -122,7 +122,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "GDS Hanoi Thanglong",
+        name: 'GDS Hanoi Thanglong',
         difficulty: 70,
         currentFirewall: 210,
         maxFirewall: 210,
@@ -132,7 +132,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Tulip Data Centre ",
+        name: 'Tulip Data Centre ',
         difficulty: 90,
         currentFirewall: 270,
         maxFirewall: 270,
@@ -142,7 +142,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "TELEHOUSE Hanoi",
+        name: 'TELEHOUSE Hanoi',
         difficulty: 150,
         currentFirewall: 450,
         maxFirewall: 450,
@@ -155,7 +155,7 @@ DataCenter.deleteMany()
       // STAVANGER
       // STAVANGER
       {
-        name: "Equinix",
+        name: 'Equinix',
         difficulty: 30,
         currentFirewall: 90,
         maxFirewall: 90,
@@ -165,7 +165,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Next Generation Data",
+        name: 'Next Generation Data',
         difficulty: 50,
         currentFirewall: 150,
         maxFirewall: 150,
@@ -175,7 +175,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Global Switch",
+        name: 'Global Switch',
         difficulty: 70,
         currentFirewall: 210,
         maxFirewall: 210,
@@ -185,7 +185,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Kao Data Campus",
+        name: 'Kao Data Campus',
         difficulty: 90,
         currentFirewall: 270,
         maxFirewall: 270,
@@ -195,7 +195,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Kolos Data Centre",
+        name: 'Kolos Data Centre',
         difficulty: 150,
         currentFirewall: 450,
         maxFirewall: 450,
@@ -209,7 +209,7 @@ DataCenter.deleteMany()
       // PHOENIX
 
       {
-        name: "Digital Realty Trust",
+        name: 'Digital Realty Trust',
         difficulty: 30,
         currentFirewall: 90,
         maxFirewall: 90,
@@ -219,7 +219,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "DuPont Fabros Technology",
+        name: 'DuPont Fabros Technology',
         difficulty: 50,
         currentFirewall: 150,
         maxFirewall: 150,
@@ -229,7 +229,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Lakeside Technology Centre",
+        name: 'Lakeside Technology Centre',
         difficulty: 70,
         currentFirewall: 210,
         maxFirewall: 210,
@@ -239,7 +239,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Switch SUPERNAP",
+        name: 'Switch SUPERNAP',
         difficulty: 90,
         currentFirewall: 270,
         maxFirewall: 270,
@@ -249,7 +249,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "The Citadel",
+        name: 'The Citadel',
         difficulty: 150,
         currentFirewall: 450,
         maxFirewall: 450,
@@ -263,7 +263,7 @@ DataCenter.deleteMany()
       // NOVOSIBIRSK
 
       {
-        name: "Selectel",
+        name: 'Selectel',
         difficulty: 30,
         currentFirewall: 90,
         maxFirewall: 90,
@@ -273,7 +273,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Rostelecom",
+        name: 'Rostelecom',
         difficulty: 50,
         currentFirewall: 150,
         maxFirewall: 150,
@@ -283,7 +283,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Datahouse",
+        name: 'Datahouse',
         difficulty: 70,
         currentFirewall: 210,
         maxFirewall: 210,
@@ -293,7 +293,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "Data Harbour",
+        name: 'Data Harbour',
         difficulty: 90,
         currentFirewall: 270,
         maxFirewall: 270,
@@ -303,7 +303,7 @@ DataCenter.deleteMany()
         requiredStash: getThreeRequiredStash(),
       },
       {
-        name: "RTCOMM",
+        name: 'RTCOMM',
         difficulty: 150,
         currentFirewall: 450,
         maxFirewall: 450,
@@ -317,7 +317,7 @@ DataCenter.deleteMany()
   })
   .then((dataCentersCreated) => {
     console.log(
-      `${dataCentersCreated.length} datacenters created with the following id:`
+      `${dataCentersCreated.length} datacenters created with the following id:`,
     );
     console.log(dataCentersCreated.map((u) => u._id));
   })

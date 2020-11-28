@@ -11,13 +11,11 @@ const Alliance = require('../models/Alliance');
 
 require('../configs/database');
 
-
 let alliances;
 
 const getAlliances = async () => {
   alliances = await Alliance.find({});
 };
-
 
 const setGlobalThreadsWithForumIds = (threadName) => {
   let id;
@@ -37,7 +35,6 @@ const setGlobalThreadsWithForumIds = (threadName) => {
   });
 };
 
-
 const createAllianceThreads = (allianceId, threads) => {
   Object.keys(threads).forEach((k) => {
     Forum.findOne({ $and: [{ title: k }, { alliance: mongoose.Types.ObjectId(allianceId) }] }).then((result) => {
@@ -55,7 +52,6 @@ const createAllianceThreads = (allianceId, threads) => {
     });
   });
 };
-
 
 // todo. create alliance forum when alliance is created
 // todo. render something on frontend when no threads / forums / comments
