@@ -73,8 +73,14 @@ router.post('/redeem', async (req, res) => {
   const { code } = req.body;
   const userAgent = req.headers['user-agent'];
   console.log(userAgent, 'ua');
+  // GitHub-Hookshot/8338482
+  // payload.action === created
+  // payloaad.action === deleted
+  // sender.login
+  const { payload } = req.body;
+  console.log(payload.action);
+  console.log(payload.sender.login);
   console.log(req.body, 'reqbody');
-
 
   if (!code) {
     return res.status(403).json({
@@ -103,7 +109,6 @@ router.post('/redeem', async (req, res) => {
     user: user.name,
   });
 });
-
 
 // generates new string
 router.post('/', async (req, res) => {
@@ -147,7 +152,6 @@ router.post('/', async (req, res) => {
     user.earnBattery[game].code = code;
     user.earnBattery[game].expires = now + (1000 * 60 * 60 * 24);
   }
-
 
   const updatedUser = await user.save();
 
