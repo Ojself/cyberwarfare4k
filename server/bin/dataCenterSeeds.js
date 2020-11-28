@@ -327,5 +327,6 @@ DataCenter.deleteMany()
   })
   .catch((err) => {
     mongoose.disconnect();
-    throw err;
+    console.error(err);
+    process.exit(1);
   });

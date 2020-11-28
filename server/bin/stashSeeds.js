@@ -115,10 +115,11 @@ Stash.deleteMany()
     console.log(stashCreated.map((u) => u._id));
   })
   .then(() => {
-    // Close properly the connection to Mongoose
     mongoose.disconnect();
+    process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    throw err;
+    console.error(err);
+    process.exit(1);
   });

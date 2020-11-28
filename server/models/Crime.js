@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -8,22 +8,22 @@ const crimeSchema = new Schema({
   available: { type: Boolean, default: true },
   crimeType: {
     type: String,
-    enum: ["Technical", "Social Engineering", "Forensics", "Cryptography"],
+    enum: ['Technical', 'Social Engineering', 'Forensics', 'Cryptography'],
   },
   description: String,
   difficulty: {
     type: Number,
-    enum: [30, 50, 70, 110, 150],
+    enum: [30, 50, 70, 90, 150],
   },
   currentFirewall: Number,
   maxFirewall: Number,
   difficultyString: {
     type: String,
-    enum: ["easy", "medium", "hard", "challenging", "impossible"],
+    enum: ['easy', 'medium', 'hard', 'challenging', 'impossible'],
   },
   defeatedBy: {
     type: [Schema.Types.ObjectId],
-    ref: "User",
+    ref: 'User',
   },
 });
 
@@ -41,4 +41,4 @@ crimeSchema.methods.handleCrime = function (finalResult) {
   }
 };
 
-module.exports = mongoose.model("Crime", crimeSchema);
+module.exports = mongoose.model('Crime', crimeSchema);

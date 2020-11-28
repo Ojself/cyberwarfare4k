@@ -26,10 +26,11 @@ Alliance.deleteMany()
     console.log(alliancesCreated.map((u) => u._id));
   })
   .then(() => {
-    console.log('disconnecting from mongoose');
     mongoose.disconnect();
+    process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    throw err;
+    console.error(err);
+    process.exit(1);
   });

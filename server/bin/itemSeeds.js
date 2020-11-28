@@ -165,8 +165,10 @@ Item.deleteMany()
   })
   .then(() => {
     mongoose.disconnect();
+    process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    throw err;
+    console.error(err);
+    process.exit(1);
   });
