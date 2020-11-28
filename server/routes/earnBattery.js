@@ -77,7 +77,11 @@ router.post('/redeem', async (req, res) => {
   // payload.action === created
   // payloaad.action === deleted
   // sender.login
-  console.log(Object.keys(req.body.payload), 'keys');
+  console.log(req.body.payload, 'payload');
+  const parsed = JSON.parse(req.body.payload);
+  console.log(parsed, 'parsed');
+  console.log(Object.keys(parsed), 'keys');
+  console.log(Object.values(parsed), 'values');
   const { payload } = req.body;
   console.log(payload.action);
   console.log(payload.sender.login);
