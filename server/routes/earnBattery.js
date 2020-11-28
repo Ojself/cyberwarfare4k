@@ -4,6 +4,19 @@ const axios = require('axios');
 const router = express.Router();
 const User = require('../models/User');
 
+const handleGithubEvent = async (payload) => {
+  const parsed = JSON.parse(payload);
+  const { action } = parsed;
+  const { login } = parsed.sender;
+
+  const githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+  if (githubUser && ['created', 'deleted'].includes(action)) {
+    const star = action === 'created';
+    githubUser.earnBattery.githubStar = star;
+    return githubUser.save();
+  }
+};
+
 const generateQueryString = (game) => {
   const lexi = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let query = '';
@@ -73,18 +86,13 @@ router.post('/redeem', async (req, res) => {
   const { code } = req.body;
   const userAgent = req.headers['user-agent'];
   console.log(userAgent, 'ua');
-  // GitHub-Hookshot/8338482
-  // payload.action === created
-  // payloaad.action === deleted
-  // sender.login
-  console.log(req.body.payload, 'payload');
-  const parsed = JSON.parse(req.body.payload);
-  console.log(parsed, 'parsed');
-  console.log(Object.keys(parsed), 'keys');
-  console.log(Object.values(parsed), 'values');
-  const { payload } = req.body;
-  console.log(payload.action);
-  console.log(payload.sender.login);
+  if (req.body.payload) {
+    console.log(userAgent, 'ua github?');
+    console.log(userAgent === 'GitHub-Hookshot/8338482');
+    // GitHub-Hookshot/8338482
+    await handleGithubEvent(req.body.payload);
+    return;
+  }
 
   console.log(req.body, 'reqbody');
 
