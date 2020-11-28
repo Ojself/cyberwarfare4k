@@ -31,13 +31,6 @@ async function walk(dir) {
   return files.reduce((all, folderContents) => all.concat(folderContents), []);
 }
 
-/* Finds all avatars */
-walk('./hackerAvatars').then((result) => {
-  avatars = result
-    .filter((avatar) => avatar.includes('DS_Store') === false)
-    .map((avatar) => `/${avatar}`);
-});
-
 const bcryptSalt = 10;
 
 const cityIds = [];
@@ -70,6 +63,12 @@ function randomCityId() {
 User.deleteMany()
   .then(() => getCities())
   .then(() => getAlliances())
+  .then(() => walk('./hackerAvatars'))
+  .then((result) => {
+    avatars = result
+      .filter((avatar) => avatar.includes('DS_Store') === false)
+      .map((avatar) => `/${avatar}`);
+  })
   .then(() => {
     const users = [
       {
