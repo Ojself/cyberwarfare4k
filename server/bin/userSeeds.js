@@ -17,7 +17,6 @@ const City = require('../models/City');
 const Alliance = require('../models/Alliance');
 
 let avatars;
-const pathToAvatars = './hackerAvatars';
 
 /* https://stackoverflow.com/questions/2727167/how-do-you-get-a-list-of-the-names-of-all-files-present-in-a-directory-in-node-j */
 async function walk(dir) {
@@ -33,10 +32,10 @@ async function walk(dir) {
 }
 
 /* Finds all avatars */
-walk(pathToAvatars).then((result) => {
+walk('./hackerAvatars').then((result) => {
   avatars = result
     .filter((avatar) => avatar.includes('DS_Store') === false)
-    .map((avatar) => avatar.slice(19));
+    .map((avatar) => `/${avatar}`);
 });
 
 const bcryptSalt = 10;
