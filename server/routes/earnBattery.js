@@ -120,7 +120,7 @@ router.post('/redeem', async (req, res) => {
   return res.status(200).json({
     success: true,
     message: '00110100 00110010', // 42
-    user: user.name,
+    name: user.name,
   });
 });
 

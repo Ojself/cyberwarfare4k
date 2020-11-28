@@ -106,7 +106,13 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
         }
       />
       {userHasGithub ? (
-        <InputGroupText title="Please allow 1 hour after starring the project for the bonus to take effect">
+        <InputGroupText
+          className={user.earnBattery.githubStar && "text-success"}
+          title={
+            !user.earnBattery.githubStar &&
+            "If you already starred the project, try unstarring and starring again!"
+          }
+        >
           {userHasStarred ? icons.success : icons.fail}{" "}
         </InputGroupText>
       ) : (
