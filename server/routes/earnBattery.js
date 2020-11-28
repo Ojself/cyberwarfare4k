@@ -7,9 +7,12 @@ const User = require('../models/User');
 const handleGithubEvent = async (payload) => {
   const parsed = JSON.parse(payload);
   const { action } = parsed;
+  console.log(action, 'action');
   const { login } = parsed.sender;
+  console.log(login, 'login');
 
   const githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+  console.log(githubUser, 'githubUser');
   if (githubUser && ['created', 'deleted'].includes(action)) {
     const star = action === 'created';
     githubUser.earnBattery.githubStar = star;
@@ -86,17 +89,15 @@ router.post('/redeem', async (req, res) => {
   const { code } = req.body;
   const userAgent = req.headers['user-agent'];
   console.log(userAgent, 'ua');
+  console.log(req.body, 'reqbody');
+  console.log(req.headers);
+  console.log(req.headers['x-hub-signature']);
+
   if (req.body.payload) {
-    console.log(userAgent, 'ua github?');
-    console.log(userAgent === 'GitHub-Hookshot/8338482');
     // GitHub-Hookshot/8338482
     await handleGithubEvent(req.body.payload);
     return;
   }
-
-  console.log(req.body, 'reqbody');
-  console.log(req.headers);
-  console.log(req.headers['x-hub-signature']);
 
   if (!code) {
     return res.status(403).json({
