@@ -7,19 +7,10 @@ const User = require('../models/User');
 const handleGithubEvent = async (payload) => {
   const parsed = JSON.parse(payload);
   const { action } = parsed;
-  console.log(action, 'action');
   const { login } = parsed.sender;
-  console.log(login, 'login');
 
-  let githubUser;
-  const reg = new RegExp(login, 'i');
-  console.log(reg, 'reg');
-  try {
-    githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
-  } catch (err) {
-    console.log(err, 'err');
-  }
-  console.log(githubUser, 'githubUser');
+  const githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+
   if (githubUser && ['created', 'deleted'].includes(action)) {
     const star = action === 'created';
     githubUser.earnBattery.githubStar = star;
@@ -95,28 +86,27 @@ router.post('/redeem', async (req, res) => {
   // todo. ensure useragent and other creds is coming from heroku chessathor or megarpg
   const { code } = req.body;
   const userAgent = req.headers['user-agent'];
+  console.log(code, 'code');
   console.log(userAgent, 'ua');
   console.log(req.body, 'reqbody');
-  console.log(req.headers);
   console.log(req.headers['x-hub-signature']);
 
   if (req.body.payload) {
-    // GitHub-Hookshot/8338482
-    await handleGithubEvent(req.body.payload);
-    return;
+    // check headers
+    return handleGithubEvent(req.body.payload);
   }
 
   if (!code) {
-    return res.status(403).json({
+    res.status(403).json({
       success: false,
       message: 'Missing input',
     });
   }
-
-  const user = await User.findOne({ $or: [{ 'earnBattery.megarpg.code': code }, { 'earnBattery.chessathor.code': code }] });
+  const formattedCode = new RegExp(code, 'i');
+  const user = await User.findOne({ $or: [{ 'earnBattery.megarpg.code': { $regex: formattedCode } }, { 'earnBattery.chessathor.code': { $regex: formattedCode } }] });
 
   if (!user) {
-    return res.status(403).json({
+    res.status(403).json({
       success: false,
       message: 'Invalid input',
     });
