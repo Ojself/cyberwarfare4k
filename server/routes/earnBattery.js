@@ -12,8 +12,10 @@ const handleGithubEvent = async (payload) => {
   console.log(login, 'login');
 
   let githubUser;
+  const reg = new RegExp(login, 'i');
+  console.log(reg, 'reg');
   try {
-    await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+    githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
   } catch (err) {
     console.log(err, 'err');
   }
