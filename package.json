@@ -1,6 +1,6 @@
 {
   "name": "cyberwarfare4k",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Work in progress. including the readme",
   "main": "index.js",
   "dependencies": {},
@@ -13,7 +13,7 @@
     "dev:client": "cd client && npm run start"
   },
   "engines": {
-    "node": "8.9.4"
+    "node": "^12"
   },
   "repository": {
     "type": "git",
