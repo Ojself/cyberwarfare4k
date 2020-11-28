@@ -3,24 +3,24 @@ import { Button } from "reactstrap";
 
 import api from "../../../api";
 
-const validateInput = (data)=> {
-      if (!data.email || !data.password){
-        return 'Missing input'
-      }
-      if (data.email.indexOf("@")<0){
-        return "Invalid Email"
-      }
-      if (data.password.length<=5){
-        return "Too short password"
-      }
-    }
+const validateInput = (data) => {
+  if (!data.email || !data.password) {
+    return "Missing input";
+  }
+  if (data.email.indexOf("@") < 0) {
+    return "Invalid Email";
+  }
+  if (data.password.length <= 5) {
+    return "Too short password";
+  }
+};
 
 const Signup = (props) => {
   const [signupState, setSignupState] = useState({
     email: "",
     password: "",
   });
-  const [failMessage, setFailMessage] = useState("")
+  const [failMessage, setFailMessage] = useState("");
 
   const handleInputChange = (e) => {
     setSignupState({
@@ -35,18 +35,18 @@ const Signup = (props) => {
       email: signupState.email,
       password: signupState.password,
     };
-    const disAllowed = validateInput(data)
-    if (disAllowed){
+    const disAllowed = validateInput(data);
+    if (disAllowed) {
       setSignupState({
-      ...signupState,
-      password: "",
-    })
-      setFailMessage(disAllowed)
+        ...signupState,
+        password: "",
+      });
+      setFailMessage(disAllowed);
 
-    setTimeout(()=>{
-    setFailMessage("")
-    },5000)
-    return
+      setTimeout(() => {
+        setFailMessage("");
+      }, 5000);
+      return;
     }
     try {
       await api.signup(data);
@@ -58,13 +58,11 @@ const Signup = (props) => {
 
   return (
     <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
-      <h2 className="text-left mb-4">
-        Register 
-      </h2>
+      <h2 className="text-left mb-4">Register</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
-        
+          disabled
           className="w-100 mb-4"
           type="email"
           value={signupState.email}
@@ -74,7 +72,7 @@ const Signup = (props) => {
 
         <p className="mb-0">Password</p>
         <input
-        
+          disabled
           className="w-100"
           type="password"
           value={signupState.password}
@@ -86,11 +84,13 @@ const Signup = (props) => {
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
-          
+          disabled={true}
         >
           Sign up
         </Button>
-        <div style={{minHeight:"8vh"}}className="text-danger">{failMessage}</div>
+        <div style={{ minHeight: "8vh" }} className="text-danger">
+          {failMessage}
+        </div>
       </form>
     </div>
   );
