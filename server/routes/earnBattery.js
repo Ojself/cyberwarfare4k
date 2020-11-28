@@ -11,7 +11,12 @@ const handleGithubEvent = async (payload) => {
   const { login } = parsed.sender;
   console.log(login, 'login');
 
-  const githubUser = await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+  let githubUser;
+  try {
+    await User.findOne({ 'earnBattery.githubUserName': { $regex: new RegExp(login, 'i') } });
+  } catch (err) {
+    console.log(err, 'err');
+  }
   console.log(githubUser, 'githubUser');
   if (githubUser && ['created', 'deleted'].includes(action)) {
     const star = action === 'created';
