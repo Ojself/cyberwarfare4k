@@ -47,7 +47,6 @@ const styles = {
 
 const EarnBattery = ({ user, loading, updateGlobalValues }) => {
   const handleGenerate = async (event) => {
-    console.log(event.target);
     const game = event.target.value;
     const data = await api.createBatteryQuery(game);
     updateGlobalValues(data);
@@ -66,29 +65,37 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
   const userHasStarred = loading ? false : user.earnBattery.githubStar;
 
   const getButton = (game) => {
-    let disabled = true;
+    if (!user || loading) return;
+    let onclick = (e) => handleGenerate(e);
     let innerText;
-    if (
-      loading ||
-      (!user.earnBattery[game].code &&
-        user.earnBattery[game].expires > Date.now())
-    ) {
-      disabled = false;
+    let disabled = false;
+    let cursor = "pointer";
+
+    const currentGame = user.earnBattery[game];
+    console.log(currentGame, "currentGame");
+    const readyToGenerateNewCode = new Date(currentGame.expires) < Date.now();
+
+    if (!currentGame.code && readyToGenerateNewCode) {
       innerText = "Generate code";
-    } else if (user.earnBattery[game].code) {
-      innerText = user.earnBattery[game].code;
-    } else if (user.earnBattery[game].expires > Date.now()) {
+    } else if (!!currentGame.code) {
+      onclick = () => navigator.clipboard.writeText(currentGame.code);
+      cursor = "copy";
+      innerText = currentGame.code;
+    } else if (!readyToGenerateNewCode) {
+      onclick = () => {};
+      disabled = true;
+      cursor = "default";
       innerText = "You have to wait";
     } else {
-      disabled = false;
       innerText = "Generate code!";
     }
     return (
       <Button
         name={game}
-        value={game}
         disabled={disabled}
-        onClick={(e) => handleGenerate(e)}
+        style={{ cursor: cursor }}
+        value={game}
+        onClick={onclick}
       >
         {innerText}
       </Button>
@@ -179,7 +186,9 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
           </CardText>
           <a target="_blank" rel="noopener noreferrer" href={URLS.patreon}>
             <Button className="w-100" name="Patreon">
-              Support us!
+              {user && user.account.subscription
+                ? `${user.account.subscription} supporter 🎉`
+                : "Support CHW4K!"}
             </Button>
           </a>
         </CardBody>

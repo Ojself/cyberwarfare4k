@@ -1,8 +1,264 @@
-import React from "react";
-// import api from "../../api";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWifi } from "@fortawesome/free-solid-svg-icons";
+import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
 
 const Information = () => {
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [hackOpen, setHackOpen] = useState(false);
+  const [allianceOpen, setAllianceOpen] = useState(false);
+  const [cityOpen, setCityOpen] = useState(false);
+  const [communicationOpen, setCommunicationOpen] = useState(false);
+
+  const infoSection = (
+    <div>
+      <Button
+        className="w-25"
+        color="primary"
+        onClick={() => setInfoOpen(!infoOpen)}
+        style={{ marginBottom: "1rem" }}
+      >
+        Info
+      </Button>
+      <Collapse isOpen={infoOpen}>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">My Profile</CardTitle>
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
+            labore wes anderson cred nesciunt sapiente ea proident.
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Wanted Hackers</CardTitle>
+            There is a great reward for anyone who shutsdown a hacker with a
+            bounty on their head. Just be careful
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Top Hackers</CardTitle>
+            The best hackers in CyberhackerWarfare4000 are displayed here
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Top Alliances</CardTitle>
+            An overview of the active alliances stats can be found here.
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">
+              Earn Battery
+              <span role="img" aria-label="battery">
+                &#9889;
+              </span>
+            </CardTitle>
+            A variety of options for you to support CyberhackerWarfare4000
+            and/or earn some battery
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Information</CardTitle>
+            You are here right now!
+          </CardBody>
+        </Card>
+      </Collapse>
+    </div>
+  );
+
+  const communicationSection = (
+    <div>
+      <Button
+        className="w-25"
+        color="primary"
+        onClick={() => setCommunicationOpen(!communicationOpen)}
+        style={{ marginBottom: "1rem" }}
+      >
+        Communication
+      </Button>
+      <Collapse isOpen={communicationOpen}>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Public Forum</CardTitle>
+            Work in progress
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Messages</CardTitle>
+            Send messages to other hackers. This will be red if you have an
+            unread message
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Notifications</CardTitle>
+            Whenever you are notified with an event, it will pop up here. This
+            will be red if you have an unread notification
+          </CardBody>
+        </Card>
+      </Collapse>
+    </div>
+  );
+
+  const allianceSection = (
+    <div>
+      <Button
+        className="w-25"
+        color="primary"
+        onClick={() => setAllianceOpen(!allianceOpen)}
+        style={{ marginBottom: "1rem" }}
+      >
+        Alliance
+      </Button>
+      <Collapse isOpen={allianceOpen}>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Create</CardTitle>
+            Form an alliance, if you have the bitcoins for it
+          </CardBody>
+        </Card>
+      </Collapse>
+    </div>
+  );
+
+  const citySection = (
+    <div>
+      <Button
+        className="w-25"
+        color="primary"
+        onClick={() => setCityOpen(!cityOpen)}
+        style={{ marginBottom: "1rem" }}
+      >
+        City
+      </Button>
+      <Collapse isOpen={cityOpen}>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Local Hackers</CardTitle>
+            An overview of the local hackers in your current city. If they are
+            online, <FontAwesomeIcon
+              className="text-warning"
+              icon={faWifi}
+            />{" "}
+            will appear
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Service & Support</CardTitle>
+            Heal up your system or hire body guards to protect yourself. The
+            prices will raise every time you do this.
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">VPN</CardTitle>
+            Change your VPN status between several cities. Each city have their
+            own prices and datacenters. You can only hack others within the same
+            city
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Crypto Currency</CardTitle>
+            Buy and sell crypto currency. The prices changes every hour and are
+            the same for every city. If you shutdown someone, you will get their
+            currencies
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Marketplace</CardTitle>
+            Boost your system by buying some aditional components. You can only
+            hold one of each category
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Chip Chop Shop</CardTitle>
+            Work in progress
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Ledger</CardTitle>
+            You can safely store your bitcoins in your ledger. Here it will be
+            safe from being robbed. You can also transfer bitcoins to other
+            users for a small fee
+          </CardBody>
+        </Card>
+      </Collapse>
+    </div>
+  );
+
+  const hackSection = (
+    <div>
+      <Button
+        className="w-25"
+        color="primary"
+        onClick={() => setHackOpen(!hackOpen)}
+        style={{ marginBottom: "1rem" }}
+      >
+        Hack
+      </Button>
+      <Collapse isOpen={hackOpen}>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Petty</CardTitle>
+            The easiest and cheapest way to commit crimes. The higher the
+            hacking skills, the higher the chance of success
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Crime</CardTitle>A variety of different crimes
+            you can commit to earn some bitcoins and xp.
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Datacenters</CardTitle>
+            There are 5 datacenters in each city that you can own. By owning one
+            or more, they will give you revenue by the minute. If owned by
+            someone else, you can attack and destroy it
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Organized Crimes</CardTitle>
+            Work In Progress
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Hack players</CardTitle>
+            Work In Progress, try attacking players through their profile
+          </CardBody>
+        </Card>
+      </Collapse>
+    </div>
+  );
+
   return (
+    <div className="page-container">
+      <h1>INFORMATION</h1>
+      <div className="content">
+        {infoSection}
+        {hackSection}
+        {allianceSection}
+        {citySection}
+        {communicationSection}
+      </div>
+    </div>
+  );
+};
+
+/* return (
     <div>
       <h1>INFORMATION</h1>
 
@@ -133,7 +389,6 @@ const Information = () => {
         Thanks to Lukas, Vivian and Noellia for making the project come true.
       </p>
     </div>
-  );
-};
+  ); */
 
 export default Information;

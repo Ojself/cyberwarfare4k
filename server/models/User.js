@@ -24,7 +24,6 @@ const userSchema = new Schema(
       subscription: {
         type: String,
         enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
-        default: 'Bronze',
       },
       isSetup: {
         type: Boolean,
@@ -282,7 +281,8 @@ userSchema.methods.giveHackSkill = function (amount = 1, skill = 'Encryption') {
   if (!this.hackSkill[skill]) {
     return;
   }
-  if (this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
+
+  if (this.marketPlaceItems[skill] && this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
     return;
   }
   this.hackSkill[skill] += amount;

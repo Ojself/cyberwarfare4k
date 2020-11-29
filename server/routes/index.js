@@ -142,11 +142,8 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 
 router.get('/opponents/', async (req, res) => {
   let users;
-  const dbSelectOptions = {
-    name: '1',
-  };
   try {
-    users = await User.find().select(dbSelectOptions);
+    users = await User.find().select({ name: '1' });
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -209,11 +206,12 @@ router.get('/ladder', async (req, res) => {
     });
   }
   users = getShuffledArr(users);
+  const filteredUsers = users.filter((user) => !user.name.startsWith('unconfirmedplayer'));
 
   return res.status(200).json({
     success: true,
     message: 'users loaded..',
-    users,
+    users: filteredUsers,
   });
 });
 
