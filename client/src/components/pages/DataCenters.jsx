@@ -29,7 +29,7 @@ const getHealthBar = (dc) => {
   );
 };
 
-const DataCenter = ({ loading, user, updateGlobalValues }) => {
+const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
   const [dataCenterState, setDataCenterState] = useState({
     dataCenters: [],
     loading: true,
@@ -77,7 +77,7 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
     updateGlobalValues(result);
   };
   const getDataCenterActionButton = (dc) => {
-    if (loading) return;
+    if (globalLoading) return;
 
     let innerText = "Buy";
     let onClick = () => {};
@@ -173,7 +173,7 @@ const DataCenter = ({ loading, user, updateGlobalValues }) => {
   return (
     <div className="page-container">
       <h1>Data centers</h1>
-      {<h6>{user ? user.playerStats.city.name: "City"}</h6>}
+      {<h6>{user ? user.playerStats.city.name : "City"}</h6>}
       {dataCenterState.loading ? <p>loading..</p> : dataCenterTable}
     </div>
   );

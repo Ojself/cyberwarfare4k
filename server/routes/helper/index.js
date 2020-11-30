@@ -127,7 +127,7 @@ const getOpponentInformation = async (opponentId, allUsers) => {
 const saveAndUpdateUser = async (user) => {
   const savedUser = await user.save();
   const populatedUser = await savedUser
-    .populate('playerStats.city', 'name')
+    .populate('playerStats.city', ['name', 'stashPriceMultiplier'])
     .populate('alliance', 'name')
     .populate('marketPlaceItems.CPU')
     .populate('marketPlaceItems.Firewall')

@@ -45,7 +45,7 @@ const styles = {
   },
 };
 
-const EarnBattery = ({ user, loading, updateGlobalValues }) => {
+const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   const handleGenerate = async (event) => {
     const game = event.target.value;
     const data = await api.createBatteryQuery(game);
@@ -61,11 +61,11 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
     success: <i className="fas fa-check"></i>,
   };
 
-  const userHasGithub = loading || !!user.earnBattery.githubUserName;
-  const userHasStarred = loading ? false : user.earnBattery.githubStar;
+  const userHasGithub = globalLoading || !!user.earnBattery.githubUserName;
+  const userHasStarred = globalLoading ? false : user.earnBattery.githubStar;
 
   const getButton = (game) => {
-    if (!user || loading) return;
+    if (!user || globalLoading) return;
     let onclick = (e) => handleGenerate(e);
     let innerText;
     let disabled = false;
@@ -101,7 +101,7 @@ const EarnBattery = ({ user, loading, updateGlobalValues }) => {
       </Button>
     );
   };
-  const githubUsernameInput = !loading && (
+  const githubUsernameInput = !globalLoading && (
     <InputGroup>
       <Input
         name="githubName"

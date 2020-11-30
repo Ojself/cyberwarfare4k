@@ -5,7 +5,7 @@ import { pettyStrings } from "../../_helpers/pettyStrings";
 import PettyResult from "./pettyResult";
 import { Button } from "reactstrap";
 
-const PettyHack = ({ user, loading, updateGlobalValues }) => {
+const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
   const [pettyState, setPettyState] = useState({
     hacking: false,
     hackingPhrases: [], // push Typist components in here
@@ -133,8 +133,8 @@ const PettyHack = ({ user, loading, updateGlobalValues }) => {
       buttonText = "Stopping..";
       buttonDisabled = true;
     }
-    console.log(user, "user");
-    if (loading || user.playerStats.battery <= 0) {
+
+    if (globalLoading || user.playerStats.battery <= 0) {
       buttonDisabled = true;
     }
 

@@ -45,8 +45,14 @@ const VPN = ({ updateGlobalValues }) => {
 
   const handleTravel = async () => {
     const cityId = vpnState.selectedOption.value;
-    const result = await api.changeCity({ cityId });
-    updateGlobalValues(result);
+    let data;
+    try {
+      data = await api.changeCity({ cityId })
+    } catch(err){
+      updateGlobalValues(err);
+      return
+    }
+    updateGlobalValues(data);
   };
 
   const priceOverview = vpnState.selectedOption && (

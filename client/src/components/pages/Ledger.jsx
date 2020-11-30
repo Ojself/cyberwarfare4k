@@ -20,7 +20,7 @@ import {
   Col,
 } from "reactstrap";
 
-const Ledger = ({ user, loading, updateGlobalValues }) => {
+const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
   const [ledgerState, setLedgerState] = useState({
     users: [],
     depositWithdrawAmount: false,
@@ -159,11 +159,11 @@ const Ledger = ({ user, loading, updateGlobalValues }) => {
                   {/* <CardTitle>0% admission fee </CardTitle> */}
                   <CardText>
                     In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
-                    {loading ? 0 : Math.floor(user.playerStats.ledger)}
+                    {globalLoading ? 0 : Math.floor(user.playerStats.ledger)}
                   </CardText>
                   <CardText>
                     On hand: <span style={{ color: "#F08F18" }}>&#8383;</span>
-                    {loading ? 0 : Math.floor(user.playerStats.bitCoins)}
+                    {globalLoading ? 0 : Math.floor(user.playerStats.bitCoins)}
                   </CardText>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">
@@ -210,7 +210,7 @@ const Ledger = ({ user, loading, updateGlobalValues }) => {
                   <CardText>5% admission fee </CardText>
                   <CardText>
                     In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
-                    {loading ? 0 : user.playerStats.ledger}
+                    {globalLoading ? 0 : user.playerStats.ledger}
                   </CardText>
                   <Select
                     className="text-dark"

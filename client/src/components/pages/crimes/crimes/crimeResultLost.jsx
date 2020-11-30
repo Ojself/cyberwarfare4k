@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const crimeResultLost = props => {
-  const [crimeResultLost, setCrimeResultLost] = useState({});
-
-  useEffect(() => {}, []);
-
+const crimeResultLost = () => {
   const giveRandomLostString = () => {
     return "You are terrible";
   };

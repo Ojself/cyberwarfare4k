@@ -23,7 +23,7 @@ import classnames from "classnames";
 /* set condition if user does not belong to an alliance */
 /* add pictures of stash in stash-tab with correct colors */
 
-const MyProfile = ({ loading, user, updateGlobalValues }) => {
+const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
@@ -35,17 +35,16 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     updateGlobalValues(result);
   };
 
-  const getStashColor = (color) => {
+  const getStashColor = (index) => {
     // todo. color should be consistent
+    // extract to helper
     const defaultColors = ["red", "blue", "orange", "green"];
-    return color
-      ? color
-      : defaultColors[Math.floor(Math.random() * defaultColors.length)];
+    return defaultColors[index % defaultColors.length];
   };
 
   const getMarketPlaceItemValue = (type, value) => {
     if (
-      loading ||
+      globalLoading ||
       !user.marketPlaceItems[type] ||
       !user.marketPlaceItems[type][value]
     ) {
@@ -60,7 +59,7 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     }
     return user.currencies[name];
   };
-  const profileAvatars = !loading && (
+  const profileAvatars = !globalLoading && (
     <div className="d-flex justify-content-center mb-2">
       {/* <div >
             <img
@@ -86,7 +85,7 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     </div>
   );
 
-  const profileSkills = !loading && (
+  const profileSkills = !globalLoading && (
     <div className="d-flex flex-column col-4">
       {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
         (c) => {
@@ -136,7 +135,7 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     </div>
   );
 
-  const profileRankOverview = !loading && (
+  const profileRankOverview = !globalLoading && (
     <div className="col-4">
       <ul className="list-group">
         <li className="list-group-item bg-dark mb-2">
@@ -275,14 +274,14 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
             <Row>
               <Col sm="12">
                 <div className="d-flex row">
-                  {!loading &&
+                  {!globalLoading &&
                     Object.keys(user.stash).map((s, i) => (
                       <div key={i}>
                         <img
                           style={{ maxWidth: "75px", width: "100%" }}
-                          src={`/stashPics/${s}/${getStashColor()}.png`}
+                          src={`/stashPics/${s}/${getStashColor(i)}.png`}
                           title={s}
-                          alt={"Stash"}
+                          alt={s}
                         />
 
                         <p>{user.stash[s]}</p>
@@ -297,7 +296,7 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     </div>
   );
 
-  const profileHeader = !loading && (
+  const profileHeader = !globalLoading && (
     <div>
       {user.playerStats.statPoints ? (
         <div>
@@ -322,7 +321,9 @@ const MyProfile = ({ loading, user, updateGlobalValues }) => {
     </div>
   );
 
-  return <div className="mt-5">{loading ? <p>loading..</p> : profilePage}</div>;
+  return (
+    <div className="mt-5">{globalLoading ? <p>loading..</p> : profilePage}</div>
+  );
 };
 
 export default MyProfile;

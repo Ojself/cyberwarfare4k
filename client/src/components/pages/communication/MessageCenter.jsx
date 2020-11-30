@@ -28,7 +28,7 @@ import classnames from "classnames";
 // alternate background color for easier reading
 // todo, linking color of names
 
-const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
+const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -159,7 +159,7 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
             <Row>
               <Col>
                 <ListGroup>
-                  {loading ? (
+                  {globalLoading ? (
                     "loading.."
                   ) : messages.inbox.length ? (
                     messages.inbox.map((m, i) => {
@@ -207,7 +207,7 @@ const MessageCenter = ({ updateGlobalValues, loading, messages }) => {
             <Row>
               <Col>
                 <ListGroup>
-                  {loading ? (
+                  {globalLoading ? (
                     "loading.."
                   ) : messages.sent.length ? (
                     messages.sent.map((m, i) => {

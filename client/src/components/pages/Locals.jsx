@@ -8,7 +8,7 @@ import api from "../../api";
 /* indicate online status */
 /* Look into res.send values. too much is being sent */
 
-const Locals = (props) => {
+const Locals = ({ globalLoading, user }) => {
   const [localState, setLocalState] = useState({
     cityLocals: [],
     localOnlineUsers: [],
@@ -41,8 +41,7 @@ const Locals = (props) => {
   return (
     <div className="page-container ">
       <h1 className="">
-        Locals in{" "}
-        {props.loading ? "your city!" : props.user.playerStats.city.name}
+        Locals in {globalLoading ? "your city!" : user.playerStats.city.name}
       </h1>
       <Table striped dark className="content">
         <thead>

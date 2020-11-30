@@ -20,7 +20,9 @@ const avatars = require('./avatars.json');
 
 const bcryptSalt = 10;
 
-const cityIds = [];
+let cities;
+let cityIds;
+
 let greyAlliance;
 
 function giveRandomAvatar() {
@@ -33,10 +35,8 @@ const getUserId = (users, role) => {
 };
 
 const getCities = async () => {
-  const cities = await City.find();
-  cities.forEach((c) => {
-    cityIds.push(c._id);
-  });
+  cities = await City.find();
+  cityIds = cities.map((c) => c._id);
 };
 
 const getAlliances = async () => {
@@ -412,6 +412,10 @@ User.deleteMany()
         },
       },
     ];
+    cities.forEach(async (city) => {
+      city.residents = users.filter((user) => user.playerStats.city._id.toString() === city._id.toString());
+      await city.save();
+    });
     return User.create(users);
   })
   .then(async (usersCreated) => {

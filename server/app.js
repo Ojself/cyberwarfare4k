@@ -58,12 +58,13 @@ app.use('/api/communication', require('./routes/communication'));
 app.use('/api/city', require('./routes/city'));
 app.use('/api/currency', require('./routes/currency'));
 app.use('/api/datacenter', require('./routes/datacenter'));
+app.use('/api/earnBattery', require('./routes/earnBattery'));
 app.use('/api/forum', require('./routes/forum'));
 app.use('/api/hack', require('./routes/hack'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/marketplace', require('./routes/marketplace'));
-app.use('/api/earnBattery', require('./routes/earnBattery'));
 app.use('/api/service', require('./routes/service'));
+app.use('/api/stashes', require('./routes/stashes'));
 app.use('/api/wanted', require('./routes/wanted'));
 
 // For any routes that starts with "/api", catch 404 and forward to error handler

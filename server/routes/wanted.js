@@ -53,7 +53,7 @@ router.post('/add-bounty', async (req, res) => {
     });
   }
 
-  user.bitcoinDrain(bounty);
+  user.bitCoinDrain(bounty);
   await user.save();
   bountyTarget.addBounty(user, bounty);
   await bountyTarget.save();

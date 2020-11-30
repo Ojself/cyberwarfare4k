@@ -7,7 +7,7 @@ import {
   ListGroupItemText,
 } from "reactstrap";
 
-const Notification = ({ loading, user }) => {
+const Notification = ({ globalLoading, user }) => {
   useEffect(() => {
     const readAllNotifications = async () => {
       await api.readAllCommunication("notifications");
@@ -15,7 +15,7 @@ const Notification = ({ loading, user }) => {
     readAllNotifications();
   }, []);
 
-  const notificationList = loading ? (
+  const notificationList = globalLoading ? (
     <p>Loading..</p>
   ) : (
     <ListGroup>

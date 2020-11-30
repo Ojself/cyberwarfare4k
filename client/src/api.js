@@ -208,6 +208,26 @@ export default {
       .catch(errHandler);
   },
 
+  getStashes() {
+    return service
+      .get("./stashes")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  sellStashes(body){
+    return service
+      .post("./stashes/sell", body)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  buyStashes(body){
+    return service
+      .post("./stashes/buy", body)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   getLocals() {
     return service
       .get("/city/locals")

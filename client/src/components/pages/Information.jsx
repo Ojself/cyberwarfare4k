@@ -24,16 +24,15 @@ const Information = () => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">My Profile</CardTitle>
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-            terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-            labore wes anderson cred nesciunt sapiente ea proident.
+            Everything you need to know about yourself is there
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Wanted Hackers</CardTitle>
-            There is a great reward for anyone who shutsdown a hacker with a
-            bounty on their head. Just be careful
+            There is a great reward for anyone who shuts down a hacker with a
+            bounty on their head. Be careful, though. Placing a bounty on
+            someone will attract attention to yourself
           </CardBody>
         </Card>
         <Card className="mb-2">

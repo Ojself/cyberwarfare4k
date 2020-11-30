@@ -10,18 +10,15 @@ const ForumOverview = (props) => {
   });
 
   useEffect(() => {
-    const fetchForumOverviewData = async ()=> {
+    const fetchForumOverviewData = async () => {
       const data = await api.getForums();
-      const forums = forumDataMassager(
-        data.forums,
-        data.threadCount
-      );
+      const forums = forumDataMassager(data.forums, data.threadCount);
       setforumOverviewState({
         ...forumOverviewState,
         forums: forums,
         loading: false,
       });
-    }
+    };
     fetchForumOverviewData();
   }, []);
 

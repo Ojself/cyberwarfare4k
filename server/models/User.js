@@ -312,7 +312,7 @@ userSchema.methods.batteryGain = function (battery) {
   }
 };
 
-userSchema.methods.bitcoinDrain = function (bitCoins) {
+userSchema.methods.bitCoinDrain = function (bitCoins) {
   this.playerStats.bitCoins -= parseInt(bitCoins, 10);
   if (this.playerStats.bitCoins < 0) {
     this.playerStats.bitCoins = 0;
@@ -335,7 +335,7 @@ userSchema.methods.ledgerGain = function (bitCoins) {
 };
 
 userSchema.methods.depositLedger = function (bitCoins) {
-  this.bitcoinDrain(bitCoins);
+  this.bitCoinDrain(bitCoins);
   this.ledgerGain(bitCoins);
   // this.playerStats.bitCoins -= bitCoins * fee;
 };
@@ -373,7 +373,7 @@ userSchema.methods.purchaseCurrency = function (
   totalPrice,
 ) {
   this.playerStats.battery -= batteryCost;
-  this.bitcoinDrain(totalPrice);
+  this.bitCoinDrain(totalPrice);
   this.currencies[currency.name] += amount;
   this.save();
 };
@@ -401,7 +401,7 @@ userSchema.methods.leaveAlliance = function () {
 };
 
 userSchema.methods.createAlliance = function (cost, allianceId) {
-  this.bitcoinDrain(cost);
+  this.bitCoinDrain(cost);
   this.alliance = allianceId;
   this.allianceRole = 'boss';
 };
@@ -482,7 +482,7 @@ userSchema.methods.readNotifications = function () {
 };
 
 userSchema.methods.repair = function (percentage, cost) {
-  this.bitcoinDrain(cost);
+  this.bitCoinDrain(cost);
   this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
   if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
@@ -494,7 +494,7 @@ userSchema.methods.repair = function (percentage, cost) {
 
 userSchema.methods.buyBodyguard = function () {
   const cost = this.playerStats.bodyguards.price;
-  this.bitcoinDrain(cost);
+  this.bitCoinDrain(cost);
   this.playerStats.bodyguards.alive += 1;
   this.playerStats.bodyguards.bought += 1;
   if (this.playerStats.bodyguards.bought > 5) {
@@ -506,6 +506,20 @@ userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   this.batteryDrain(result.batteryCost);
   dataCenter.requiredStash.forEach((stash) => {
     this.stash[stash] -= 1;
+  });
+};
+
+userSchema.methods.handleBuyStash = function (stashToBuy, totalSum) {
+  this.bitCoinDrain(totalSum);
+  Object.keys(stashToBuy).forEach((stash) => {
+    this.stash[stash] += stashToBuy[stash];
+  });
+};
+
+userSchema.methods.handleSellStash = function (stashToSell, totalSum) {
+  this.bitCoinGain(totalSum);
+  Object.keys(stashToSell).forEach((stash) => {
+    this.stash[stash] -= stashToSell[stash];
   });
 };
 

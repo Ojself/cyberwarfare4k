@@ -15,7 +15,7 @@ import CryptoCurrenciesChart from "./CryptoCurrencies";
 import api from "../../../api";
 
 // todo: rename user and loading
-const CryptoCurrencies = (props) => {
+const CryptoCurrencies = ({ globalLoading, user }) => {
   const [cryptoState, setCryptoState] = useState({
     currencies: null,
     loading: true,
@@ -145,7 +145,7 @@ const CryptoCurrencies = (props) => {
                   </td>
                   {/* TODO icon  */}
                   <td>{KFormatter(cu.available)}</td>
-                  <td>{props.loading ? 0 : props.user.currencies[cu.name]}</td>
+                  <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
                   {cu.lastPurchasedBy[0] ? (
                     <td>
                       <Link to={`profile/${cu.lastPurchasedBy[0]._id}`}>
@@ -165,8 +165,7 @@ const CryptoCurrencies = (props) => {
                         value={cryptoState[cu.name]}
                         onChange={handleInputChange}
                         disabled={
-                          props.loading ||
-                          cu.levelReq >= props.user.playerStats.rank
+                          globalLoading || cu.levelReq >= user.playerStats.rank
                         }
                       />
 
@@ -175,15 +174,15 @@ const CryptoCurrencies = (props) => {
                           name={cu.name}
                           onClick={(e) => handleBuy(e)}
                           disabled={
-                            props.loading ||
-                            cu.levelReq >= props.user.playerStats.rank
+                            globalLoading ||
+                            cu.levelReq >= user.playerStats.rank
                           }
                         >
                           BUY
                         </Button>
                       </InputGroupAddon>
-                      {props.loading ||
-                        (cu.levelReq >= props.user.playerStats.rank && (
+                      {globalLoading ||
+                        (cu.levelReq >= user.playerStats.rank && (
                           <UncontrolledTooltip
                             placement="top"
                             target={`disableTip${i}`}

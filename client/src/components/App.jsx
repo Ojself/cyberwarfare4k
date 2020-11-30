@@ -5,6 +5,7 @@ import Typist from "react-typist";
 
 import AllianceLadder from "./pages/alliance/pages/Ladder";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
+import ChipChopShop from "./pages/chipchopshop/ChipChopShop";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
@@ -51,10 +52,12 @@ const App = () => {
 
   const updateGlobalValues = (data, renderMessage = true) => {
     console.log("updating global", data);
+    
     if (data.user) {
       setUser(data.user);
     }
     if (renderMessage && data.message) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       setGlobalMessage({
         message: data.message,
         success: data.success || false,
@@ -77,11 +80,11 @@ const App = () => {
         <>
           <NavbarComp
             updateGlobalValues={updateGlobalValues}
-            loading={loading}
+            globalLoading={loading}
             messages={messages}
             user={user}
           />
-          <StatusBar loading={loading} user={user} />
+          <StatusBar globalLoading={loading} user={user} />
           <div className="globalMessage">
             {globalMessage.message && (
               <Typist
@@ -106,7 +109,7 @@ const App = () => {
           render={(props) => (
             <CreateAlliance
               {...props}
-              loading={loading}
+              globalLoading={loading}
               updateGlobalValues={updateGlobalValues}
             />
           )}
@@ -114,18 +117,28 @@ const App = () => {
         <Route path="/alliance/ladder" component={AllianceLadder} />
         <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
+          path="/chipchopshop"
+          render={() => (
+            <ChipChopShop
+              updateGlobalValues={updateGlobalValues}
+              globalLoading={loading}
+              user={user}
+            />
+          )}
+        />
+        <Route
           path="/create-hacker"
-          render={() => <CreateHacker loading={loading} user={user} />}
+          render={() => <CreateHacker globalLoading={loading} user={user} />}
         />
         <Route
           path="/cryptocurrency"
-          render={() => <CryptoCurrency loading={loading} user={user} />}
+          render={() => <CryptoCurrency globalLoading={loading} user={user} />}
         />
         <Route
           path="/datacenters"
           render={() => (
             <DataCenters
-              loading={loading}
+              globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}
             />
@@ -133,7 +146,7 @@ const App = () => {
         />
         <Route
           path="/forum/:forumId/:threadId"
-          render={() => <ForumThread loading={loading} user={user} />}
+          render={() => <ForumThread globalLoading={loading} user={user} />}
         />
 
         <Route
@@ -141,7 +154,7 @@ const App = () => {
           render={() => (
             <EarnBattery
               glo
-              loading={loading}
+              globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}
             />
@@ -150,7 +163,7 @@ const App = () => {
         <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
         <Route
           path="/forum"
-          render={() => <ForumOverview loading={loading} user={user} />}
+          render={() => <ForumOverview globalLoading={loading} user={user} />}
         />
         <Route
           path="/hack-crimes"
@@ -164,14 +177,14 @@ const App = () => {
         />
         <Route
           path="/locals"
-          render={() => <Locals loading={loading} user={user} />}
+          render={() => <Locals globalLoading={loading} user={user} />}
         />
 
         <Route
           path="/my-profile"
           render={() => (
             <MyProfile
-              loading={loading}
+              globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}
             />
@@ -181,7 +194,7 @@ const App = () => {
           path="/petty-hacker"
           render={() => (
             <Petty
-              loading={loading}
+              globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}
             />
@@ -194,7 +207,7 @@ const App = () => {
           render={() => (
             <Ledger
               updateGlobalValues={updateGlobalValues}
-              loading={loading}
+              globalLoading={loading}
               user={user}
             />
           )}
@@ -210,7 +223,7 @@ const App = () => {
           render={() => (
             <MessageCenter
               updateGlobalValues={updateGlobalValues}
-              loading={loading}
+              globalLoading={loading}
               messages={messages}
             />
           )}
@@ -221,7 +234,7 @@ const App = () => {
           render={() => (
             <Notifications
               updateGlobalValues={updateGlobalValues}
-              loading={loading}
+              globalLoading={loading}
               user={user}
             />
           )}
@@ -240,7 +253,7 @@ const App = () => {
           render={() => (
             <VPN
               updateGlobalValues={updateGlobalValues}
-              loading={loading}
+              globalLoading={loading}
               user={user}
             />
           )}

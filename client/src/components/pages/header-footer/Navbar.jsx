@@ -20,13 +20,13 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
+const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   const [toolOpen, setToolOpen] = useState(false);
 
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
-  const currentCity = loading ? "City" : user.playerStats.city.name;
+  const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = (e) => {
     api.logout();
@@ -42,14 +42,14 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
     return userHasMail() || userHasNotification();
   };
   const userHasNotification = () => {
-    if (loading) return false;
+    if (globalLoading) return false;
     return user.account.notifications.some(
       (notification) => notification.read === false
     );
   };
 
   const userHasMail = () => {
-    if (loading) return false;
+    if (globalLoading) return false;
     return messages.inbox.length && !messages.inbox[0].read;
   };
 
@@ -129,7 +129,7 @@ const NavbarComp = ({ loading, messages, user, updateGlobalValues }) => {
                   Crypto Currency
                 </DropdownItem>
                 <DropdownItem href="/marketplace">Marketplace</DropdownItem>
-                <DropdownItem>Chip Chop Shop</DropdownItem>
+                <DropdownItem href="/chipchopshop">Chip Chop Shop</DropdownItem>
                 <DropdownItem href="/ledger">Ledger</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

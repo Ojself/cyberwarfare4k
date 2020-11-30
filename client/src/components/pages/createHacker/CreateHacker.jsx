@@ -20,7 +20,7 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 
-const CreateHacker = (props) => {
+const CreateHacker = () => {
   const [createState, setCreateState] = useState({
     message: "",
     selectedCity: "",

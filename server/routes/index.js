@@ -120,7 +120,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
       .populate('marketPlaceItems.AntiVirus')
       .populate('marketPlaceItems.Encryption')
       .populate('alliance', 'name')
-      .populate('playerStats.city', 'name');
+      .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
     const messages = await getInbox(userId);
     res.status(200).json({
       success: true,
