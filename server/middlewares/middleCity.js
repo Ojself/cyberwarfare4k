@@ -3,18 +3,18 @@ const {
   existingValue,
   checkFunds,
   checkSameValue,
-} = require('../middlewares/middleHelpers');
+} = require('./middleHelpers');
 
 // Sees if everything is in order to get cities
-function getCityRouteCriterias(cities) {
+const getCityRouteCriterias = (cities) => {
   if (!existingValue(cities)) {
     return "Cities doesn't exist";
   }
   return null;
-}
+};
 
 // Sees if everything is in order to change city
-function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
+const changeCityRouteCriterias = (user, newCity, oldCity, batteryCost) => {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
@@ -26,10 +26,6 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
   //   return "Departure city doesn't exist";
   // }
 
-  if (!existingValue(batteryCost)) {
-    return "Batterycost doesn't exist";
-  }
-
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
@@ -40,8 +36,7 @@ function changeCityRouteCriterias(user, newCity, oldCity, batteryCost) {
     return 'Your VPN is already set to this city';
   }
   return null;
-}
-
+};
 
 module.exports = {
   getCityRouteCriterias,

@@ -72,7 +72,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     let cursor = "pointer";
 
     const currentGame = user.earnBattery[game];
-    console.log(currentGame, "currentGame");
     const readyToGenerateNewCode = new Date(currentGame.expires) < Date.now();
 
     if (!currentGame.code && readyToGenerateNewCode) {

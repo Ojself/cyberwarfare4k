@@ -18,26 +18,6 @@ const monthsOverview = [
   'Dev',
 ];
 
-const getAllUsers = async (filterArray = [], select = null) => {
-  if (select) {
-    // {name:'1'}
-    const usersWithSelect = await User.find().select(select);
-    return usersWithSelect;
-  }
-  let users = await User.find()
-    .populate('playerStats.bountyDonors', 'name')
-    .populate('alliance', 'name')
-    .populate('playerStats.city', 'name');
-
-  // todo, select information instead of nullify?
-  // todo apply filter
-
-  if (filterArray.length) {
-    users = users.map((user) => nullifyValues(user, filterArray));
-  }
-  return users;
-};
-
 // gets all online users based on sesssion
 const getOnlineUsers = async (userId) => {
   // Default expire for session
@@ -138,7 +118,7 @@ const saveAndUpdateUser = async (user) => {
 };
 
 module.exports = {
-  getAllUsers,
+
   getOnlineUsers,
   getInbox,
   getOpponentInformation,

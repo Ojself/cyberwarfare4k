@@ -23,7 +23,7 @@ const userSchema = new Schema(
       confirmationCode: String,
       subscription: {
         type: String,
-        enum: ['Bronze', 'Silver', 'Gold', 'Platinum'],
+        enum: ['', 'Bronze', 'Silver', 'Gold'],
       },
       isSetup: {
         type: Boolean,
@@ -392,6 +392,7 @@ userSchema.methods.sellCurrency = function (
 
 userSchema.methods.changeCity = function (city, batteryCost) {
   this.batteryDrain(batteryCost);
+  this.bitCoinDrain(city.price);
   this.playerStats.city = city._id;
 };
 

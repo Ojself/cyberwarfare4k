@@ -67,7 +67,20 @@ const Locals = ({ globalLoading, user }) => {
                       {user.name}
                     </Link>
                   </th>
-                  <td>{user.alliance ? user.alliance.name : "-"}</td>
+                  <td>
+                    {user.alliance ? (
+                      <>
+                        <Link
+                          className="text-light"
+                          to={`/alliance/${user.alliance._id}`}
+                        >
+                          {user.alliance.name}
+                        </Link>
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
                   <td>{user.playerStats.rankName}</td>
                 </tr>
               ))}
@@ -78,3 +91,5 @@ const Locals = ({ globalLoading, user }) => {
 };
 
 export default Locals;
+
+

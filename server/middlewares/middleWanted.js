@@ -1,4 +1,4 @@
-const { existingValue, checkFunds } = require('../middlewares/middleHelpers');
+const { existingValue, checkFunds } = require('./middleHelpers');
 const User = require('../models/User');
 
 // Sees if everything is in order to add bounty
@@ -19,7 +19,6 @@ function addBountyCriteria(user, opponent, bounty) {
   return null;
 }
 
-
 const getAllWantedUsers = async () => {
   const dbSelectOptions = {
     name: '1',
@@ -30,7 +29,7 @@ const getAllWantedUsers = async () => {
     'playerStats.rankName': '1',
   };
 
-  const users = await User.find()
+  const users = await User.find({ 'account:isSetup': true })
     .sort({ 'playerStats.bounty': -1 })
     .select(dbSelectOptions)
     .populate('alliance', 'name')

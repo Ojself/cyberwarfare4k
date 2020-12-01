@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs').promises;
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 require('../configs/database');
 
@@ -22,7 +21,6 @@ const bcryptSalt = 10;
 
 let cities;
 let cityIds;
-
 let greyAlliance;
 
 function giveRandomAvatar() {
@@ -412,13 +410,17 @@ User.deleteMany()
         },
       },
     ];
-    cities.forEach(async (city) => {
-      city.residents = users.filter((user) => user.playerStats.city._id.toString() === city._id.toString());
-      await city.save();
-    });
+
     return User.create(users);
   })
   .then(async (usersCreated) => {
+    cities.forEach(async (city) => {
+      city.residents = usersCreated
+        .filter((user) => user.playerStats.city._id.toString() === city._id.toString())
+        .map((user) => user._id);
+      await city.save();
+    });
+
     console.log(`${usersCreated.length} users created`);
     greyAlliance.boss = getUserId(usersCreated, 'boss');
     greyAlliance.cto = getUserId(usersCreated, 'cto');

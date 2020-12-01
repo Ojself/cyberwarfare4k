@@ -53,11 +53,19 @@ router.get('/locals', async (req, res) => {
 
   const userCityId = user.playerStats.city;
 
-  const cityLocals = await City.findById(userCityId).populate('residents', ['name', 'playerStats', 'alliance']);
+  const populateOb = {
+    path: 'residents',
+    populate: {
+      path: 'alliance',
+      select: 'name',
+    },
+    select: 'name playerStats.rankName',
+  };
+  const cityLocals = await City.findById(userCityId).populate(populateOb);
 
   const onlineUsers = await getOnlineUsers();
   // gets online users in current city
-  const localOnlineUsers = cityLocals.residents.filter((r) => onlineUsers.includes(r._id.toString()));
+  const localOnlineUsers = cityLocals.residents.filter((resident) => onlineUsers.includes(resident._id.toString()));
   return res.status(200).json({
     success: true,
     message: 'locals loaded..',
@@ -81,7 +89,7 @@ router.post('/', async (req, res) => {
   const oldCityId = user.playerStats.city;
   const oldCity = await City.findById(oldCityId);
 
-  const batteryCost = 5;
+  const batteryCost = 4;
 
   const message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
 

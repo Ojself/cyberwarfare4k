@@ -8,6 +8,7 @@ import {
   InputGroupAddon,
   InputGroup,
 } from "reactstrap";
+import {Link} from 'react-router-dom'
 
 import api from "../../api";
 
@@ -43,7 +44,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     try {
       data = await api.attackOpponent(opponentId);
     } catch (err) {
-      console.log("error", err);
+      console.warn("error: ", err);
       updateGlobalValues(err);
       return;
     }
@@ -95,11 +96,16 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       </div>
       {opponentState.opponent.alliance && (
         <div>
-          <img
-            style={{ maxWidth: "200px", width: "65%" }}
-            src={`/alliancePics/${opponentState.opponent.alliance.name}.png`}
-            alt="hackerPic"
-          />
+          <Link
+            className="text-light"
+            to={`/alliance/${opponentState.opponent.alliance._id}`}
+          >
+            <img
+              style={{ maxWidth: "200px", width: "65%" }}
+              src={`/alliancePics/${opponentState.opponent.alliance.name}.png`}
+              alt="hackerPic"
+            />
+          </Link>
         </div>
       )}
     </div>

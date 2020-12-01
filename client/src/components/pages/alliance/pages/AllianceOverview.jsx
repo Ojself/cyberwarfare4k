@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../../api";
 import { Link } from "react-router-dom";
+import {  Card, CardBody, CardImg, CardSubtitle,  CardTitle} from "reactstrap"
 
 const AllianceOverview = (props) => {
   const [alliance, setAlliance] = useState({});
@@ -21,12 +22,6 @@ const AllianceOverview = (props) => {
     getAlliance();
   }, [console.log(alliance, "alliance")]);
 
-  const styling = {
-    officers: {
-      minHeight: "100px",
-    },
-  };
-
   const noAllianceFound = !loading && (
     <div>
       Noone has claimed the {alliance.name} alliance. You can try and{" "}
@@ -36,95 +31,105 @@ const AllianceOverview = (props) => {
 
   const hierarchyTree = !loading && (
     <div className="content">
-      <div style={styling.officers}>
-        <h4>Boss</h4>
+      <div className="d-flex justify-content-center">
         {alliance.boss && (
-          <>
-            <img
-              style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
+          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+            <CardTitle tag="h5">Boss</CardTitle>
+            <CardImg
+              middle
+              style={{
+                margin: "auto",
+                width: "30%",
+              }}
               src={`..${alliance.boss.account.avatar}`}
               alt={alliance.boss.name}
             />
-            <h6>
-              <Link to={`/hacker/${alliance.boss._id}`}>
-                {" "}
-                {alliance.boss.name}{" "}
-              </Link>
-            </h6>
-          </>
+            <CardBody>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">
+                <Link to={`/hacker/${alliance.boss._id}`}>
+                  {alliance.boss.name}
+                </Link>
+              </CardSubtitle>
+            </CardBody>
+          </Card>
         )}
       </div>
-      <div
-        style={styling.officers}
-        className="d-flex justify-content-around mb-5"
-      >
-        <div>
-          <h4>Analyst</h4>
-          {alliance.analyst && (
-            <>
-              <img
-                style={{
-                  maxWidth: "120px",
-                  width: "100%",
-                  borderRadius: "50%",
-                }}
-                src={`..${alliance.analyst.account.avatar}`}
-                alt={alliance.analyst.name}
-              />
-              <h6>
+      <div className="d-flex justify-content-around my-5">
+        <div></div>
+
+        {alliance.analyst && (
+          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+            <CardTitle tag="h5">analyst</CardTitle>
+            <CardImg
+              middle
+              style={{
+                margin: "auto",
+                width: "30%",
+              }}
+              src={`..${alliance.analyst.account.avatar}`}
+              alt={alliance.analyst.name}
+            />
+            <CardBody>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">
                 <Link to={`/hacker/${alliance.analyst._id}`}>
-                  {" "}
-                  {alliance.analyst.name}{" "}
+                  {alliance.analyst.name}
                 </Link>
-              </h6>
-            </>
-          )}
-        </div>
-        <div>
-          <h4>CTO</h4>
-          {alliance.cto && (
-            <>
-              <img
-                style={{
-                  maxWidth: "120px",
-                  width: "100%",
-                  borderRadius: "50%",
-                }}
-                src={`..${alliance.cto.account.avatar}`}
-                alt={alliance.cto.name}
-              />
-              <h6>
+              </CardSubtitle>
+            </CardBody>
+          </Card>
+        )}
+
+        {alliance.cto && (
+          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+            <CardTitle tag="h5">CTO</CardTitle>
+            <CardImg
+              middle
+              style={{
+                margin: "auto",
+                width: "30%",
+              }}
+              src={`..${alliance.cto.account.avatar}`}
+              alt={alliance.cto.name}
+            />
+            <CardBody>
+              <CardSubtitle tag="h6" className="mb-2 text-muted">
                 <Link to={`/hacker/${alliance.cto._id}`}>
-                  {" "}
-                  {alliance.cto.name}{" "}
+                  {alliance.cto.name}
                 </Link>
-              </h6>
-            </>
+              </CardSubtitle>
+            </CardBody>
+          </Card>
+        )}
+        <div></div>
+      </div>
+      <div className="d-flex justify-content-around mb-5 ">
+        <div>
+          {alliance.firstLead && (
+            <Card style={{paddingTop:"2vh", width: "100%", backgroundColor: "#111" }}>
+              <CardTitle tag="h5">Lead</CardTitle>
+              <CardBody>
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  <Link to={`/hacker/${alliance.firstLead._id}`}>
+                    {alliance.firstLead.name}
+                  </Link>
+                </CardSubtitle>
+              </CardBody>
+            </Card>
           )}
         </div>
-      </div>
-      <div className="d-flex justify-content-around mb-5">
         <div>
-          <h4>Lead</h4>
-          <h6>
-            {alliance.firstLead && (
-              <Link to={`/hacker/${alliance.firstLead._id}`}>
-                {" "}
-                {alliance.firstLead.name}{" "}
-              </Link>
-            )}
-          </h6>
-        </div>
-        <div>
-          <h4>Lead</h4>
-          <h6>
-            {alliance.secondLead && (
-              <Link to={`/hacker/${alliance.secondLead._id}`}>
-                {" "}
-                {alliance.secondLead.name}{" "}
-              </Link>
-            )}
-          </h6>
+          {alliance.secondLead && (
+            <Card style={{paddingTop:"2vh", width: "100%", backgroundColor: "#111" }}>
+              <CardTitle tag="h5">Lead</CardTitle>
+              <CardBody>
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  <Link to={`/hacker/${alliance.secondLead._id}`}>
+                    {alliance.secondLead.name}
+                  </Link>
+                </CardSubtitle>
+              </CardBody>
+            </Card>
+          )}
         </div>
       </div>
       <div className="d-flex justify-content-around">
@@ -133,10 +138,8 @@ const AllianceOverview = (props) => {
           {alliance.firstMonkeys.length ? (
             alliance.firstMonkeys.map((monkey) => (
               <div key={monkey.name}>
-                <h6>
-                  {" "}
-                  <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
-                </h6>
+                {" "}
+                <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
               </div>
             ))
           ) : (
@@ -148,10 +151,8 @@ const AllianceOverview = (props) => {
           {alliance.secondMonkeys.length ? (
             alliance.secondMonkeys.map((monkey) => (
               <div key={monkey.name}>
-                <h6>
-                  {" "}
-                  <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
-                </h6>
+                {" "}
+                <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
               </div>
             ))
           ) : (

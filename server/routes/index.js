@@ -80,6 +80,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   if (
     name.toLowerCase().startsWith('npc')
     || name.toLowerCase().startsWith('unconfirmed')
+    || name.toLowerCase().startsWith('admin')
   ) {
     return res.status(409).json({
       success: false,
@@ -143,7 +144,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 router.get('/opponents/', async (req, res) => {
   let users;
   try {
-    users = await User.find().select({ name: '1' });
+    users = await User.find({ 'account.isSetup': true }).select({ name: '1' });
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -196,7 +197,7 @@ router.get('/ladder', async (req, res) => {
   };
   let users;
   try {
-    users = await User.find()
+    users = await User.find({ 'account.isSetup': true })
       .select(dbSelectOptions)
       .populate('alliance', 'name');
   } catch (e) {
@@ -206,12 +207,11 @@ router.get('/ladder', async (req, res) => {
     });
   }
   users = getShuffledArr(users);
-  const filteredUsers = users.filter((user) => !user.name.startsWith('unconfirmedplayer'));
 
   return res.status(200).json({
     success: true,
     message: 'users loaded..',
-    users: filteredUsers,
+    users,
   });
 });
 

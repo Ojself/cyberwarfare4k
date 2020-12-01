@@ -37,7 +37,7 @@ router.get('/ladder', async (req, res) => {
     'playerStats',
     'name',
   ];
-  const alliances = await Alliance.find()
+  const alliances = await Alliance.find({ active: true })
     .populate('boss', populateValues)
     .populate('cto', populateValues)
     .populate('analyst', populateValues)

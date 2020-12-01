@@ -18,7 +18,6 @@ const Login = (props) => {
   };
 
   const handleClick = async (e) => {
-    console.log(props)
     const {email,password} = loginState
     if (!email || !password)return
     e.preventDefault();
@@ -33,7 +32,9 @@ const Login = (props) => {
       setTimeout(()=>setFailMessage(""),5000)
       return
     }
-    props.redirect("/my-profile/");
+    props.redirect("/create-hacker/");
+    /* only temporary. the user will be redirected to profile */
+    /* props.redirect("/my-profile/"); */
   };
 
   return (
