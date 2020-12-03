@@ -60,7 +60,7 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
     victimDead: false,
     bodyguardKilled: false,
     playerGains: {
-      currency: null,
+      currencies: null,
       batteryCost,
     },
   };

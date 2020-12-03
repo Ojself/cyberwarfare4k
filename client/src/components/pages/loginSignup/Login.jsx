@@ -33,6 +33,7 @@ const Login = (props) => {
       return
     }
     props.redirect("/create-hacker/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
     /* only temporary. the user will be redirected to profile */
     /* props.redirect("/my-profile/"); */
   };

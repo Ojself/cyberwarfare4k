@@ -79,11 +79,11 @@ export const ChipChopShop = ({ globalLoading, user, updateGlobalValues }) => {
       data = await api.sellStashes(transactionState);
     } catch (err) {
       console.log(err);
-      updateGlobalValues(err);
+      updateGlobalValues(err,true,true);
       return;
     }
     
-    updateGlobalValues(data);
+    updateGlobalValues(data, true, true);
     resetTransactionState();
   };
 

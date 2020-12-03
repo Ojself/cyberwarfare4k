@@ -39,25 +39,42 @@ const App = () => {
   const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const userIsAtStarPage = () => {
+    const path = window.location.pathname;
+    return (
+      path === "/" || path === "/create-hacker" || path === "/create-hacker/"
+    );
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
-      const apiUser = await api.getUser();
-
-      setUser(apiUser.user);
-      setMessages(apiUser.messages);
+      let data;
+      try{
+        data = await api.getUser()
+      }catch(err){
+        console.log('error fetching user data', err)
+        return
+      }
+      if (!data.user.account.isSetup && !userIsAtStarPage()){
+        window.location.pathname = "/create-hacker";
+      }
+      setUser(data.user);
+      setMessages(data.messages);
       setLoading(false);
     };
     fetchUserData();
   }, []);
 
-  const updateGlobalValues = (data, renderMessage = true) => {
+  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false) => {
     console.log("updating global", data);
-    
+
     if (data.user) {
       setUser(data.user);
     }
-    if (renderMessage && data.message) {
+    if (scrollToTop) {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (renderMessage && data.message) {
       setGlobalMessage({
         message: data.message,
         success: data.success || false,
@@ -68,15 +85,10 @@ const App = () => {
     }
   };
 
-  const showNavBar = () => {
-    const path = window.location.pathname;
-    return (
-      path !== "/" && path !== "/create-hacker" && path !== "/create-hacker/"
-    );
-  };
+  
   return (
     <div className="App text-light">
-      {showNavBar() && (
+      {!userIsAtStarPage() && (
         <>
           <NavbarComp
             updateGlobalValues={updateGlobalValues}

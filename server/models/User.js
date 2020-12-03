@@ -2,7 +2,9 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-/* const Item = require('./Item'); */
+const Alliance = require('./Alliance');
+const City = require('./City');
+const DataCenter = require('./DataCenter');
 const Rank = require('./Rank');
 
 const userSchema = new Schema(
@@ -444,27 +446,33 @@ userSchema.methods.handleAttack = function (result) {
 
   // steals all the currencies when opponent is dead
   if (result.victimDead) {
-    Object.keys(result.playerGains.currencies).forEach((currency) => {
+    /* Object.keys(result.playerGains.currencies).forEach((currency) => {
       this.currencies[currency] += parseInt(result.playerGains.currencies[currency], 10);
-    });
+    }); */
     this.playerStats.shutdowns += 1;
   }
   this.playerStats.attacksInitiated += 1;
 
-  const notificationMessage = `You attacked ${result.opponent.name} and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  // const notificationMessage = `You attacked ${result.opponent.name} and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   /* todo. add message string if opponent is dead */
-
-  this.sendNotification(notificationMessage, result.now);
+  // this.sendNotification(notificationMessage, result.now);
 };
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
   const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
-
+  console.log('a');
   if (result.bodyguardKilled) {
     this.playerStats.bodyguards.alive -= 1;
   } else {
+    console.log('b');
+    console.log(this.playerStats.currentFirewall, 'this.playerStats.currentFirewall');
+    console.log(result.damageDealt, 'result.damageDealt');
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
+  }
+  if (this.playerStats.currentFirewall <= 0) {
+    console.log('c');
+    this.die();
   }
 };
 
@@ -580,11 +588,106 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
   }
 };
 
-// todo remove from city and alliance
-/* userSchema.methods.die = function () {
-  const currentCity = this.playerStats.city;
-  const currentAlliance = this.alliance;
-}; */
+// todo remove from city and alliance and datacenters
+userSchema.methods.die = async function () {
+  console.log('1');
+  const city = await City.findById(this.playerStats.city);
+  await city.departure(this._id);
+
+  const dataCenters = await DataCenter.find({ owner: this._id });
+  if (dataCenters) {
+    dataCenters.forEach((dataCenter) => dataCenter.handleDestroyed());
+    await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
+  }
+  if (this.alliance) {
+    const alliance = await Alliance.findById(this.alliance);
+    alliance.leaveAlliance(this._id);
+  }
+  this.name = '';
+
+  this.account.isSetup = false;
+  this.alliance = null;
+  this.allianceRole = null;
+
+  this.hackSkill = {
+    CPU: 0,
+    AntiVirus: 0,
+    Encryption: 0,
+  };
+
+  this.crimeSkill = {
+    Technical: 2,
+    'Social Engineering': 1,
+    Forensics: 1,
+    Cryptography: 1,
+  };
+
+  this.currencies = {
+    currencies: {
+      Litecoin: 0,
+      Ethereum: 0,
+      Ripple: 0,
+      Monero: 0,
+      Zcash: 0,
+    },
+  };
+
+  this.playerStats = {
+    city: null,
+    repairCost: 50000,
+    bodyguards: {
+      alive: 0,
+      bought: 0,
+      price: 100000,
+    },
+    statPoints: 5,
+    maxFirewall: 100,
+    currentFirewall: 100,
+    battery: 100,
+    bitCoins: 1000,
+    ledger: 1500,
+    bounty: 0,
+    bountyDonors: [],
+    rank: 0,
+    rankName: 'Script kiddie',
+    exp: 1,
+    expToLevel: 10000,
+  };
+
+  this.marketPlaceItems = {
+    CPU: null,
+    Firewall: null,
+    AntiVirus: null,
+    Encryption: null,
+  };
+
+  this.stash = {
+    Cables: 5,
+    'Linux for dummies': 1,
+    'Lock pick set': 1,
+    'Proxmark3 Kit': 0,
+    'Rubber Ducky': 0,
+    Keylogger: 0,
+    'EyeSpy Digital Spy Recorder': 0,
+    'WiFi Pineapple': 0,
+    'HackRf One': 0,
+    Computer: 0,
+    'Ubertooth One': 0,
+    Magspoof: 0,
+    'Raspberry Pi': 0,
+    'Mini Hidden Camera': 0,
+  };
+
+  this.fightInformation = {
+    gracePeriod: Date.now(),
+    shutdowns: 0,
+    attacksInitiated: 0,
+    attacksVictim: 0,
+    crimesInitiated: 0,
+    vpnChanges: 0,
+    currencyPurchases: 0,
+  };
+};
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

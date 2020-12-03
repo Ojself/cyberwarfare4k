@@ -1,8 +1,6 @@
 const {
   batteryCheck,
   existingValue,
-  checkFunds,
-  checkSameValue,
 } = require('./middleHelpers');
 
 // Sees if everything is in order to get cities
@@ -18,21 +16,16 @@ const changeCityRouteCriterias = (user, newCity, oldCity, batteryCost) => {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
-  if (!existingValue(newCity)) {
+  if (!newCity) {
     return "Arrival city doesn't exist";
   }
-
-  // if (!existingValue(oldCity)) {
-  //   return "Departure city doesn't exist";
-  // }
-
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-  if (!checkFunds(user.playerStats.bitCoins, newCity.price)) {
+  if (user.playerStats.bitCoins < newCity.price) {
     return 'Insufficient funds';
   }
-  if (!checkSameValue(oldCity.name, newCity.name)) {
+  if (oldCity.name === newCity.name) {
     return 'Your VPN is already set to this city';
   }
   return null;

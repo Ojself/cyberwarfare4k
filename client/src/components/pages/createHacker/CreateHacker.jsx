@@ -26,6 +26,7 @@ const CreateHacker = () => {
     selectedCity: "",
     selectedAvatar: "",
     name: "",
+    isMoreThanOneDayOld: false
   });
   const [activeTab, setActiveTab] = useState("1");
 
@@ -40,7 +41,7 @@ const CreateHacker = () => {
 
   const redirectToCorrectPage = async () => {
     const reDirectInformation = await api.getRedirectInfo();
-    const status = reDirectInformation.status;
+    const {status} = reDirectInformation;
 
     if (status.userInstance && status.isSetup) {
       window.location.pathname = "/my-profile";
@@ -51,7 +52,14 @@ const CreateHacker = () => {
       return;
     }
 
-    return false;
+    if (status.isMoreThanOneDayOld){
+      setCreateState({
+        ...createState,
+        isMoreThanOneDayOld: true
+      });
+    }
+    
+     return false;
   };
 
   //todo, create something that handles invalid name
@@ -182,7 +190,8 @@ const CreateHacker = () => {
             <h1 className="display-4">Create A Haxx0r</h1>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-5 d-flex justify-content-around">
+            {createState.isMoreThanOneDayOld && <div className="w-25"></div>}
             <Form className="d-flex justify-content-center ">
               <FormGroup className="">
                 <Label for="name"></Label>
@@ -195,6 +204,15 @@ const CreateHacker = () => {
                 />
               </FormGroup>
             </Form>
+            {createState.isMoreThanOneDayOld && (
+              <div className="w-25 text-danger">
+                <h5>You died!</h5>
+                <p>
+                  You were shutdown by an enemy. Create a new hacker and fight
+                  back!
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="mb-5">

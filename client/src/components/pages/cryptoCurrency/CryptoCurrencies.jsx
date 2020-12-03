@@ -2,6 +2,7 @@ import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 export default ({ data }) => {
+  console.log(data,'cryptodata')
   return (
     <ResponsiveLine
       data={data}
