@@ -413,6 +413,7 @@ userSchema.methods.handleCrime = async function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
   this.playerStats.bitCoins += result.playerGains.bitCoins;
   this.playerStats.exp += result.playerGains.exp;
+  this.playerStats.crimesInitiated += 1;
   this.giveCrimeSkill(1, result.crimeType);
 
   if (result.playerGains.stashGained) {
@@ -642,7 +643,7 @@ userSchema.methods.die = async function () {
     },
     statPoints: 5,
     maxFirewall: 100,
-    currentFirewall: 100,
+    currentFirewall: 0,
     battery: 100,
     bitCoins: 1000,
     ledger: 1500,

@@ -11,7 +11,7 @@ const City = require('../models/City');
 const setupPlayer = async (user, name, city, avatar) => {
   const updatedUser = user;
   const updatedCity = city;
-
+  updatedUser.playerStats.currentFirewall = 100;
   updatedUser.account.isSetup = true;
   updatedUser.name = name;
   updatedUser.playerStats.city = city._id;
@@ -264,7 +264,7 @@ router.get('/user-setup-status', async (req, res) => {
   const status = {
     userInstance: false,
     isSetup: false,
-    isMoreThanOneDayOld: false,
+    playerIsDead: false,
   };
   if (!req.user) {
     return res.json({
@@ -272,8 +272,7 @@ router.get('/user-setup-status', async (req, res) => {
     });
   }
   const user = await User.findById(req.user._id);
-  const yesterday = Date.now() - (1000 * 60 * 60 * 24);
-  status.isMoreThanOneDayOld = new Date(yesterday) > user.createdAt;
+  status.playerIsDead = user.playerStats.currentFirewall <= 0;
 
   if (!user.account.isSetup) {
     status.userInstance = true;

@@ -26,7 +26,7 @@ const CreateHacker = () => {
     selectedCity: "",
     selectedAvatar: "",
     name: "",
-    isMoreThanOneDayOld: false
+    playerIsDead: false
   });
   const [activeTab, setActiveTab] = useState("1");
 
@@ -52,10 +52,10 @@ const CreateHacker = () => {
       return;
     }
 
-    if (status.isMoreThanOneDayOld){
+    if (status.playerIsDead){
       setCreateState({
         ...createState,
-        isMoreThanOneDayOld: true
+        playerIsDead: true
       });
     }
     
@@ -191,7 +191,7 @@ const CreateHacker = () => {
           </div>
 
           <div className="mb-5 d-flex justify-content-around">
-            {createState.isMoreThanOneDayOld && <div className="w-25"></div>}
+            {createState.playerIsDead && <div className="w-25"></div>}
             <Form className="d-flex justify-content-center ">
               <FormGroup className="">
                 <Label for="name"></Label>
@@ -204,7 +204,7 @@ const CreateHacker = () => {
                 />
               </FormGroup>
             </Form>
-            {createState.isMoreThanOneDayOld && (
+            {createState.playerIsDead && (
               <div className="w-25 text-danger">
                 <h5>You died!</h5>
                 <p>
