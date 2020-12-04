@@ -1,5 +1,5 @@
 
-# [Bulma](https://chw4k.herokuapp.com/)
+# [CyberhackerWarfare4000](https://chw4k.herokuapp.com/)
 
 CyberhackerWarfare4k is a multiplayer role playing game playable in browser. It has minimal visuals and you can play it with only, almost, mouse clicks.
 
