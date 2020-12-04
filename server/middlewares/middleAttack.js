@@ -18,7 +18,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   }
   /* restarts counter if opponent is online after being graced for more than five minutes */
   const userIsGracedMoreThanFiveMinuts = isGraced(opponent, (now + (1000 * 60 * 5)));
-  /* if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
+  if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
     opponent.setGracePeriod(now + (1000 * 60 * 5));
     await opponent.save();
     return `${opponent.name} is currently graced, try again later!`;
@@ -43,7 +43,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   }
   if (isGraced(opponent, now)) {
     return `${opponent.name} is currently graced, try again later!`;
-  } */
+  }
   return null;
 };
 
