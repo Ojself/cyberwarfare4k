@@ -29,12 +29,11 @@ const getAllWantedUsers = async () => {
     'playerStats.rankName': '1',
   };
 
-  const users = await User.find({ 'account:isSetup': true })
+  const users = await User.find({ 'account.isSetup': true })
     .sort({ 'playerStats.bounty': -1 })
     .select(dbSelectOptions)
     .populate('alliance', 'name')
     .populate('playerStats.bountyDonors', 'name');
-
   const bountyUsers = users.filter((u) => u.playerStats.bounty > 0);
 
   return { users, bountyUsers };
