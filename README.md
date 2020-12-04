@@ -1,31 +1,34 @@
 
-# CYBERWARFARE4K
+# [Bulma](https://chw4k.herokuapp.com/)
 
-_.. now in React!_
-
-Work in progress
+CyberhackerWarfare4k is a multiplayer role playing game playable in browser. It has minimal visuals and you can play it with only, almost, mouse clicks.
 
 <img src="./chw4kscreenshot.png" width="800" height="auto">
 
-## Introduction
-
-**What is it?**
-Cyberwarfare4k is a multiplayer role playing game playable in browser. It has minimal visuals and you can play it with only, almost, mouse clicks.
-
-## Stack
-
-MongoDb  
-Express  
-React  
-Node
-
 ## Contributing
 
-Feel free to contribute to this repository.
-Issues, feedback etc. can be sent to:
-tormod.flesjo[at]gmail
+CyberhackerWarfare4000 is an open source project with one main developer. 
+Feel free to contribute with pull requests, opening issues, bug reporting or sending 
+feedback through [mail](tormod.flesjo@gmail.com)
+
+## Crowdfunding
+
+It's also possible to support the project on Patreon.
+This funding is used for maintaining the project and adding new features.
 
 ## Acknowledgments
 
-This wouldn't be possible without my teachers, [Maxence](https://github.com/mc100s) and [Lukas](https://github.com/gisderdube).
-[Markus](https://github.com/fenrew) for basicaly writing all of the original code and [Haakon](https://www.linkedin.com/in/haakon-foyen/) for his authentication skills!
+CyberhackerWarfare4000 is a sequal game made by
+[Markus](https://github.com/fenrew)  and [Haakon](https://www.linkedin.com/in/haakon-foyen/)
+
+## License
+
+Distributed under the GNU General Public License v3.0. See [LICENSE](./LICENSE) for more information.
+
+## Contact
+
+Created with 💙 by [Tor](https://github.com/Ojself) in his free time. Don't be too hard on me.
+
+# Backers
+
+- 🥉 [HaakonA](https://github.com/HaakonA)
