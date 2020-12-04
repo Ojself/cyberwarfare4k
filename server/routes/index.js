@@ -49,16 +49,11 @@ const getShuffledArr = (arr) => {
 // PRIVATE
 // User setup. User is being sent here in order to put in name, set stats and city
 
-// todo
-// create default names, city and alliance
-// force user here if !user.isSetup
-// create route criterias
-
 router.post('/createUser', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { name, cityString, avatar } = req.body;
-
+  // todo craete criteria route
   if (user.account.isSetup) {
     return res.status(400).json({
       success: false,
@@ -72,8 +67,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
       message: 'Missing parameters..',
     });
   }
-  // todo, addtoset city resident
-  // todo, send through criteria route
+
   const city = await City.findOne({ name: cityString });
   const allUsers = await User.find();
 

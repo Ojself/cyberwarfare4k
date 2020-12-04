@@ -444,35 +444,31 @@ userSchema.methods.setRank = async function (rank = undefined) {
 
 userSchema.methods.handleAttack = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
-
+  console.log(result.playerGains, 'result');
   // steals all the currencies when opponent is dead
   if (result.victimDead) {
-    /* Object.keys(result.playerGains.currencies).forEach((currency) => {
-      this.currencies[currency] += parseInt(result.playerGains.currencies[currency], 10);
-    }); */
+    Object.keys(result.opponent.currencies).forEach((currency) => {
+      console.log(currency, 'currency');
+      console.log(result.opponent.currencies[currency], 'result.opponent.currencies[currency]');
+      if (!currency.startsWith('$')) {
+        this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
+      }
+    });
     this.playerStats.shutdowns += 1;
   }
   this.playerStats.attacksInitiated += 1;
-
-  // const notificationMessage = `You attacked ${result.opponent.name} and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   /* todo. add message string if opponent is dead */
-  // this.sendNotification(notificationMessage, result.now);
 };
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
   const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
-  console.log('a');
   if (result.bodyguardKilled) {
     this.playerStats.bodyguards.alive -= 1;
   } else {
-    console.log('b');
-    console.log(this.playerStats.currentFirewall, 'this.playerStats.currentFirewall');
-    console.log(result.damageDealt, 'result.damageDealt');
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
   if (this.playerStats.currentFirewall <= 0) {
-    console.log('c');
     this.die();
   }
 };
@@ -591,7 +587,6 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
 
 // todo remove from city and alliance and datacenters
 userSchema.methods.die = async function () {
-  console.log('1');
   const city = await City.findById(this.playerStats.city);
   await city.departure(this._id);
 
@@ -605,7 +600,6 @@ userSchema.methods.die = async function () {
     alliance.leaveAlliance(this._id);
   }
   this.name = '';
-
   this.account.isSetup = false;
   this.alliance = null;
   this.allianceRole = null;
@@ -624,13 +618,12 @@ userSchema.methods.die = async function () {
   };
 
   this.currencies = {
-    currencies: {
-      Litecoin: 0,
-      Ethereum: 0,
-      Ripple: 0,
-      Monero: 0,
-      Zcash: 0,
-    },
+    Litecoin: 0,
+    Ethereum: 0,
+    Ripple: 0,
+    Monero: 0,
+    Zcash: 0,
+    Dash: 0,
   };
 
   this.playerStats = {

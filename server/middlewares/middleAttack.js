@@ -10,7 +10,6 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   if (!user) {
     return "User doesn't exist";
   }
-  console.log(user.playerStats.rank, 'user.playerStats.rank');
   if (user.playerStats.rank < 1) {
     return 'You are too weak to attack anyone';
   }
@@ -19,8 +18,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   }
   /* restarts counter if opponent is online after being graced for more than five minutes */
   const userIsGracedMoreThanFiveMinuts = isGraced(opponent, (now + (1000 * 60 * 5)));
-  console.log(userIsGracedMoreThanFiveMinuts, 'userIsGracedMoreThanFiveMinuts');
-  if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
+  /* if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
     opponent.setGracePeriod(now + (1000 * 60 * 5));
     await opponent.save();
     return `${opponent.name} is currently graced, try again later!`;
@@ -45,7 +43,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   }
   if (isGraced(opponent, now)) {
     return `${opponent.name} is currently graced, try again later!`;
-  }
+  } */
   return null;
 };
 
@@ -60,7 +58,6 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
     victimDead: false,
     bodyguardKilled: false,
     playerGains: {
-      currencies: null,
       batteryCost,
     },
   };
@@ -100,6 +97,10 @@ const attackRecursiveBattle = (result) => {
       const maxDamage = result.user.hackSkill.CPU / 3;
       const minDamage = result.user.hackSkill.CPU / 5;
       newResult.damageDealt = Math.round(Math.random() * (maxDamage - minDamage) + minDamage);
+      // To prevent extreme damage
+      if (newResult.damageDealt > 30) {
+        newResult.damageDealt = 30;
+      }
     }
     return newResult;
   }

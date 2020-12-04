@@ -10,11 +10,31 @@ const City = require('../models/City');
 require('../configs/database');
 
 const cities = [
-  { name: 'Shanghai' },
-  { name: 'Hanoi' },
-  { name: 'Stavanger' },
-  { name: 'Phoenix' },
-  { name: 'Novosibirsk' },
+  {
+    name: 'Shanghai',
+    _id: '5fae62409cbf7d270f23470b',
+
+  },
+  {
+    name: 'Hanoi',
+    _id: '5fae62409cbf7d270f23470c',
+
+  },
+  {
+    name: 'Stavanger',
+    _id: '5fae62409cbf7d270f23470d',
+
+  },
+  {
+    name: 'Phoenix',
+    _id: '5fae62409cbf7d270f23470e',
+
+  },
+  {
+    name: 'Novosibirsk',
+    _id: '5fae62409cbf7d270f23470f',
+
+  },
 ];
 
 City.deleteMany()

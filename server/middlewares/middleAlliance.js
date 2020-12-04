@@ -52,7 +52,6 @@ const findAllianceStats = (alliances) => {
     };
     const currentMembers = alliance.members();
     currentMembers.forEach((mem) => {
-      console.log(mem.name);
       allianceStats.totSkills += Object.values(
         mem.hackSkill,
       ).reduce((t, n) => t + n);
@@ -94,7 +93,6 @@ const findAllianceStats = (alliances) => {
     result.push(allianceStats);
   });
   result = getShuffledArr(result);
-  console.log(result, 'result');
   return result;
 };
 

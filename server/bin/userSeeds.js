@@ -52,6 +52,7 @@ User.deleteMany()
     const users = [
       {
         email: 'alice@email.com',
+        _id: '5fae6d7ee60018434108369c',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -91,6 +92,7 @@ User.deleteMany()
           AntiVirus: 25,
           Encryption: 15,
         },
+        _id: '5fca3b4a86e77b5c8e58b67a',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -125,6 +127,7 @@ User.deleteMany()
           AntiVirus: 25,
           Encryption: 15,
         },
+        _id: '5fca3b4a86e77b5c8e58b67b',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -159,6 +162,7 @@ User.deleteMany()
           AntiVirus: 25,
           Encryption: 15,
         },
+        _id: '5fca3b4a86e77b5c8e58b67c',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -193,6 +197,7 @@ User.deleteMany()
           AntiVirus: 25,
           Encryption: 15,
         },
+        _id: '5fca3b4a86e77b5c8e58b67d',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -227,6 +232,7 @@ User.deleteMany()
           AntiVirus: 75,
           Encryption: 55,
         },
+        _id: '5fca3b4a86e77b5c8e58b67e',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -261,6 +267,7 @@ User.deleteMany()
           AntiVirus: 75,
           Encryption: 55,
         },
+        _id: '5fca3b4a86e77b5c8e58b680',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -295,6 +302,7 @@ User.deleteMany()
           AntiVirus: 160,
           Encryption: 150,
         },
+        _id: '5fca3b4a86e77b5c8e58b67f',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -329,6 +337,7 @@ User.deleteMany()
           AntiVirus: 125,
           Encryption: 100,
         },
+        _id: '5fca3b4a86e77b5c8e58b681',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -363,6 +372,7 @@ User.deleteMany()
           AntiVirus: 200,
           Encryption: 200,
         },
+        _id: '5fca3b4a86e77b5c8e58b682',
         fightInformation: {
           shutdowns: Math.floor(Math.random() * 4),
           attacksInitiated: Math.floor(Math.random() * 10),
@@ -393,6 +403,7 @@ User.deleteMany()
       {
         email: 'tormod@mail.com',
         name: 'Admin_Tor',
+        _id: '5fca3b4a86e77b5c8e58b683',
         account: {
           password: '$2b$10$dXcx87D2LmkjravCI9UgROSW92oGCIx4qBb9qPiz.MCmlKo882uce',
           avatar: '/hackerAvatars/Waifu/greenblack.png',

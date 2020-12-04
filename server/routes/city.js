@@ -105,8 +105,6 @@ router.post('/', async (req, res) => {
 
   const updatedUser = await user.save().then((u) => u.populate('playerStats.city', 'name').execPopulate());
 
-  console.log(updatedUser, '?');
-
   return res.status(200).json({
     success: true,
     message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,

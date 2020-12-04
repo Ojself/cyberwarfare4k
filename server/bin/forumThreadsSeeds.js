@@ -53,9 +53,6 @@ const createAllianceThreads = (allianceId, threads) => {
   });
 };
 
-// todo. create alliance forum when alliance is created
-// todo. render something on frontend when no threads / forums / comments
-
 // console.log(Object.keys(forumThreads.globalThreads).map((t, i, a) => a));
 ForumThread.deleteMany()
   .then(() => getAlliances())

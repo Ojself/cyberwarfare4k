@@ -4,7 +4,7 @@ const subscriptionBonus = {
   Bronze: { battery: 7, max: 150 },
   Silver: { battery: 8, max: 175 },
   Gold: { battery: 10, max: 200 },
-  default: { bttery: 6, max: 100 },
+  default: { battery: 6, max: 100 },
 };
 
 /* Ensures that users gets more battery after cetain time and never exceeds 100 */

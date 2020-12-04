@@ -8,7 +8,7 @@ const currencyPriceInterval = require('../cronjobs/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../cronjobs/dataCenterPayoutInterval');
 const cityPriceInterval = require('../cronjobs/cityPriceInterval');
 
-const currencyPriceJob = new CronJob('5 59 * * * *', (() => {
+const currencyPriceJob = new CronJob('5 0 * * * *', (() => {
   console.log('currencyPriceJob started');
   currencyPriceInterval();
 }), null, true, 'America/Los_Angeles');
@@ -33,7 +33,6 @@ const batteryJob = new CronJob('55 59 * * * *', (() => {
   batteryInterval();
 }), null, true, 'America/Los_Angeles');
 
-// todo set "MONGODB_URI" in ~/server/.env
 const uri = process.env.MONGODB_URI
   || 'mongodb://localhost/please-set-process-env-mongodb-uri';
 

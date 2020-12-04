@@ -49,11 +49,11 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
       colors: apiData.color,
       data: [],
     };
-    apiData.historyTime.forEach((el, i) => {
-      data.data.push({
-        x: `h: ${apiData.historyTime[i]}`,
+    data.data = apiData.historyTime.map((_, i) => {
+      return {
+        x: apiData.historyTime[i],
         y: apiData.historyPrice[i],
-      });
+      }
     });
     return data;
   };
@@ -63,6 +63,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
     const { name } = e.target;
     const amount = cryptoState[name];
     api.buyCrypto({ name, amount }).then((result) => {
+      console.log(result,'cryptoresult')
       setCryptoState({
         ...cryptoState,
         Litecoin: 0,
@@ -78,6 +79,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
     const { name } = e.target;
     const amount = cryptoState[name];
     api.sellCrypto({ name, amount }).then((result) => {
+      console.log(result,'cryptosell')
       setCryptoState({
         ...cryptoState,
         Litecoin: 0,
@@ -204,7 +206,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
 
           {/* Charts */}
           {/* possible issue is length of ccc array */}
-          <div className="chartsRow text-dark">
+          <div className="chartsRow ">
             <div className="chartContainer">
               <CryptoCurrenciesChart
                 key={0}
@@ -224,11 +226,17 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
               />
             </div>
           </div>
-          <div className="chartsRow">
-            <div className="chartContainer">
+          <div className="chartsRow ">
+            <div className="chartContainer ">
               <CryptoCurrenciesChart
                 key={3}
                 data={[cryptoState.massagedCurrency[3]]}
+              />
+            </div>
+            <div className="chartContainer">
+              <CryptoCurrenciesChart
+                key={4}
+                data={[cryptoState.massagedCurrency[4]]}
               />
             </div>
             <div className="chartContainer">

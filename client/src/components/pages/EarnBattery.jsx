@@ -234,7 +234,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             </span>
           </CardSubtitle>
           <CardText>
-            {" "}
             Play through 22 levels of{" "}
             <a target="_blank" rel="noopener noreferrer" href={URLS.chessathor}>
               Chessathor

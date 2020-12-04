@@ -48,12 +48,10 @@ async function fightCrime(user, crime, batteryCost) {
     userSaved
       .populate('playerStats.city', 'name')
       .execPopulate()
-      .then((result) => {
-        console.log(result, 'result');
-        finalResult.user = result;
+      .then((res) => {
+        finalResult.user = res;
       });
   });
-  console.log(finalResult.user.playerStats, 'thig onse');
   crime.handleCrime(finalResult);
   await crime.save();
 

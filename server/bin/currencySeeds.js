@@ -1,13 +1,10 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// $ node bin/currencySeeds.js
-
 const mongoose = require('mongoose');
 const Currency = require('../models/Currency');
 
 require('../configs/database');
-// crush currency for every transaction
 
 const currency = [
   {
@@ -65,16 +62,18 @@ const currency = [
     available: 10000,
     marketCap: 10000,
   },
-  /* {
+  {
     name: 'Dash',
-    color: '',
-    initials: 'DASH'
-    lowerPrice: 3,
-    higherPrice: 0,
-    price: 3,
-    available: 0,
-    marketCap: 0
+    color: 'hsl(283, 99%, 96%)',
+    initials: 'DASH',
+    lowerPrice: 80,
+    higherPrice: 95,
+    levelReq: 0,
+    price: 80,
+    available: 200000,
+    marketCap: 200000,
   },
+  /*
   {
     name: 'Bitcoin Cash',
     color: '',

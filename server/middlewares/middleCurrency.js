@@ -1,4 +1,4 @@
-const { batteryCheck, existingValue } = require('../middlewares/middleHelpers');
+const { batteryCheck, existingValue } = require('./middleHelpers');
 
 // Sees if everything is in order to sell currency
 function soldRouteCriterias(user, batteryCost, currency, amount) {
@@ -32,8 +32,7 @@ function buyRouteCriterias(user, batteryCost, currency, amount) {
     return 'Insufficent funds';
   }
   if (!checkCurrencyMarketCap(user, currency, amount)) {
-    return;
-    ("You can't hold more than 10% of the marketshare of this currency");
+    return "You can't hold more than 10% of the marketshare of this currency";
   }
   if (!checkCurrencyAvailablitiy(currency, amount)) {
     return "You're can't buy more than what is available in the market";
@@ -48,19 +47,16 @@ function checkCurrencyRequiredLevel(user, currency) {
 
 // checks if user has enough money
 function checkCurrencyfund(user, currency, amount) {
-  console.log('checkCurrencyfund check');
   return user.playerStats.bitCoins >= currency.price * amount;
 }
 
 // checks if there's enough available currency to purchase
 function checkCurrencyAvailablitiy(currency, amount) {
-  console.log('checkCurrencyAvailablitiy check');
   return currency.available >= amount;
 }
 
 // user is not allowed to hold more than 10% of the global marketshare of one currency
 function checkCurrencyMarketCap(user, currency, amount) {
-  console.log('checkCurrencyMarketCap check');
   // what the user already has in his wallet
   const userCoins = user.currencies[currency.name];
   return (
@@ -70,21 +66,18 @@ function checkCurrencyMarketCap(user, currency, amount) {
 
 // makes the actual purchase in User and Currency model
 function purchaseCurrency(user, currency, amount, batteryCost, totalPrice) {
-  console.log('purchase Currency');
   user.purchaseCurrency(currency, amount, batteryCost, totalPrice);
   currency.purchaseHandle(amount, user._id);
 }
 
 // makes the actual sale in User and Currency model
 function sellCurrency(user, currency, amount, batteryCost, totalPrice) {
-  console.log('sell Currency');
   user.sellCurrency(currency, amount, batteryCost, totalPrice);
   currency.sellHandle(amount);
 }
 
 // checks if user has the amount of currencies he's trying to sell
 function checkUserStock(user, currency, amount) {
-  console.log('checkUserStock');
   return user.currencies[currency.name] >= amount;
 }
 

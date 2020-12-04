@@ -32,7 +32,6 @@ router.get('/', async (req, res) => {
     const stringifiedObjectId = JSON.stringify(dc.city.residents);
     return stringifiedObjectId.includes(userId.toString());
   });
-
   res.status(200).json({
     dataCenters,
     message: 'datacenters loaded....',
