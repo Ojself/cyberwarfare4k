@@ -10,16 +10,18 @@ const itemColors = {
 };
 
 const ItemTable = ({ userItem, items, handlePurchase }) => {
+  items.sort((a,b)=>a.price-b.price)
   const itemsTable = (
     <>
       <h4 className={`text-${itemColors[items[0].type]}`}>{items[0].type}</h4>
       <Table style={{ minWidth: "40vw", marginBottom: "5vh" }} dark>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Bonus</th>
-            <th>Purchase</th>
+            {["Name", "Price", "Bonus", "Purchase"].map(header=>{
+              return (
+                <th key={header}>{header}</th>
+              )
+            })}
           </tr>
         </thead>
         <tbody>

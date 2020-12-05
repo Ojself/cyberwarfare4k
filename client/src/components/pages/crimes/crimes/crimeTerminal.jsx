@@ -86,12 +86,13 @@ const CrimeTerminal = ({ result }) => {
       ...terminalState,
       decorationColor: "#ab0000",
     });
-    setTimeout(() => {
+    /* This will blink it. Current behaviour is perma red terminal header */
+    /* setTimeout(() => {
       setTerminalState({
         ...terminalState,
         decorationColor: "#08fe00",
       });
-    }, 350);
+    }, 350); */
   };
 
   const terminalHeader = {
