@@ -1,7 +1,10 @@
 
 # [CyberhackerWarfare4000](https://chw4k.herokuapp.com/)
 
-CyberhackerWarfare4k is a multiplayer role playing game playable in browser. It has minimal visuals and you can play it with only, almost, mouse clicks.
+CyberHackerWareFare4000 is a free multiplyer hacker role playing game.
+Experience the life of a modern tech-savvy hacker and raise through
+the ranks of the cyber world.
+_Best experienced on a computer screen_
 
 <img src="./chw4kscreenshot.png" width="800" height="auto">
 
