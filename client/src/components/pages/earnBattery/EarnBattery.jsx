@@ -138,7 +138,10 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
         />
         {userHasGithub ? (
           <InputGroupText
-            className={user.earnBattery.githubStar && "text-success"}
+            className="text-success "
+            className={`d-flex justify-content-center ${
+              user.earnBattery.githubStar && "text-success"
+            }`}
             title={
               !user.earnBattery.githubStar &&
               "If you already starred the project, try unstarring and starring again!"
@@ -229,9 +232,14 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
                   : "Support CHW4K!"}
               </Button>
             </a>
-            {userHasSubscribed && <InputGroupText style={{ width: "15%" }} className="text-success">
-              {icons.success}
-            </InputGroupText>}
+            {userHasSubscribed && (
+              <InputGroupText
+                style={{ width: "15%" }}
+                className="text-success d-flex justify-content-center"
+              >
+                {icons.success}
+              </InputGroupText>
+            )}
           </InputGroup>
         </CardBody>
       </Card>
