@@ -52,9 +52,8 @@ const ProgressBarCrimeSkill = props => {
           name={props.name}
           color={props.color}
           value={props.value}
-          max={props.bonus}
+          max={props.max}
         />
-        <Progress bar color="dark" value={100 - props.value}></Progress>
       </Progress>
     </div>
   );

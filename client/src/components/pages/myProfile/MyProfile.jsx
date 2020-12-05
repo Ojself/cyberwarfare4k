@@ -96,7 +96,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
               key={c}
               name={c}
               value={user.crimeSkill[c]}
-              max={100}
+              max={200}
               hasStatPoints={!!user.playerStats.statPoints}
             />
           );

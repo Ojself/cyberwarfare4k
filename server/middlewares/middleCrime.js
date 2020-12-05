@@ -107,7 +107,7 @@ function chanceCalculator(user, crime) {
 // todo if user has 50 skill don't give him more skill in pettycrime
 
 // calculates the 'damage' the user inflicts on the crime
-// boils down the players crime and hacking skills and returns a randomnumber from 0 to x
+// boils down the players crimcrimesInitiatede and hacking skills and returns a randomnumber from 0 to x
 function damageCalulator(user, crime) {
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
   const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);

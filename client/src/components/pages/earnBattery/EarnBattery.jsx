@@ -1,6 +1,7 @@
 /* https://www.patreon.com/cyberhackerwarfare4000 */
 import React, { useState } from "react";
-import api from "../../api";
+import GlobalIncome from './GlobalIncome'
+import api from "../../../api";
 import {
   Card,
   Button,
@@ -15,11 +16,7 @@ import {
   InputGroupAddon,
   Input,
   InputGroupText,
-  ListGroupItem,
-  ListGroup,
-  UncontrolledPopover,
-  PopoverHeader,
-  PopoverBody
+  
 } from "reactstrap";
 
 const batteryBonuses = {
@@ -85,6 +82,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     let innerText;
     let disabled = false;
     let cursor = "pointer";
+    let width = "100%"
 
     const currentGame = user.earnBattery[game];
     const readyToGenerateNewCode = new Date(currentGame.expires) < Date.now();
@@ -98,21 +96,32 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     } else if (!readyToGenerateNewCode) {
       onclick = () => {};
       disabled = true;
+      width = "85%"
       cursor = "default";
-      innerText = "You have to wait";
+      innerText = "New code tomorrow";
     } else {
       innerText = "Generate code!";
     }
     return (
-      <Button
+
+      <InputGroup>
+        <Button
         name={game}
         disabled={disabled}
-        style={{ cursor: cursor }}
-        value={game}
-        onClick={onclick}
-      >
-        {innerText}
-      </Button>
+      style={{ cursor: cursor, width: width }}
+    value={game}
+    onClick={onclick}
+  >
+    {innerText}
+  </Button>
+  {!readyToGenerateNewCode && (
+    <InputGroupText style={{ width: "15%" }} className="text-success">
+      <i className="fas fa-check"></i>
+    </InputGroupText>
+  )}
+  </InputGroup>
+
+
     );
   };
   const githubUsernameInput = !globalLoading && (
@@ -134,7 +143,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             "If you already starred the project, try unstarring and starring again!"
           }
         >
-          {userHasStarred ? icons.success : icons.fail}{" "}
+          {userHasStarred ? icons.success : icons.fail}
         </InputGroupText>
       ) : (
         <InputGroupAddon addonType="append">
@@ -158,7 +167,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     </InputGroup>
   );
   const cardDeck = (
-    <CardDeck className="d-flex justify-content-around h-100">
+    <CardDeck className="d-flex justify-content-around h-100 mt-4">
       <Card>
         <CardImg
           top
@@ -206,13 +215,23 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
               Patreon
             </a>
           </CardText>
-          <a target="_blank" rel="noopener noreferrer" href={URLS.patreon}>
-            <Button className="w-100" name="Patreon">
-              {user && userHasSubscribed
-                ? `${user.account.subscription} supporter 🎉`
-                : "Support CHW4K!"}
-            </Button>
-          </a>
+          <InputGroup>
+            <a
+              target="_blank"
+              style={{ width: `${userHasSubscribed ? "85%" : "100%"}` }}
+              rel="noopener noreferrer"
+              href={URLS.patreon}
+            >
+              <Button className="w-100" name="Patreon">
+                {user && userHasSubscribed
+                  ? `${user.account.subscription} supporter 🎉`
+                  : "Support CHW4K!"}
+              </Button>
+            </a>
+            {userHasSubscribed && <InputGroupText style={{ width: "15%" }} className="text-success">
+              {icons.success}
+            </InputGroupText>}
+          </InputGroup>
         </CardBody>
       </Card>
 
@@ -271,73 +290,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     </CardDeck>
   );
 
-  const GlobalIncome = ({
-    batteryBonuses,
-    userHasStarred,
-    userSubscription,
-  }) => {
-
-
-    const githubBonus = userHasStarred ? 1 : 0
-    const subscriptionBonus = batteryBonuses[userSubscription] || 0;
-    const totalBonus = 6 + githubBonus + subscriptionBonus
-    const totalCheckMark = userHasStarred && !!userSubscription;
-
-    console.log(userSubscription,'?????');
-
-    const getIcon = (active = false) => {
-      console.log(active)
-      return active ? <i className={`text-success fas fa-check`}></i> : ''
-    };
-
-
-    return (
-      <div className="w-25">
-        <Button id="showIncome" color="primary" type="button">
-          See your active{" "}
-          <span role="img" aria-label="battery">
-            &#9889;
-          </span>{" "}
-          bonuses
-        </Button>
-        <UncontrolledPopover
-          style={{ borderRadius: "2%", border: "1px #fbac73 solid" }}
-          trigger="focus"
-          placement="left"
-          target="showIncome"
-        >
-          <PopoverHeader>
-            Hourly Income{" "}
-            <span role="img" aria-label="battery">
-              &#9889;
-            </span>{" "}
-          </PopoverHeader>
-          <PopoverBody>
-            <ListGroup>
-              <ListGroupItem className="text-white">
-                {`${batteryBonuses.default} Default `}
-                {getIcon(true)}
-              </ListGroupItem>
-              <ListGroupItem>
-                {`${batteryBonuses.githubStar} Star the game `}{" "}
-                {getIcon(userHasStarred)}
-              </ListGroupItem>
-              <ListGroupItem>
-                {`${
-                  userSubscription ? subscriptionBonus : "1-3"
-                } Patreon Supporter ` } 
-                {getIcon(userSubscription)}
-              </ListGroupItem>
-              <ListGroupItem>
-                <strong>{`${totalBonus} Total `}</strong>{" "}
-                {getIcon(totalCheckMark)}
-              </ListGroupItem>
-            </ListGroup>
-          </PopoverBody>
-        </UncontrolledPopover>
-      </div>
-    );
-  };
   
   
   return (

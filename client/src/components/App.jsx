@@ -15,7 +15,7 @@ import Footer from "./pages/header-footer/Footer";
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread";
-import EarnBattery from "./pages/EarnBattery";
+import EarnBattery from "./pages/earnBattery/EarnBattery";
 import HackerProfile from "./pages/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import Home from "./pages/home/Home";

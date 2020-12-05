@@ -49,10 +49,9 @@ const ProgressBarHackSkill = (props) => {
           color="primary"
           value={props.value}
           max={100}
-          name={100}
         />
         <Progress bar color="warning" value={props.bonus} max={100} />
-        <Progress bar color="dark" value={200 - props.value}></Progress>
+        {/* <Progress bar color="dark" value={200 - props.value}></Progress> */}
       </Progress>
     </div>
   );
