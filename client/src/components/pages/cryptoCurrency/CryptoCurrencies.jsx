@@ -1,13 +1,7 @@
 import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
-const theme = {
-  tooltip: {
-    tableCell: {
-      background: "red",
-    },
-  },
-};
+
 
 export default ({ data }) => {
   console.log(data,'cryptodata')
@@ -25,7 +19,7 @@ export default ({ data }) => {
         tickPadding: 5,
         tickRotation: 0,
         legend: "last 12 hours",
-        legendOffset: 36,
+        legendOffset: -40,
         legendPosition: "middle",
       }}
       axisLeft={{
@@ -36,12 +30,12 @@ export default ({ data }) => {
         legend: "price",
         legendOffset: -40,
         legendPosition: "middle",
+        tickValues: 8,
       }}
       enableGridX={false}
       enableGridY={false}
       colors={data[0].colors}
       lineWidth={4}
-      
       enablePoints={false}
       pointSize={10}
       pointColor={{ theme: "background" }}
@@ -49,6 +43,7 @@ export default ({ data }) => {
       pointBorderColor={{ from: "serieColor" }}
       pointLabel="y"
       pointLabelYOffset={-12}
+      
       useMesh={true}
       legends={[
         {

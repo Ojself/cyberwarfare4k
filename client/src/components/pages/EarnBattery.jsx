@@ -283,7 +283,10 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     const totalBonus = 6 + githubBonus + subscriptionBonus
     const totalCheckMark = userHasStarred && !!userSubscription;
 
+    console.log(userSubscription,'?????');
+
     const getIcon = (active = false) => {
+      console.log(active)
       return active ? <i className={`text-success fas fa-check`}></i> : ''
     };
 
@@ -322,7 +325,8 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
               <ListGroupItem>
                 {`${
                   userSubscription ? subscriptionBonus : "1-3"
-                } Patreon Supporter ${getIcon(!!userSubscription)}`}
+                } Patreon Supporter ` }
+                {getIcon(userSubscription)}
               </ListGroupItem>
               <ListGroupItem>
                 <strong>{`${totalBonus} Total `}</strong>{" "}

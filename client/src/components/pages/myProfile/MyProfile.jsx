@@ -16,12 +16,12 @@ import ProgressBarFirewallSkill from "./molecules/ProgressBarFirewallSkill";
 import ProgressBarExp from "./molecules/ProgressBarExp";
 
 import { getCorrectAllianceRoleName } from "../_helpers";
+import SubscriptionIcon from "../_molecules/SubscriptionIcon"
 
 import api from "../../../api";
 import classnames from "classnames";
 
-/* set condition if user does not belong to an alliance */
-/* add pictures of stash in stash-tab with correct colors */
+
 
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
@@ -139,6 +139,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     <div className="col-4">
       <ul className="list-group">
         <li className="list-group-item bg-dark mb-2">
+          <SubscriptionIcon subscription={user.account.subscription} />
           {user.playerStats.rankName}
         </li>
         {user.alliance && (

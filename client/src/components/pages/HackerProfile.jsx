@@ -9,6 +9,7 @@ import {
   InputGroup,
 } from "reactstrap";
 import {Link} from 'react-router-dom'
+import SubscriptionIcon from "./_molecules/SubscriptionIcon"
 
 import api from "../../api";
 
@@ -152,6 +153,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       <ListGroup className="text-center">
         <ListGroupItem className="justify-content-between bg-dark">
           {" "}
+          <SubscriptionIcon subscription={opponentState.opponent.account.subscription} />
           {opponentState.opponent.playerStats.rankName}{" "}
         </ListGroupItem>
 
