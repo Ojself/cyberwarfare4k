@@ -375,7 +375,7 @@ userSchema.methods.purchaseCurrency = function (
   totalPrice,
 ) {
   this.bitCoinDrain(totalPrice);
-  this.currencies[currency.name] += amount;
+  this.currencies[currency.name] += parseInt(amount, 10);
 };
 
 userSchema.methods.sellCurrency = function (
