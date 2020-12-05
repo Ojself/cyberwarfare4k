@@ -48,7 +48,8 @@ const ProgressBarFirewallSkill = (props) => {
           bar
           color="danger"
           value={props.value > 100 ? 100 : props.value}
-          max={props.max > 100 ? 100 : props.max}
+          /* max={props.max > 100 ? 100 : props.max} */
+          max={100}
         />
         <Progress
           bar
@@ -56,7 +57,7 @@ const ProgressBarFirewallSkill = (props) => {
           value={props.value > 100 ? props.value - 100 : 0}
           max={props.max}
         ></Progress>
-        <Progress bar color="dark" value={props.max - props.value}></Progress>
+        {/* <Progress bar color="dark" value={props.max - props.value}></Progress> */}
       </Progress>
     </div>
   );
