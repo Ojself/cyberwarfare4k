@@ -3,9 +3,8 @@ const { isLoggedIn } = require('../middlewares/middleAuth');
 const {
   buyRouteCriterias,
   soldRouteCriterias,
-  sellCurrency,
-  purchaseCurrency,
 } = require('../middlewares/middleCurrency');
+const { saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();
 const User = require('../models/User');
@@ -35,13 +34,13 @@ router.post('/buy', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const batteryCost = 5;
+  // const batteryCost = 5;
   const { name, amount } = req.body;
 
   const currency = await Currency.findOne({ name });
   const totalPrice = currency.price * amount;
 
-  const message = buyRouteCriterias(user, batteryCost, currency, amount);
+  const message = buyRouteCriterias(user, currency, amount);
   if (message) {
     return res.status(400).json({
       success: false,
@@ -49,12 +48,15 @@ router.post('/buy', isLoggedIn, async (req, res) => {
     });
   }
 
+  user.purchaseCurrency(currency, amount, totalPrice);
+  currency.purchaseHandle(amount, user._id);
 
-  purchaseCurrency(user, currency, amount, batteryCost, totalPrice);
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `${amount} ${currency.name} purchased`,
+    user: updatedUser,
   });
 });
 
@@ -68,13 +70,11 @@ router.post('/sell', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const batteryCost = 5;
-
   const { name, amount } = req.body;
   const currency = await Currency.findOne({ name });
   const totalPrice = currency.price * amount;
 
-  const message = soldRouteCriterias(user, batteryCost, currency, amount);
+  const message = soldRouteCriterias(user, currency, amount);
 
   if (message) {
     return res.status(400).json({
@@ -83,11 +83,15 @@ router.post('/sell', isLoggedIn, async (req, res) => {
     });
   }
 
-  sellCurrency(user, currency, amount, batteryCost, totalPrice);
+  user.sellCurrency(currency, amount, totalPrice);
+  currency.sellHandle(amount);
+
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
     message: `${amount} ${currency.name} sold for ${totalPrice}..`,
+    user: updatedUser,
   });
 });
 

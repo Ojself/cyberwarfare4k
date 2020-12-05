@@ -15,7 +15,7 @@ import CryptoCurrenciesChart from "./CryptoCurrencies";
 import api from "../../../api";
 
 // todo: rename user and loading
-const CryptoCurrencies = ({ globalLoading, user }) => {
+const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
   const [cryptoState, setCryptoState] = useState({
     currencies: null,
     loading: true,
@@ -59,12 +59,15 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
     return data;
   };
 
-  const handleBuy = (e) => {
+  const handleBuy = async (e) => {
     /* todo, some frontend check maybe? */
     const { name } = e.target;
     const amount = cryptoState[name];
-    api.buyCrypto({ name, amount }).then((result) => {
-      console.log(result,'cryptoresult')
+
+    let data;
+    
+    try {
+      data = await api.buyCrypto({ name, amount })
       setCryptoState({
         ...cryptoState,
         Litecoin: 0,
@@ -74,13 +77,20 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
         Zcash: 0,
         Dash:0
       });
-    });
+    }catch(err){
+      console.err(err)
+      return updateGlobalValues(err)
+    }
+    updateGlobalValues(data)
   };
 
-  const handleSell = (e) => {
+  const handleSell = async (e) => {
     const { name } = e.target;
     const amount = cryptoState[name];
-    api.sellCrypto({ name, amount }).then((result) => {
+    let data;
+    
+    try {
+      data = await api.sellCrypto({ name, amount })
       setCryptoState({
         ...cryptoState,
         Litecoin: 0,
@@ -90,8 +100,12 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
         Zcash: 0,
         Dash: 0,
       });
-    });
-  };
+   } catch(err){
+     console.err(err)
+      return updateGlobalValues(err)
+    }
+    updateGlobalValues(data)
+  }
 
   const handleInputChange = (e) => {
     setCryptoState({
@@ -152,7 +166,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
                   <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
                   {cu.lastPurchasedBy[0] ? (
                     <td>
-                      <Link to={`profile/${cu.lastPurchasedBy[0]._id}`}>
+                      <Link className="text-white" to={`profile/${cu.lastPurchasedBy[0]._id}`}>
                         {cu.lastPurchasedBy[0].name}
                       </Link>
                     </td>

@@ -18,12 +18,9 @@ function soldRouteCriterias(user, batteryCost, currency, amount) {
 }
 
 // Sees if everything is in order to buy currency
-function buyRouteCriterias(user, batteryCost, currency, amount) {
+function buyRouteCriterias(user, currency, amount) {
   if (!existingValue(currency)) {
     return "Currency doesn't exist";
-  }
-  if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
   }
   if (!checkCurrencyRequiredLevel(user, currency)) {
     return 'You need to be a higher level to buy this currency';
@@ -64,18 +61,6 @@ function checkCurrencyMarketCap(user, currency, amount) {
   );
 }
 
-// makes the actual purchase in User and Currency model
-function purchaseCurrency(user, currency, amount, batteryCost, totalPrice) {
-  user.purchaseCurrency(currency, amount, batteryCost, totalPrice);
-  currency.purchaseHandle(amount, user._id);
-}
-
-// makes the actual sale in User and Currency model
-function sellCurrency(user, currency, amount, batteryCost, totalPrice) {
-  user.sellCurrency(currency, amount, batteryCost, totalPrice);
-  currency.sellHandle(amount);
-}
-
 // checks if user has the amount of currencies he's trying to sell
 function checkUserStock(user, currency, amount) {
   return user.currencies[currency.name] >= amount;
@@ -84,6 +69,5 @@ function checkUserStock(user, currency, amount) {
 module.exports = {
   soldRouteCriterias,
   buyRouteCriterias,
-  sellCurrency,
-  purchaseCurrency,
+
 };

@@ -372,25 +372,19 @@ userSchema.methods.handlePettyCrime = async function (result) {
 userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
-  batteryCost,
   totalPrice,
 ) {
-  this.playerStats.battery -= batteryCost;
   this.bitCoinDrain(totalPrice);
   this.currencies[currency.name] += amount;
-  this.save();
 };
 
 userSchema.methods.sellCurrency = function (
   currency,
   amount,
-  batteryCost,
   totalPrice,
 ) {
-  this.battery -= batteryCost;
   this.currencies[currency.name] -= amount;
   this.bitCoinGain(totalPrice);
-  this.save();
 };
 
 userSchema.methods.changeCity = function (city, batteryCost) {

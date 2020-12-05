@@ -149,7 +149,13 @@ const App = () => {
         />
         <Route
           path="/cryptocurrency"
-          render={() => <CryptoCurrency globalLoading={loading} user={user} />}
+          render={() => (
+            <CryptoCurrency
+              globalLoading={loading}
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+            />
+          )}
         />
         <Route
           path="/datacenters"
