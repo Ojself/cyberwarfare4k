@@ -103,59 +103,61 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
       innerText = "Generate code!";
     }
     return (
-
       <InputGroup>
         <Button
-        name={game}
-        disabled={disabled}
-      style={{ cursor: cursor, width: width }}
-    value={game}
-    onClick={onclick}
-  >
-    {innerText}
-  </Button>
-  {disabled && (
-    <InputGroupText style={{ width: "15%" }} className="text-success">
-      <i className="fas fa-check"></i>
-    </InputGroupText>
-  )}
-  </InputGroup>
-
-
+          name={game}
+          disabled={disabled}
+          style={{ cursor: cursor, width:width }}
+          value={game}
+          onClick={onclick}
+        >
+          {innerText}
+        </Button>
+        {disabled && (
+          <InputGroupText
+            style={{ width: "15%" }}
+            className="text-success d-flex justify-content-center"
+          >
+            <i className="fas fa-check"></i>
+          </InputGroupText>
+        )}
+      </InputGroup>
     );
   };
   const githubUsernameInput = !globalLoading && (
-    <InputGroup className="">
-      <Input
-        name="githubName"
-        value={githubName}
-        disabled={userHasGithub}
-        onChange={(e) => handleChange(e)}
-        placeholder={
-          userHasGithub ? user.earnBattery.githubUserName : "Github username"
-        }
-      />
-      {userHasGithub ? (
-        <InputGroupText
-          className={user.earnBattery.githubStar && "text-success"}
-          title={
-            !user.earnBattery.githubStar &&
-            "If you already starred the project, try unstarring and starring again!"
+    <InputGroup className="d-flex flex-column">
+      <div className="d-flex flex-row">
+        <Input
+          name="githubName"
+          value={githubName}
+          disabled={userHasGithub}
+          onChange={(e) => handleChange(e)}
+          placeholder={
+            userHasGithub ? user.earnBattery.githubUserName : "Github username"
           }
-        >
-          {userHasStarred ? icons.success : icons.fail}
-        </InputGroupText>
-      ) : (
-        <InputGroupAddon addonType="append">
-          <Button
-            value={githubName}
-            name="githubUserName"
-            onClick={(e) => handleGenerate(e)}
+        />
+        {userHasGithub ? (
+          <InputGroupText
+            className={user.earnBattery.githubStar && "text-success"}
+            title={
+              !user.earnBattery.githubStar &&
+              "If you already starred the project, try unstarring and starring again!"
+            }
           >
-            Submit
-          </Button>
-        </InputGroupAddon>
-      )}
+            {userHasStarred ? icons.success : icons.fail}
+          </InputGroupText>
+        ) : (
+          <InputGroupAddon addonType="append">
+            <Button
+              value={githubName}
+              name="githubUserName"
+              onClick={(e) => handleGenerate(e)}
+            >
+              Submit
+            </Button>
+          </InputGroupAddon>
+        )}
+      </div>
       {!userHasGithub && (
         <FormText>
           <span className="text-warning">

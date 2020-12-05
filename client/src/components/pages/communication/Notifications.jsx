@@ -22,6 +22,7 @@ const Notification = ({ globalLoading, user }) => {
       {user.account.notifications.length ? (
         user.account.notifications.reverse().map((notification, i) => (
           <ListGroupItem
+            className="text-white"
             key={`${notification.message}${i}`}
             active={!notification.read}
           >
