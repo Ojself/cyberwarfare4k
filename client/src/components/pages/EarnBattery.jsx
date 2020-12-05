@@ -134,7 +134,14 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           </Button>
         </InputGroupAddon>
       )}
-      <FormText>The github username can't be changed after submitted</FormText>
+      {!userHasGithub&&(
+      <FormText>
+        {" "}
+        <span className="text-warning">
+          The github username can't be changed after submitted
+        </span>
+      </FormText>
+      )}
     </InputGroup>
   );
   const cardDeck = (
@@ -209,7 +216,8 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             10{" "}
             <span role="img" aria-label="battery">
               &#9889;
-            </span>
+            </span>{" "}
+            Every day
           </CardSubtitle>
           <CardText>
             Join the{" "}
@@ -234,7 +242,8 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             15{" "}
             <span role="img" aria-label="battery">
               &#9889;
-            </span>
+            </span>{" "}
+            Every day
           </CardSubtitle>
           <CardText>
             Play through 22 levels of{" "}
@@ -248,9 +257,15 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
       </Card>
     </CardDeck>
   );
+
+  /* const globalIncome = (
+    <div>
+      <h6>Current Battery income</h6>
+    </div>
+  ) */
   return (
     <div
-      className="display-flex justify-content-center mx-5"
+      className="display-flex justify-content-center mx-5 h-100"
       style={{ height: "60vh" }}
     >
       <h1>Earn battery</h1>

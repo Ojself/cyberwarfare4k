@@ -7,7 +7,6 @@ const User = require('../models/User');
 
 const handleGithubEvent = async (payload) => {
   const parsed = JSON.parse(payload);
-  console.log(parsed, 'parsed');
   const { action } = parsed;
   const { login } = parsed.sender;
 
@@ -87,11 +86,8 @@ router.get('/', async (req, res) => {
 router.post('/redeem', async (req, res) => {
   // todo. ensure useragent and other creds is coming from heroku chessathor or megarpg
   const { code } = req.body;
-  const userAgent = req.headers['user-agent'];
-  console.log(code, 'code');
-  console.log(userAgent, 'ua');
-  console.log(req.body, 'reqbody');
-  console.log(req.headers['x-hub-signature']);
+
+  // console.log(req.headers['x-hub-signature']);
 
   if (req.body.payload) {
     // check headers
@@ -132,7 +128,6 @@ router.post('/', async (req, res) => {
   const { game } = req.body;
   const now = Date.now();
   const user = await User.findById(userId);
-  console.log(req.body);
 
   if (!game) {
     return res.status(403).json({

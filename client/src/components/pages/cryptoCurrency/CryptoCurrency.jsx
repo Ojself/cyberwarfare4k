@@ -25,6 +25,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
     Ripple: 0,
     Monero: 0,
     Zcash: 0,
+    Dash:0
   });
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
         Ripple: 0,
         Monero: 0,
         Zcash: 0,
+        Dash:0
       });
     });
   };
@@ -79,7 +81,6 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
     const { name } = e.target;
     const amount = cryptoState[name];
     api.sellCrypto({ name, amount }).then((result) => {
-      console.log(result,'cryptosell')
       setCryptoState({
         ...cryptoState,
         Litecoin: 0,
@@ -87,6 +88,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
         Ripple: 0,
         Monero: 0,
         Zcash: 0,
+        Dash: 0,
       });
     });
   };

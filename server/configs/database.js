@@ -9,7 +9,12 @@ const currencyPriceInterval = require('../cronjobs/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../cronjobs/dataCenterPayoutInterval');
 const cityPriceInterval = require('../cronjobs/cityPriceInterval');
 
-const currencyPriceJob = new CronJob('5 0 * * * *', (() => {
+const batteryJob = new CronJob('2 */10 * * * *', (() => {
+  console.log('batteryJob started');
+  batteryInterval();
+}), null, true, 'America/Los_Angeles');
+
+const currencyPriceJob = new CronJob('10 0 * * * *', (() => {
   console.log('currencyPriceJob started');
   currencyPriceInterval();
 }), null, true, 'America/Los_Angeles');
@@ -29,13 +34,7 @@ const cityMultiplierJob = new CronJob('45 59 * * * *', (() => {
   cityPriceInterval();
 }), null, true, 'America/Los_Angeles');
 
-const batteryJob = new CronJob('54/10 * * * *', (() => {
-  console.log('batteryJob started');
-  console.log(new Date(Date.now()));
-  batteryInterval();
-}), null, true, 'America/Los_Angeles');
-
-const bonusBatteryJob = new CronJob('59/10 * * * *', (() => {
+const bonusBatteryJob = new CronJob('59 0 * * * *', (() => {
   console.log('bonusBatteryJob started');
   console.log(new Date(Date.now()));
   bonusBatteryInterval();
