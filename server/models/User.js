@@ -239,11 +239,11 @@ const userSchema = new Schema(
       githubStar: { type: Boolean, default: false },
       megarpg: {
         code: { type: String, default: '' },
-        expires: { type: Date },
+        expires: { type: Date, default: Date.now() },
       },
       chessathor: {
         code: { type: String, default: '' },
-        expires: { type: Date },
+        expires: { type: Date, default: Date.now() },
       },
     },
   },

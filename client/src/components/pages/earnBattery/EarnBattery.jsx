@@ -114,7 +114,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   >
     {innerText}
   </Button>
-  {!readyToGenerateNewCode && (
+  {disabled && (
     <InputGroupText style={{ width: "15%" }} className="text-success">
       <i className="fas fa-check"></i>
     </InputGroupText>
@@ -125,7 +125,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     );
   };
   const githubUsernameInput = !globalLoading && (
-    <InputGroup>
+    <InputGroup className="">
       <Input
         name="githubName"
         value={githubName}
@@ -158,7 +158,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
       )}
       {!userHasGithub && (
         <FormText>
-          {" "}
           <span className="text-warning">
             The github username can't be changed after submitted
           </span>

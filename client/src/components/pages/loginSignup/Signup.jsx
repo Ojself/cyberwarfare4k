@@ -63,7 +63,6 @@ const Signup = (props) => {
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
-          
           className="w-100 mb-4"
           type="email"
           value={signupState.email}
@@ -73,7 +72,7 @@ const Signup = (props) => {
 
         <p className="mb-0">Password</p>
         <input
-          disabled={true}
+          /* disabled={true} */
           className="w-100"
           type="password"
           value={signupState.password}
