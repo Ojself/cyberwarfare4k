@@ -99,6 +99,7 @@ const userSchema = new Schema(
       Ripple: { type: Number, default: 0 },
       Monero: { type: Number, default: 0 },
       Zcash: { type: Number, default: 0 },
+      Dash: { type: Number, default: 0 },
     },
 
     // Player stats

@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 
 const router = express.Router();
+const { saveAndUpdateUser } = require('./helper');
 const User = require('../models/User');
 
 const handleGithubEvent = async (payload) => {
@@ -168,7 +169,7 @@ router.post('/', async (req, res) => {
     user.earnBattery[game].expires = now + (1000 * 60 * 60 * 24);
   }
 
-  const updatedUser = await user.save();
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,

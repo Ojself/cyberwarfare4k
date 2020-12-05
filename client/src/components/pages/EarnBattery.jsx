@@ -10,6 +10,7 @@ import {
   CardDeck,
   CardSubtitle,
   CardBody,
+  FormText,
   InputGroup,
   InputGroupAddon,
   Input,
@@ -49,7 +50,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   const handleGenerate = async (event) => {
     const game = event.target.value;
     const data = await api.createBatteryQuery(game);
-    updateGlobalValues(data);
+    updateGlobalValues(data,false);
   };
   const [githubName, setGithubName] = useState("");
   const handleChange = (event) => {
@@ -111,6 +112,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           userHasGithub ? user.earnBattery.githubUserName : "Github username"
         }
       />
+
       {userHasGithub ? (
         <InputGroupText
           className={user.earnBattery.githubStar && "text-success"}
@@ -132,6 +134,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           </Button>
         </InputGroupAddon>
       )}
+      <FormText>The github username can't be changed after submitted</FormText>
     </InputGroup>
   );
   const cardDeck = (

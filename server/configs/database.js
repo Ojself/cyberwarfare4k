@@ -29,13 +29,15 @@ const cityMultiplierJob = new CronJob('45 59 * * * *', (() => {
   cityPriceInterval();
 }), null, true, 'America/Los_Angeles');
 
-const batteryJob = new CronJob('54 /10 * * * *', (() => {
+const batteryJob = new CronJob('54/10 * * * *', (() => {
   console.log('batteryJob started');
+  console.log(new Date(Date.now()));
   batteryInterval();
 }), null, true, 'America/Los_Angeles');
 
-const bonusBatteryJob = new CronJob('59 /10 * * * *', (() => {
+const bonusBatteryJob = new CronJob('59/10 * * * *', (() => {
   console.log('bonusBatteryJob started');
+  console.log(new Date(Date.now()));
   bonusBatteryInterval();
 }), null, true, 'America/Los_Angeles');
 
