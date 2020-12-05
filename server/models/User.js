@@ -278,13 +278,13 @@ userSchema.methods.handleItemPurchase = function (item) {
     this.playerStats.maxFirewall += item.bonus;
     this.playerStats.currentFirewall += item.bonus;
   }
+  this.bitCoinDrain(item.price);
 };
 
 userSchema.methods.giveHackSkill = function (amount = 1, skill = 'Encryption') {
   if (!this.hackSkill[skill]) {
     return;
   }
-
   if (this.marketPlaceItems[skill] && this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
     return;
   }
