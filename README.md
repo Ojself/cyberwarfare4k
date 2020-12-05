@@ -10,7 +10,7 @@ _Best experienced on a computer screen_
 
 ## Contributing
 
-CyberhackerWarfare4000 is an open source project with one main developer. 
+CyberhackerWarfare4k is an open source project with one main developer. 
 Feel free to contribute with pull requests, opening issues, bug reporting or sending 
 feedback through [mail](tormod.flesjo@gmail.com)
 
@@ -25,7 +25,7 @@ Distributed under the GNU General Public License v3.0. See [LICENSE](./LICENSE) 
 
 ## Acknowledgments
 
-CyberhackerWarfare4000 is a sequal game made by
+CyberhackerWarfare4k is a sequal game made by
 [Markus](https://github.com/fenrew)  and [Haakon](https://www.linkedin.com/in/haakon-foyen/)
 ## Contact
 
