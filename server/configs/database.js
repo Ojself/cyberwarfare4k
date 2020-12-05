@@ -9,7 +9,7 @@ const currencyPriceInterval = require('../cronjobs/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../cronjobs/dataCenterPayoutInterval');
 const cityPriceInterval = require('../cronjobs/cityPriceInterval');
 
-const batteryJob = new CronJob('2 */0,10,20,30,40,50 * * * *', (() => {
+const batteryJob = new CronJob('2 */10 * * * *', (() => {
   console.log('batteryJob started');
   batteryInterval();
 }), null, true, 'America/Los_Angeles');
