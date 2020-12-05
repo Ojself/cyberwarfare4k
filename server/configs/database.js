@@ -21,7 +21,6 @@ const currencyPriceJob = new CronJob('6 0 * * * *', (() => {
 
 const bonusBatteryJob = new CronJob('10 0 * * * *', (() => {
   console.log('bonusBatteryJob started');
-  console.log(new Date(Date.now()));
   bonusBatteryInterval();
 }), null, true, 'America/Los_Angeles');
 

@@ -208,7 +208,7 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
 
           {/* Charts */}
           {/* possible issue is length of ccc array */}
-          <div className="chartsRow ">
+          <div className="chartsRow text-dark">
             <div className="chartContainer">
               <CryptoCurrenciesChart
                 key={0}
@@ -243,8 +243,8 @@ const CryptoCurrencies = ({ globalLoading, user }) => {
             </div>
             <div className="chartContainer">
               <CryptoCurrenciesChart
-                key={4}
-                data={[cryptoState.massagedCurrency[4]]}
+                key={5}
+                data={[cryptoState.massagedCurrency[5]]}
               />
             </div>
           </div>

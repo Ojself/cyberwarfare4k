@@ -9,6 +9,7 @@ import ChipChopShop from "./pages/chipchopshop/ChipChopShop";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
+import Dashboard from "./pages/alliance/pages/Dashboard"
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
@@ -127,6 +128,10 @@ const App = () => {
           )}
         />
         <Route path="/alliance/ladder" component={AllianceLadder} />
+        <Route
+          path="/alliance/dashboard"
+          render={() => <Dashboard globalLoading={loading} />}
+        />
         <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
           path="/chipchopshop"

@@ -107,6 +107,9 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                   <DropdownItem href={`/alliance/${user.alliance._id}`}>
                     Overview
                   </DropdownItem>
+                  <DropdownItem href={`/alliance/dashboard`}>
+                    Dashboard
+                  </DropdownItem>
                   <DropdownItem onClick={toggleModal}>
                     Leave Alliance
                   </DropdownItem>

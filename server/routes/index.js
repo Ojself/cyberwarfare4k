@@ -1,6 +1,6 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { getInbox, getOpponentInformation } = require('./helper');
+const { getInbox, getOpponentInformation, saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();
 
@@ -242,12 +242,12 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   await user.handleNewStatpoint(statPoint);
 
   /* todo nullify user info */
-  const updatedUser = await user.save();
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
+    success: true,
     message: `${statPoint} skill upgraded..`,
     user: updatedUser,
-    success: true,
   });
 });
 

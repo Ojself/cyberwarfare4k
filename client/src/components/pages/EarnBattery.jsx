@@ -15,7 +15,20 @@ import {
   InputGroupAddon,
   Input,
   InputGroupText,
+  ListGroupItem,
+  ListGroup,
+  UncontrolledPopover,
+  PopoverHeader,
+  PopoverBody
 } from "reactstrap";
+
+const batteryBonuses = {
+  default: 6,
+  githubStar: 1,
+  Bronze: 1,
+  Silver: 2,
+  Gold: 3,
+}
 
 const URLS = {
   chw4k: "https://github.com/Ojself/cyberwarfare4k",
@@ -64,6 +77,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
 
   const userHasGithub = globalLoading || !!user.earnBattery.githubUserName;
   const userHasStarred = globalLoading ? false : user.earnBattery.githubStar;
+  const userHasSubscribed = globalLoading ? false : !!user.account.subscription
 
   const getButton = (game) => {
     if (!user || globalLoading) return;
@@ -112,7 +126,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           userHasGithub ? user.earnBattery.githubUserName : "Github username"
         }
       />
-
       {userHasGithub ? (
         <InputGroupText
           className={user.earnBattery.githubStar && "text-success"}
@@ -134,13 +147,13 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           </Button>
         </InputGroupAddon>
       )}
-      {!userHasGithub&&(
-      <FormText>
-        {" "}
-        <span className="text-warning">
-          The github username can't be changed after submitted
-        </span>
-      </FormText>
+      {!userHasGithub && (
+        <FormText>
+          {" "}
+          <span className="text-warning">
+            The github username can't be changed after submitted
+          </span>
+        </FormText>
       )}
     </InputGroup>
   );
@@ -195,7 +208,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           </CardText>
           <a target="_blank" rel="noopener noreferrer" href={URLS.patreon}>
             <Button className="w-100" name="Patreon">
-              {user && user.account.subscription
+              {user && userHasSubscribed
                 ? `${user.account.subscription} supporter 🎉`
                 : "Support CHW4K!"}
             </Button>
@@ -258,17 +271,87 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     </CardDeck>
   );
 
-  /* const globalIncome = (
-    <div>
-      <h6>Current Battery income</h6>
-    </div>
-  ) */
+  const GlobalIncome = ({
+    batteryBonuses,
+    userHasStarred,
+    userSubscription,
+  }) => {
+
+
+    const githubBonus = userHasStarred ? 1 : 0
+    const subscriptionBonus = batteryBonuses[userSubscription] || 0;
+    const totalBonus = 6 + githubBonus + subscriptionBonus
+    const totalCheckMark = userHasStarred && !!userSubscription;
+
+    const getIcon = (active = false) => {
+      return active ? <i className={`text-success fas fa-check`}></i> : ''
+    };
+
+
+    return (
+      <div className="w-25">
+        <Button id="showIncome" color="primary" type="button">
+          See your active{" "}
+          <span role="img" aria-label="battery">
+            &#9889;
+          </span>{" "}
+          bonuses
+        </Button>
+        <UncontrolledPopover
+          style={{ borderRadius: "2%", border: "1px #fbac73 solid" }}
+          trigger="focus"
+          placement="left"
+          target="showIncome"
+        >
+          <PopoverHeader>
+            Hourly Income{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>{" "}
+          </PopoverHeader>
+          <PopoverBody>
+            <ListGroup>
+              <ListGroupItem className="text-white">
+                {`${batteryBonuses.default} Default `}
+                {getIcon(true)}
+              </ListGroupItem>
+              <ListGroupItem>
+                {`${batteryBonuses.githubStar} Star the game `}{" "}
+                {getIcon(userHasStarred)}
+              </ListGroupItem>
+              <ListGroupItem>
+                {`${
+                  userSubscription ? subscriptionBonus : "1-3"
+                } Patreon Supporter ${getIcon(!!userSubscription)}`}
+              </ListGroupItem>
+              <ListGroupItem>
+                <strong>{`${totalBonus} Total `}</strong>{" "}
+                {getIcon(totalCheckMark)}
+              </ListGroupItem>
+            </ListGroup>
+          </PopoverBody>
+        </UncontrolledPopover>
+      </div>
+    );
+  };
+  
+  
   return (
     <div
       className="display-flex justify-content-center mx-5 h-100"
       style={{ height: "60vh" }}
     >
-      <h1>Earn battery</h1>
+      <div className="d-flex justify-content-between">
+        <div className="w-25"></div>
+        <h1 className="w-25">Earn battery</h1>
+        {!globalLoading && user &&(
+        <GlobalIncome
+          batteryBonuses={batteryBonuses}
+          userHasStarred={userHasStarred}
+          userSubscription={user.account.subscription}
+        />
+        )}
+      </div>
       {cardDeck}
     </div>
   );

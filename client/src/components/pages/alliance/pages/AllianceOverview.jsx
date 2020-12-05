@@ -133,6 +133,7 @@ const AllianceOverview = (props) => {
         </div>
       </div>
       <div className="d-flex justify-content-around">
+        {!!alliance.firstMonkeys.length  && (
         <div>
           <h4>Code monkeys</h4>
           {alliance.firstMonkeys.length ? (
@@ -145,7 +146,8 @@ const AllianceOverview = (props) => {
           ) : (
             <h6>-</h6>
           )}
-        </div>
+        </div>)}
+        {!!alliance.secondMonkeys.length  && (
         <div>
           <h4>Code monkeys</h4>
           {alliance.secondMonkeys.length ? (
@@ -159,6 +161,7 @@ const AllianceOverview = (props) => {
             <h6>-</h6>
           )}
         </div>
+        )}
       </div>
     </div>
   );
