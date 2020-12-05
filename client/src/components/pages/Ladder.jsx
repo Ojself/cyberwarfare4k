@@ -42,11 +42,12 @@ const Ladder = () => {
       });
     };
     fetchUsers();
+    handleSort(false, "networth");
   }, []);
 
   const handleSort = (e, sort) => {
     sort = sort.toLowerCase();
-    e.preventDefault();
+    //e.preventDefault();
     let sortedUsers = ladderState.users || [];
 
     switch (sort) {

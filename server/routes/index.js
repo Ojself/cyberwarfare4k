@@ -200,7 +200,13 @@ router.get('/ladder', async (req, res) => {
       message: JSON.stringify(e),
     });
   }
-  users = getShuffledArr(users);
+  // users = getShuffledArr(users);
+
+  users = users.sort((b, a) => {
+    const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
+    const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
+    return aNetWorth - bNetWorth;
+  });
 
   return res.status(200).json({
     success: true,
