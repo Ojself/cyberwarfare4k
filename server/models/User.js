@@ -414,7 +414,7 @@ userSchema.methods.handleCrime = async function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
   this.playerStats.bitCoins += result.playerGains.bitCoins;
   this.playerStats.exp += result.playerGains.exp;
-  this.playerStats.crimesInitiated += 1;
+  this.fightInformation.crimesInitiated += 1;
   this.giveCrimeSkill(1, result.crimeType);
 
   if (result.playerGains.stashGained) {

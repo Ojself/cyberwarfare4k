@@ -6,6 +6,15 @@ const Currency = require('../models/Currency');
 
 require('../configs/database');
 
+// returns an array of fake history prices
+const getHistoryPrice = (min, max) => Array.from({ length: 12 }, (_) => (Math.random() * (max - min) + min).toFixed(2));
+
+// returns an array of the last 12 hours
+const getHistoryTime = () => Array.from({ length: 12 }, ((_, i) => {
+  const time = Date.now() - (1000 * 60 * 60 * (12 - i));
+  return new Date(time).getHours();
+}));
+
 const currency = [
   {
     name: 'Litecoin',
@@ -15,6 +24,8 @@ const currency = [
     higherPrice: 55,
     price: 35,
     levelReq: 4,
+    historyPrice: getHistoryPrice(35, 55),
+    historyTime: getHistoryTime(),
     available: 50000,
     marketCap: 50000,
   },
@@ -26,6 +37,8 @@ const currency = [
     higherPrice: 150,
     price: 120,
     levelReq: 3,
+    historyPrice: getHistoryPrice(120, 150),
+    historyTime: getHistoryTime(),
     available: 200000,
     marketCap: 200000,
   },
@@ -37,6 +50,8 @@ const currency = [
     higherPrice: 0.7,
     price: 0.3,
     levelReq: 5,
+    historyPrice: getHistoryPrice(0.3, 0.7),
+    historyTime: getHistoryTime(),
     available: 10000000,
     marketCap: 10000000,
   },
@@ -48,6 +63,8 @@ const currency = [
     higherPrice: 70,
     price: 50,
     levelReq: 2,
+    historyPrice: getHistoryPrice(50, 70),
+    historyTime: getHistoryTime(),
     available: 100000,
     marketCap: 100000,
   },
@@ -59,6 +76,8 @@ const currency = [
     higherPrice: 15,
     price: 10,
     levelReq: 1,
+    historyPrice: getHistoryPrice(10, 15),
+    historyTime: getHistoryTime(),
     available: 10000,
     marketCap: 10000,
   },
@@ -68,7 +87,9 @@ const currency = [
     initials: 'DASH',
     lowerPrice: 80,
     higherPrice: 95,
-    levelReq: 0,
+    levelReq: 1,
+    historyPrice: getHistoryPrice(80, 95),
+    historyTime: getHistoryTime(),
     price: 80,
     available: 200000,
     marketCap: 200000,

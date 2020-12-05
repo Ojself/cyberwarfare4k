@@ -14,31 +14,27 @@ require('../configs/database');
 const cityIds = [];
 const stashesIds = [];
 
-async function getCities() {
+const getCities = async () => {
   const cities = await City.find();
   cities.forEach((element) => {
     cityIds.push(element._id);
   });
-}
+};
 
-async function getStashes() {
+const getStashes = async () => {
   const stashes = await Stash.find();
   stashes.forEach((element) => {
     stashesIds.push(element._id);
   });
-}
+};
 
-function randomArrayNumber(arrayLength) {
-  return Math.floor(Math.random() * arrayLength);
-}
+const randomArrayNumber = (arrayLength) => Math.floor(Math.random() * arrayLength);
 
-function getThreeRequiredStash() {
-  return [
-    stashesIds[randomArrayNumber(stashesIds.length)],
-    stashesIds[randomArrayNumber(stashesIds.length)],
-    stashesIds[randomArrayNumber(stashesIds.length)],
-  ];
-}
+const getThreeRequiredStash = () => [
+  stashesIds[randomArrayNumber(stashesIds.length)],
+  stashesIds[randomArrayNumber(stashesIds.length)],
+  stashesIds[randomArrayNumber(stashesIds.length)],
+];
 
 DataCenter.deleteMany()
   .then(() => getCities())

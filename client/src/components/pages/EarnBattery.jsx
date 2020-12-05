@@ -325,7 +325,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
               <ListGroupItem>
                 {`${
                   userSubscription ? subscriptionBonus : "1-3"
-                } Patreon Supporter ` }
+                } Patreon Supporter ` } 
                 {getIcon(userSubscription)}
               </ListGroupItem>
               <ListGroupItem>

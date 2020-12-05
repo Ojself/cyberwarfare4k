@@ -1,9 +1,9 @@
 const Currency = require('../models/Currency');
 
-function calculatePrice(min, max) {
+const calculatePrice = (min, max) => {
   const randomNumber = (Math.random() * (max - min) + min).toFixed(2);
   return parseFloat(randomNumber);
-}
+};
 
 const currencyPriceInterval = async () => {
   const currentHour = new Date().getHours();

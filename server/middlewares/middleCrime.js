@@ -97,9 +97,9 @@ function chanceCalculator(user, crime) {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
   // if user tried to do crimes way over his level, give him 5% chance for success
-  if (crimeSkillNumber - userSkillNumber > 30) {
+  /* if (crimeSkillNumber - userSkillNumber > 30) {
     return 0.05;
-  }
+  } */
   const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
   return probability;
 }
