@@ -73,7 +73,7 @@ const Signup = (props) => {
 
         <p className="mb-0">Password</p>
         <input
-          
+          disabled={true}
           className="w-100"
           type="password"
           value={signupState.password}

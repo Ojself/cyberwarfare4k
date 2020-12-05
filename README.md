@@ -9,6 +9,14 @@ _Best experienced on a computer screen_
 
 <img src="./chw4kscreenshot.png" width="800" height="auto">
 
+## Upcoming features
+
+- Dashboard for alliances (invite, kick, promote etc)
+- Terminal UI when attacking other players
+- Mug other players
+- Forum
+- Organized Crimes
+
 ## Contributing
 
 CyberhackerWarfare4k is an open source project with one main developer. 
