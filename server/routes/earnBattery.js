@@ -6,6 +6,7 @@ const User = require('../models/User');
 
 const handleGithubEvent = async (payload) => {
   const parsed = JSON.parse(payload);
+  console.log(parsed, 'parsed');
   const { action } = parsed;
   const { login } = parsed.sender;
 

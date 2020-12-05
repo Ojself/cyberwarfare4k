@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { addBountyCriteria, getAllWantedUsers } = require('../middlewares/middleWanted.js');
+const { saveAndUpdateUser } = require('./helper');
 
 // @GET
 // PRIVATE
@@ -54,7 +55,7 @@ router.post('/add-bounty', async (req, res) => {
   }
 
   user.bitCoinDrain(bounty);
-  await user.save();
+  const updatedUser = await saveAndUpdateUser(user);
   bountyTarget.addBounty(user, bounty);
   await bountyTarget.save();
 
@@ -73,7 +74,7 @@ router.post('/add-bounty', async (req, res) => {
     message: `${bounty} added to ${bountyTarget.name}s bounty`,
     users: allUsers.users,
     bountyUsers: allUsers.bountyUsers,
-    user,
+    user: updatedUser,
   });
 });
 

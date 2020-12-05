@@ -4,6 +4,7 @@ const { CronJob } = require('cron');
 
 const stashPriceInterval = require('../cronjobs/stashPriceInterval');
 const batteryInterval = require('../cronjobs/batteryInterval');
+const bonusBatteryInterval = require('../cronjobs/bonusBatteryInterval');
 const currencyPriceInterval = require('../cronjobs/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../cronjobs/dataCenterPayoutInterval');
 const cityPriceInterval = require('../cronjobs/cityPriceInterval');
@@ -28,9 +29,14 @@ const cityMultiplierJob = new CronJob('45 59 * * * *', (() => {
   cityPriceInterval();
 }), null, true, 'America/Los_Angeles');
 
-const batteryJob = new CronJob('55 59 * * * *', (() => {
+const batteryJob = new CronJob('54 /10 * * * *', (() => {
   console.log('batteryJob started');
   batteryInterval();
+}), null, true, 'America/Los_Angeles');
+
+const bonusBatteryJob = new CronJob('59 /10 * * * *', (() => {
+  console.log('bonusBatteryJob started');
+  bonusBatteryInterval();
 }), null, true, 'America/Los_Angeles');
 
 const uri = process.env.MONGODB_URI
@@ -45,6 +51,7 @@ mongoose
   })
   .then(() => {
     batteryJob.start();
+    bonusBatteryJob.start();
     cityMultiplierJob.start();
     currencyPriceJob.start();
     stashPriceJob.start();

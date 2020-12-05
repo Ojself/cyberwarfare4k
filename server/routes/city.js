@@ -8,7 +8,7 @@ const {
   getCityRouteCriterias,
 } = require('../middlewares/middleCity.js');
 
-const { getOnlineUsers } = require('./helper');
+const { getOnlineUsers, saveAndUpdateUser } = require('./helper');
 
 // @GET
 // PRIVATE
@@ -103,7 +103,7 @@ router.post('/', async (req, res) => {
   await user.changeCity(newCity, batteryCost);
   await oldCity.departure(user._id);
 
-  const updatedUser = await user.save().then((u) => u.populate('playerStats.city', 'name').execPopulate());
+  const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
