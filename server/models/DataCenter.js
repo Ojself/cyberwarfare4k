@@ -55,9 +55,7 @@ dataCenterSchema.methods.handleAttack = async function (attackerId, result) {
   this.attacker = attackerId;
 
   this.requiredStash = await getNewStash();
-  console.log(this.requiredStash, '===????');
   setTimeout(async () => {
-    console.log('timeout1');
     this.gracePeriod = false;
     this.save();
   }, 1000 * 10);
@@ -66,7 +64,6 @@ dataCenterSchema.methods.handleAttack = async function (attackerId, result) {
 const getNewStash = async (amount = 3) => {
   const stash = await Stash.find();
   const requiredStash = [];
-  console.log(stash, 'stashes?xw');
   for (let i = 0; i < amount; i += 1) {
     requiredStash.push(stash[Math.floor(Math.random() * stash.length)]._id);
   }
@@ -78,7 +75,6 @@ const getNewStash = async (amount = 3) => {
 // resets required stash and removes owner and attacker id
 // heals up the datacenter
 dataCenterSchema.methods.handleDestroyed = async function () {
-  console.log('handleDataCenterAttack triggered');
   this.gracePeriod = true;
   this.requiredStash = [];
   this.owner = null;

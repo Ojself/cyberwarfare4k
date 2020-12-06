@@ -78,10 +78,8 @@ async function attackDataCenter(
   const probability = (userCpuSkill
       + userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)])
     / 100;
-  console.log(probability, 'probability');
 
   const decider = Math.random() + (dataCenter.difficulty * 4) / 100;
-  console.log(decider, 'decider');
   const result = {
     batteryCost,
     damageDealt: 0,
