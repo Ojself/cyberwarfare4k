@@ -170,14 +170,14 @@ router.post('/:opponentId', async (req, res) => {
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
-  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
+  /* const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
 
   if (disallowed) {
     return res.status(400).json({
       success: false,
       message: disallowed,
     });
-  }
+  } */
 
   const finalResult = await fightHacker(user, opponent, batteryCost, now, userIsOnline);
 

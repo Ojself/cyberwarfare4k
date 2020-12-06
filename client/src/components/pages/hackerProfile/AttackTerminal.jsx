@@ -49,7 +49,7 @@ const AttackTerminal = ({ message, result }) => {
     return `ERROR: ${errorMessages[getRandomNumber(errorMessages)]}`;
   };
   const giveBlockedString = () => {
-    return `BLOCKED .......................... `;
+    return `ENCRYPTED .......................... `;
   };
   const giveWonString = () => {
     return `SUCCESS ${randomCrimeString[getRandomNumber(randomCrimeString)]}`;
