@@ -12,6 +12,7 @@ const CrimeTerminal = ({ result }) => {
     progressCurrentHp: 0,
     round: 1,
     lostCount: 0,
+    progressBarColor: "success",
     decorationColor: "#08fe00",
   });
   useEffect(() => {
@@ -25,6 +26,7 @@ const CrimeTerminal = ({ result }) => {
       progressCurrentHp: 0,
       round: 1,
       lostCount: 0,
+      progressBarColor: "success",
       decorationColor: "#08fe00",
     });
   };
@@ -85,6 +87,7 @@ const CrimeTerminal = ({ result }) => {
     setTerminalState({
       ...terminalState,
       decorationColor: "#ab0000",
+      progressBarColor: "danger",
     });
     /* This will blink it. Current behaviour is perma red terminal header */
     /* setTimeout(() => {
@@ -114,7 +117,7 @@ const CrimeTerminal = ({ result }) => {
           </div>
           <Progress
             animated
-            color="success"
+            color={terminalState.progressBarColor}
             value={terminalState.progressCurrentHp}
             max={terminalState.progressMaxHp}
           />

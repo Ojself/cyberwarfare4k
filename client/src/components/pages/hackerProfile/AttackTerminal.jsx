@@ -11,6 +11,7 @@ const AttackTerminal = ({ message, result }) => {
     progressValue: 0,
     round: 0,
     decorationColor: "#08fe00",
+    progressBarColor: "success"
   });
   useEffect(() => {
     clearState();
@@ -22,6 +23,7 @@ const AttackTerminal = ({ message, result }) => {
       progressValue: 0,
       round: 0,
       decorationColor: "#08fe00",
+      progressBarColor: "success",
     });
   };
 
@@ -87,6 +89,7 @@ const AttackTerminal = ({ message, result }) => {
     setTerminalState({
       ...terminalState,
       decorationColor: "#ab0000",
+      progressBarColor: "danger",
     });
   };
 
@@ -107,7 +110,7 @@ const AttackTerminal = ({ message, result }) => {
           <div style={terminalHeader}>
             <strong>Compiling Code</strong>
           </div>
-          <Progress animated color="success" value={terminalState.progressValue} max={100} />
+          <Progress animated color={terminalState.progressBarColor} value={terminalState.progressValue} max={100} />
           {terminalState.showResults && resultsOverview}
           <Typist
             className="terminalFont terminalStyle"
