@@ -174,21 +174,21 @@ const attackRecursiveBattle = (result) => {
 const damageCalculator = (hacker) => {
   const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
   const damageNumber = Math.round((CPU * CPU) / (AntiVirus + Encryption));
-  const rng = 1 + (Math.random() / 5);
+  const rng = 1 + (Math.random() / 3);
   return Math.round(damageNumber * rng);
 };
 
 const defenseCalulator = (hacker) => {
   const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
   const defenseNumber = Math.round((AntiVirus * AntiVirus) / (CPU + Encryption));
-  const rng = 1 + (Math.random() / 5);
+  const rng = 1 + (Math.random() / 3);
   return Math.round(defenseNumber * rng);
 };
 
 const blockCalculator = (hacker) => {
   const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
   const encryptionNumber = Math.round((Encryption * Encryption) / (CPU + AntiVirus));
-  const rng = 1 + (Math.random() / 5);
+  const rng = 1 + (Math.random() / 3);
   return Math.round(encryptionNumber * rng);
 };
 
@@ -196,7 +196,7 @@ const fraudCalculator = (hacker) => {
   const crimeSkill = Object.values(hacker.crimeSkill).reduce((acc, cur) => acc + cur, 0);
   const { CPU, Encryption } = hacker.hackSkill;
   const fraudDamage = Math.round((crimeSkill * crimeSkill) / (CPU + Encryption));
-  const rng = 1 + (Math.random() / 5);
+  const rng = 1 + (Math.random() / 3);
   return Math.round(fraudDamage * rng);
 };
 
