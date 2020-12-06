@@ -64,7 +64,7 @@ router.post('/pettyCrime', async (req, res) => {
 
 router.get('/crimes', async (req, res) => {
   try {
-    const crimes = await Crime.find({ available: true }).sort({ difficulty: 1 });
+    const crimes = await Crime.find({ available: true }).sort({ crimeType: 1, difficulty: 1 });
     return res.status(200).json({
       success: true,
       message: 'Crimes loaded..',
@@ -102,7 +102,7 @@ router.post('/crimes', async (req, res) => {
 
   // commits crime and returns result object
   const finalResult = await fightCrime(user, crime, batteryCost);
-  const crimes = await Crime.find({ available: true }).sort({ difficulty: 1 });
+  const crimes = await Crime.find({ available: true }).sort({ crimeType: 1, difficulty: 1 });
 
   return res.status(200).json({
     success: true,
