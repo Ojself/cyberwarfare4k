@@ -42,7 +42,6 @@ const Ladder = () => {
       });
     };
     fetchUsers();
-    handleSort(false, "networth");
   }, []);
 
   const handleSort = (e, sort) => {

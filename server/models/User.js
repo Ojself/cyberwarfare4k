@@ -437,14 +437,24 @@ userSchema.methods.setRank = async function (rank = undefined) {
   this.playerStats.expToLevel = newRank.expToNewRank;
 };
 
+userSchema.methods.handleFraud = function (result) {
+  this.batteryDrain(result.playerGains.batteryCost);
+  this.playerStats.attacksInitiated += 1;
+  this.bitCoinGain(result.playerGains.bitCoinStolen);
+};
+
+userSchema.methods.handleFraudDefense = function (result, gracePeriod) {
+  this.setGracePeriod(gracePeriod);
+  this.bitCoinDrain(result.playerGains.bitCoinStolen);
+  const notificationMessage = `${result.user.name} stole ${result.playerGains.bitCoinStolen} from you!`;
+  this.sendNotification(notificationMessage, result.now);
+};
+
 userSchema.methods.handleAttack = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
-  console.log(result.playerGains, 'result');
   // steals all the currencies when opponent is dead
   if (result.victimDead) {
     Object.keys(result.opponent.currencies).forEach((currency) => {
-      console.log(currency, 'currency');
-      console.log(result.opponent.currencies[currency], 'result.opponent.currencies[currency]');
       if (!currency.startsWith('$')) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
       }

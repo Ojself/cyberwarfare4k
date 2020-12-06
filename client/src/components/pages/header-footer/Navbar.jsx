@@ -93,7 +93,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                 <DropdownItem disabled>Organized Crime</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                <DropdownItem disabled href="/">
+                <DropdownItem href="/locals">
                   Hack player
                 </DropdownItem>
               </DropdownMenu>

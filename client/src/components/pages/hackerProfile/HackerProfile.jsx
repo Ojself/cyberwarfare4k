@@ -9,9 +9,10 @@ import {
   InputGroup,
 } from "reactstrap";
 import {Link} from 'react-router-dom'
-import SubscriptionIcon from "./_molecules/SubscriptionIcon"
+import SubscriptionIcon from "../_molecules/SubscriptionIcon"
+import AttackTerminal from "./AttackTerminal"
 
-import api from "../../api";
+import api from "../../../api";
 
 const HackerProfile = ({ history, match, updateGlobalValues }) => {
   const [opponentState, setOpponentState] = useState({
@@ -20,6 +21,10 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     loading: true,
     bountyInput: 0,
   });
+  const [attackResult, setAttackResult] = useState(null);
+  const [message, setMessage] = useState("");
+
+
   useEffect(() => {
     const opponentId = match.params.id;
     const fetchPlayerData = async (opponentId) => {
@@ -34,23 +39,40 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     fetchPlayerData(opponentId);
   }, []);
 
-  const handleClick = () => {
+  const handleMessageClick = () => {
     const opponentId = opponentState.opponent._id;
     history.push(`/messages/to=${opponentId}`);
   };
 
-  const handleAttack = async () => {
+  const handleAttackClick = async () => {
+    setAttackResult(null);
     const opponentId = opponentState.opponent._id;
     let data;
     try {
       data = await api.attackOpponent(opponentId);
     } catch (err) {
-      console.warn("error: ", err);
+      console.error("error: ", err);
       updateGlobalValues(err);
       return;
     }
     console.log("data", data);
-    updateGlobalValues(data);
+    updateGlobalValues(data,false);
+    setAttackResult(data.finalResult);
+    setMessage(data.message)
+  };
+
+  const handleFraudClick = async () => {
+    const opponentId = opponentState.opponent._id;
+    let data;
+    try {
+      data = await api.fraudOpponent(opponentId);
+    } catch (err) {
+      console.error("error: ", err);
+      updateGlobalValues(err);
+      return;
+    }
+    console.log("data", data);
+    updateGlobalValues(data, true);
   };
 
   const handleBountyChange = (e) => {
@@ -112,7 +134,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     </div>
   );
   const opponentGlobalRanking = !opponentState.loading && (
-    <div className="col-3 ">
+    <div className="col-2 ">
       <ListGroup className="text-left">
         <ListGroupItem className="justify-content-between bg-dark text-center">
           <strong>
@@ -149,8 +171,8 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const opponentOverview = !opponentState.loading && (
-    <div className="col-3 d-flex flex-column justify-content-between">
-      <ListGroup className="text-center">
+    <div className="col-3 d-flex flex-column ">
+      <ListGroup className="text-center mb-5">
         <ListGroupItem className="justify-content-between bg-dark">
           {" "}
           <SubscriptionIcon subscription={opponentState.opponent.account.subscription} />
@@ -158,19 +180,19 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
         </ListGroupItem>
 
         {opponentState.ranking.online ? (
-          <ListGroupItem className="justify-content-between bg-dark terminalTextGreen">
+          <ListGroupItem className="justify-content-between bg-dark terminalTextwin">
             {" "}
             Online{" "}
           </ListGroupItem>
         ) : (
-          <ListGroupItem className="justify-content-between bg-dark terminalTextLost">
+          <ListGroupItem className="justify-content-between bg-dark terminalTextlost">
             {" "}
             Offline{" "}
           </ListGroupItem>
         )}
       </ListGroup>
 
-      <div className="d-flex flex-column">
+      <div className="d-flex flex-column mt-5">
         <InputGroup>
           <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
           <Input
@@ -190,23 +212,36 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const opponentActions = !opponentState.loading && (
-    <div className="d-flex flex-column justify-content-between col-3">
-      <div className="d-flex justify-content-around">
-        <Button color="outline-info" onClick={() => handleClick()}>
+    <div className="d-flex flex-column col-4">
+      <div className="d-flex justify-content-around w-75">
+        <Button color="outline-info" onClick={() => handleMessageClick()}>
           Message
         </Button>
-        <Button onClick={() => handleAttack()} color="outline-danger">
-          Attack
+        <Button onClick={() => handleFraudClick()} color="outline-warning">
+          Fraud{" "}
+          <span role="img" aria-label="battery">
+            &#9889;
+          </span>
+          4
+        </Button>
+        <Button onClick={() => handleAttackClick()} color="outline-danger">
+          Attack{" "}
+          <span role="img" aria-label="battery">
+            &#9889;
+          </span>
+          6
         </Button>
       </div>
+      <AttackTerminal message={message} result={attackResult} />
     </div>
   );
 
   const profilePage = (
-    <div className="container">
+    <div className="">
       {avatarImages}
       {playerName}
-      <div className="d-flex justify-content-around">
+      <div className="d-flex justify-content-between mt-5 ">
+        <div className="col-2"></div>
         {opponentGlobalRanking}
         {opponentOverview}
         {opponentActions}

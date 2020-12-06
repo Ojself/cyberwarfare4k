@@ -162,11 +162,14 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     %
                   </td>
                   {/* TODO icon  */}
-                  <td>{KFormatter(cu.available)}</td>
+                  <td>{KFormatter(Math.floor(cu.available))}</td>
                   <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
                   {cu.lastPurchasedBy[0] ? (
                     <td>
-                      <Link className="text-white" to={`profile/${cu.lastPurchasedBy[0]._id}`}>
+                      <Link
+                        className="text-white"
+                        to={`profile/${cu.lastPurchasedBy[0]._id}`}
+                      >
                         {cu.lastPurchasedBy[0].name}
                       </Link>
                     </td>
@@ -222,7 +225,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
 
           {/* Charts */}
           {/* possible issue is length of ccc array */}
-          <div className="chartsRow text-dark">
+          <div className="chartsRow ">
             <div className="chartContainer">
               <CryptoCurrenciesChart
                 key={0}
@@ -243,7 +246,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
             </div>
           </div>
           <div className="chartsRow ">
-            <div className="chartContainer ">
+            <div className="chartContainer">
               <CryptoCurrenciesChart
                 key={3}
                 data={[cryptoState.massagedCurrency[3]]}

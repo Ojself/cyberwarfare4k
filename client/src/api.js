@@ -149,6 +149,13 @@ export default {
       .catch(errHandler);
   },
 
+  fraudOpponent(opponentId) {
+    return service
+      .post(`/hack/fraud/${opponentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   // CRYPTOCURRENCY
   // CRYPTOCURRENCY
   getCrypto() {
@@ -215,13 +222,13 @@ export default {
       .catch(errHandler);
   },
 
-  sellStashes(body){
+  sellStashes(body) {
     return service
       .post("./stashes/sell", body)
       .then((res) => res.data)
       .catch(errHandler);
   },
-  buyStashes(body){
+  buyStashes(body) {
     return service
       .post("./stashes/buy", body)
       .then((res) => res.data)

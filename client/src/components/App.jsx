@@ -16,7 +16,7 @@ import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread";
 import EarnBattery from "./pages/earnBattery/EarnBattery";
-import HackerProfile from "./pages/HackerProfile";
+import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import Home from "./pages/home/Home";
 import Information from "./pages/Information";
@@ -104,8 +104,8 @@ const App = () => {
                 avgTypingDelay={5}
                 className={`terminalFont ${
                   globalMessage.success
-                    ? "terminalTextGreen"
-                    : "terminalTextLost"
+                    ? "terminalTextwin"
+                    : "terminalTextlost"
                 }`}
                 cursor={{ hideWhenDone: true }}
               >

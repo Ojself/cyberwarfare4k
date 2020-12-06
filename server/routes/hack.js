@@ -12,6 +12,8 @@ const {
   fightCrime,
 } = require('../middlewares/middleCrime');
 const {
+  fraudHacker,
+  fraudRouteCriteria,
   attackRouteCriterias,
   fightHacker,
 } = require('../middlewares/middleAttack');
@@ -113,22 +115,62 @@ router.post('/crimes', async (req, res) => {
 
 // @POST
 // PRIVATE
-// User can hack another plater.
-// /opponentId/attack
-router.post('/:opponentId', async (req, res) => {
+// User can steal from other players.
+router.post('/fraud/:opponentId', async (req, res) => {
   const userId = req.user._id;
   const { opponentId } = req.params;
-  const batteryCost = 10;
+  const batteryCost = 4;
 
   const user = await User.findById(userId);
   const opponent = await User.findById(opponentId);
   const now = Date.now();
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
-  console.log(userIsOnline, 'userIsOnline');
+
+  const disallowed = await fraudRouteCriteria(user, opponent, batteryCost, now, userIsOnline);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  const finalResult = await fraudHacker(user, opponent, batteryCost, now);
+
+  const updatedUser = await saveAndUpdateUser(finalResult.user);
+  await finalResult.opponent.save();
+  finalResult.user = null;
+  finalResult.opponent = null;
+  finalResult.now = null;
+
+  const message = `You stole ${finalResult.playerGains.bitCoinStolen} from ${opponent.name}`;
+  const success = !!finalResult.playerGains.bitCoinStolen;
+  return res.status(200).json({
+    success,
+    message,
+    finalResult,
+    user: updatedUser,
+
+  });
+});
+
+// @POST
+// PRIVATE
+// User can hack another plater.
+// /opponentId/attack
+router.post('/:opponentId', async (req, res) => {
+  const userId = req.user._id;
+  const { opponentId } = req.params;
+  const batteryCost = 6;
+
+  const user = await User.findById(userId);
+  const opponent = await User.findById(opponentId);
+  const now = Date.now();
+
+  const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
   const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
-  console.log(disallowed, 'disallowed');
 
   if (disallowed) {
     return res.status(400).json({
@@ -143,10 +185,11 @@ router.post('/:opponentId', async (req, res) => {
   await finalResult.opponent.save();
   finalResult.user = null;
   finalResult.opponent = null;
+  finalResult.now = null;
 
   const messageEnding = finalResult.bodyguardKilled
     ? 'killed a bodyguard'
-    : `dealt ${finalResult.damageDealt}`;
+    : `dealt ${finalResult.damageDealt} damage`;
 
   return res.status(200).json({
     success: true,
@@ -156,4 +199,5 @@ router.post('/:opponentId', async (req, res) => {
 
   });
 });
+
 module.exports = router;

@@ -24,6 +24,7 @@ const HackCrimes = ({ updateGlobalValues }) => {
     try {
       data = await api.commitCrimes(crimeId);
     } catch (err) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return updateGlobalValues(err);
     }
     updateGlobalValues(data, false);
@@ -36,7 +37,7 @@ const HackCrimes = ({ updateGlobalValues }) => {
     const lexi = {
       30: "success",
       50: "info",
-      70: "primary",
+      70: "light",
       90: "warning",
       150: "danger",
     };

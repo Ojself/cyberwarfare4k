@@ -3,15 +3,13 @@ import React, { useState, useEffect } from "react";
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
 
-import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
+import { randomCrimeString, errorMessages } from "../_helpers/combatStrings";
 
-const CrimeTerminal = ({ result }) => {
+const AttackTerminal = ({ message, result }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
-    progressMaxHp: 100,
-    progressCurrentHp: 0,
-    round: 1,
-    lostCount: 0,
+    progressValue: 0,
+    round: 0,
     decorationColor: "#08fe00",
   });
   useEffect(() => {
@@ -21,10 +19,8 @@ const CrimeTerminal = ({ result }) => {
   const clearState = () => {
     setTerminalState({
       showResults: false,
-      progressMaxHp: 100,
-      progressCurrentHp: 0,
-      round: 1,
-      lostCount: 0,
+      progressValue: 0,
+      round: 0,
       decorationColor: "#08fe00",
     });
   };
@@ -34,11 +30,24 @@ const CrimeTerminal = ({ result }) => {
       ...terminalState,
       showResults: true,
     });
-    blinkDecorationColor();
+    setDecorationToDanger();
   };
+
+  const giveResultString = (status)=>{
+      let result;
+      console.log(status, 'giveResultString');
+      if (status === 'lost') result = giveLostString()
+      if (status === 'win') result = giveWonString()
+      if (status === "blocked") result = giveBlockedString();
+
+      return <p className={`pl-2 terminalText${status}`}>{result}</p>;
+  }
 
   const giveLostString = () => {
     return `ERROR: ${errorMessages[getRandomNumber(errorMessages)]}`;
+  };
+  const giveBlockedString = () => {
+    return `BLOCKED .......................... `;
   };
   const giveWonString = () => {
     return `SUCCESS ${randomCrimeString[getRandomNumber(randomCrimeString)]}`;
@@ -48,51 +57,37 @@ const CrimeTerminal = ({ result }) => {
   };
 
   const updateProgressBarValues = () => {
-    const maxHp = result.roundCrimeRemainingHp[0];
-    const currentHp =
-      result.roundCrimeRemainingHp[0] -
-      result.roundCrimeRemainingHp[terminalState.round];
+      let currentProgress = terminalState.progressValue
+      const status = result.roundResult[terminalState.round];
+      console.log(result.roundResult.length, terminalState.round + 1);
+      if (status === 'win'){
+          currentProgress += Math.floor(Math.random() * (25 - 10) + 25);
+          if (result.roundResult.length <= (terminalState.round + 1)){
+              currentProgress = 100
+          }
+      }
     setTerminalState({
       ...terminalState,
-      progressMaxHp: maxHp,
-      progressCurrentHp: currentHp,
       round: terminalState.round + 1,
-      lostCount:
-        result.roundResult[terminalState.round - 1] === "lost"
-          ? (terminalState.lostCount += 1)
-          : terminalState.lostCount,
+      progressValue: currentProgress,
     });
   };
   const resultsOverview = result && (
     <div
       className={`text-${
         result.won ? "warning" : "danger"
-      } crimeTerminalResultWrapper`}
+      } AttackTerminalResultWrapper`}
     >
       <h5>Results</h5>
-      <p>
-        <span style={{ fontSize: "1rem", color: "#F08F18" }}>&#8383;</span>{" "}
-        {result.playerGains.bitCoins}
-      </p>
-      <p>XP: {result.playerGains.exp}</p>
-      {result.playerGains.levelUp && <strong>NEW RANK!</strong>}
-      {/* <p>skill: {result.playerGains.skillGained}</p>
-      <p>stashGained: {result.playerGains.skillGained}</p> */}
+      {message}
     </div>
   );
-  const blinkDecorationColor = () => {
+  const setDecorationToDanger = () => {
     if (result.won) return;
     setTerminalState({
       ...terminalState,
       decorationColor: "#ab0000",
     });
-    /* This will blink it. Current behaviour is perma red terminal header */
-    /* setTimeout(() => {
-      setTerminalState({
-        ...terminalState,
-        decorationColor: "#08fe00",
-      });
-    }, 350); */
   };
 
   const terminalHeader = {
@@ -106,18 +101,13 @@ const CrimeTerminal = ({ result }) => {
   };
 
   return (
-    <div className="col-5">
+    <div className="w-100 mt-2">
       {result && (
         <div style={terminalBorder} className="w-100">
           <div style={terminalHeader}>
             <strong>Compiling Code</strong>
           </div>
-          <Progress
-            animated
-            color="success"
-            value={terminalState.progressCurrentHp}
-            max={terminalState.progressMaxHp}
-          />
+          <Progress animated color="success" value={terminalState.progressValue} max={100} />
           {terminalState.showResults && resultsOverview}
           <Typist
             className="terminalFont terminalStyle"
@@ -129,13 +119,7 @@ const CrimeTerminal = ({ result }) => {
             cursor={{ hideWhenDone: true }}
           >
             {result.roundResult.map((r, i) => (
-              <div key={i}>
-                {r === "lost" ? (
-                  <p className="pl-2 terminalTextlost">{giveLostString()}</p>
-                ) : (
-                  <p className="pl-2 terminalTextwin">{giveWonString()}</p>
-                )}
-              </div>
+              <div key={i}>{giveResultString(r)}</div>
             ))}
           </Typist>
         </div>
@@ -143,4 +127,4 @@ const CrimeTerminal = ({ result }) => {
     </div>
   );
 };
-export default CrimeTerminal;
+export default AttackTerminal;

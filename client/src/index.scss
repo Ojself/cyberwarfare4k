@@ -76,15 +76,29 @@ body {
   text-align: left;
 }
 
-.terminalTextGreen {
+.terminalTextwin {
   color: #06a308;
 }
 
-.terminalTextLost {
+.terminalTextlost {
   color: #8b0503;
+}
+.terminalTextblocked{
+  color: #aa94ec
 }
 
 .crimeTerminalResultWrapper {
+  margin: auto;
+  width: 50%;
+  padding-left: 0.5rem;
+  p,
+  h5 {
+    text-align: center;
+    font-size: 0.75;
+  }
+}
+
+.AttackTerminalResultWrapper {
   margin: auto;
   width: 50%;
   padding-left: 0.5rem;
