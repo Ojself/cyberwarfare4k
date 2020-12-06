@@ -33,7 +33,7 @@ const fraudRouteCriteria = async (user, opponent, batteryCost, now, userIsOnline
     return 'You tried to fraud yourself for some reason..';
   }
   if (user.playerStats.city._id.toString() !== opponent.playerStats.city._id.toString()) {
-    return `All traffic from ${user.playerStats.city.name} is blocked. Try changing VPN!`;
+    return `${opponent.name} is not in your city. Try changing VPN!`;
   }
   if (opponent.playerStats.currentFirewall <= 0) {
     return "You can't fraud what is already dead";
@@ -74,7 +74,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
     return 'You try to commit sudoku, but failed';
   }
   if (user.playerStats.city._id.toString() !== opponent.playerStats.city._id.toString()) {
-    return `All traffic from ${user.playerStats.city.name} is blocked. Try changing VPN!`;
+    return `${opponent.name} is not in your city. Try changing VPN!`;
   }
   if (opponent.playerStats.currentFirewall <= 0) {
     return "You can't kill what is already dead";
