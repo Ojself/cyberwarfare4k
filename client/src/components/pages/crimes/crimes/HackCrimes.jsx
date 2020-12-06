@@ -28,7 +28,6 @@ const HackCrimes = ({ updateGlobalValues }) => {
       return updateGlobalValues(err);
     }
     updateGlobalValues(data, false);
-
     setCrimes(data.crimes);
     setResult(data.finalResult);
   };

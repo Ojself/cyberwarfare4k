@@ -40,27 +40,23 @@ const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
           <ListGroup>
             <ListGroupItem className="text-white">
               <span className="text-warning">{batteryBonuses.default}</span>{" "}
-              Default{" "}
-              {getIcon(true)}
+              Default {getIcon(true)}
             </ListGroupItem>
             <ListGroupItem>
               <span className="text-warning">{batteryBonuses.githubStar}</span>{" "}
-              Star the game{" "}
-              {getIcon(userHasStarred)}
+              Star the game {getIcon(userHasStarred)}
             </ListGroupItem>
             <ListGroupItem>
               {userSubscription ? (
                 <span className="text-warning">{subscriptionBonus}</span>
               ) : (
-                <span>"1-3"</span>
+                <span className="text-warning">1-3</span>
               )}{" "}
-              Patreon Supporter{" "}
-              {getIcon(userSubscription)}
+              Patreon Supporter {getIcon(userSubscription)}
             </ListGroupItem>
             <ListGroupItem>
               <strong>
-                <span className="text-warning">{totalBonus}</span>{" "}
-                Total
+                <span className="text-warning">{totalBonus}</span> Total
               </strong>{" "}
               {getIcon(totalCheckMark)}
             </ListGroupItem>
