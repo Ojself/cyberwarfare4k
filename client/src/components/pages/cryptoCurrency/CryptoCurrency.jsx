@@ -168,7 +168,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     <td>
                       <Link
                         className="text-white"
-                        to={`profile/${cu.lastPurchasedBy[0]._id}`}
+                        to={`hacker/${cu.lastPurchasedBy[0]._id}`}
                       >
                         {cu.lastPurchasedBy[0].name}
                       </Link>
