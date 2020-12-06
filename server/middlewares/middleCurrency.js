@@ -1,12 +1,9 @@
-const { batteryCheck, existingValue } = require('./middleHelpers');
+const { existingValue } = require('./middleHelpers');
 
 // Sees if everything is in order to sell currency
-function soldRouteCriterias(user, batteryCost, currency, amount) {
+function soldRouteCriterias(user, currency, amount) {
   if (!existingValue(user)) {
     return "User doesn't exist";
-  }
-  if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
   }
   if (!existingValue(currency)) {
     return "Currency doesn't exist";
@@ -69,5 +66,4 @@ function checkUserStock(user, currency, amount) {
 module.exports = {
   soldRouteCriterias,
   buyRouteCriterias,
-
 };

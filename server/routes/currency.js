@@ -85,7 +85,6 @@ router.post('/sell', isLoggedIn, async (req, res) => {
 
   user.sellCurrency(currency, amount, totalPrice);
   currency.sellHandle(amount);
-
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({

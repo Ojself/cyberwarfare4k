@@ -78,7 +78,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
         Dash:0
       });
     }catch(err){
-      console.err(err)
+      console.error(err)
       return updateGlobalValues(err)
     }
     updateGlobalValues(data)
@@ -101,7 +101,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
         Dash: 0,
       });
    } catch(err){
-     console.err(err)
+     console.error(err)
       return updateGlobalValues(err)
     }
     updateGlobalValues(data)
