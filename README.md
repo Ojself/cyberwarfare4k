@@ -43,3 +43,4 @@ Created with 💙 by [Tor](https://github.com/Ojself) in his free time. Don't be
 # Backers
 
 - 🥉 [HaakonA](https://github.com/HaakonA)
+- 🥈 [Yen-tth] (https://github.com/yen-tth)
