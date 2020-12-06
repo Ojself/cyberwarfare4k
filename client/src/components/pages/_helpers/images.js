@@ -95,6 +95,16 @@ const catzAvatars = [
     src: "/hackerAvatars/Catz/cat5.jpeg",
     title: "Cat 5",
   },
+  {
+    id: 6,
+    src: "/hackerAvatars/Catz/cat6.jpeg",
+    title: "Cat 6",
+  },
+  {
+    id: 7,
+    src: "/hackerAvatars/Catz/cat7.jpeg",
+    title: "Cat 7",
+  },
 ];
 const irlAvatars = [
   {
@@ -194,6 +204,11 @@ const mrrobotAvatars = [
     src: "/hackerAvatars/Mr. Robot/mrrobot.png",
     title: "Mr Robot",
   },
+  {
+    id: 1,
+    src: "/hackerAvatars/Mr. Robot/mrrobotdad.png",
+    title: "Mr Robot Dad",
+  },
 ];
 const NCISAvatars = [
   {
@@ -203,7 +218,7 @@ const NCISAvatars = [
   },
   {
     id: 1,
-    src: "/hackerAvatars/NCIS/sunglasses.jpg",
+    src: "/hackerAvatars/NCIS/sunglasses.png",
     title: "Sunglasses",
   },
   {
@@ -212,8 +227,13 @@ const NCISAvatars = [
     title: "Sunglasses 2",
   },
   {
-    id: 2,
+    id: 3,
     src: "/hackerAvatars/NCIS/markHarmon.jpg",
+    title: "Mark Harmon",
+  },
+  {
+    id: 4,
+    src: "/hackerAvatars/NCIS/abbyncis.png",
     title: "Mark Harmon",
   },
 ];

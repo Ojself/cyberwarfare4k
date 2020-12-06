@@ -13,26 +13,31 @@ const cities = [
   {
     name: 'Shanghai',
     _id: '5fae62409cbf7d270f23470b',
+    stashPriceMultiplier: 1.09,
 
   },
   {
     name: 'Hanoi',
     _id: '5fae62409cbf7d270f23470c',
+    stashPriceMultiplier: 1.02,
 
   },
   {
     name: 'Stavanger',
     _id: '5fae62409cbf7d270f23470d',
+    stashPriceMultiplier: 1.04,
 
   },
   {
     name: 'Phoenix',
     _id: '5fae62409cbf7d270f23470e',
+    stashPriceMultiplier: 1.12,
 
   },
   {
     name: 'Novosibirsk',
     _id: '5fae62409cbf7d270f23470f',
+    stashPriceMultiplier: 1.19,
 
   },
 ];

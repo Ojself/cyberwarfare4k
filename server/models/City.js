@@ -6,7 +6,7 @@ const citySchema = new Schema({
   name: String,
   price: { type: Number, default: 2000 },
   residents: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  stashPriceMultiplier: { type: Number, default: 1 },
+  stashPriceMultiplier: { type: Number },
   allianceBase: { type: Schema.Types.ObjectId, ref: 'Alliance' },
 });
 
