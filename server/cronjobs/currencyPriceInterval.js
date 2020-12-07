@@ -1,7 +1,7 @@
 const Currency = require('../models/Currency');
 
 const calculatePrice = (min, max) => {
-  const randomNumber = (Math.random() * (max - min) + min).toFixed(2);
+  const randomNumber = (Math.random() * (max - min) + min).toFixed(3);
   return parseFloat(randomNumber);
 };
 
