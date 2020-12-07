@@ -47,7 +47,12 @@ const checkCurrencyAvailablitiy = (currency, amount) => currency.available >= am
 const checkCurrencyMarketCap = (user, currency, amount) => {
   // what the user already has in his wallet
   const userCoins = user.currencies[currency.name];
-  return (0.25 * currency.marketCap < parseInt(amount + userCoins, 10));
+  console.log(userCoins, 'userCoins');
+  console.log(0.25 * currency.marketCap, '0.25 * currency.marketCap');
+  console.log(amount, 'amount');
+  console.log(parseInt(amount + userCoins, 10), 'parseInt(amount + userCoins, 10)');
+  console.log(0.25 * currency.marketCap < parseInt(amount + userCoins, 10), '0.25 * currency.marketCap < parseInt(amount + userCoins, 10)');
+  return 0.25 * currency.marketCap < parseInt(amount + userCoins, 10);
 };
 
 // checks if user has the amount of currencies he's trying to sell

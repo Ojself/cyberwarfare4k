@@ -539,6 +539,9 @@ userSchema.methods.sendNotification = function (message, now = Date.now(), read 
     message,
     read, // set to true to give passive notification
   });
+  if (this.account.notifications.length >= 10) {
+    this.account.notifications.shift();
+  }
 };
 
 userSchema.methods.addBounty = function (bountyDonor, bounty) {

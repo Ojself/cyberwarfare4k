@@ -54,7 +54,7 @@ User.deleteMany()
         email: 'alice@email.com',
         _id: '5fae6d7ee60018434108369c',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -94,7 +94,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67a',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -129,7 +129,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67b',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -164,7 +164,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67c',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -199,7 +199,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67d',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -234,7 +234,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67e',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -269,7 +269,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b680',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -304,7 +304,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b67f',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -339,7 +339,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b681',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
@@ -374,7 +374,7 @@ User.deleteMany()
         },
         _id: '5fca3b4a86e77b5c8e58b682',
         fightInformation: {
-          shutdowns: Math.floor(Math.random() * 4),
+          shutdowns: 0,
           attacksInitiated: Math.floor(Math.random() * 10),
           attacksVictim: Math.floor(Math.random() * 5),
           crimesInitiated: Math.floor(Math.random() * 10),
