@@ -11,22 +11,19 @@ const subscriptionBonus = {
 const bonusBatteryInterval = async () => {
   const users = await User.find({
     $or: [
-      { "account.subscription": "Bronze" },
-      { "account.subscription": "Silver" },
-      { "account.subscription": "Gold" },
-      { "account.subscription": "Platinum" },
-      { "earnBattery.githubStar": true },
+      { 'account.subscription': 'Bronze' },
+      { 'account.subscription': 'Silver' },
+      { 'account.subscription': 'Gold' },
+      { 'account.subscription': 'Platinum' },
+      { 'earnBattery.githubStar': true },
     ],
   });
-  console.log(users.length,'length')
   users.forEach((user) => {
-    const { subscription } = user.account || 'Bronze';
-    console.log(subscription, "subscription");
+    let { subscription } = user.account;
+    if (!subscription) subscription = 'Bronze';
     const githubBonus = user.earnBattery.githubStar ? 1 : 0;
     user.playerStats.battery += subscriptionBonus[subscription].battery + githubBonus;
-    console.log(user.playerStats.battery, "user.playerStats.battery");
     if (user.playerStats.battery > subscriptionBonus[subscription].max) {
-      console.log("if!", subscriptionBonus[subscription].max);
       user.playerStats.battery = subscriptionBonus[subscription].max;
     }
   });

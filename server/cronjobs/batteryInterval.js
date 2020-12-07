@@ -11,16 +11,11 @@ const subscriptionMaxBattery = {
 const batteryInterval = async () => {
   const users = await User.find();
   users.forEach((user) => {
-    const { subscription } = user.account || 'default';
-    console.log("batteryInterval");
-    console.log(subscription, "subscription");
-    console.log(
-      subscriptionMaxBattery[subscription],
-      "subscriptionMaxBattery[subscription]"
-    );
+    let { subscription } = user.account;
+    if (!subscription)subscription = 'default';
+
     user.playerStats.battery += 1;
     if (user.playerStats.battery > subscriptionMaxBattery[subscription]) {
-      console.log('if!')
       user.playerStats.battery = subscriptionMaxBattery[subscription];
     }
   });

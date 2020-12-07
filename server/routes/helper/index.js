@@ -80,16 +80,11 @@ const getOpponentInformation = async (opponentId, allUsers) => {
     (a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill),
   );
   ranking.hackSkill = findPosition(allUsers, opponentId);
-  allUsers.sort(
-    (a, b) => sumAllSkillValues({
-      bitCoins: b.playerStats.bitCoins,
-      ledger: b.playerStats.bitCoins,
-    })
-      - sumAllSkillValues({
-        bitCoins: a.playerStats.bitCoins,
-        ledger: a.playerStats.bitCoins,
-      }),
-  );
+  allUsers.sort((b, a) => {
+    const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
+    const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
+    return aNetWorth - bNetWorth;
+  });
   ranking.networth = findPosition(allUsers, opponentId);
   const onlineUsers = await getOnlineUsers();
   ranking.online = onlineUsers.some((id) => JSON.stringify(id) === opponentId);

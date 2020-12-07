@@ -20,7 +20,7 @@ const handleGithubEvent = async (payload) => {
 };
 
 const generateQueryString = (game) => {
-  const lexi = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lexi = 'abcdefghijkmnpqrstuvwxyz23456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
   let query = '';
   for (let i = 0; i < 6; i += 1) {
     query += lexi[Math.floor(Math.random() * lexi.length)];
