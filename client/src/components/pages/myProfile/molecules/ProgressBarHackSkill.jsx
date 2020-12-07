@@ -29,9 +29,13 @@ const ProgressBarHackSkill = (props) => {
     }
     return "myprofile-statpoint";
   };
-
-  const baseValue = props.bonus ?
-  props.value - props.bonus: props.value
+  console.log(props.bonus,'bonus')
+  
+  let skillWithoutBonus = props.bonus ? props.value - props.bonus: props.value
+  if (skillWithoutBonus <= 0) {
+    skillWithoutBonus = props.value;
+  }
+  console.log(props.value)
 
   return (
     <div
@@ -42,14 +46,19 @@ const ProgressBarHackSkill = (props) => {
       onClick={(e) => blinkMe(e)}
     >
       <div style={{ fontSize: "0.7rem" }} className="text-center text-light">
-        {`${props.name} ${baseValue}% ${
+        {`${props.name} ${skillWithoutBonus}% ${
           props.bonus ? `+(${props.bonus})` : ""
         }`}
       </div>
       <Progress multi className="mb-2 mx-2" name={props.name}>
-        <Progress bar color={props.color} value={baseValue} max={100} />
+        <Progress bar color={props.color} value={skillWithoutBonus} max={100} />
         <Progress bar color="warning" value={props.bonus} max={100} />
-        <Progress bar color="dark" value={200 - props.value}></Progress>
+        <Progress
+          bar
+          color="dark"
+          max={200}
+          value={200 - props.value}
+        ></Progress>
       </Progress>
     </div>
   );

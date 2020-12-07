@@ -280,11 +280,14 @@ userSchema.methods.handleItemPurchase = function (item) {
   this.bitCoinDrain(item.price);
 };
 
-userSchema.methods.giveHackSkill = function (amount = 1, skill = 'Encryption') {
+userSchema.methods.giveHackSkill = function (amount = 1, skill) {
   if (!this.hackSkill[skill]) {
     return;
   }
   if (this.marketPlaceItems[skill] && this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
+    return;
+  }
+  if (!this.marketPlaceItems[skill] && this.hackSkill[skill] >= 100) {
     return;
   }
   this.hackSkill[skill] += amount;
