@@ -143,13 +143,13 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
           </strong>
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge color="primary" pill>
+          <Badge color="success" pill>
             #{opponentState.ranking.crimeSkill}
           </Badge>{" "}
           Crime skills
         </ListGroupItem>
         <ListGroupItem className="justify-content-between bg-dark">
-          <Badge color="success" pill>
+          <Badge color="primary" pill>
             #{opponentState.ranking.hackSkill}
           </Badge>{" "}
           Hack Skills

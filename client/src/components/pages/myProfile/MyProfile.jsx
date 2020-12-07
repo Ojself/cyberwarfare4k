@@ -24,6 +24,7 @@ import classnames from "classnames";
 
 
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
+  console.log(user,'user')
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
@@ -106,6 +107,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
       {["CPU", "AntiVirus", "Encryption"].map((h) => {
         return (
           <ProgressBarHackSkill
+            color="primary"
             key={h}
             upgrade={(e) => handleUpgrade(e)}
             name={h}

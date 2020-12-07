@@ -76,11 +76,10 @@ const AttackTerminal = ({ message, result }) => {
   };
   const resultsOverview = result && (
     <div
-      className={`text-${
+      className={`w-100 my-2 text-${
         result.won ? "warning" : "danger"
       } AttackTerminalResultWrapper`}
     >
-      <h5>Results</h5>
       {message}
     </div>
   );
