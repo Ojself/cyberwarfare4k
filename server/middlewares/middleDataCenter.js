@@ -16,8 +16,7 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-  if (
-    checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
+  if (checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
   ) {
     return "You can't purchase a datacenter outside your city";
   }

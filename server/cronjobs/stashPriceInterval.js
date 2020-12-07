@@ -5,10 +5,7 @@ const Stash = require('../models/Stash');
 
 const stashPriceInterval = async () => {
   const stash = await Stash.find({});
-  stash.forEach((s) => {
-    s.setNewRandomPrice();
-  });
-  await Promise.all(stash.map((s) => s.save()));
+  await Promise.all(stash.map((s) => s.setNewRandomPrice()));
 };
 
 module.exports = stashPriceInterval;

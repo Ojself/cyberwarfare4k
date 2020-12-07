@@ -9,8 +9,10 @@ const stashSchema = new Schema({
 });
 
 stashSchema.methods.setNewRandomPrice = function () {
-  const multiplier = this.lowerPrice * (Math.random() + 1);
+  const rng = Math.random() + 1;
+  const multiplier = this.lowerPrice * rng;
   this.price = Math.floor(multiplier);
+  this.save();
 };
 
 module.exports = mongoose.model('Stash', stashSchema);
