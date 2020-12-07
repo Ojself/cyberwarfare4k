@@ -6,10 +6,7 @@ const Stash = require('../models/Stash');
 const stashPriceInterval = async () => {
   const stash = await Stash.find({});
   stash.forEach((s) => {
-    const multiplier = s.lowerPrice * (Math.random() + 1);
-    console.log(multiplier, "multiplier");
-    s.price = Math.floor(multiplier);
-    console.log(s.price, "s.price");
+    s.setNewRandomPrice();
   });
   await Promise.all(stash.map((s) => s.save()));
 };

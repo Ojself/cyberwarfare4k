@@ -31,6 +31,7 @@ export default ({ data }) => {
         legendPosition: "middle",
         tickValues: 8,
       }}
+      isInteractive={false}
       enableGridX={false}
       enableGridY={false}
       colors={data[0].colors}

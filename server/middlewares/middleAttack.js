@@ -145,34 +145,38 @@ const attackRecursiveBattle = (result) => {
     return newResult;
   }
 
-  const chanceForBlocked = calculateChance(result.user.hackSkill.Encryption, result.opponent.hackSkill.CPU);
   // Attacker gets blocked
 
+  const chanceForBlocked = calculateBlockChance(result.user.hackSkill.Encryption, result.opponent.hackSkill.CPU);
   if (chanceForBlocked >= Math.random()) {
     result.roundResult.push('blocked');
     return attackRecursiveBattle(result);
   }
 
-  const attackNumber = damageCalculator(result.user);
-  const defenseNumber = defenseCalulator(result.opponent);
+  /* const attackNumber = damageCalculator(result.user);
+  const defenseNumber = defenseCalulator(result.opponent); */
 
   // round lost
-  if (attackNumber <= defenseNumber) {
+  /* if (attackNumber <= defenseNumber) {
     const status = result.opponent.hackSkill.AntiVirus > result.opponent.hackSkill.Encryption ? 'lost' : 'blocked';
     result.roundResult.push(status);
     return attackRecursiveBattle(result);
-  }
+  } */
+
+  const chanceForAttack = primitiveCalculateAttackChance(result.user, result.opponent);
 
   // round win
-  if (attackNumber >= defenseNumber) {
+  if (chanceForAttack > Math.random()) {
     result.roundResult.push('win');
+  } else {
+    result.roundResult.push('lost');
   }
 
   return attackRecursiveBattle(result);
 };
 // end of recursive
 
-const damageCalculator = (hacker) => {
+/* const damageCalculator = (hacker) => {
   const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
   const max = (CPU * CPU) / (AntiVirus + Encryption);
   const min = max / 3;
@@ -181,9 +185,9 @@ const damageCalculator = (hacker) => {
   return Math.round(damageNumber);
 };
 
-const defenseCalulator = (hacker) => {
+ const defenseCalulator = (hacker) => {
   const { CPU, AntiVirus } = hacker.hackSkill;
-  const max = (AntiVirus * AntiVirus) / (CPU * 2);
+  const max = AntiVirus / CPU;
   const min = max / 3;
 
   const defenseNumber = Math.random() * (max - min) + min;
@@ -191,7 +195,7 @@ const defenseCalulator = (hacker) => {
 };
 
 // deprecated
-/* const blockCalculator = (hacker) => {
+ const blockCalculator = (hacker) => {
   const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
   const max = (Encryption * Encryption) / (CPU + AntiVirus);
   const min = max / 3;
@@ -254,11 +258,24 @@ const fraudGenerator = (result) => {
 };
 
 // returns between 0.05 and 0.95
-const calculateChance = (defenseStat, attackStat) => {
+const calculateBlockChance = (defenseStat, attackStat) => {
   const x = defenseStat / attackStat;
   const a = 6 * Math.sqrt(5 / 19999);
   const b = 13639 / 72000;
   return a * Math.sqrt(x + b);
+};
+
+const primitiveCalculateAttackChance = (user, opponent) => {
+  const { CPU } = user.hackSkill;
+  const { AntiVirus } = opponent.hackSkill;
+  const probability = CPU / (AntiVirus * 1.125);
+  if (probability >= 0.90) {
+    return 0.90;
+  }
+  if (probability < 0.05) {
+    return 0.05;
+  }
+  return probability;
 };
 
 module.exports = {

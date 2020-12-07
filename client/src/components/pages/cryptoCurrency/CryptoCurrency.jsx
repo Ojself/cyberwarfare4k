@@ -114,9 +114,40 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     });
   };
 
+  /* const priceOverview = ()=> {
+    const {Litecoin,Ethereum,Ripple,Monero,Zcash,Dash} = cryptoState;
+    const buyingStarted = [
+      Litecoin,
+      Ethereum,
+      Ripple,
+      Monero,
+      Zcash,
+      Dash,
+    ].some(currency=> currency>0)
+    console.log(buyingStarted);
+
+    return buyingStarted && ( <div>
+        {["Litecoin", "Ethereum", "Ripple", "Monero", "Zcash", "Dash"]
+          .map(currency=>{
+          return cryptoState[currency] > 0 && (
+            <h6 key={currency}>{currency}</h6>
+          )
+          }
+        )}
+        <h6>Total: </h6>
+        <h6>On hand: </h6>
+      </div>
+      )
+      }
+   */
+
   return (
     <div className="page-container">
-      <h1>Currency</h1>
+      <div className="d-flex flex-row justify-content-center">
+        {/* <div className="col-4"></div> */}
+        <h1>Currency</h1>
+        {/* <div className="col-4">{priceOverview()}</div> */}
+      </div>
       {cryptoState.loading ? (
         <p>loading...</p>
       ) : (

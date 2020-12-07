@@ -49,7 +49,6 @@ const userSchema = new Schema(
     name: {
       type: String,
       default: '',
-      unique: true,
     },
     alliance: {
       type: Schema.Types.ObjectId,
@@ -432,7 +431,7 @@ userSchema.methods.setRank = async function (rank = undefined) {
     this.playerStats.statPoints += 5;
   }
   const newRank = await Rank.findOne({ rank: this.playerStats.rank });
-  this.playerStats.battery = 100;
+  this.playerStats.battery += 100;
   this.playerStats.rankName = newRank.name;
   this.playerStats.expToLevel = newRank.expToNewRank;
 };

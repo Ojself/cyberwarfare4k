@@ -26,7 +26,7 @@ const buyRouteCriterias = (user, currency, amount) => {
     return 'Insufficent funds';
   }
   if (checkCurrencyMarketCap(user, currency, amount)) {
-    return "You can't buy OR hold more than 25% of the marketshare of this currency";
+    return `You can't buy OR hold more than 25% of the marketshare of ${currency.name}`;
   }
   if (!checkCurrencyAvailablitiy(currency, amount)) {
     return "You're can't buy more than what is available in the market";
@@ -51,7 +51,7 @@ const checkCurrencyMarketCap = (user, currency, amount) => {
 };
 
 // checks if user has the amount of currencies he's trying to sell
-const checkUserStock = (user, currency, amount) => user.currencies[currency.name] >= amount;
+const checkUserStock = (user, currency, amount) => user.currencies[currency.name] > amount;
 
 module.exports = {
   soldRouteCriterias,

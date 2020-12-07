@@ -14,9 +14,8 @@ const batteryInterval = async () => {
     let { subscription } = user.account;
     if (!subscription)subscription = 'default';
 
-    user.playerStats.battery += 1;
-    if (user.playerStats.battery > subscriptionMaxBattery[subscription]) {
-      user.playerStats.battery = subscriptionMaxBattery[subscription];
+    if (user.playerStats.battery <= subscriptionMaxBattery[subscription]) {
+      user.playerStats.battery += 1;
     }
   });
   await Promise.all(users.map((user) => user.save()));

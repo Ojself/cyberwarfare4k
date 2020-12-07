@@ -13,7 +13,6 @@ const currencySchema = new Schema({
   historyPrice: [Number],
   historyTime: [Number],
   // max a person can hold in percentage
-  maxAmountHold: { type: Number, default: 10 },
   available: Number,
   marketCap: Number,
   lastPurchasedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
