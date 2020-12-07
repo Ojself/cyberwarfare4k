@@ -32,7 +32,7 @@ currencySchema.methods.purchaseHandle = function (amount, userId) {
   if (amount > ((this.maxAmountHold - 2) / 100) * this.marketCap) {
     this.lowerPrice *= 1.05;
     this.higherPrice *= 1.1;
-    this.available -= (this.available * 0.001);
+    this.available -= (this.available * 0.005);
   }
   if (this.avialable < 0) {
     this.available = 0;

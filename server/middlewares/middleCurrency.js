@@ -51,7 +51,7 @@ const checkCurrencyMarketCap = (user, currency, amount) => {
 };
 
 // checks if user has the amount of currencies he's trying to sell
-const checkUserStock = (user, currency, amount) => user.currencies[currency.name] > amount;
+const checkUserStock = (user, currency, amount) => user.currencies[currency.name] >= amount;
 
 module.exports = {
   soldRouteCriterias,
