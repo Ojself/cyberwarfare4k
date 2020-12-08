@@ -7,7 +7,6 @@ const SubscriptionIcon = ({ subscription }) => {
     Gold: "🥇",
     Platinum: "💎",
   };
-  console.log(subscription);
   if (!subscription || !Object.keys(subIcons).includes(subscription)) {
     return false;
   }

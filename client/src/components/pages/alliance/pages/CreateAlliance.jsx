@@ -46,8 +46,8 @@ const CreateAlliance = (props) => {
       try {
         data = await api.getAlliances();
         data.alliances = data.alliances.filter((alliance) => !alliance.active);
-      } catch (e) {
-        console.log("error", e);
+      } catch (err) {
+        console.log("error", err);
       }
       setAlliances(dataMassager(data.alliances));
       setLoading(false);

@@ -84,7 +84,6 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
 
   const addBounty = async () => {
     const opponentId = opponentState.opponent._id;
-    console.log(opponentId, "opponentId");
     let data;
     const { bountyInput } = opponentState;
     try {

@@ -76,7 +76,6 @@ const CreateHacker = () => {
   };
 
   const selectAvatar = (e) => {
-    console.log(e.target.name);
     let avatar = e.target.name || null;
     if (createState.selectedAvatar === avatar) {
       avatar = null;

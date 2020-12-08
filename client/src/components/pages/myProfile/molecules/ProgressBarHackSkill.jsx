@@ -29,13 +29,11 @@ const ProgressBarHackSkill = (props) => {
     }
     return "myprofile-statpoint";
   };
-  console.log(props.bonus,'bonus')
   
   let skillWithoutBonus = props.bonus ? props.value - props.bonus: props.value
   if (skillWithoutBonus <= 0) {
     skillWithoutBonus = props.value;
   }
-  console.log(props.value)
 
   return (
     <div

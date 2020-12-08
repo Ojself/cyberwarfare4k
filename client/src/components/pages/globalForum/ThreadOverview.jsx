@@ -70,7 +70,6 @@ const SingleForum = (props) => {
           <p>loading...</p>
         ) : (
           singleForumState.threads.map((t, i) => {
-            console.log(t, "t");
             return (
               <ThreadComponent
                 key={i}

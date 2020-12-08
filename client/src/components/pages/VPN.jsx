@@ -40,7 +40,6 @@ const VPN = ({ updateGlobalValues }) => {
   // todo. add price in here somewhere
   const handleChange = (selectedOption) => {
     setVpnState({ ...vpnState, selectedOption });
-    console.log(vpnState, "vpnState", selectedOption, "selected");
   };
 
   const handleTravel = async () => {

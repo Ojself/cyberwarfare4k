@@ -11,7 +11,6 @@ import {
 } from "reactstrap";
 
 const ForumThread = (props) => {
-  console.log(props);
   const [threadState, setThreadState] = useState({
     loading: true,
     threadTitle: "Thread",
