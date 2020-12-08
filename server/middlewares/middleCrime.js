@@ -5,7 +5,7 @@ const {
 
 // Sees if everything is in order to perform crime
 
-const crimeRouteCriterias =(crime, user, batteryCost) =>{
+const crimeRouteCriterias = (crime, user, batteryCost) => {
   if (!crime) {
     return 'Crime not found with ';
   }
@@ -16,9 +16,9 @@ const crimeRouteCriterias =(crime, user, batteryCost) =>{
     return 'This crime is not available at the moment';
   }
   return null;
-}
+};
 
-async const fightCrime =(user, crime, batteryCost) =>{
+const fightCrime = async (user, crime, batteryCost) => {
   const result = {
     user,
     crimeType: crime.crimeType,
@@ -56,10 +56,10 @@ async const fightCrime =(user, crime, batteryCost) =>{
   await crime.save();
 
   return finalResult;
-}
+};
 
 // recursive const that = runs until the hp of the crime is 0 or the user has lost 4 time=>s
-const crimeRecursiveBattle =(user, crime, result) =>{
+const crimeRecursiveBattle = (user, crime, result) => {
   const probability = chanceCalculator(user, crime);
   const damage = damageCalulator(user, crime);
 
@@ -89,11 +89,11 @@ const crimeRecursiveBattle =(user, crime, result) =>{
   }
 
   return crimeRecursiveBattle(user, crime, result);
-}
+};
 // end of recursive
 
 // sets the probability to succeed, higher is better
-const chanceCalculator =(user, crime) =>{
+const chanceCalculator = (user, crime) => {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
   // if user tried to do crimes way over his level, give him 5% chance for success
@@ -102,32 +102,32 @@ const chanceCalculator =(user, crime) =>{
   } */
   const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
   return probability;
-}
+};
 
 // todo if user has 50 skill don't give him more skill in pettycrime
 
 // calculates the 'damage' the user inflicts on the crime
 // boils down the players crimcrimesInitiatede and hacking skills and returns a randomnumber from 0 to x
-const damageCalulator =(user, crime) =>{
+const damageCalulator = (user, crime) => {
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
   const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);
   return Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage));
-}
+};
 
-const roundWin =(result, damage) =>{
+const roundWin = (result, damage) => {
   result.crimeHp -= damage;
   result.roundResult.push('win');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
-}
+};
 
-const roundLost =(result) =>{
+const roundLost = (result) => {
   result.roundResult.push('lost');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
-}
+};
 
-const crimeWin =(result, crime, user, decider) =>{
+const crimeWin = (result, crime, user, decider) => {
   // TODO write legendaryGained
 
   result.won = true;
@@ -141,17 +141,14 @@ const crimeWin =(result, crime, user, decider) =>{
   result.playerGains.statGained = statGained(decider, user.playerStats.rank);
   result.playerGains.legendaryGained = '';
   return result;
-}
+};
 
-const crimeWinBitcoins =(multiplier) =>{
-  return Math.floor(Math.random() * multiplier) * 1000;
-}
-const crimeWinExp =(multiplier) =>{
-  return Math.floor(Math.random() * multiplier) * 300; // TODO balance this one
-}
+const crimeWinBitcoins = (multiplier) => Math.floor(Math.random() * multiplier) * 1000;
+const crimeWinExp = (multiplier) => Math.floor(Math.random() * multiplier) * 300 // TODO balance this one
+;
 
 // returns a skill based on luck and rank. Higher rank gives lower chance
-const skillGained =(decider, rank, crimeType) =>{
+const skillGained = (decider, rank, crimeType) => {
   if (rank === 0) {
     rank = 1;
   }
@@ -165,16 +162,16 @@ const skillGained =(decider, rank, crimeType) =>{
     'Cryptography',
   ].filter((el) => el !== crimeType);
   return crimeTypes[Math.floor(Math.random() * crimeTypes.length)];
-}
+};
 
 // gives user statpoints based on luck and rank. Higher rank gives lower chance
-const statGained =(decider, rank) =>{
+const statGained = (decider, rank) => {
   if (Math.random() - rank || 1 / 8 < decider) {
     return null;
   }
   return true;
   // return Math.random() - (rank / 10) < decider
-}
+};
 
 module.exports = {
   crimeRouteCriterias,
