@@ -187,13 +187,19 @@ router.post('/:opponentId', async (req, res) => {
   finalResult.opponent = null;
   finalResult.now = null;
 
-  const messageEnding = finalResult.bodyguardKilled
-    ? 'killed a bodyguard'
-    : `dealt ${finalResult.damageDealt} damage`;
+  let message;
+  if (finalResult.bodyguardKilled) {
+    message = `You attacked ${opponent.name} and killed a bodyguard!`;
+  } else {
+    message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
+  }
+  if (finalResult.opponent.playerStats.currentFirewall <= 0) {
+    message = `SHUTDOWN! ${opponent.name} is dead`;
+  }
 
   return res.status(200).json({
     success: true,
-    message: `You attacked ${opponent.name} and ${messageEnding}`,
+    message,
     finalResult,
     user: updatedUser,
 

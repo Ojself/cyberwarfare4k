@@ -28,6 +28,9 @@ const generateQueryString = (game) => {
   if (game === 'chessathor') {
     query = `#${query}`;
   }
+  if (game === 'megarpg') {
+    query = `$${query}`;
+  }
   return query;
 };
 

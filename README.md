@@ -12,8 +12,8 @@ _Best experienced on a computer screen_
 ## Upcoming features
 
 - Dashboard for alliances (invite, kick, promote etc)
-- Terminal UI when attacking other players
-- Mug other players
+- Terminal UI when attacking other players ✅
+- Mug/Fraud other players ✅
 - Forum
 - Organized Crimes
 

@@ -22,8 +22,9 @@ const bonusBatteryInterval = async () => {
     let { subscription } = user.account;
     if (!subscription) subscription = 'Bronze';
     const githubBonus = user.earnBattery.githubStar ? 1 : 0;
-    if (user.playerStats.battery <= subscriptionBonus[subscription].max) {
-      user.playerStats.battery += subscriptionBonus[subscription].battery + githubBonus;
+    const totalBonus = subscriptionBonus[subscription].battery + githubBonus;
+    if (user.playerStats.battery + totalBonus <= subscriptionBonus[subscription].max) {
+      user.playerStats.battery += totalBonus;
     }
   });
   await Promise.all(users.map((user) => user.save()));

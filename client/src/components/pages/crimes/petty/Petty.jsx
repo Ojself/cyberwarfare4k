@@ -99,6 +99,7 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
       });
     }
     const oldArray = pettyState.hackingPhrases;
+    
     oldArray.push(
       <Typist
         className="mt-3 terminal-font"
@@ -114,6 +115,7 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
         }
       </Typist>
     );
+  
     setPettyState({
       ...pettyState,
       hackingPhrases: oldArray,
@@ -159,9 +161,10 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
         <div className="d-flex w-100 mt-3">
           <div className="terminal">
             {/* phrases */}
-            {pettyState.hackingPhrases.map((p, i) => {
-              return <div key={`${p}${i}`}>{p}</div>;
-            })}
+            {pettyState.hackingPhrases
+              .map((p, i) => {
+                return <div key={`${p}${i}`}>{p}</div>;
+              })}
           </div>
           <div className="result-list">
             {pettyState.results.map((r, i) => {

@@ -11,7 +11,9 @@ const stashSchema = new Schema({
 stashSchema.methods.setNewRandomPrice = function () {
   const rng = Math.random() + 1;
   const multiplier = this.lowerPrice * rng;
-  this.price = Math.floor(multiplier);
+  const randomPrice = (Math.random() * (multiplier - this.lowerPrice) + this.lowerPrice).toFixed(2);
+  this.price = parseFloat(randomPrice);
+
   this.save();
 };
 

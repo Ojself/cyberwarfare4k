@@ -360,8 +360,16 @@ userSchema.methods.handlePettyCrime = async function (result) {
     const stashName = result.stashGained;
     this.stash[stashName] += 1;
   }
-  if (result.crimeSkillGained) {
-    this.giveCrimeSkill(1, result.crimeSkillGained);
+  if (result.skillGained) {
+    console.log(result.skillGained, 'result.skillGained');
+    const { skillGained } = result;
+    console.log(skillGained, 'skillGained');
+    if (['Encryption', 'CPU', 'AntiVirus'].includes(skillGained)) {
+      this.giveHackSkill(1, skillGained);
+    }
+    if (['Technical', 'Social Engineering', 'Cryptography', 'Forensics'].includes(skillGained)) {
+      this.giveCrimeSkill(1, skillGained);
+    }
   }
   if (result.legendaryGained) {
     this[result.legendaryGained] += 1;

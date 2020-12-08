@@ -71,7 +71,6 @@ const CrimeTerminal = ({ result }) => {
         result.won ? "warning" : "danger"
       } crimeTerminalResultWrapper`}
     >
-      <h5>Results</h5>
       <p>
         <span style={{ fontSize: "1rem", color: "#F08F18" }}>&#8383;</span>{" "}
         {result.playerGains.bitCoins}

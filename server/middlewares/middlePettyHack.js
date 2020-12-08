@@ -1,14 +1,23 @@
 const {
-  crimeSkillDropChance,
+  skillDropChance,
   stashDropChance,
   legendaryDropChance,
   batteryCheck,
   existingValue,
+  randomNumberMinMax,
 } = require('./middleHelpers');
 
-const pettyWinBitcoins = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 500)));
+const pettyWinBitcoins = (multiplier) => {
+  const bonus = 1000 + (multiplier * 500);
+  const rng = randomNumberMinMax(bonus / 2, bonus);
+  return Math.round(rng);
+};
 
-const pettyWinExp = (multiplier) => Math.floor(Math.random() * (1000 + (multiplier * 750)));
+const pettyWinExp = (multiplier) => {
+  const bonus = 1000 + (multiplier * 750);
+  const rng = randomNumberMinMax(bonus / 2, bonus);
+  return Math.round(rng);
+};
 
 // Sees if everything is in order to perform petty crime
 const pettyHackRouteCriterias = (user, batteryCost) => {
@@ -26,7 +35,7 @@ const pettyCrime = async (user, batteryCost) => {
 
   // sums up the crimeskills
   const crimeSkills = user.crimeSkill;
-  const values = Object.values(crimeSkills).reduce((acc, curr) => acc + curr, 0);
+  const crimeSkillsSum = Object.values(crimeSkills).reduce((acc, curr) => acc + curr, 0);
 
   const pettyResult = {
     levelUp: false,
@@ -35,34 +44,23 @@ const pettyCrime = async (user, batteryCost) => {
     exp: 0,
     battery: batteryCost,
     stashGained: '',
-    crimeSkillGained: '',
+    skillGained: '',
     legendaryGained: '',
   };
 
-  let probabiltiy;
-  if (values <= 5) {
-    probabiltiy = 0.95;
-  } else if (values < 10) {
-    probabiltiy = 0.4;
-  } else if (values < 15) {
-    probabiltiy = 0.5;
-  } else if (values < 20) {
-    probabiltiy = 0.7;
-  } else if (values < 30) {
-    probabiltiy = 0.85;
-  } else {
+  let probabiltiy = (crimeSkillsSum / 53) + (Math.random() / 4);
+  if (crimeSkillsSum <= 5 || probabiltiy > 0.95) {
     probabiltiy = 0.95;
   }
-
   /* Checking for success */
   if (probabiltiy > decider) {
     /* Success */
     pettyResult.won = true;
     pettyResult.bitCoins = pettyWinBitcoins(user.playerStats.rank);
     pettyResult.exp = pettyWinExp(user.playerStats.rank);
-    if (probabiltiy > (decider + 0.35)) {
-      pettyResult.stashGained = stashDropChance(user, values);
-      pettyResult.crimeSkillGained = crimeSkillDropChance(user);
+    if (probabiltiy > (decider + 0.50)) {
+      pettyResult.stashGained = stashDropChance(user, crimeSkillsSum);
+      pettyResult.skillGained = skillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);
     }
   }
