@@ -46,7 +46,7 @@ DataCenter.deleteMany()
 
       {
         name: 'China Telecom',
-        difficulty: 30,
+        difficulty: 20,
         currentFirewall: 90,
         maxFirewall: 90,
         price: 1000000,
@@ -56,7 +56,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'China Unicom',
-        difficulty: 50,
+        difficulty: 25,
         currentFirewall: 150,
         maxFirewall: 150,
         price: 1500000,
@@ -66,7 +66,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'China Mobile Hohot',
-        difficulty: 70,
+        difficulty: 30,
         currentFirewall: 210,
         maxFirewall: 210,
         price: 2000000,
@@ -76,7 +76,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Harbin Data Centre',
-        difficulty: 90,
+        difficulty: 40,
         currentFirewall: 270,
         maxFirewall: 270,
         price: 3000000,
@@ -86,7 +86,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Range International Data Centre',
-        difficulty: 150,
+        difficulty: 50,
         currentFirewall: 450,
         maxFirewall: 450,
         price: 5000000,
@@ -99,7 +99,7 @@ DataCenter.deleteMany()
 
       {
         name: 'Telehouse (KDDI)',
-        difficulty: 30,
+        difficulty: 20,
         currentFirewall: 90,
         maxFirewall: 90,
         price: 1000000,
@@ -109,7 +109,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'NTT Communications',
-        difficulty: 50,
+        difficulty: 25,
         currentFirewall: 150,
         maxFirewall: 150,
         price: 1500000,
@@ -119,7 +119,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'GDS Hanoi Thanglong',
-        difficulty: 70,
+        difficulty: 30,
         currentFirewall: 210,
         maxFirewall: 210,
         price: 2000000,
@@ -129,7 +129,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Tulip Data Centre ',
-        difficulty: 90,
+        difficulty: 40,
         currentFirewall: 270,
         maxFirewall: 270,
         price: 3000000,
@@ -139,7 +139,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'TELEHOUSE Hanoi',
-        difficulty: 150,
+        difficulty: 50,
         currentFirewall: 450,
         maxFirewall: 450,
         price: 5000000,
@@ -152,7 +152,7 @@ DataCenter.deleteMany()
       // STAVANGER
       {
         name: 'Equinix',
-        difficulty: 30,
+        difficulty: 20,
         currentFirewall: 90,
         maxFirewall: 90,
         price: 1000000,
@@ -162,7 +162,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Next Generation Data',
-        difficulty: 50,
+        difficulty: 25,
         currentFirewall: 150,
         maxFirewall: 150,
         price: 1500000,
@@ -172,7 +172,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Global Switch',
-        difficulty: 70,
+        difficulty: 30,
         currentFirewall: 210,
         maxFirewall: 210,
         price: 2000000,
@@ -182,7 +182,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Kao Data Campus',
-        difficulty: 90,
+        difficulty: 40,
         currentFirewall: 270,
         maxFirewall: 270,
         price: 3000000,
@@ -192,7 +192,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Kolos Data Centre',
-        difficulty: 150,
+        difficulty: 50,
         currentFirewall: 450,
         maxFirewall: 450,
         price: 5000000,
@@ -206,7 +206,7 @@ DataCenter.deleteMany()
 
       {
         name: 'Digital Realty Trust',
-        difficulty: 30,
+        difficulty: 20,
         currentFirewall: 90,
         maxFirewall: 90,
         price: 1000000,
@@ -216,7 +216,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'DuPont Fabros Technology',
-        difficulty: 50,
+        difficulty: 25,
         currentFirewall: 150,
         maxFirewall: 150,
         price: 1500000,
@@ -226,7 +226,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Lakeside Technology Centre',
-        difficulty: 70,
+        difficulty: 30,
         currentFirewall: 210,
         maxFirewall: 210,
         price: 2000000,
@@ -236,7 +236,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Switch SUPERNAP',
-        difficulty: 90,
+        difficulty: 40,
         currentFirewall: 270,
         maxFirewall: 270,
         price: 3000000,
@@ -246,7 +246,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'The Citadel',
-        difficulty: 150,
+        difficulty: 50,
         currentFirewall: 450,
         maxFirewall: 450,
         price: 5000000,
@@ -260,7 +260,7 @@ DataCenter.deleteMany()
 
       {
         name: 'Selectel',
-        difficulty: 30,
+        difficulty: 20,
         currentFirewall: 90,
         maxFirewall: 90,
         price: 1000000,
@@ -270,7 +270,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Rostelecom',
-        difficulty: 50,
+        difficulty: 25,
         currentFirewall: 150,
         maxFirewall: 150,
         price: 1500000,
@@ -280,7 +280,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Datahouse',
-        difficulty: 70,
+        difficulty: 30,
         currentFirewall: 210,
         maxFirewall: 210,
         price: 2000000,
@@ -290,7 +290,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'Data Harbour',
-        difficulty: 90,
+        difficulty: 40,
         currentFirewall: 270,
         maxFirewall: 270,
         price: 3000000,
@@ -300,7 +300,7 @@ DataCenter.deleteMany()
       },
       {
         name: 'RTCOMM',
-        difficulty: 150,
+        difficulty: 50,
         currentFirewall: 450,
         maxFirewall: 450,
         price: 5000000,

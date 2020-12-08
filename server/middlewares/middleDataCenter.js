@@ -6,11 +6,11 @@ const {
 } = require('./middleHelpers');
 
 // Sees if everything is in order to buy dataCenter
-function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
+const purchaseDataCenterCriterias = (user, dataCenter, batteryCost) => {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
-  if (!existingValue(dataCenter)) {
+  if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
   if (!batteryCheck(user, batteryCost)) {
@@ -30,10 +30,10 @@ function purchaseDataCenterCriterias(user, dataCenter, batteryCost) {
     return 'Insufficient funds';
   }
   return null;
-}
+};
 
 // Sees if everything is in order to attack datacenter
-function attackDataCenterCriterias(user, dataCenter, batteryCost) {
+const attackDataCenterCriterias = (user, dataCenter, batteryCost) => {
   if (!user) {
     return "User doesn't exist";
   }
@@ -55,7 +55,7 @@ function attackDataCenterCriterias(user, dataCenter, batteryCost) {
   if (!hasRequiredStash(user.stash, dataCenter.requiredStash)) {
     return "You don't have the required stash to hack this datacenter";
   }
-}
+};
 
 const purchaseDataCenter = async (user, dataCenter) => {
   user.bitCoinDrain(dataCenter.price);
@@ -63,22 +63,25 @@ const purchaseDataCenter = async (user, dataCenter) => {
   await dataCenter.save();
 };
 
-async function attackDataCenter(
+const attackDataCenter = async (
   user,
   dataCenter,
   dataCenterOwner,
   batteryCost,
-) {
+) => {
   const userCpuSkill = user.hackSkill.CPU;
-  const userCrimeSkills = Object.values(user.crimeSkill).filter(
-    (skill) => typeof skill === 'number',
-  );
+  const userCrimeSkillsAverage = Object.values(user.crimeSkill)
+    .filter((skill) => typeof skill === 'number')
+    .reduce((acc, cur) => acc + cur, 0) / 4;
 
-  const probability = (userCpuSkill
-      + userCrimeSkills[Math.floor(Math.random() * userCrimeSkills.length)])
-    / 100;
+  // Max 1
+  let probability = (userCpuSkill + userCrimeSkillsAverage) / 400;
+  if (probability < 0.05)probability = 0.05;
+  if (probability > 0.95)probability = 0.95;
 
-  const decider = Math.random() + (dataCenter.difficulty * 4) / 100;
+  let decider = (dataCenter.difficulty / 200) + Math.random() / 2;
+  if (decider < 0.05)decider = 0.05;
+  if (decider > 0.95)decider = 0.95;
   const result = {
     batteryCost,
     damageDealt: 0,
@@ -87,7 +90,7 @@ async function attackDataCenter(
   };
 
   if (decider < probability) {
-    result.damageDealt = Math.random() * probability;
+    result.damageDealt = Math.round(Math.random() * (userCpuSkill * 0.15 - userCpuSkill * 0.10) + 0.10);
     result.won = true;
     result.destroyed = dataCenter.currentFirewall - result.damageDealt <= 0;
   }
@@ -103,10 +106,10 @@ async function attackDataCenter(
   await dataCenterOwner.save();
   await dataCenter.save();
   return { result, user };
-}
+};
 
 // checks if user has the required stash in order to attack a datacenter
-function hasRequiredStash(userStash, requiredStash) {
+const hasRequiredStash = (userStash, requiredStash) => {
   const requiredStashObj = requiredStash.reduce((a, b) => {
     if (typeof a[b.name] === 'undefined') {
       a[b.name] = 1;
@@ -117,7 +120,7 @@ function hasRequiredStash(userStash, requiredStash) {
   }, {});
   const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => requiredStashObj[stash] <= userStash[stash]);
   return userHasRequiredStash;
-}
+};
 module.exports = {
   purchaseDataCenterCriterias,
   attackDataCenterCriterias,

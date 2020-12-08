@@ -5,7 +5,7 @@ const {
 
 // Sees if everything is in order to perform crime
 
-function crimeRouteCriterias(crime, user, batteryCost) {
+const crimeRouteCriterias =(crime, user, batteryCost) =>{
   if (!crime) {
     return 'Crime not found with ';
   }
@@ -18,7 +18,7 @@ function crimeRouteCriterias(crime, user, batteryCost) {
   return null;
 }
 
-async function fightCrime(user, crime, batteryCost) {
+async const fightCrime =(user, crime, batteryCost) =>{
   const result = {
     user,
     crimeType: crime.crimeType,
@@ -58,8 +58,8 @@ async function fightCrime(user, crime, batteryCost) {
   return finalResult;
 }
 
-// recursive function that runs until the hp of the crime is 0 or the user has lost 4 times
-function crimeRecursiveBattle(user, crime, result) {
+// recursive const that = runs until the hp of the crime is 0 or the user has lost 4 time=>s
+const crimeRecursiveBattle =(user, crime, result) =>{
   const probability = chanceCalculator(user, crime);
   const damage = damageCalulator(user, crime);
 
@@ -93,7 +93,7 @@ function crimeRecursiveBattle(user, crime, result) {
 // end of recursive
 
 // sets the probability to succeed, higher is better
-function chanceCalculator(user, crime) {
+const chanceCalculator =(user, crime) =>{
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
   // if user tried to do crimes way over his level, give him 5% chance for success
@@ -108,26 +108,26 @@ function chanceCalculator(user, crime) {
 
 // calculates the 'damage' the user inflicts on the crime
 // boils down the players crimcrimesInitiatede and hacking skills and returns a randomnumber from 0 to x
-function damageCalulator(user, crime) {
+const damageCalulator =(user, crime) =>{
   const crimeTypeDamage = user.crimeSkill[crime.crimeType];
   const hackSkillDamage = Object.values(user.hackSkill).reduce((a, b) => a + b);
   return Math.round(Math.random() * (crimeTypeDamage + hackSkillDamage));
 }
 
-function roundWin(result, damage) {
+const roundWin =(result, damage) =>{
   result.crimeHp -= damage;
   result.roundResult.push('win');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
-function roundLost(result) {
+const roundLost =(result) =>{
   result.roundResult.push('lost');
   result.roundCrimeRemainingHp.push(result.crimeHp);
   return result;
 }
 
-function crimeWin(result, crime, user, decider) {
+const crimeWin =(result, crime, user, decider) =>{
   // TODO write legendaryGained
 
   result.won = true;
@@ -143,15 +143,15 @@ function crimeWin(result, crime, user, decider) {
   return result;
 }
 
-function crimeWinBitcoins(multiplier) {
+const crimeWinBitcoins =(multiplier) =>{
   return Math.floor(Math.random() * multiplier) * 1000;
 }
-function crimeWinExp(multiplier) {
+const crimeWinExp =(multiplier) =>{
   return Math.floor(Math.random() * multiplier) * 300; // TODO balance this one
 }
 
 // returns a skill based on luck and rank. Higher rank gives lower chance
-function skillGained(decider, rank, crimeType) {
+const skillGained =(decider, rank, crimeType) =>{
   if (rank === 0) {
     rank = 1;
   }
@@ -168,7 +168,7 @@ function skillGained(decider, rank, crimeType) {
 }
 
 // gives user statpoints based on luck and rank. Higher rank gives lower chance
-function statGained(decider, rank) {
+const statGained =(decider, rank) =>{
   if (Math.random() - rank || 1 / 8 < decider) {
     return null;
   }
