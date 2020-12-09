@@ -115,6 +115,7 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
 };
 
 const attackRecursiveBattle = (result) => {
+  console.log('attack start');
   // hack lost
   // if user has lost 4 times, the hack is considered lost
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
