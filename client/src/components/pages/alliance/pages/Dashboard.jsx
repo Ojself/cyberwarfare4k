@@ -8,7 +8,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     //get Dashboards
-    console.log("using effect");
   }, []);
 
   return (

@@ -385,6 +385,7 @@ userSchema.methods.purchaseCurrency = function (
   totalPrice,
 ) {
   this.bitCoinDrain(totalPrice);
+  this.fightInformation.currencyPurchases += 1;
   this.currencies[currency.name] += parseInt(amount, 10);
 };
 
@@ -400,6 +401,7 @@ userSchema.methods.sellCurrency = function (
 userSchema.methods.changeCity = function (city, batteryCost) {
   this.batteryDrain(batteryCost);
   this.bitCoinDrain(city.price);
+  this.fightInformation.vpnChanges += 1;
   this.playerStats.city = city._id;
 };
 
@@ -442,7 +444,7 @@ userSchema.methods.setRank = async function (rank = undefined) {
     this.playerStats.statPoints += 5;
   }
   const newRank = await Rank.findOne({ rank: this.playerStats.rank });
-  this.playerStats.battery += 100;
+  this.playerStats.battery += (this.playerStats.rank * 10);
   this.playerStats.rankName = newRank.name;
   this.playerStats.expToLevel = newRank.expToNewRank;
 };
@@ -471,7 +473,7 @@ userSchema.methods.handleAttack = function (result) {
     });
     this.playerStats.shutdowns += 1;
   }
-  this.playerStats.attacksInitiated += 1;
+  this.fightInformation.attacksInitiated += 1;
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
@@ -483,6 +485,7 @@ userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
   } else {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
+  this.fightInformation.attacksVictim += 1;
   if (this.playerStats.currentFirewall <= 0) {
     this.die();
   }

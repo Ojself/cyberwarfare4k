@@ -55,7 +55,6 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
     } catch (err) {
       return updateGlobalValues(err);
     }
-    console.log(data, "data");
     setDataCenterState({
       ...dataCenterState,
       dataCenters: data.dataCenters,

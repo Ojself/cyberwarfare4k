@@ -43,7 +43,6 @@ const WantedList = ({ updateGlobalValues }) => {
   }, []);
 
   const handleSelectUserChange = (eventValue) => {
-    console.log(eventValue, "eventvalue");
     setSelectedOption(eventValue);
   };
 
