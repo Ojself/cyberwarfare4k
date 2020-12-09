@@ -83,7 +83,6 @@ router.get('/crimes', async (req, res) => {
 // Commit crime route.
 
 router.post('/crimes', async (req, res) => {
-  console.log('crime');
   const userId = req.user._id;
   const { crimeId } = req.body;
   const batteryCost = 5;
@@ -163,19 +162,14 @@ router.post('/:opponentId', async (req, res) => {
   const userId = req.user._id;
   const { opponentId } = req.params;
   const batteryCost = 6;
-  console.log(userId, 'userId');
 
   const user = await User.findById(userId);
-  console.log(user, 'user');
   const opponent = await User.findById(opponentId);
-  console.log(opponent, 'opponent');
   const now = Date.now();
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
-  console.log(userIsOnline, 'userIsOnline');
 
   const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
-  console.log(disallowed, 'disallowed');
 
   if (disallowed) {
     return res.status(400).json({
@@ -185,14 +179,11 @@ router.post('/:opponentId', async (req, res) => {
   }
 
   const finalResult = await fightHacker(user, opponent, batteryCost, now, userIsOnline);
-  console.log(finalResult, 'finalResult');
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
-  console.log(updatedUser, 'updatedUser');
 
   await finalResult.opponent.save();
   finalResult.user = null;
-  finalResult.opponent = null;
   finalResult.now = null;
 
   let message;
@@ -204,7 +195,7 @@ router.post('/:opponentId', async (req, res) => {
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
     message = `SHUTDOWN! ${opponent.name} is dead`;
   }
-  console.log(message, 'message');
+  finalResult.opponent = null;
 
   return res.status(200).json({
     success: true,
