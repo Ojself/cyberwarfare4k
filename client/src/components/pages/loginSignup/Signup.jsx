@@ -84,7 +84,7 @@ const Signup = (props) => {
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
-          disabled={false}
+          disabled={true}
         >
           Sign up
         </Button>

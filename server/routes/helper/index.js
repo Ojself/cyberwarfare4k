@@ -30,7 +30,7 @@ const getOnlineUsers = async (userId) => {
   const limitTime = new Date(now + twoWeeks - fiveMin);
   let onlineIds;
 
-  await Session.find().then((result) => {
+  await Session.find({ session: /user/ }).then((result) => {
     const filteredIds = result
       .filter((x) => x.expires > limitTime)
       .map((y) => y.session.match(/[a-f\d]{24}/g, ''))

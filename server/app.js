@@ -14,17 +14,15 @@ const MongoStore = require('connect-mongo')(session);
 const rateLimit = require('express-rate-limit');
 
 // Thanks Jimenez
-const apiLimiter = rateLimit({
+/* const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
-});
+}); */
 
 const app = express();
 require('./configs/database');
 
-app.set('trust proxy', true);
-
-app.use('/api/', apiLimiter);
+// app.use('/api/', apiLimiter);
 app.use(nocache());
 
 // Set "Access-Control-Allow-Origin" header
@@ -41,6 +39,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.set('trust proxy', true);
 
 // Set the public folder to "~/client/build/"
 // Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
