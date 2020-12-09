@@ -11,10 +11,20 @@ const logger = require('morgan');
 const nocache = require('nocache');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const rateLimit = require('express-rate-limit');
+
+// Thanks Jimenez
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
 
 const app = express();
 require('./configs/database');
 
+app.set('trust proxy', true);
+
+app.use('/api/', apiLimiter);
 app.use(nocache());
 
 // Set "Access-Control-Allow-Origin" header
@@ -31,10 +41,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-// Makes client IP available
-// This to see if the user is cheating by using several account with same IP.
-app.set('trust proxy', true);
 
 // Set the public folder to "~/client/build/"
 // Example: http://localhost:5000/favicon.ico => Display "~/client/build/favicon.ico"
