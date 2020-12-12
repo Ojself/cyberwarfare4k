@@ -137,7 +137,7 @@ const attackRecursiveBattle = (result) => {
       newResult.bodyguardKilled = true;
     } else {
       const { CPU } = result.user.hackSkill;
-      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.15 - CPU * 0.10) + 0.10);
+      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.15 - CPU * 0.10) + CPU * 0.10);
       // To prevent extreme damage
       if (newResult.damageDealt > 30) {
         newResult.damageDealt = 30;
