@@ -417,7 +417,7 @@ export default {
       .catch(errHandler);
   },
 
-  getAllianceDashBoard(){
+  getAllianceDashBoard() {
     return service
       .get(`/alliance/dashboard`)
       .then((res) => res.data)
@@ -437,4 +437,23 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+
+  sendAllianceInvitation(id){
+    return service
+    .post("./alliance/invitation", {id})
+    .then((res)=> res.data)
+    .catch(errHandler)
+  },
+  acceptAllianceInvitation(id){
+    return service
+    .patch("./alliance/invitation", {id})
+    .then((res)=> res.data)
+    .catch(errHandler)
+  },
+  declineAllianceInvitation(id){
+    return service
+    .patch("./alliance/invitations", {id})
+    .then((res)=> res.data)
+    .catch(errHandler)
+  }
 };

@@ -49,7 +49,7 @@ const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
 
     const getDataCenterActionButton = (d) => {
     const percentage = (d.currentFirewall / d.maxFirewall) * 100;
-    let disabled = percentage > 100
+    let disabled = percentage >= 100
   
     return <Button onClick={()=>handleHeal(d._id)} disabled={disabled} color="outline-warning">Heal</Button>;
 };

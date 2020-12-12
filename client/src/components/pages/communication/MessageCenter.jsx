@@ -121,6 +121,28 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
     return !criterias;
   };
 
+  const answerAllianceInvitation = async (id,answer) => {
+    console.log(id, "id",'answer',answer);
+    let data;
+    try {
+      data = await api.answerAllianceInvitation(id,answer);
+    } catch (err) {
+      console.log(err, "error");
+    }
+    console.log(data, "decline data");
+  };
+
+  /* const acceptAllianceInvitation = async (id)=> {
+    console.log(id,'id')
+    let data;
+    try {
+      data = await api.acceptAllianceInvitation(id);
+    } catch(err){
+      console.log(err,'error')
+    }
+    console.log(data, 'accept data')
+  } */
+
   const dataMassager = (userArray) => {
     const massagedUsers = [];
     userArray.forEach((u) => {
@@ -168,6 +190,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
                       const date = m.dateSent;
                       const read = m.read;
                       const message = m.text;
+                      let allianceInvitation = m.allianceInvitation;
 
                       const inboxClass = read
                         ? "mt-2 text-light"
@@ -186,13 +209,37 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
                             </Link>
                           </ListGroupItemHeading>
                           <ListGroupItemText>{`${date}: ${message}`}</ListGroupItemText>
-                          <Button
-                            onClick={() => {
-                              handleReply(name);
-                            }}
-                          >
-                            Reply
-                          </Button>
+                          <div className="d-flex justify-content-center flex-column">
+                            {allianceInvitation ? (
+                              <div className="d-flex justify-content-around flex-row">
+                                <Button
+                                  onClick={() =>
+                                    answerAllianceInvitation(allianceInvitation,false)
+                                  }
+                                  color="danger"
+                                >
+                                  Decline
+                                </Button>
+                                <Button
+                                  onClick={() =>
+                                    answerAllianceInvitation(allianceInvitation,true)
+                                  }
+                                  color="success"
+                                >
+                                  Accept
+                                </Button>
+                              </div>
+                            ) : (
+                              <Button
+                                className=""
+                                onClick={() => {
+                                  handleReply(name);
+                                }}
+                              >
+                                Reply
+                              </Button>
+                            )}
+                          </div>
                         </ListGroupItem>
                       );
                     })

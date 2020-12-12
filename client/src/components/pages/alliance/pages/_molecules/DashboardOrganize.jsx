@@ -5,7 +5,7 @@ const DashboardOrganize = ({allianceMembers, changeRole}) => {
 
     return (
         <div>
-            
+            <p>Work in progress</p>
         </div>
     )
 }

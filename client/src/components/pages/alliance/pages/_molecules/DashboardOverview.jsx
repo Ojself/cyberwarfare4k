@@ -16,7 +16,7 @@ const DashboardOverview = ({dataCenters, cities,leaveAlliance,allianceId}) => {
     return (
       <div>
         <MiniDataCenterOverview owner={allianceId} />
-        <Button onClick={toggleModal} color="danger">
+        <Button className="mt-5" onClick={toggleModal} color="danger">
           Leave alliance
         </Button>
         <Modal isOpen={modal} toggle={toggleModal}>

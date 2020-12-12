@@ -13,13 +13,13 @@ const DashboardVault = ({openVault, vaultIsOpen}) => {
           To prevent bruteforce attacks, the vault have 3-5 second delay when
           opening
         </p> */}
-        <p>Image here</p>
-        <Input placeholder={"password"} />
+        <p>Work in progress</p>
+        {/* <Input placeholder={"password"} />
         <Button color="outline-success">Open</Button>
         
           <Button color="outline-light">Depost</Button>
           <Button color="outline-light"> Withdraw </Button>
-        
+         */}
       </div>
     );
 }

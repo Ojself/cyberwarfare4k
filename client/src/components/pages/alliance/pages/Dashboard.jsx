@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../../api";
+
 import {
   TabContent,
   TabPane,
@@ -10,32 +11,71 @@ import {
   Col,
 } from "reactstrap";
 import classnames from "classnames";
-
 import DashboardOverview from "./_molecules/DashboardOverview";
 import DashboardVault from "./_molecules/DashboardVault"
 import DashboardBoss from "./_molecules/DashboardBoss";
+import DashboardOrganize from "./_molecules/DashboardOrganize";
+import DashboardInvite from "./_molecules/DashboardInvite"
+
+const dataMassager = (userArray) => {
+  return userArray.map((u) => {
+    return {
+      value: u._id,
+      label: u.name,
+    };
+  });
+};
 
 const Dashboard = ({ updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
-  const [allianceDcs, setAllianceDcs] = useState([]);
   const [alliance, setAlliance] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [selectedInvite, setSelectedInvite] = useState(null)
+  const [selectedPromotion, setSelectedPromotion] = useState(null);
   const [loading, setLoading] = useState(true)
 
-  useEffect(()=>{
-    const getAllianceDashBoard = async ()=> {
-      let data; 
-      try {
-      data = await api.getAllianceDashBoard()
-      } catch (err){
-        console.log('error: ', err)
-      }
-      console.log(data,'data from alliance dashboard')
-      setAlliance(data.alliance)
-      setLoading(false)
-      // massage
+  const sendInvite = async (user)=> {
+    const userId= user.value
+    let data;
+    try { data = await api.sendAllianceInvitation(userId)
+    } catch (err){
+      console.log(err,'err')
     }
-    getAllianceDashBoard()
-  },[])
+    console.log(data,'data')
+
+  }
+
+  const handleInviteChange = (selectedOption) => {
+    console.log(selectedOption,'????')
+    setSelectedInvite( selectedOption );
+  };
+  const handlePromotionChange = (selectedOption) => {
+    setSelectedPromotion(selectedOption);
+  };
+
+  useEffect(() => {
+    const getAllianceDashBoard = async () => {
+      let data;
+      try {
+        data = await api.getAllianceDashBoard();
+      } catch (err) {
+        console.log("error: ", err);
+      }
+      console.log(data, "data from alliance dashboard");
+      const massagedAllUsers = dataMassager(data.users);
+      const allianceMembers = data.users.filter(
+        (user) => user.alliance === data.alliance._id
+      );
+      const members = dataMassager(allianceMembers);
+      setAlliance(data.alliance);
+      setUsers(massagedAllUsers);
+      setMembers(members);
+      setLoading(false);
+      // massage
+    };
+    getAllianceDashBoard();
+  }, []);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -52,44 +92,57 @@ const Dashboard = ({ updateGlobalValues }) => {
       <TabPane tabId="1">
         <Row>
           <Col sm="12">
-            <h4>Alliance Data Centers</h4>
-            
             {/* <p>Here you can see which cities you have chip chop shops</p> */}
-             { !loading && <DashboardOverview allianceId={alliance._id} leaveAlliance={leaveAlliance} />} 
+            {!loading && (
+              <DashboardOverview
+                allianceId={alliance._id}
+                leaveAlliance={leaveAlliance}
+              />
+            )}
           </Col>
         </Row>
       </TabPane>
       <TabPane tabId="2">
-        <DashboardVault />
-      </TabPane>
-      <TabPane tabId="3">
         <Row>
           <Col sm="12">
-            <h4> Here you can organize</h4>
-            <p>Promote, demote, kick </p>
+            <p>Work in progress</p>
           </Col>
         </Row>
+      </TabPane>
+
+      <TabPane tabId="3">
+        <DashboardVault />
       </TabPane>
       <TabPane tabId="4">
         <Row>
           <Col sm="12">
-            <h4>Here you can send invites</h4>
-            <h6>Pending Invites</h6>
-            <p> Take back invitation</p>
-            <p> .map something</p>
-            <p> dropdown</p>
-            <p>Send invitation</p>
+            <DashboardOrganize
+              handlePromotionChange={handlePromotionChange}
+              selectedPromotion={selectedPromotion}
+              members={members}
+              loading={loading}
+            />
           </Col>
         </Row>
       </TabPane>
       <TabPane tabId="5">
         <Row>
           <Col sm="12">
+            <DashboardInvite
+              sendInvite={sendInvite}
+              selectedInvite={selectedInvite}
+              handleInviteChange={handleInviteChange}
+              users={users}
+              loading={loading}
+              invitedMembers={alliance.invitedMembers}
+            />
+          </Col>
+        </Row>
+      </TabPane>
+      <TabPane tabId="6">
+        <Row>
+          <Col sm="12">
             <DashboardBoss />
-            <h4> Here's secret options</h4>
-            <p> Set vault password ✅ ❌</p>
-            <p> Give organize permission </p>
-            <p> Dissolve family</p>
           </Col>
         </Row>
       </TabPane>
@@ -97,9 +150,9 @@ const Dashboard = ({ updateGlobalValues }) => {
   );
 
   const tabs = (
-    <Nav tabs>
-      <div>
-        {["Overview", "Vault", "Organize", "Invite", "Boss Options"].map(
+    <Nav tabs className="d-flex justify-content-center">
+      
+        {["Overview","Notes", "Vault", "Organize", "Invite", "Boss Options"].map(
           (tabHeader, i) => {
             return (
               <NavItem key={i}>
@@ -115,12 +168,14 @@ const Dashboard = ({ updateGlobalValues }) => {
             );
           }
         )}
-      </div>
-      <div>{tabContent}</div>
+      
+      <div className="ml-5 w-100 ">{tabContent}</div>
     </Nav>
   );
   return (
-    <div className="page-container d-flex justify-content-center">
+    <div
+       className="page-container d-flex flex-column "
+    >
       <h1>Dashboard</h1>
       <div className="content">{tabs}</div>
     </div>

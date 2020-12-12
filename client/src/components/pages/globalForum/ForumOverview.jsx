@@ -55,7 +55,7 @@ const ForumOverview = (props) => {
   return (
     <div className="page-container ">
       <h1>Forum</h1>
-      <h6>Work In progress..</h6>
+      <h6>Work In progress</h6>
       {forumOverviewState.loading ? <p>loading..</p> : forumOverviewPage}
     </div>
   );

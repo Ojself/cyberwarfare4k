@@ -5,11 +5,15 @@ import {
 
 const DashboardBoss = () => {
     return (
-        <div>
-            <input></input>
-            <Button color="danger">Disolve family</Button>
-        </div>
-    )
+      <div>
+        <p> Work in progress </p>
+        {/* <h4> Here's secret options</h4>
+            <p> Set vault password ✅ ❌</p>
+            <p> Give organize permission </p>
+            <p> Dissolve family</p> */}
+        <Button color="danger">Disolve family</Button>
+      </div>
+    );
 }
 
 export default DashboardBoss

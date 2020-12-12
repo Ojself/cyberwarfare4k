@@ -73,7 +73,7 @@ router.patch('/:dataCenterId', async (req, res) => {
   const dataCenter = await DataCenter.findById(dataCenterId);
   const healCost = (dataCenter.maxFirewall - dataCenter.currentFirewall) * 100;
 
-  const disallow = healDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallow = healDataCenterCriterias(user, dataCenter);
 
   if (disallow) {
     return res.status(400).json({

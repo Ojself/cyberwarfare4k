@@ -17,7 +17,6 @@ import {
 
 const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   const [toolOpen, setToolOpen] = useState(false);
-
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = () => {
@@ -46,7 +45,9 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   return (
     <div>
       <Navbar color="dark" expand="md">
-        <NavbarBrand href="/">CHW4K</NavbarBrand>
+        <NavbarBrand href="/">
+          <strong className="text-success">CHW4K</strong>
+        </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse navbar>
           <Nav className="ml-auto" navbar>
