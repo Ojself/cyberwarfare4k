@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import api from "../../../api";
 
 import {
-  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
@@ -13,29 +12,16 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   UncontrolledDropdown,
 } from "reactstrap";
 
 const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   const [toolOpen, setToolOpen] = useState(false);
 
-  const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal);
-
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
-  const handleLogoutClick = (e) => {
+  const handleLogoutClick = () => {
     api.logout();
-  };
-
-  const leaveAlliance = async () => {
-    const data = await api.leaveAlliance();
-    setModal(!modal);
-    updateGlobalValues(data);
   };
 
   const checkAllCommunication = () => {
@@ -93,9 +79,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                 <DropdownItem disabled>Organized Crime</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                <DropdownItem href="/locals">
-                  Hack player
-                </DropdownItem>
+                <DropdownItem href="/locals">Hack player</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -105,13 +89,10 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
               {user && user.alliance ? (
                 <DropdownMenu>
                   <DropdownItem href={`/alliance/${user.alliance._id}`}>
-                    Overview
+                    Hierarchy
                   </DropdownItem>
                   <DropdownItem href={`/alliance/dashboard`}>
                     Dashboard
-                  </DropdownItem>
-                  <DropdownItem onClick={toggleModal}>
-                    Leave Alliance
                   </DropdownItem>
                 </DropdownMenu>
               ) : (
@@ -175,22 +156,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
           </Nav>
         </Collapse>
       </Navbar>
-      <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Leave Alliance</ModalHeader>
-        <ModalBody>
-          You are about to leave your alliance, you can not get back unless you
-          are invited. Are you sure?
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={leaveAlliance}>
-            Leave Alliance
-          </Button>{" "}
-          <Button color="secondary" onClick={toggleModal}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
     </div>
   );
 };
-export default NavbarComp;
+export default NavbarComp;      

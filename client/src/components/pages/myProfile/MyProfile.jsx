@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import {
   Table,
   TabContent,
@@ -10,6 +10,7 @@ import {
   Col,
 } from "reactstrap";
 
+import MiniDataCenterOverview from "./molecules/MiniDataCenterOverview";
 import ProgressBarCrimeSkill from "./molecules/ProgressBarCrimeSkill";
 import ProgressBarHackSkill from "./molecules/ProgressBarHackSkill";
 import ProgressBarFirewallSkill from "./molecules/ProgressBarFirewallSkill";
@@ -24,7 +25,6 @@ import classnames from "classnames";
 
 
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
-  console.log(user,'user')
   const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
@@ -60,6 +60,20 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     }
     return user.currencies[name];
   };
+  const bodyGuardDots = (bgs)=>{
+    if (!bgs || !bgs.length)return
+    return bgs
+      .sort((a, b) => b - a)
+      .map((bg,i) => {
+        return (
+          <svg key={`${bg}${i}`} title="bodyguard" className="mx-1" width="10" height="10">
+            <circle cx="5" cy="5" r="5" fill={bg > 50 ? "#FF3C5B" : "grey"} />
+            <path d="M0, 5 a1,1 0 0,0 10,0" fill="#FF3C5B" />
+          </svg>
+        );
+      });
+  }
+
   const profileAvatars = !globalLoading && (
     <div className="d-flex justify-content-center mb-2">
       {/* <div >
@@ -126,7 +140,6 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         max={user.playerStats.expToLevel}
         hasStatPoints={!!user.playerStats.statPoints}
       />
-
       <ProgressBarFirewallSkill
         upgrade={(e) => handleUpgrade(e)}
         name="Firewall"
@@ -134,6 +147,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         max={user.playerStats.maxFirewall}
         hasStatPoints={!!user.playerStats.statPoints}
       />
+      <div title="Bodyguards" className="d-flex justify-content-center">{bodyGuardDots(user.playerStats.bodyguards.alive)}</div>
     </div>
   );
 
@@ -178,7 +192,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     <div className="col-4">
       <div>
         <Nav tabs>
-          {["Items", "Currencies", "Stash"].map((t, i) => {
+          {["Items", "Crypto", "Stash", "DC"].map((t, i) => {
             return (
               <NavItem key={i}>
                 <NavLink
@@ -290,6 +304,17 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
                         <p>{user.stash[s]}</p>
                       </div>
                     ))}
+                </div>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="4">
+            <Row>
+              <Col sm="12">
+                <div className="d-flex row">
+                  {user &&<MiniDataCenterOverview
+                    owner={user._id} updateGlobalValues={updateGlobalValues}
+                  />}
                 </div>
               </Col>
             </Row>

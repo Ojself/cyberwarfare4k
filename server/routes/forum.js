@@ -19,7 +19,6 @@ finish routes for creating,editing and deleting forums and threads
 
 */
 
-
 // gets forums and thread count
 router.get('/', async (req, res) => {
   let forums;
@@ -46,7 +45,7 @@ router.get('/', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Forum loaded..',
+    message: 'Forum loaded...',
     forums,
     threadCount,
   });
@@ -84,12 +83,11 @@ router.get('/:forumId', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Forumthreads loaded..',
+    message: 'Forumthreads loaded...',
     threads,
     commentCount,
   });
 });
-
 
 // Gets comments
 // security issue. will be available for everyone if someone knows the objectId of thread
@@ -116,7 +114,7 @@ router.get('/thread/:threadId', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Forumcomments loaded..',
+    message: 'Forumcomments loaded...',
     comments,
   });
 });
@@ -127,18 +125,17 @@ router.post('/', async (req, res) => {
   const userId = req.user._id;
   return res.status(200).json({
     success: true,
-    message: 'Your forum has been created..',
+    message: 'Your forum has been created...',
   });
 });
  */
-
 
 /* // create thread
 router.post('/:forumId', async (req, res) => {
   const userId = req.user._id;
   return res.status(200).json({
     success: true,
-    message: 'Your thread has been created..',
+    message: 'Your thread has been created...',
   });
 });
  */
@@ -211,7 +208,6 @@ router.post('/thread/comment/like', async (req, res) => {
     });
   }
 
-
   comment.addRemoveLike(userId);
 
   return res.status(200).json({
@@ -219,7 +215,6 @@ router.post('/thread/comment/like', async (req, res) => {
     message: 'Toggle like!',
   });
 });
-
 
 /* // deletes forum
 router.delete('/', async (req, res) => {
@@ -332,6 +327,5 @@ router.patch('/thread/comment', async (req, res) => {
     message: 'Message successfuly edited',
   });
 });
-
 
 module.exports = router;

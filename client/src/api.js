@@ -290,9 +290,9 @@ export default {
       .catch(errHandler);
   },
 
-  getDataCenters() {
+  getDataCenters(params = {}) {
     return service
-      .get("/datacenter/")
+      .get(`/datacenter/`, { params })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -311,6 +311,13 @@ export default {
       .catch(errHandler);
   },
 
+  healDataCenter(id) {
+    return service
+      .patch(`/datacenter/${id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   // MARKETPLACE
   // MARKETPLACE
 
@@ -323,7 +330,7 @@ export default {
 
   purchaseMarketPlaceItem(body) {
     return service
-      .post("/marketplace/buy", body)
+      .post("/marketplace", body)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -406,6 +413,13 @@ export default {
   getAlliance(allianceId) {
     return service
       .get(`/alliance/${allianceId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  getAllianceDashBoard(){
+    return service
+      .get(`/alliance/dashboard`)
       .then((res) => res.data)
       .catch(errHandler);
   },

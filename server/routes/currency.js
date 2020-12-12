@@ -19,7 +19,7 @@ router.get('/', isLoggedIn, async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'currency loaded..',
+    message: 'currency loaded...',
     currency,
   });
 });
@@ -89,7 +89,7 @@ router.post('/sell', isLoggedIn, async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: `${amount} ${currency.name} sold for ${Math.round(totalPrice)}..`,
+    message: `${amount} ${currency.name} sold for ${Math.round(totalPrice)}...`,
     user: updatedUser,
   });
 });

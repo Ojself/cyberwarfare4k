@@ -37,7 +37,7 @@ const checkBuyStashCriteria = (stashToBuy, user, totalSum) => {
     return 'You can\'t buy this many';
   }
   if (totalSum > user.playerStats.bitCoins) {
-    return 'insufficent funds..';
+    return 'insufficent funds...';
   }
   return null;
 };

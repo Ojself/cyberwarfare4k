@@ -8,8 +8,7 @@ const {
   findAllianceStats,
 } = require('../middlewares/middleAlliance');
 const { saveAndUpdateUser } = require('./helper');
-
-// TODO SEEDS ARE NOT WORKING. alliances do not have members in it
+const DataCenter = require('../models/DataCenter');
 
 // @GET
 // PRIVATE
@@ -19,8 +18,39 @@ router.get('/', async (req, res) => {
   const alliances = await Alliance.find();
   res.status(200).json({
     success: true,
-    message: 'Alliances loaded..',
+    message: 'Alliances loaded...',
     alliances,
+  });
+});
+
+// @GET
+// PRIVATE
+// Retrives dashboard information
+
+router.get('/dashboard', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const populateValues = [
+    'name',
+  ];
+  const alliance = await Alliance.findById(user.alliance)
+    .populate('boss', populateValues)
+    .populate('cto', populateValues)
+    .populate('analyst', populateValues)
+    .populate('firstLead', populateValues)
+    .populate('secondLead', populateValues)
+    .populate('firstMonkeys', populateValues)
+    .populate('secondMonkeys', populateValues)
+    .populate('invitedMembers', populateValues)
+    .populate('organizePermission', populateValues)
+    .populate('forumModeratorPermission', populateValues);
+
+  res.status(200).json({
+    success: true,
+    message: 'Dashboard loaded...',
+    alliance,
+
   });
 });
 
@@ -45,10 +75,10 @@ router.get('/ladder', async (req, res) => {
     .populate('secondLead', populateValues)
     .populate('firstMonkeys', populateValues)
     .populate('secondMonkeys', populateValues);
-  const totStats = findAllianceStats(alliances);
+  const totStats = await findAllianceStats(alliances);
   res.status(200).json({
     success: true,
-    message: 'alliances ladder loaded..',
+    message: 'alliances ladder loaded...',
     totStats,
   });
 });
@@ -183,7 +213,7 @@ router.get('/:id', async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: 'Alliance loaded..',
+    message: 'Alliance loaded...',
     alliance,
   });
 });
@@ -201,7 +231,7 @@ router.patch('/leave', async (req, res) => {
   const updatedUser = await saveAndUpdateUser(user);
   res.status(200).json({
     success: true,
-    message: `You left ${alliance.name}..`,
+    message: `You left ${alliance.name}...`,
     user: updatedUser,
   });
 });

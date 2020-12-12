@@ -56,6 +56,7 @@ const App = () => {
         console.error('error: ', err)
         return
       }
+      console.log(data,'data')
       if (!data.user.account.isSetup && !userIsAtStarPage()){
         window.location.pathname = "/create-hacker";
       }

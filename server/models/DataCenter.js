@@ -43,7 +43,6 @@ dataCenterSchema.methods.handlePurchase = function (userId) {
 };
 
 dataCenterSchema.methods.handleAttack = async function (attackerId, result) {
-  console.log('handleAttack method triggered');
   this.currentFirewall -= result.damageDealt;
   if (this.currentFirewall <= 0) {
     return this.handleDestroyed();
@@ -51,7 +50,6 @@ dataCenterSchema.methods.handleAttack = async function (attackerId, result) {
   this.gracePeriod = true;
   // graces the datacenter for a minute so the user can't attack too quick
 
-  console.log(this.requiredStash, 'requiredStash', 'done');
   this.attacker = attackerId;
 
   this.requiredStash = await getNewStash();
@@ -96,6 +94,10 @@ dataCenterSchema.methods.handleDestroyed = async function () {
     this.requiredStash = await getNewStash();
     this.save();
   }, 1000 * 60 * 15 + randomNumber);
+};
+
+dataCenterSchema.methods.heal = async function () {
+  this.currentFirewall = this.maxFirewall;
 };
 
 module.exports = mongoose.model('DataCenter', dataCenterSchema);

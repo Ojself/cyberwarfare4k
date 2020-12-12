@@ -4,6 +4,7 @@ const {
   purchaseDataCenterCriterias,
   purchaseDataCenter,
   attackDataCenterCriterias,
+  healDataCenterCriterias,
   attackDataCenter,
 } = require('../middlewares/middleDataCenter');
 
@@ -21,8 +22,23 @@ const User = require('../models/User');
 // todo, allow alliance member to heal eachother datacenter?
 
 router.get('/', async (req, res) => {
+  console.log(req.query, 'req.query');
   const userId = req.user._id;
-  let dataCenters = await DataCenter.find()
+  const { owner } = req.query;
+
+  let params = {};
+  if (req.query && req.query.owner) {
+    if (req.user._id.toString() === owner) {
+      params = { owner: userId };
+    } else {
+      const allianceUsers = await User.find({ alliance: owner }).select({ _id: 1 });
+      params = { owner: allianceUsers };
+    }
+  }
+
+  let dataCenters;
+
+  dataCenters = await DataCenter.find(params)
     .populate('requiredStash', ['name', 'price'])
     .populate('city', ['name', 'residents'])
     .populate('owner', ['name']);
@@ -32,10 +48,62 @@ router.get('/', async (req, res) => {
     const stringifiedObjectId = JSON.stringify(dc.city.residents);
     return stringifiedObjectId.includes(userId.toString());
   });
+  console.log(dataCenters, 'Datacenters');
   res.status(200).json({
     dataCenters,
-    message: 'datacenters loaded....',
+    message: 'datacenters loaded...',
     success: true,
+  });
+});
+
+// @GET
+// PRIVATE
+// Retrieve all datacenters and populate which stash is required
+// to hack them and which city they belong to
+
+// todo, allow alliance member to heal eachother datacenter?
+
+router.patch('/:dataCenterId', async (req, res) => {
+  const { dataCenterId } = req.params;
+  const userId = req.user._id;
+
+  const params = { owner: userId };
+
+  const user = await User.findById(userId);
+  const dataCenter = await DataCenter.findById(dataCenterId);
+  const healCost = (dataCenter.maxFirewall - dataCenter.currentFirewall) * 100;
+
+  const disallow = healDataCenterCriterias(user, dataCenter, batteryCost);
+
+  if (disallow) {
+    return res.status(400).json({
+      success: false,
+      message: disallow,
+    });
+  }
+
+  // criterias diasllowed
+  dataCenter.heal();
+  await dataCenter.save();
+
+  user.bitCoinDrain(healCost);
+  const updatedUser = await saveAndUpdateUser(user);
+
+  let dataCenters = await DataCenter.find(params)
+    .populate('requiredStash', ['name', 'price'])
+    .populate('city', ['name', 'residents'])
+    .populate('owner', ['name']);
+  // filter out the datacenters that don't belong to the city the user is in
+  dataCenters = dataCenters.filter((dc) => {
+    const stringifiedObjectId = JSON.stringify(dc.city.residents);
+    return stringifiedObjectId.includes(userId.toString());
+  });
+
+  res.status(200).json({
+    dataCenters,
+    message: `You spent ${healCost} to heal ${dataCenter.name}`,
+    success: true,
+    user: updatedUser,
   });
 });
 
@@ -49,13 +117,12 @@ router.post('/purchase', async (req, res) => {
 
   const { dataCenterName } = req.body;
   const dataCenter = await DataCenter.findOne({ name: dataCenterName });
-  const batteryCost = 0;
-  const message = purchaseDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallow = purchaseDataCenterCriterias(user, dataCenter);
 
-  if (message) {
+  if (disallow) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallow,
     });
   }
 
@@ -67,8 +134,8 @@ router.post('/purchase', async (req, res) => {
     .populate('owner', ['name']);
 
   // filter out the datacenters that don't belong to the city the user is in
-  dataCenters = dataCenters.filter((dataCenter) => {
-    const stringifiedObjectId = JSON.stringify(dataCenter.city.residents);
+  dataCenters = dataCenters.filter((dc) => {
+    const stringifiedObjectId = JSON.stringify(dc.city.residents);
     return stringifiedObjectId.includes(userId.toString());
   });
   const updatedUser = await saveAndUpdateUser(user);

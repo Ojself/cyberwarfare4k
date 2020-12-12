@@ -1,3 +1,6 @@
+const { calculateNetworth } = require('../routes/helper/index');
+const Currency = require('../models/Currency');
+
 const checkCreateAllianceCriteria = (user, alliance, createCost) => {
   if (!user) {
     return 'ùser not found';
@@ -13,26 +16,18 @@ const checkCreateAllianceCriteria = (user, alliance, createCost) => {
     return 'This alliance already have members';
   }
   if (user.playerStats.rank < 4) {
-    return 'You are too unexperienced to create your own alliance..';
+    return 'You are too unexperienced to create your own alliance...';
   }
   if (user.playerStats.bitCoins < createCost) {
-    return 'Insufficent bitcoins..';
+    return 'Insufficent bitcoins...';
   }
 
   return null;
 };
 
-const getShuffledArr = (arr) => {
-  // TODO, put in helper
-  if (arr.length === 1) {
-    return arr;
-  }
-  const rand = Math.floor(Math.random() * arr.length);
-  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i !== rand))];
-};
-
-const findAllianceStats = (alliances) => {
-  let result = [];
+const findAllianceStats = async (alliances) => {
+  const currencies = await Currency.find();
+  const result = [];
   alliances.forEach((alliance) => {
     const allianceStats = {
       name: alliance.name,
@@ -63,9 +58,7 @@ const findAllianceStats = (alliances) => {
       allianceStats.totCurrencies += Object.values(
         mem.currencies,
       ).reduce((t, n) => t + n);
-
-      allianceStats.totWealth += mem.playerStats.bitCoins;
-      allianceStats.totWealth += mem.playerStats.ledger;
+      allianceStats.totWealth += calculateNetworth(mem, currencies);
 
       allianceStats.totBounty += mem.playerStats.bounty;
 
@@ -92,7 +85,7 @@ const findAllianceStats = (alliances) => {
 
     result.push(allianceStats);
   });
-  result = getShuffledArr(result);
+  console.log(result);
   return result;
 };
 

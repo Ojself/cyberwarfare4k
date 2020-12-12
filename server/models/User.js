@@ -106,7 +106,7 @@ const userSchema = new Schema(
       city: { type: Schema.Types.ObjectId, ref: 'City' },
       repairCost: { type: Number, default: 50000 },
       bodyguards: {
-        alive: { type: Number, default: 0 },
+        alive: { type: [Number], default: [] },
         bought: { type: Number, default: 0 },
         price: { type: Number, default: 100000 },
       },
@@ -236,14 +236,8 @@ const userSchema = new Schema(
     earnBattery: {
       githubUserName: { type: String, default: '' },
       githubStar: { type: Boolean, default: false },
-      megarpg: {
-        code: { type: String, default: '' },
-        expires: { type: Date, default: Date.now() },
-      },
-      chessathor: {
-        code: { type: String, default: '' },
-        expires: { type: Date, default: Date.now() },
-      },
+      megarpg: { type: String },
+      chessathor: { type: String },
     },
   },
   {
@@ -477,12 +471,18 @@ userSchema.methods.handleAttack = function (result) {
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
-  const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
+  if (result.bodyGuardAttacked) {
+    const fullHealthBg = this.playerStats.bodyguards.find((bg) => bg >= 50);
+    this.playerStats.bodyguards[this.playerStats.bodyguards.indexOf(fullHealthBg)] -= 50;
+  }
   if (result.bodyguardKilled) {
-    this.playerStats.bodyguards.alive -= 1;
-  } else {
+    const lowHealthBg = this.playerStats.bodyguards.find((bg) => bg < 50);
+    this.playerStats.bodyguards.splice(this.playerStats.bodyguards.indexOf(lowHealthBg));
+  }
+  if (!result.bodyGuardAttacked && !result.bodyguardKilled) {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
   this.fightInformation.attacksVictim += 1;
@@ -519,7 +519,7 @@ userSchema.methods.repair = function (percentage, cost) {
 userSchema.methods.buyBodyguard = function () {
   const cost = this.playerStats.bodyguards.price;
   this.bitCoinDrain(cost);
-  this.playerStats.bodyguards.alive += 1;
+  this.playerStats.bodyguards.alive.push(100);
   this.playerStats.bodyguards.bought += 1;
   if (this.playerStats.bodyguards.bought > 5) {
     this.playerStats.bodyguards.price *= 1.5;

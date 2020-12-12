@@ -30,7 +30,7 @@ const fraudRouteCriteria = async (user, opponent, batteryCost, now, userIsOnline
     return 'You need a Firewall in order to fraud others';
   }
   if (user._id.toString() === opponent._id.toString()) {
-    return 'You tried to fraud yourself for some reason..';
+    return 'You tried to fraud yourself for some reason...';
   }
   if (user.playerStats.city._id.toString() !== opponent.playerStats.city._id.toString()) {
     return `${opponent.name} is not in your city. Try changing VPN!`;
@@ -98,6 +98,7 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
     won: false,
     victimDead: false,
     bodyguardKilled: false,
+    bodyGuardAttacked: false,
     playerGains: {
       batteryCost,
     },
@@ -115,7 +116,6 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
 };
 
 const attackRecursiveBattle = (result) => {
-  console.log('attack start');
   // hack lost
   // if user has lost 4 times, the hack is considered lost
   if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
@@ -133,11 +133,17 @@ const attackRecursiveBattle = (result) => {
     const newResult = result;
     newResult.won = true;
     // kills a bodyguard
-    if (newResult.opponent.playerStats.bodyguards.alive > 0) {
-      newResult.bodyguardKilled = true;
+
+    if (newResult.opponent.playerStats.bodyguards.alive.length) {
+      const randomBg = newResult.opponent.playerStats.bodyguards[Math.floor(Math.random() * newResult.opponent.playerStats.bodyguards.length)];
+      if (randomBg > 50) {
+        newResult.bodyGuardAttacked = true;
+      } else {
+        newResult.bodyguardKilled = true;
+      }
     } else {
       const { CPU } = result.user.hackSkill;
-      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.15 - CPU * 0.10) + 0.10);
+      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.15 - CPU * 0.10) + CPU * 0.10);
       // To prevent extreme damage
       if (newResult.damageDealt > 30) {
         newResult.damageDealt = 30;

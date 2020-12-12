@@ -1,11 +1,14 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/middleAuth');
-const { getInbox, getOpponentInformation, saveAndUpdateUser } = require('./helper');
+const {
+  calculateNetworth, getInbox, getOpponentInformation, saveAndUpdateUser,
+} = require('./helper');
 
 const router = express.Router();
 
 const User = require('../models/User');
 const City = require('../models/City');
+const Currency = require('../models/Currency');
 
 // might be written wrongly TODO
 const setupPlayer = async (user, name, city, avatar) => {
@@ -19,14 +22,6 @@ const setupPlayer = async (user, name, city, avatar) => {
   await updatedUser.save();
   updatedCity.residents.push(user._id);
   await updatedCity.save();
-};
-
-const getShuffledArr = (arr) => {
-  if (arr.length === 1) {
-    return arr;
-  }
-  const rand = Math.floor(Math.random() * arr.length);
-  return [arr[rand], ...getShuffledArr(arr.filter((_, i) => i !== rand))];
 };
 
 /* function ensureIsSetup(req, res, next) {
@@ -158,7 +153,7 @@ router.get('/opponents/', async (req, res) => {
 
 router.get('/opponents/:id', async (req, res) => {
   const opponentId = req.params.id;
-  const allUsers = await User.find()
+  const allUsers = await User.find({ 'account.isSetup': true })
     .sort({ 'playerStats.exp': -1 })
     .populate('alliance', 'name');
   const opponentInformation = await getOpponentInformation(
@@ -182,6 +177,7 @@ router.get('/ladder', async (req, res) => {
   const dbSelectOptions = {
     name: '1',
     alliance: '1',
+    currencies: '1',
     'playerStats.rankName': '1',
     'playerStats.rank': '1',
     'playerStats.bitCoins': '1',
@@ -200,13 +196,17 @@ router.get('/ladder', async (req, res) => {
       message: JSON.stringify(e),
     });
   }
-  // users = getShuffledArr(users);
-
-  users = users.sort((b, a) => {
-    const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
-    const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
-    return aNetWorth - bNetWorth;
+  const databaseCurrencies = await Currency.find({}).select({ name: 1, price: 1 });
+  users.map((user) => {
+    user.playerStats.bitCoins = calculateNetworth(user, databaseCurrencies);
+    user.playerStats.ledger = null;
+    return user;
   });
+
+  users.sort((b, a) => a.playerStats.bitCoins - b.playerStats.bitCoins);
+
+  console.log(users, 'users');
+  // console.log(users, 'users');
 
   return res.status(200).json({
     success: true,

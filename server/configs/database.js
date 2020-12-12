@@ -8,6 +8,12 @@ const bonusBatteryInterval = require('../cronjobs/bonusBatteryInterval');
 const currencyPriceInterval = require('../cronjobs/currencyPriceInterval');
 const dataCenterPayoutInterval = require('../cronjobs/dataCenterPayoutInterval');
 const cityPriceInterval = require('../cronjobs/cityPriceInterval');
+const earnBatteryInterval = require('../cronjobs/earnBatteryInterval');
+
+const earnBatteryIntervalJob = new CronJob('25 * 0 * * *', (() => {
+  console.log('earnBatteryIntervalJob started');
+  earnBatteryInterval();
+}), null, true, 'America/Los_Angeles');
 
 const batteryJob = new CronJob('2 */10 * * * *', (() => {
   console.log('batteryJob started');

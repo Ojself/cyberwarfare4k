@@ -1,4 +1,4 @@
-const City = require('../models/Stash');
+const City = require('../models/City');
 
 // Sets a new price of the stash every hour based upon the lower price
 // Will never go over 2 times the price

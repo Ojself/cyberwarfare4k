@@ -1,7 +1,6 @@
-const { nullifyValues } = require('../../middlewares/middleHelpers.js');
-const User = require('../../models/User');
 const Session = require('../../models/Session');
 const Message = require('../../models/Message');
+const Currency = require('../../models/Currency');
 
 const monthsOverview = [
   'Jan',
@@ -55,12 +54,17 @@ const getOpponentInformation = async (opponentId, allUsers) => {
   const sumAllSkillValues = (skill) => Object.values(skill).reduce((a, c) => a + c);
   const findPosition = (list, id) => {
     const position = list.findIndex((user) => JSON.stringify(user._id) === id);
-
     return position + 1;
   };
   const opponent = allUsers.find(
     (user) => JSON.stringify(user._id) === opponentId,
   );
+  const currencies = await Currency.find();
+  allUsers.map((user) => {
+    user.playerStats.bitCoins = calculateNetworth(user, currencies);
+    user.playerStats.ledger = null;
+    return user;
+  });
 
   const ranking = {
     exp: null,
@@ -80,11 +84,7 @@ const getOpponentInformation = async (opponentId, allUsers) => {
     (a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill),
   );
   ranking.hackSkill = findPosition(allUsers, opponentId);
-  allUsers.sort((b, a) => {
-    const aNetWorth = a.playerStats.bitCoins + a.playerStats.ledger;
-    const bNetWorth = b.playerStats.bitCoins + b.playerStats.ledger;
-    return aNetWorth - bNetWorth;
-  });
+  allUsers.sort((b, a) => a.playerStats.bitCoins - b.playerStats.ledger);
   ranking.networth = findPosition(allUsers, opponentId);
   const onlineUsers = await getOnlineUsers();
   ranking.online = onlineUsers.some((id) => JSON.stringify(id) === opponentId);
@@ -112,8 +112,18 @@ const saveAndUpdateUser = async (user) => {
   return populatedUser;
 };
 
-module.exports = {
+// Calculates networth (ledger, bitcoins, cryptocurrencies)
+const calculateNetworth = (user, dbCurrencies) => {
+  let networth = user.playerStats.bitCoins + user.playerStats.ledger;
+  dbCurrencies.forEach((currency) => {
+    networth += user.currencies[currency.name] * currency.price;
+  });
 
+  return networth;
+};
+
+module.exports = {
+  calculateNetworth,
   getOnlineUsers,
   getInbox,
   getOpponentInformation,

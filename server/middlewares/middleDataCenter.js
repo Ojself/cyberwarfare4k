@@ -2,19 +2,28 @@ const {
   batteryCheck,
   checkFunds,
   checkSameValue,
-  existingValue,
 } = require('./middleHelpers');
 
-// Sees if everything is in order to buy dataCenter
-const purchaseDataCenterCriterias = (user, dataCenter, batteryCost) => {
-  if (!existingValue(user)) {
+const healDataCenterCriterias = (user, dataCenter) => {
+  if (!user) {
     return "User doesn't exist";
   }
   if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
-  if (!batteryCheck(user, batteryCost)) {
-    return 'Insufficent battery';
+  if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
+    return 'Insufficient funds';
+  }
+  return null;
+};
+
+// Sees if everything is in order to buy dataCenter
+const purchaseDataCenterCriterias = (user, dataCenter) => {
+  if (!user) {
+    return "User doesn't exist";
+  }
+  if (!dataCenter) {
+    return "Datacenter doesn't exist";
   }
   if (checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
   ) {
@@ -98,7 +107,7 @@ const attackDataCenter = async (
   user.handleDataCenterAttack(dataCenter, result);
   dataCenter.handleAttack(user._id, result);
 
-  const notificationMessage = `${dataCenter.name} was attacked ${
+  const notificationMessage = `Datacenter ${dataCenter.name} was attacked ${
     result.destroyed ? 'and destroyed' : ''
   } by ${user.name}!`;
   dataCenterOwner.sendNotification(notificationMessage, now);
@@ -126,4 +135,5 @@ module.exports = {
   attackDataCenterCriterias,
   attackDataCenter,
   purchaseDataCenter,
+  healDataCenterCriterias,
 };

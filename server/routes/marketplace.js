@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 
 // todo check same value is not working
 
-router.post('/buy', async (req, res) => {
+router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
 

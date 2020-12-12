@@ -19,19 +19,7 @@ const handleGithubEvent = async (payload) => {
   }
 };
 
-const generateQueryString = (game) => {
-  const lexi = 'abcdefghijkmnpqrstuvwxyz23456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
-  let query = '';
-  for (let i = 0; i < 6; i += 1) {
-    query += lexi[Math.floor(Math.random() * lexi.length)];
-  }
-  if (game === 'chessathor') {
-    query = `#${query}`;
-  }
-  return query;
-};
-
-const validateGithubUserName = async (username, user) => {
+const validategithubUserName = async (username, user) => {
   if (user.earnBattery.githubUserName) {
     return `You already have a github username: ${user.earnBattery.githubUserName}`;
   }
@@ -42,23 +30,9 @@ const validateGithubUserName = async (username, user) => {
   try {
     await axios.get(`https://api.github.com/users/${username}`);
   } catch (e) {
+    console.log(e);
     return `${username} was not found at github`;
   }
-  return null;
-};
-
-const validateGame = (game, user, now) => {
-  if (!['chessathor', 'megarpg'].includes(game)) {
-    return 'Invalid input';
-  }
-  if (user.earnBattery[game].code) {
-    return `You already have an active code ${user.earnBattery[game].code}`;
-  }
-
-  if (user.earnBattery[game].expires > now) {
-    return 'You can only do this once a day';
-  }
-
   return null;
 };
 
@@ -77,7 +51,7 @@ router.get('/', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'user loaded..',
+    message: 'user loaded...',
     user,
   });
 });
@@ -112,7 +86,7 @@ router.post('/redeem', async (req, res) => {
 
   const game = code.startsWith('#') ? 'chessathor' : 'megarpg';
   user.batteryGain(BATTERYGAIN[game]);
-  user.earnBattery[game].code = '';
+  user.earnBattery[game] = '';
   await user.save();
 
   return res.status(200).json({
@@ -122,53 +96,33 @@ router.post('/redeem', async (req, res) => {
   });
 });
 
-// generates new string
+// saves github username
 router.post('/', async (req, res) => {
   const userId = req.user._id;
-  const { game } = req.body;
-  const now = Date.now();
+  const { githubUserName } = req.body;
   const user = await User.findById(userId);
 
-  if (!game) {
+  if (!githubUserName) {
     return res.status(403).json({
       success: false,
       message: 'Invalid input',
     });
   }
-  let githubUserName;
-  if (!['chessathor', 'megarpg'].includes(game)) {
-    githubUserName = game;
-  }
 
-  if (githubUserName) {
-    const disAllowed = await validateGithubUserName(githubUserName, user);
-    if (disAllowed) {
-      return res.status(403).json({
-        success: false,
-        message: disAllowed,
-      });
-    }
-    user.earnBattery.githubUserName = githubUserName;
+  const disAllowed = await validategithubUserName(githubUserName, user);
+  if (disAllowed) {
+    return res.status(403).json({
+      success: false,
+      message: disAllowed,
+    });
   }
-
-  if (['chessathor', 'megarpg'].includes(game)) {
-    const disAllowed = validateGame(game, user, now);
-    if (disAllowed) {
-      return res.status(403).json({
-        success: false,
-        message: disAllowed,
-      });
-    }
-    const code = generateQueryString(game);
-    user.earnBattery[game].code = code;
-    user.earnBattery[game].expires = now + (1000 * 60 * 60 * 24);
-  }
+  user.earnBattery.githubUserName = githubUserName;
 
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
     success: true,
-    message: 'Code generated',
+    message: 'Username saved...',
     user: updatedUser,
   });
 });

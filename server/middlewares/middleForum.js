@@ -1,4 +1,3 @@
-
 function putOriginalCommentFirst(comments) {
   if (!Array.isArray(comments) || comments.length < 1) {
     return;
@@ -10,19 +9,19 @@ function putOriginalCommentFirst(comments) {
 function checkCommentPostCriteria(comment, thread, user) {
   console.log(thread, 'th');
   if (comment.length > 250) {
-    return 'Your post is too long..';
+    return 'Your post is too long...';
   }
 
   if (comment.length < 2) {
-    return 'Your post is too short..';
+    return 'Your post is too short...';
   }
 
   if (comment.toLowerCase().includes('script>')) {
-    return 'no need for your script tags here..';
+    return 'no need for your script tags here...';
   }
   // todo, see if this works.
   if (thread.allianceThread && JSON.stringify(thread.allianceThread) !== JSON.stringify(user.alliance)) {
-    return 'You don\'t belong to this alliance..';
+    return 'You don\'t belong to this alliance...';
   }
 
   return null;
@@ -30,14 +29,14 @@ function checkCommentPostCriteria(comment, thread, user) {
 
 function checkCommentDeleteCriteria(comment, userId) {
   if (JSON.stringify(comment.creator) !== JSON.stringify(userId)) {
-    return 'You can only delete your own comments..';
+    return 'You can only delete your own comments...';
   }
   return null;
 }
 
 function checkCommentEditCriteria(newComment, comment, userId) {
   if (JSON.stringify(comment.creator) !== JSON.stringify(userId)) {
-    return 'You can only edit your own comments..';
+    return 'You can only edit your own comments...';
   }
   return checkCommentPostCriteria(newComment);
 }

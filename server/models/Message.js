@@ -8,6 +8,8 @@ const messageSchema = new Schema({
   dateSent: String,
   read: Boolean,
   text: String,
+  allianceInvitation: { type: Schema.Types.ObjectId, ref: 'Alliance' },
+  // organizedCrimeInvitation: { type: Schema.Types.ObjectId, ref: '' },
 
 },
 {
