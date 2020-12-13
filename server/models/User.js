@@ -25,7 +25,7 @@ const userSchema = new Schema(
       confirmationCode: String,
       subscription: {
         type: String,
-        enum: ['', 'Bronze', 'Silver', 'Gold'],
+        enum: ['', 'Bronze', 'Silver', 'Gold', 'Platinum'],
       },
       isSetup: {
         type: Boolean,
@@ -104,7 +104,7 @@ const userSchema = new Schema(
     // Player stats
     playerStats: {
       city: { type: Schema.Types.ObjectId, ref: 'City' },
-      repairCost: { type: Number, default: 50000 },
+      repairCost: { type: Number, default: 100000 },
       bodyguards: {
         alive: { type: [Number], default: [] },
         bought: { type: Number, default: 0 },
@@ -124,7 +124,7 @@ const userSchema = new Schema(
       },
       battery: {
         type: Number,
-        default: 100,
+        default: 125,
       },
 
       bitCoins: {
