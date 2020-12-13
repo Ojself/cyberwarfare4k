@@ -22,7 +22,6 @@ const User = require('../models/User');
 // todo, allow alliance member to heal eachother datacenter?
 
 router.get('/', async (req, res) => {
-  console.log(req.query, 'req.query');
   const userId = req.user._id;
   const { owner } = req.query;
 
@@ -48,7 +47,6 @@ router.get('/', async (req, res) => {
     const stringifiedObjectId = JSON.stringify(dc.city.residents);
     return stringifiedObjectId.includes(userId.toString());
   });
-  console.log(dataCenters, 'Datacenters');
   res.status(200).json({
     dataCenters,
     message: 'datacenters loaded...',

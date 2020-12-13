@@ -444,16 +444,11 @@ export default {
     .then((res)=> res.data)
     .catch(errHandler)
   },
-  acceptAllianceInvitation(id){
+  answerAllianceInvitation(id,answer){
     return service
-    .patch("./alliance/invitation", {id})
+    .patch("./alliance/invitation", {id,answer})
     .then((res)=> res.data)
     .catch(errHandler)
   },
-  declineAllianceInvitation(id){
-    return service
-    .patch("./alliance/invitations", {id})
-    .then((res)=> res.data)
-    .catch(errHandler)
-  }
+  
 };

@@ -507,12 +507,13 @@ userSchema.methods.readNotifications = function () {
 
 userSchema.methods.repair = function (percentage, cost) {
   this.bitCoinDrain(cost);
+  const multiplier = (this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall;
+
   this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
   if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
     this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   }
-  const multiplier = percentage === 100 ? 1.35 : 1.07;
   this.playerStats.repairCost = Math.round(this.playerStats.repairCost * multiplier);
 };
 

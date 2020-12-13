@@ -131,6 +131,7 @@ router.post('/invitation', async (req, res) => {
 
   const now = new Date(Date.now()).toString().slice(0, 21);
   alliance.inviteMember(now, invitedUser);
+  await alliance.save();
 
   // const allianceName = user.alliance;
 
