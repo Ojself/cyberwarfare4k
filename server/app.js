@@ -59,6 +59,7 @@ require('./passport')(app);
 app.use('/api', require('./routes/index'));
 app.use('/api', require('./routes/auth'));
 app.use('/api/alliance', require('./routes/alliance'));
+app.use('/api/beta-forum', require('./routes/betaForum'));
 app.use('/api/communication', require('./routes/communication'));
 app.use('/api/city', require('./routes/city'));
 app.use('/api/currency', require('./routes/currency'));

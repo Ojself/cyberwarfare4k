@@ -5,6 +5,7 @@ import Typist from "react-typist";
 
 import AllianceLadder from "./pages/alliance/pages/Ladder";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
+import BetaForum from "./pages/_molecules/BetaForum"
 import ChipChopShop from "./pages/chipchopshop/ChipChopShop";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
@@ -12,9 +13,11 @@ import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import Dashboard from "./pages/alliance/pages/Dashboard"
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
+/* 
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
-import ForumThread from "./pages/globalForum/ForumThread";
+import ForumThread from "./pages/globalForum/ForumThread"; 
+*/
 import EarnBattery from "./pages/earnBattery/EarnBattery";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
@@ -104,9 +107,7 @@ const App = () => {
               <Typist
                 avgTypingDelay={5}
                 className={`terminalFont ${
-                  globalMessage.success
-                    ? "terminalTextwin"
-                    : "terminalTextlost"
+                  globalMessage.success ? "terminalTextwin" : "terminalTextlost"
                 }`}
                 cursor={{ hideWhenDone: true }}
               >
@@ -133,6 +134,16 @@ const App = () => {
           path="/alliance/dashboard"
           render={() => <Dashboard globalLoading={loading} />}
         />
+
+        <Route
+          path="/beta-forum"
+          render={() => <BetaForum user={user} updateGlobalValues={updateGlobalValues}  />}
+        />
+        <Route
+          path="/alliance/:id/beta-forum"
+          render={() => <BetaForum user={user} updateGlobalValues={updateGlobalValues}  />}
+        />
+
         <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
           path="/chipchopshop"
@@ -168,10 +179,6 @@ const App = () => {
             />
           )}
         />
-        <Route
-          path="/forum/:forumId/:threadId"
-          render={() => <ForumThread globalLoading={loading} user={user} />}
-        />
 
         <Route
           path="/earn-battery"
@@ -184,11 +191,7 @@ const App = () => {
             />
           )}
         />
-        <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
-        <Route
-          path="/forum"
-          render={() => <ForumOverview globalLoading={loading} user={user} />}
-        />
+
         <Route
           path="/hack-crimes"
           render={() => <HackCrimes updateGlobalValues={updateGlobalValues} />}
@@ -294,3 +297,18 @@ const App = () => {
 };
 
 export default App;
+
+
+
+   
+{
+  /* <Route
+          path="/forum"
+          render={() => <ForumOverview globalLoading={loading} user={user} />}
+        />
+        <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
+        <Route
+          path="/forum/:forumId/:threadId"
+          render={() => <ForumThread globalLoading={loading} user={user} />}
+        /> */
+}

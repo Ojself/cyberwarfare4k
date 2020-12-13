@@ -361,6 +361,41 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+  /* BetaForum */
+
+  getBetaForum(query) {
+    return service
+      .get(`/beta-forum/?alliance=${query}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  postBetaComment(comment, forumType) {
+    return service
+      .post(`/beta-forum`, { comment, forumType })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  editBetaComment(comment, commentId) {
+    return service
+      .patch(`/beta-forum`, { comment, commentId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  likeBetaComment(commentId) {
+    return service
+      .put(`/beta-forum/${commentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  deleteComment(commentId) {
+    return service
+      .delete(`/beta-forum/${commentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   /* FORUM */
   /* FORUM */
   /* FORUM */
@@ -438,17 +473,16 @@ export default {
       .catch(errHandler);
   },
 
-  sendAllianceInvitation(id){
+  sendAllianceInvitation(id) {
     return service
-    .post("./alliance/invitation", {id})
-    .then((res)=> res.data)
-    .catch(errHandler)
+      .post("./alliance/invitation", { id })
+      .then((res) => res.data)
+      .catch(errHandler);
   },
-  answerAllianceInvitation(id,answer){
+  answerAllianceInvitation(id, answer) {
     return service
-    .patch("./alliance/invitation", {id,answer})
-    .then((res)=> res.data)
-    .catch(errHandler)
+      .patch("./alliance/invitation", { id, answer })
+      .then((res) => res.data)
+      .catch(errHandler);
   },
-  
 };

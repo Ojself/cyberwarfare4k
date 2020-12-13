@@ -192,7 +192,6 @@ router.post('/attack', async (req, res) => {
     : attack.result.won
       ? `You attacked ${dataCenter.name} and dealt ${attack.result.damageDealt} damage`
       : `You failed to attack ${dataCenter.name}`;
-  console.log('too late');
 
   return res.status(200).json({
     success: attack.result.won,

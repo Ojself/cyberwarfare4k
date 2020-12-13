@@ -92,6 +92,9 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                   <DropdownItem href={`/alliance/${user.alliance._id}`}>
                     Hierarchy
                   </DropdownItem>
+                  <DropdownItem href={`/alliance/${user.alliance._id}/beta-forum`}>
+                    Forum
+                  </DropdownItem>
                   <DropdownItem href={`/alliance/dashboard`}>
                     Dashboard
                   </DropdownItem>
@@ -127,13 +130,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 Communication
               </DropdownToggle>
               <DropdownMenu>
-                {user && user.alliance && (
-                  <>
-                    <DropdownItem>Alliance Forum</DropdownItem>
-                    <DropdownItem divider />
-                  </>
-                )}
-                <DropdownItem href="/forum">Public Forum</DropdownItem>
+                <DropdownItem href="/beta-forum">Public Forum</DropdownItem>
                 <DropdownItem
                   className={userHasMail() ? "text-danger" : null}
                   href="/messages"

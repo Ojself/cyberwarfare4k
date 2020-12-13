@@ -16,7 +16,6 @@ fix routes, no need for params in .patch,post,delete
 level requirement for creating threads?
 admin roles for creating forum
 finish routes for creating,editing and deleting forums and threads
-
 */
 
 // gets forums and thread count

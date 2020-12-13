@@ -229,6 +229,7 @@ const userSchema = new Schema(
       attacksInitiated: { type: Number, default: 0 },
       attacksVictim: { type: Number, default: 0 },
       crimesInitiated: { type: Number, default: 0 },
+      pettyCrimesInitiated: { type: Number, default: 0 },
       vpnChanges: { type: Number, default: 0 },
       currencyPurchases: { type: Number, default: 0 },
     },
@@ -348,6 +349,7 @@ userSchema.methods.withdrawLedger = function (bitCoins) {
 userSchema.methods.handlePettyCrime = async function (result) {
   this.batteryDrain(result.battery);
   this.bitCoinGain(result.bitCoins);
+  this.fightInformation.pettyCrimesInitiated += 1;
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
@@ -355,9 +357,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
     this.stash[stashName] += 1;
   }
   if (result.skillGained) {
-    console.log(result.skillGained, 'result.skillGained');
     const { skillGained } = result;
-    console.log(skillGained, 'skillGained');
     if (['Encryption', 'CPU', 'AntiVirus'].includes(skillGained)) {
       this.giveHackSkill(1, skillGained);
     }
@@ -445,7 +445,7 @@ userSchema.methods.setRank = async function (rank = undefined) {
 
 userSchema.methods.handleFraud = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
-  this.playerStats.attacksInitiated += 1;
+  this.fightInformation.attacksInitiated += 1;
   this.bitCoinGain(result.playerGains.bitCoinStolen);
 };
 
@@ -465,7 +465,7 @@ userSchema.methods.handleAttack = function (result) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
       }
     });
-    this.playerStats.shutdowns += 1;
+    this.fightInformation.shutdowns += 1;
   }
   this.fightInformation.attacksInitiated += 1;
   /* todo. add message string if opponent is dead */
