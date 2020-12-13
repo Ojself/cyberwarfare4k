@@ -8,9 +8,9 @@ const Footer = () => {
       className="w-100 dark-light mt-5"
     >
       <div className="text-center py-3">
-        <p className="text-warning" style={{ fontSize: "0.75rem" }}>
+        <p className="text-danger" style={{ fontSize: "0.75rem" }}>
           Warning: The server and database will be reset{" "}
-          <strong>17. December 19:00 CET </strong>
+          <strong>14. December 19:00 CET </strong>
         </p>
         {/* © {currentYear} Copyright */}
         <div className="py-2">
