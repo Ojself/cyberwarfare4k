@@ -124,7 +124,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       Zcash,
       Dash,
     ].some(currency=> currency>0)
-    console.log(buyingStarted);
 
     return buyingStarted && ( <div>
         {["Litecoin", "Ethereum", "Ripple", "Monero", "Zcash", "Dash"]
@@ -166,9 +165,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
             <tbody>
               {cryptoState.currencies.map((cu, i) => {
               const prevPrice = cu.historyPrice[cu.historyPrice.length-2];
-              console.log(prevPrice, "prevPrice");
               const changeFromLastHour = (cu.price - prevPrice) / prevPrice * 100
-              console.log(changeFromLastHour, "changeFromLastHour");
                 return (
                   <tr key={i}>
                     <th title={cu.initials} scope="row">

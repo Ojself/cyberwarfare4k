@@ -53,7 +53,7 @@ const Signup = (props) => {
       props.redirect("/create-hacker/");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
-      console.log(err, "err");
+      console.error(err, "err");
     }
   };
 

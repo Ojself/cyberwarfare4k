@@ -7,7 +7,7 @@ function putOriginalCommentFirst(comments) {
 
 /* not pretty, refactor this */
 function checkCommentPostCriteria(comment, thread, user) {
-  console.log(thread, 'th');
+
   if (comment.length > 250) {
     return 'Your post is too long...';
   }

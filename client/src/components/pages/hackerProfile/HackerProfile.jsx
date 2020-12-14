@@ -55,7 +55,6 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       updateGlobalValues(err);
       return;
     }
-    console.log("data", data);
     updateGlobalValues(data,false);
     setAttackResult(data.finalResult);
     setMessage(data.message)
@@ -71,7 +70,6 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       updateGlobalValues(err);
       return;
     }
-    console.log("data", data);
     updateGlobalValues(data, true);
   };
 
@@ -92,7 +90,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
         bountyTargetId: opponentId,
       });
     } catch (err) {
-      console.log("error:", err);
+      console.error("error:", err);
       return;
     }
     updateGlobalValues(data);

@@ -19,7 +19,6 @@ const DashboardInvite = ({
           <h4>Invited members</h4>
           {invitedMembers && invitedMembers.length ? (
             invitedMembers.map((member) => {
-              console.log(member, "member");
               return (
                 <div className="d-flex justify-content-around w-50">
                   <Link to={`/hacker/${member._id}`}>{member.name}</Link>

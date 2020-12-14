@@ -93,7 +93,6 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
     try {
       data = await api.buyStashes(transactionState);
     }catch (err){
-      console.log('error',err)
       updateGlobalValues(err)
       return
     }
@@ -125,7 +124,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
       try {
         data = await api.getStashes();
       } catch (err) {
-        console.log(err, "err");
+        console.error(err, "err");
         updateGlobalValues(err);
         return;
       }

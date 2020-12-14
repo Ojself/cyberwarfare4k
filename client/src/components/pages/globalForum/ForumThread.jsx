@@ -22,10 +22,8 @@ const ForumThread = (props) => {
   });
 
   const renderCommentFromApi = (comment) => {
-    console.log(comment, "lifted a comment");
     const commentsWithNewComment = threadState.comments.slice(0);
     commentsWithNewComment.splice(1, 0, comment);
-    console.log(commentsWithNewComment);
 
     setThreadState({
       ...threadState,

@@ -26,14 +26,12 @@ const betaForumSchema = new Schema({
 });
 
 betaForumSchema.methods.editComment = function (newComment) {
-  console.log('forumpost editPost triggered', newComment);
   this.comment = newComment;
   this.edited = true;
   this.save();
 };
 
 betaForumSchema.methods.deleteComment = function () {
-  console.log('forumpost delete triggered');
   this.deleted = true;
   this.save();
 };

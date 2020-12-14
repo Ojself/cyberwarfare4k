@@ -23,7 +23,6 @@ const BetaForum = ({ user, updateGlobalValues }) => {
       } catch (err) {
         console.error("error", err);
       }
-      console.log(data.comments,'datacomments')
       setBetaForum(data.comments);
       setLoading(false);
     };

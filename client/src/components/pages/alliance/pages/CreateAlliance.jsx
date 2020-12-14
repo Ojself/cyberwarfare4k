@@ -28,14 +28,13 @@ const CreateAlliance = (props) => {
 
   const handleCreate = async () => {
     const allianceId = selectedOption.value;
-    console.log(allianceId, "allianceId");
     let data;
     try {
       data = await api.createAlliance(allianceId);
       props.updateGlobalValues(data);
       props.history.push("/my-profile");
     } catch (err) {
-      console.log("error", err);
+      console.error("error", err);
     }
   };
 
@@ -47,7 +46,7 @@ const CreateAlliance = (props) => {
         data = await api.getAlliances();
         data.alliances = data.alliances.filter((alliance) => !alliance.active);
       } catch (err) {
-        console.log("error", err);
+        console.error("error", err);
       }
       setAlliances(dataMassager(data.alliances));
       setLoading(false);

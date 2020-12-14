@@ -84,7 +84,7 @@ allianceSchema.methods.replaceBoss = function () {
 };
 
 allianceSchema.methods.abandonAlliance = function () {
-  console.log('abandon');
+  console.info('abandon');
 };
 
 allianceSchema.methods.inviteMember = function (now, playerId) {

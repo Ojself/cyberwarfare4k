@@ -13,7 +13,6 @@ const Ladder = () => {
   useEffect(() => {
     const fetchAlliances = async () => {
       const data = await api.getAllianceLadder();
-      console.log(data,'data')
       setLadderState({
         ...ladderState,
         alliances: data.totStats,

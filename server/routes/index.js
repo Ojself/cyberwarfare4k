@@ -205,9 +205,6 @@ router.get('/ladder', async (req, res) => {
 
   users.sort((b, a) => a.playerStats.bitCoins - b.playerStats.bitCoins);
 
-  console.log(users, 'users');
-  // console.log(users, 'users');
-
   return res.status(200).json({
     success: true,
     message: 'users loaded..',

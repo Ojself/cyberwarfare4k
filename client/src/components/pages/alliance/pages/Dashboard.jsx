@@ -37,25 +37,21 @@ const Dashboard = ({ updateGlobalValues }) => {
   const [loading, setLoading] = useState(true)
 
   const sendInvite = async (user)=> {
-    console.log(user,'user')
     const userId= user.value
     let data;
     try { data = await api.sendAllianceInvitation(userId)
     } catch (err){
-      console.log(err,'err')
+      console.error('err',err)
       return updateGlobalValues(err)
     }
-    console.log(data,'data') 
     updateGlobalValues(data);
     const oldInvitedMembmers = invitedMembers.slice()
     oldInvitedMembmers.unshift(data.invitedUser);
-    console.log(oldInvitedMembmers);
     setInvitedMembers(oldInvitedMembmers);
 
   }
 
   const handleInviteChange = (selectedOption) => {
-    console.log(selectedOption,'????')
     setSelectedInvite( selectedOption );
   };
   const handlePromotionChange = (selectedOption) => {
@@ -68,9 +64,8 @@ const Dashboard = ({ updateGlobalValues }) => {
       try {
         data = await api.getAllianceDashBoard();
       } catch (err) {
-        console.log("error: ", err);
+        console.error("error: ", err);
       }
-      console.log(data, "data from alliance dashboard");
       const massagedAllUsers = dataMassager(data.users);
       const allianceMembers = data.users.filter(
         (user) => user.alliance === data.alliance._id

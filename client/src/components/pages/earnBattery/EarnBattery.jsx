@@ -85,7 +85,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     let width = "100%"
   
     const currentGame = user.earnBattery[game];
-    console.log(currentGame,'current?')
 
     
     if (currentGame) {

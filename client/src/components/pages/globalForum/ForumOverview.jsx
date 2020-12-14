@@ -51,7 +51,6 @@ const ForumOverview = (props) => {
     }
   );
 
-  console.log(forumOverviewState, "forumOverviewState");
   return (
     <div className="page-container ">
       <h1>Forum</h1>

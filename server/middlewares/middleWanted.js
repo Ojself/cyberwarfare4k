@@ -10,7 +10,6 @@ function addBountyCriteria(user, opponent, bounty) {
     return "Opponent doesn't exist";
   }
   if (!checkFunds(user.playerStats.bitCoins, bounty)) {
-    console.log(user.playerStats.bitCoins, bounty);
     return 'Insufficent money';
   }
   if (bounty < 1000) {

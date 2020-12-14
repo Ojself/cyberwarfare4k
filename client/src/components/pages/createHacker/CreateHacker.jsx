@@ -97,7 +97,6 @@ const CreateHacker = () => {
     api
       .createUser(data)
       .then((result) => {
-        console.log(result, "result");
         window.location.pathname = "/my-profile";
       })
       .catch((err) =>

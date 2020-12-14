@@ -20,7 +20,7 @@ const batteryJob = new CronJob('2 */10 * * * *', (() => {
   batteryInterval();
 }), null, true, 'America/Los_Angeles');
 
-const currencyPriceJob = new CronJob('6 0 * * * *', (() => {
+const currencyPriceJob = new CronJob('6 0 6-0 * * *', (() => {
   console.log('currencyPriceJob started');
   currencyPriceInterval();
 }), null, true, 'America/Los_Angeles');

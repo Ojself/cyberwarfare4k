@@ -20,7 +20,7 @@ const AllianceOverview = (props) => {
       }
     };
     getAlliance();
-  }, [console.log(alliance, "alliance")]);
+  }, []);
 
   const noAllianceFound = !loading && (
     <div>

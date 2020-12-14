@@ -30,7 +30,7 @@ const validategithubUserName = async (username, user) => {
   try {
     await axios.get(`https://api.github.com/users/${username}`);
   } catch (e) {
-    console.log(e);
+    console.error(err);
     return `${username} was not found at github`;
   }
   return null;
@@ -60,8 +60,6 @@ router.get('/', async (req, res) => {
 router.post('/redeem', async (req, res) => {
   // todo. ensure useragent and other creds is coming from heroku chessathor or megarpg
   const { code } = req.body;
-
-  // console.log(req.headers['x-hub-signature']);
 
   if (req.body.payload) {
     // check headers

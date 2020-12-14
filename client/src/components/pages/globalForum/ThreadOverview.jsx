@@ -13,7 +13,6 @@ const SingleForum = (props) => {
   useEffect(() => {
     const fetchSingleForumData = async (forumId) => {
       const apiResponse = await api.getThreads(forumId);
-      console.log(apiResponse, "response");
       const forumName = apiResponse.threads[0].forum.title
         ? apiResponse.threads[0].forum.title
         : "Forum";

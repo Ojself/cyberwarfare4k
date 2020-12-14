@@ -13,7 +13,6 @@ const MarketPlace = ({ user, updateGlobalValues }) => {
     const fetchMarketPlaceItems = async () => {
       const data = await api.getMarketPlaceItems();
       const { items } = data;
-      console.log("result", items);
       setMarketPlaceState({
         ...marketPlaceState,
         items: data.items,
@@ -25,7 +24,6 @@ const MarketPlace = ({ user, updateGlobalValues }) => {
 
   const handleMarketPlaceItemPurchase = async (e) => {
     const itemId = e.target.name;
-    console.log(itemId, "itemId");
     let data;
     try {
       data = await api.purchaseMarketPlaceItem({ itemId });

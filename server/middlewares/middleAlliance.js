@@ -85,7 +85,6 @@ const findAllianceStats = async (alliances) => {
 
     result.push(allianceStats);
   });
-  console.log(result);
   return result;
 };
 

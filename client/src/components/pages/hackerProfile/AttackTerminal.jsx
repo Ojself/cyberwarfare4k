@@ -37,7 +37,6 @@ const AttackTerminal = ({ message, result }) => {
 
   const giveResultString = (status)=>{
       let result;
-      console.log(status, 'giveResultString');
       if (status === 'lost') result = giveLostString()
       if (status === 'win') result = giveWonString()
       if (status === "blocked") result = giveBlockedString();
@@ -61,7 +60,6 @@ const AttackTerminal = ({ message, result }) => {
   const updateProgressBarValues = () => {
       let currentProgress = terminalState.progressValue
       const status = result.roundResult[terminalState.round];
-      console.log(result.roundResult.length, terminalState.round + 1);
       if (status === 'win'){
           currentProgress += Math.floor(Math.random() * (25 - 10) + 25);
           if (result.roundResult.length <= (terminalState.round + 1)){

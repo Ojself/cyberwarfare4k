@@ -41,7 +41,6 @@ const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
           if (data.dataCenters && data.dataCenters.length){
             data.dataCenters.sort((a, b) => b.city.name - a.city.name);
           }
-          console.log(data.dataCenters, "data.dataCenters");
           setDataCenters(data.dataCenters);
         };
         getUserDataCenters();

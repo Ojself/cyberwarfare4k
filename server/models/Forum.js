@@ -29,7 +29,6 @@ const forumSchema = new Schema({
 });
 
 forumSchema.methods.toggleLocked = function () {
-  console.log('toggleLocked triggered');
   this.locked = !this.locked;
   this.save();
 };

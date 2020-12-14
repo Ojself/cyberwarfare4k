@@ -111,7 +111,6 @@ const Ladder = () => {
         toggleSort("networth");
         sortedUsers = ladderState.users.sort((b, a) => {
           if (sortState.networth) {
-            console.log(a.playerStats);
             return a.playerStats.bitCoins - b.playerStats.bitCoins;
           }
           return b.playerStats.bitCoins - a.playerStats.bitCoins;
@@ -119,7 +118,6 @@ const Ladder = () => {
         break;
       default:
         toggleSort("networth");
-        console.log(ladderState.users)
         sortedUsers = ladderState.users.sort((b, a) => {
           if (sortState.networth) {
       

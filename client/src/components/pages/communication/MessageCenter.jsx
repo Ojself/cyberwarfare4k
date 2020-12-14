@@ -39,7 +39,6 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
   const handleChange = (eventValue) => {
-    console.log(eventValue);
     setSelectedOption(eventValue);
   };
 
@@ -126,7 +125,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
     try {
       data = await api.answerAllianceInvitation(id,answer);
     } catch (err) {
-      console.log(err, "error");
+      console.error(err, "error");
       updateGlobalValues(err,true,true)
       return
     }
