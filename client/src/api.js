@@ -290,9 +290,9 @@ export default {
       .catch(errHandler);
   },
 
-  getDataCenters() {
+  getDataCenters(params = {}) {
     return service
-      .get("/datacenter/")
+      .get(`/datacenter/`, { params })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -311,6 +311,13 @@ export default {
       .catch(errHandler);
   },
 
+  healDataCenter(id) {
+    return service
+      .patch(`/datacenter/${id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   // MARKETPLACE
   // MARKETPLACE
 
@@ -323,7 +330,7 @@ export default {
 
   purchaseMarketPlaceItem(body) {
     return service
-      .post("/marketplace/buy", body)
+      .post("/marketplace", body)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -354,6 +361,41 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+  /* BetaForum */
+
+  getBetaForum(query) {
+    return service
+      .get(`/beta-forum/?alliance=${query}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  postBetaComment(comment, forumType) {
+    return service
+      .post(`/beta-forum`, { comment, forumType })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  editBetaComment(comment, commentId) {
+    return service
+      .patch(`/beta-forum`, { comment, commentId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  likeBetaComment(commentId) {
+    return service
+      .put(`/beta-forum/${commentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  deleteComment(commentId) {
+    return service
+      .delete(`/beta-forum/${commentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   /* FORUM */
   /* FORUM */
   /* FORUM */
@@ -410,6 +452,13 @@ export default {
       .catch(errHandler);
   },
 
+  getAllianceDashBoard() {
+    return service
+      .get(`/alliance/dashboard`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   leaveAlliance() {
     return service
       .patch(`/alliance/leave`)
@@ -420,6 +469,19 @@ export default {
   createAlliance(allianceId) {
     return service
       .post("/alliance", { allianceId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  sendAllianceInvitation(id) {
+    return service
+      .post("./alliance/invitation", { id })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  answerAllianceInvitation(id, answer) {
+    return service
+      .patch("./alliance/invitation", { id, answer })
       .then((res) => res.data)
       .catch(errHandler);
   },

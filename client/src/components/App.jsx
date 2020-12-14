@@ -5,21 +5,25 @@ import Typist from "react-typist";
 
 import AllianceLadder from "./pages/alliance/pages/Ladder";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
-import ChipChopShop from "./pages/chipchopshop/ChipChopShop";
+import BetaForum from "./pages/_molecules/BetaForum"
+import Fence from "./pages/fence/Fence";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import Dashboard from "./pages/alliance/pages/Dashboard"
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
+/* 
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
-import ForumThread from "./pages/globalForum/ForumThread";
+import ForumThread from "./pages/globalForum/ForumThread"; 
+*/
 import EarnBattery from "./pages/earnBattery/EarnBattery";
+import HallOfFame from "./pages/HallOfFame";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import Home from "./pages/home/Home";
-import Information from "./pages/Information";
+import Information from "./pages/information/Information";
 import Ladder from "./pages/Ladder";
 import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
@@ -56,6 +60,7 @@ const App = () => {
         console.error('error: ', err)
         return
       }
+      console.log(data,'data')
       if (!data.user.account.isSetup && !userIsAtStarPage()){
         window.location.pathname = "/create-hacker";
       }
@@ -66,14 +71,15 @@ const App = () => {
     fetchUserData();
   }, []);
 
-  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false) => {
-    console.log("updating global", data);
-
+  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false, messages = false ) => {
     if (data.user) {
       setUser(data.user);
     }
     if (scrollToTop) {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (messages){
+      setMessages(messages);
     }
     if (renderMessage && data.message) {
       setGlobalMessage({
@@ -103,9 +109,7 @@ const App = () => {
               <Typist
                 avgTypingDelay={5}
                 className={`terminalFont ${
-                  globalMessage.success
-                    ? "terminalTextwin"
-                    : "terminalTextlost"
+                  globalMessage.success ? "terminalTextwin" : "terminalTextlost"
                 }`}
                 cursor={{ hideWhenDone: true }}
               >
@@ -117,6 +121,10 @@ const App = () => {
       )}
       <Switch>
         <Route path="/" exact component={Home} />
+        <Route 
+        path="/hall-of-fame" 
+        render ={()=> <HallOfFame />}
+        />
         <Route
           path="/alliance/create"
           render={(props) => (
@@ -130,13 +138,32 @@ const App = () => {
         <Route path="/alliance/ladder" component={AllianceLadder} />
         <Route
           path="/alliance/dashboard"
-          render={() => <Dashboard globalLoading={loading} />}
+          render={() => (
+            <Dashboard
+              updateGlobalValues={updateGlobalValues}
+               globalLoading={loading}
+            />
+          )}
         />
+
+        <Route
+          path="/beta-forum"
+          render={() => (
+            <BetaForum user={user} updateGlobalValues={updateGlobalValues} />
+          )}
+        />
+        <Route
+          path="/alliance/:id/beta-forum"
+          render={() => (
+            <BetaForum user={user} updateGlobalValues={updateGlobalValues} />
+          )}
+        />
+
         <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
-          path="/chipchopshop"
+          path="/fence"
           render={() => (
-            <ChipChopShop
+            <Fence
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
               user={user}
@@ -167,10 +194,6 @@ const App = () => {
             />
           )}
         />
-        <Route
-          path="/forum/:forumId/:threadId"
-          render={() => <ForumThread globalLoading={loading} user={user} />}
-        />
 
         <Route
           path="/earn-battery"
@@ -183,11 +206,7 @@ const App = () => {
             />
           )}
         />
-        <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
-        <Route
-          path="/forum"
-          render={() => <ForumOverview globalLoading={loading} user={user} />}
-        />
+
         <Route
           path="/hack-crimes"
           render={() => <HackCrimes updateGlobalValues={updateGlobalValues} />}
@@ -293,3 +312,18 @@ const App = () => {
 };
 
 export default App;
+
+
+
+   
+{
+  /* <Route
+          path="/forum"
+          render={() => <ForumOverview globalLoading={loading} user={user} />}
+        />
+        <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
+        <Route
+          path="/forum/:forumId/:threadId"
+          render={() => <ForumThread globalLoading={loading} user={user} />}
+        /> */
+}

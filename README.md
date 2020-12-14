@@ -43,5 +43,5 @@ Created with 💙 by [Tor](https://github.com/Ojself) in his free time. Don't be
 # Backers
 
 - 🥉 [HaakonA](https://github.com/HaakonA)
-- 🥈 [yen-tth](https://github.com/yen-tth)
+- 🥉 [yen-tth](https://github.com/yen-tth)
 - 🥉 [haakondf](https://github.com/haakondf)

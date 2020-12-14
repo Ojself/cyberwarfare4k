@@ -54,11 +54,10 @@ const pettyCrime = async (user, batteryCost) => {
   }
   /* Checking for success */
   if (probabiltiy > decider) {
-    /* Success */
     pettyResult.won = true;
     pettyResult.bitCoins = pettyWinBitcoins(user.playerStats.rank);
     pettyResult.exp = pettyWinExp(user.playerStats.rank);
-    if (probabiltiy > (decider + 0.50)) {
+    if (probabiltiy > (decider + (user.playerStats.rank / 13))) {
       pettyResult.stashGained = stashDropChance(user, crimeSkillsSum);
       pettyResult.skillGained = skillDropChance(user);
       pettyResult.legendaryGained = legendaryDropChance(user);

@@ -8,11 +8,11 @@ const Footer = () => {
       className="w-100 dark-light mt-5"
     >
       <div className="text-center py-3">
-        <p className="text-danger" style={{ fontSize: "1.25rem" }}>
+        {/* <p className="text-danger" style={{ fontSize: "0.75rem" }}>
           Warning: The server and database will be reset{" "}
-          <strong>14. December 19:05 CET </strong>
-        </p>
-        {/* © {currentYear} Copyright */}
+          <strong>14. December 19:00 CET </strong>
+        </p> */}
+        © {currentYear} Copyright
         <div className="py-2">
           <a
             target="_blank"
@@ -21,7 +21,14 @@ const Footer = () => {
           >
             CyberhackerWarfare4000
           </a>{" "}
-          0.1.0
+          <a
+            className="text-light"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/Ojself/cyberwarfare4k/blob/master/changelog.md"
+          >
+            0.1.0
+          </a>{" "}
         </div>
       </div>
     </footer>
@@ -29,4 +36,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
 

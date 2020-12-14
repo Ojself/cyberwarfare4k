@@ -164,13 +164,15 @@ const WantedList = ({ updateGlobalValues }) => {
               </Link>
             </th>
             <td>
-              {user.alliance && (
+              {user.alliance ? (
                 <Link
                   className="text-light"
                   to={`/alliance/${user.alliance._id}`}
                 >
                   {user.alliance.name}
                 </Link>
+              ) : (
+                <p> - </p>
               )}
             </td>
             <td>{user.playerStats.rankName}</td>
@@ -185,9 +187,11 @@ const WantedList = ({ updateGlobalValues }) => {
                 <PopoverBody>
                   {user.playerStats.bountyDonors.map((d, j) => (
                     /* needs styling so it's an actual list */
-                    <Link key={j} to={`/hacker/${d._id}`}>
-                      {d.name}
-                    </Link>
+                    <ul className="pl-0 my-1">
+                      <Link key={j} to={`/hacker/${d._id}`}>
+                        {d.name}
+                      </Link>
+                    </ul>
                   ))}
                 </PopoverBody>
               </UncontrolledPopover>

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import api from "../../../api";
 
 import {
-  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
@@ -13,29 +12,15 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   UncontrolledDropdown,
 } from "reactstrap";
 
 const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   const [toolOpen, setToolOpen] = useState(false);
-
-  const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal);
-
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
-  const handleLogoutClick = (e) => {
+  const handleLogoutClick = () => {
     api.logout();
-  };
-
-  const leaveAlliance = async () => {
-    const data = await api.leaveAlliance();
-    setModal(!modal);
-    updateGlobalValues(data);
   };
 
   const checkAllCommunication = () => {
@@ -60,7 +45,9 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   return (
     <div>
       <Navbar color="dark" expand="md">
-        <NavbarBrand href="/">CHW4K</NavbarBrand>
+        <NavbarBrand href="/">
+          <strong className="text-success">CHW4K</strong>
+        </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse navbar>
           <Nav className="ml-auto" navbar>
@@ -71,9 +58,6 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
               <DropdownMenu>
                 <DropdownItem href="/my-profile">My Profile</DropdownItem>
                 <DropdownItem href="/ladder">Top Hackers</DropdownItem>
-                <DropdownItem href="/alliance/ladder">
-                  Top Alliances
-                </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
                 <DropdownItem href="/earn-battery">
                   Earn Battery{" "}
@@ -81,7 +65,10 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                     &#9889;
                   </span>
                 </DropdownItem>
-                <DropdownItem href="/information">Information</DropdownItem>
+                <DropdownItem href="/information">
+                  Information & FAQ
+                </DropdownItem>
+                <DropdownItem href="/hall-of-fame">Hall Of Fame</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -93,32 +80,39 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 <DropdownItem href="/hack-crimes">Crime</DropdownItem>
                 <DropdownItem disabled>Organized Crime</DropdownItem>
                 <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                <DropdownItem href="/locals">
-                  Hack player
-                </DropdownItem>
+                <DropdownItem href="/locals">Hack player</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Alliance
               </DropdownToggle>
-              {user && user.alliance ? (
-                <DropdownMenu>
-                  <DropdownItem href={`/alliance/${user.alliance._id}`}>
-                    Overview
-                  </DropdownItem>
-                  <DropdownItem href={`/alliance/dashboard`}>
-                    Dashboard
-                  </DropdownItem>
-                  <DropdownItem onClick={toggleModal}>
-                    Leave Alliance
-                  </DropdownItem>
-                </DropdownMenu>
-              ) : (
-                <DropdownMenu id="allianceCreateNav">
-                  <DropdownItem href="/alliance/create">Create..</DropdownItem>
-                </DropdownMenu>
-              )}
+              <DropdownMenu>
+                <DropdownItem href="/alliance/ladder">
+                  Top Alliances
+                </DropdownItem>
+                {user && user.alliance ? (
+                  <>
+                    <DropdownItem href={`/alliance/${user.alliance._id}`}>
+                      Hierarchy
+                    </DropdownItem>
+                    <DropdownItem
+                      href={`/alliance/${user.alliance._id}/beta-forum`}
+                    >
+                      Forum
+                    </DropdownItem>
+                    <DropdownItem href={`/alliance/dashboard`}>
+                      Dashboard
+                    </DropdownItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownItem href="/alliance/create">
+                      Create..
+                    </DropdownItem>
+                  </>
+                )}
+              </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
@@ -132,7 +126,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                   Crypto Currency
                 </DropdownItem>
                 <DropdownItem href="/marketplace">Marketplace</DropdownItem>
-                <DropdownItem href="/chipchopshop">Chip Chop Shop</DropdownItem>
+                <DropdownItem href="/fence">Fence</DropdownItem>
                 <DropdownItem href="/ledger">Ledger</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -145,13 +139,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 Communication
               </DropdownToggle>
               <DropdownMenu>
-                {user && user.alliance && (
-                  <>
-                    <DropdownItem>Alliance Forum</DropdownItem>
-                    <DropdownItem divider />
-                  </>
-                )}
-                <DropdownItem href="/forum">Public Forum</DropdownItem>
+                <DropdownItem href="/beta-forum">Public Forum</DropdownItem>
                 <DropdownItem
                   className={userHasMail() ? "text-danger" : null}
                   href="/messages"
@@ -175,22 +163,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
           </Nav>
         </Collapse>
       </Navbar>
-      <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Leave Alliance</ModalHeader>
-        <ModalBody>
-          You are about to leave your alliance, you can not get back unless you
-          are invited. Are you sure?
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={leaveAlliance}>
-            Leave Alliance
-          </Button>{" "}
-          <Button color="secondary" onClick={toggleModal}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
     </div>
   );
 };
-export default NavbarComp;
+export default NavbarComp;      

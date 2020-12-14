@@ -63,6 +63,7 @@ const Signup = (props) => {
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
+          disabled={true}
           className="w-100 mb-4"
           type="email"
           value={signupState.email}
@@ -72,7 +73,7 @@ const Signup = (props) => {
 
         <p className="mb-0">Password</p>
         <input
-          /* disabled={true} */
+          disabled={true}
           className="w-100"
           type="password"
           value={signupState.password}
@@ -81,10 +82,10 @@ const Signup = (props) => {
         />
 
         <Button
+          disabled={true}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
-          disabled={true}
         >
           Sign up
         </Button>

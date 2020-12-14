@@ -25,7 +25,7 @@ const userSchema = new Schema(
       confirmationCode: String,
       subscription: {
         type: String,
-        enum: ['', 'Bronze', 'Silver', 'Gold'],
+        enum: ['', 'Bronze', 'Silver', 'Gold', 'Platinum'],
       },
       isSetup: {
         type: Boolean,
@@ -68,10 +68,10 @@ const userSchema = new Schema(
         type: Number,
         default: 2,
       },
-      Encryption: {
+      /* Encryption: {
         type: Number,
         default: 1,
-      },
+      }, */
     },
     crimeSkill: {
       Technical: {
@@ -104,9 +104,9 @@ const userSchema = new Schema(
     // Player stats
     playerStats: {
       city: { type: Schema.Types.ObjectId, ref: 'City' },
-      repairCost: { type: Number, default: 50000 },
+      repairCost: { type: Number, default: 100000 },
       bodyguards: {
-        alive: { type: Number, default: 0 },
+        alive: { type: [Number], default: [] },
         bought: { type: Number, default: 0 },
         price: { type: Number, default: 100000 },
       },
@@ -124,7 +124,7 @@ const userSchema = new Schema(
       },
       battery: {
         type: Number,
-        default: 100,
+        default: 125,
       },
 
       bitCoins: {
@@ -229,6 +229,7 @@ const userSchema = new Schema(
       attacksInitiated: { type: Number, default: 0 },
       attacksVictim: { type: Number, default: 0 },
       crimesInitiated: { type: Number, default: 0 },
+      pettyCrimesInitiated: { type: Number, default: 0 },
       vpnChanges: { type: Number, default: 0 },
       currencyPurchases: { type: Number, default: 0 },
     },
@@ -236,14 +237,8 @@ const userSchema = new Schema(
     earnBattery: {
       githubUserName: { type: String, default: '' },
       githubStar: { type: Boolean, default: false },
-      megarpg: {
-        code: { type: String, default: '' },
-        expires: { type: Date, default: Date.now() },
-      },
-      chessathor: {
-        code: { type: String, default: '' },
-        expires: { type: Date, default: Date.now() },
-      },
+      megarpg: { type: String },
+      chessathor: { type: String },
     },
   },
   {
@@ -258,7 +253,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   const currentItem = this.marketPlaceItems[item.type];
   // lower the stats so items doesn't stack
   if (currentItem) {
-    if (['CPU', 'AntiVirus', 'Encryption'].includes(currentItem.type)) {
+    if (['CPU', 'AntiVirus'].includes(currentItem.type)) { // 'Encryption'
       this.giveHackSkill(-currentItem.bonus, item.type);
     }
     if (currentItem.type === 'Firewall') {
@@ -270,7 +265,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   // gives the user the item
   this.marketPlaceItems[item.type] = item;
 
-  if (['CPU', 'AntiVirus', 'Encryption'].includes(item.type)) {
+  if (['CPU', 'AntiVirus'].includes(item.type)) { // 'Encryption'
     this.giveHackSkill(item.bonus, item.type);
   }
   if (item.type === 'Firewall') {
@@ -354,6 +349,7 @@ userSchema.methods.withdrawLedger = function (bitCoins) {
 userSchema.methods.handlePettyCrime = async function (result) {
   this.batteryDrain(result.battery);
   this.bitCoinGain(result.bitCoins);
+  this.fightInformation.pettyCrimesInitiated += 1;
   this.playerStats.exp += result.exp;
 
   if (result.stashGained) {
@@ -361,9 +357,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
     this.stash[stashName] += 1;
   }
   if (result.skillGained) {
-    console.log(result.skillGained, 'result.skillGained');
     const { skillGained } = result;
-    console.log(skillGained, 'skillGained');
     if (['Encryption', 'CPU', 'AntiVirus'].includes(skillGained)) {
       this.giveHackSkill(1, skillGained);
     }
@@ -451,7 +445,7 @@ userSchema.methods.setRank = async function (rank = undefined) {
 
 userSchema.methods.handleFraud = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
-  this.playerStats.attacksInitiated += 1;
+  this.fightInformation.attacksInitiated += 1;
   this.bitCoinGain(result.playerGains.bitCoinStolen);
 };
 
@@ -471,18 +465,24 @@ userSchema.methods.handleAttack = function (result) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
       }
     });
-    this.playerStats.shutdowns += 1;
+    this.fightInformation.shutdowns += 1;
   }
   this.fightInformation.attacksInitiated += 1;
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
-  const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardKilled ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
+  if (result.bodyGuardAttacked) {
+    const fullHealthBg = this.playerStats.bodyguards.find((bg) => bg >= 50);
+    this.playerStats.bodyguards[this.playerStats.bodyguards.indexOf(fullHealthBg)] -= 50;
+  }
   if (result.bodyguardKilled) {
-    this.playerStats.bodyguards.alive -= 1;
-  } else {
+    const lowHealthBg = this.playerStats.bodyguards.find((bg) => bg < 50);
+    this.playerStats.bodyguards.splice(this.playerStats.bodyguards.indexOf(lowHealthBg));
+  }
+  if (!result.bodyGuardAttacked && !result.bodyguardKilled) {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
   this.fightInformation.attacksVictim += 1;
@@ -507,22 +507,24 @@ userSchema.methods.readNotifications = function () {
 
 userSchema.methods.repair = function (percentage, cost) {
   this.bitCoinDrain(cost);
+  const multiplier = (this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall;
+
   this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
   if (this.playerStats.currentFirewall > this.playerStats.maxFirewall) {
     this.playerStats.currentFirewall = this.playerStats.maxFirewall;
   }
-  const multiplier = percentage === 100 ? 1.35 : 1.07;
   this.playerStats.repairCost = Math.round(this.playerStats.repairCost * multiplier);
 };
 
 userSchema.methods.buyBodyguard = function () {
   const cost = this.playerStats.bodyguards.price;
   this.bitCoinDrain(cost);
-  this.playerStats.bodyguards.alive += 1;
+  this.playerStats.bodyguards.alive.push(100);
   this.playerStats.bodyguards.bought += 1;
-  if (this.playerStats.bodyguards.bought > 5) {
-    this.playerStats.bodyguards.price *= 1.5;
+  if (this.playerStats.bodyguards.bought > 3) {
+    const newPriceInPercentage = (this.playerStats.rank + 1) / 20;
+    this.playerStats.bodyguards.price *= (1 + newPriceInPercentage);
   }
 };
 
@@ -570,8 +572,8 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
   this.playerStats.statPoints -= 1;
   switch (statName) {
     case 'Firewall':
-      this.playerStats.maxFirewall += 15;
-      this.playerStats.currentFirewall += 15;
+      this.playerStats.maxFirewall += 10;
+      this.playerStats.currentFirewall += 10;
       break;
     case 'CPU':
       this.giveHackSkill(5, 'CPU');
@@ -579,9 +581,9 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
     case 'AntiVirus':
       this.giveHackSkill(5, 'AntiVirus');
       break;
-    case 'Encryption':
+    /* case 'Encryption':
       this.giveHackSkill(5, 'Encryption');
-      break;
+      break; */
     case 'Technical':
       this.giveCrimeSkill(5, 'Technical');
       break;
@@ -595,7 +597,7 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.giveCrimeSkill(5, 'Cryptography');
       break;
     case 'exp':
-      this.playerStats.exp += this.playerStats.expToLevel * 0.08;
+      this.playerStats.exp += this.playerStats.expToLevel * 0.075;
       break;
     default:
       // gives back statpoints if something went wrong
@@ -628,7 +630,7 @@ userSchema.methods.die = async function () {
   this.hackSkill = {
     CPU: 0,
     AntiVirus: 0,
-    Encryption: 0,
+    // Encryption: 0,
   };
 
   this.crimeSkill = {
@@ -673,6 +675,7 @@ userSchema.methods.die = async function () {
     CPU: null,
     Firewall: null,
     AntiVirus: null,
+    //
     Encryption: null,
   };
 

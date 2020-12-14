@@ -144,9 +144,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
   return (
     <div className="page-container">
       <div className="d-flex flex-row justify-content-center">
-        {/* <div className="col-4"></div> */}
         <h1>Currency</h1>
-        {/* <div className="col-4">{priceOverview()}</div> */}
       </div>
       {cryptoState.loading ? (
         <p>loading...</p>
@@ -155,11 +153,10 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
           <Table className="content" dark striped>
             <thead>
               <tr>
-                <th>Symbol{/* todo add icon */}</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Market cap</th>
-                <th>Change 12h</th>
+                <th>Change last hour</th>
                 <th>Available</th>
                 <th>You have</th>
                 <th>Last purchased by:</th>
@@ -167,90 +164,87 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
               </tr>
             </thead>
             <tbody>
-              {cryptoState.currencies.map((cu, i) => (
-                <tr key={i}>
-                  <th scope="row">{cu.initials}</th>
-                  <td>{cu.name}</td>
-                  <td>{cu.price}</td>
-                  <td>{KFormatter(cu.marketCap)}</td>
-                  <td
-                    style={
-                      ((cu.historyPrice[cu.historyPrice.length - 1] -
-                        cu.historyPrice[0]) /
-                        cu.historyPrice[0]) *
-                        100 >
-                      0
-                        ? { color: "#00b909" }
-                        : { color: "#c60606" }
-                    }
-                  >
-                    {(
-                      ((cu.historyPrice[cu.historyPrice.length - 1] -
-                        cu.historyPrice[0]) /
-                        cu.historyPrice[0]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </td>
-                  {/* TODO icon  */}
-                  <td>{KFormatter(Math.floor(cu.available))}</td>
-                  <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
-                  {cu.lastPurchasedBy[0] ? (
-                    <td>
-                      <Link
-                        className="text-white"
-                        to={`hacker/${cu.lastPurchasedBy[0]._id}`}
-                      >
-                        {cu.lastPurchasedBy[0].name}
-                      </Link>
+              {cryptoState.currencies.map((cu, i) => {
+              const prevPrice = cu.historyPrice[cu.historyPrice.length-2];
+              console.log(prevPrice, "prevPrice");
+              const changeFromLastHour = (cu.price - prevPrice) / prevPrice * 100
+              console.log(changeFromLastHour, "changeFromLastHour");
+                return (
+                  <tr key={i}>
+                    <th title={cu.initials} scope="row">
+                      {cu.name}
+                    </th>
+                    <td>{cu.price}</td>
+                    <td>{KFormatter(cu.marketCap)}</td>
+                    <td
+                      style={
+                        changeFromLastHour > 0
+                          ? { color: "#00b909" }
+                          : { color: "#c60606" }
+                      }
+                    >
+                      {changeFromLastHour.toFixed(2)}%
                     </td>
-                  ) : (
-                    <td> none </td>
-                  )}
-                  <td>
-                    <InputGroup id={`disableTip${i}`}>
-                      <Input
-                        step={10}
-                        min={0}
-                        type="number"
-                        name={cu.name}
-                        value={cryptoState[cu.name]}
-                        onChange={handleInputChange}
-                        disabled={
-                          globalLoading || cu.levelReq >= user.playerStats.rank
-                        }
-                      />
-
-                      <InputGroupAddon addonType="append">
-                        <Button
+                    {/* TODO icon  */}
+                    <td>{KFormatter(Math.floor(cu.available))}</td>
+                    <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
+                    {cu.lastPurchasedBy ? (
+                      <td>
+                        <Link
+                          className="text-white"
+                          to={`hacker/${cu.lastPurchasedBy._id}`}
+                        >
+                          {cu.lastPurchasedBy.name}
+                        </Link>
+                      </td>
+                    ) : (
+                      <td> - </td>
+                    )}
+                    <td>
+                      <InputGroup id={`disableTip${i}`}>
+                        <Input
+                          step={10}
+                          min={0}
+                          type="number"
                           name={cu.name}
-                          onClick={(e) => handleBuy(e)}
+                          value={cryptoState[cu.name]}
+                          onChange={handleInputChange}
                           disabled={
                             globalLoading ||
                             cu.levelReq >= user.playerStats.rank
                           }
-                        >
-                          BUY
-                        </Button>
-                      </InputGroupAddon>
-                      {globalLoading ||
-                        (cu.levelReq >= user.playerStats.rank && (
-                          <UncontrolledTooltip
-                            placement="top"
-                            target={`disableTip${i}`}
+                        />
+
+                        <InputGroupAddon addonType="append">
+                          <Button
+                            name={cu.name}
+                            onClick={(e) => handleBuy(e)}
+                            disabled={
+                              globalLoading ||
+                              cu.levelReq >= user.playerStats.rank
+                            }
                           >
-                            You're too unexperineced too buy this currency
-                          </UncontrolledTooltip>
-                        ))}
-                      <InputGroupAddon addonType="append">
-                        <Button name={cu.name} onClick={(e) => handleSell(e)}>
-                          SELL
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </td>
-                </tr>
-              ))}
+                            BUY
+                          </Button>
+                        </InputGroupAddon>
+                        {globalLoading ||
+                          (cu.levelReq >= user.playerStats.rank && (
+                            <UncontrolledTooltip
+                              placement="top"
+                              target={`disableTip${i}`}
+                            >
+                              You're too unexperineced too buy this currency
+                            </UncontrolledTooltip>
+                          ))}
+                        <InputGroupAddon addonType="append">
+                          <Button name={cu.name} onClick={(e) => handleSell(e)}>
+                            SELL
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </td>
+                  </tr>
+                );})}
             </tbody>
           </Table>
 

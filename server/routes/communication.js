@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
   const sent = await Message.find({ from: userId })
     .populate('to', 'name')
     .sort({ createdAt: -1 });
-  const jsonMessage = `${sent.length ? sent.length : 0} messages loaded..`;
+  const jsonMessage = `${sent.length ? sent.length : 0} messages loaded...`;
   return res.status(200).json({
     success: true,
     message: jsonMessage,
@@ -103,7 +103,7 @@ router.post('/', async (req, res) => {
   }
   return res.status(200).json({
     success: true,
-    message: 'message sent ..',
+    message: 'message sent ...',
   });
 });
 

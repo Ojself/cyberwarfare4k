@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
 
+import FAQ from "./FAQ"
+
 const Information = () => {
   const [infoOpen, setInfoOpen] = useState(false);
   const [hackOpen, setHackOpen] = useState(false);
@@ -13,7 +15,7 @@ const Information = () => {
   const infoSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setInfoOpen(!infoOpen)}
         style={{ marginBottom: "1rem" }}
@@ -72,7 +74,7 @@ const Information = () => {
   const communicationSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setCommunicationOpen(!communicationOpen)}
         style={{ marginBottom: "1rem" }}
@@ -107,7 +109,7 @@ const Information = () => {
   const allianceSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setAllianceOpen(!allianceOpen)}
         style={{ marginBottom: "1rem" }}
@@ -128,7 +130,7 @@ const Information = () => {
   const citySection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setCityOpen(!cityOpen)}
         style={{ marginBottom: "1rem" }}
@@ -179,8 +181,8 @@ const Information = () => {
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Chip Chop Shop</CardTitle>
-            Work in progress
+            <CardTitle tag="h3">Fence</CardTitle>
+            Sell or buy your loot here. Prices varies from each city and each hour!
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -198,7 +200,7 @@ const Information = () => {
   const hackSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setHackOpen(!hackOpen)}
         style={{ marginBottom: "1rem" }}
@@ -230,13 +232,13 @@ const Information = () => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Organized Crimes</CardTitle>
-            Work In Progress
+            Work in progress..
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Hack players</CardTitle>
-            Work In Progress, try attacking players through their profile
+            Takes you to the local hackers in your city. You can commit attacks on their profile
           </CardBody>
         </Card>
       </Collapse>
@@ -244,9 +246,16 @@ const Information = () => {
   );
 
   return (
-    <div className="page-container">
-      <h1>INFORMATION</h1>
-      <div className="content">
+    <div className="page-container d-flex justify-content-center">
+      <div className="w-75">
+        <h6>
+          Current Round: <strong>2</strong>
+        </h6>
+        <h6>
+          Round ends: <strong>TBA</strong>
+        </h6>
+        <FAQ />
+        <h1>SITE MAP</h1>
         {infoSection}
         {hackSection}
         {allianceSection}
@@ -257,137 +266,6 @@ const Information = () => {
   );
 };
 
-/* return (
-    <div>
-      <h1>INFORMATION</h1>
 
-      <div>
-        <p>
-          <strong>HOME</strong>: Here you can find a general overview about your
-          player stats etc.
-        </p>
-
-        <strong>STATS:</strong>
-
-        <p>
-          <span>FIREWALL</span>: Indicates your HP. If it reaches zero it will
-          result in your death and a penalty will follow.
-        </p>
-
-        <p>
-          <span>BATTERY</span>: Indicates your stamina. Battery of your computer
-          will decrease as you perform actions. It will recharge 10%
-          automatically every 20 minutes or by sending us a donation.
-        </p>
-
-        <p>
-          <span>CPU</span>: Indicates your strength. The better your CPU-stat,
-          the better you will perform in Crimes and hacking other players.
-        </p>
-
-        <p>
-          <span>ANTIVIRUS SYSTEM (AVS)</span>: Indicates your defense. A good
-          Firewall-stat will help you defend against enemy hackers.
-        </p>
-
-        <p>
-          <span>ENCRYPTION</span>: Indicates your dodge. Dodging will help you
-          to dodge and hitting enemy players or succeeding in Crime.
-        </p>
-
-        <p>
-          <span>EXP</span>: indicates your experience. The more Crimes and
-          Hacking you do, the more EXP you will get. For each milestone, you'll
-          get a new Rank.
-        </p>
-
-        <p>
-          <span>BITCOINS</span>: Indicates your wealth. You can use your
-          Bitcoins to purchase items in the Marketplace. You can gain or lose
-          them by hacking others.
-        </p>
-
-        <p>
-          <span>CRIME SKILL</span>: Indicates your PvE skill. The higher the
-          skill, the higher the chance of success in Crimes
-        </p>
-
-        <p>
-          <strong>RANK</strong>: Indicates your level of experience as a hacker.
-          This symbolize status more than anything else.
-        </p>
-
-        <p>
-          <strong>CRIMES</strong>: Here you can conduct various kinds of crimes.
-          If you succeed in your crime, you'll be granted some Bitcoins and EXP
-          for the effort. The easiest ones are on top and the most difficult are
-          at the bottom.
-        </p>
-
-        <p>
-          <strong>HACK PLAYER</strong>: Here you can attack other players by
-          hacking them. Every stat, except Crime Skill, will affect the outcome
-          of the attack. If you succeed, you'll steal some of the opponents
-          bitcoins, as well as lowering his Firewall. Regardless of the outcome,
-          your battery will lower.
-        </p>
-
-        <p>
-          <strong>EVENTS</strong>: Shows you the latest events that has happend
-          to your character.
-        </p>
-
-        <p>
-          <strong>WANTED LIST</strong>: In the Wanted List you can add bounty on
-          other players head, as well as being able to see which player already
-          having a bounty on his head. You can collect this by hacking them
-          until their Firewall is 0.
-        </p>
-
-        <p>
-          <strong>FORUM, GROUPKILL AND HIDEOUT</strong> are not deployed yet.
-        </p>
-
-        <p>
-          <strong>MARKETPLACE</strong>: You can boost your character by buying
-          new equipment for your computer. You can only hold one item from each
-          group: CPU, AntiVirus, Firewall, Encryption.
-        </p>
-
-        <p>
-          <strong>SERVICE</strong>: The service shop allows you to fix up your
-          computer for a relatively small fee. Choose between a quick fix or a
-          full service.
-        </p>
-
-        <p>
-          <strong>LADDER</strong>: The ladder offers a overview of the other
-          players in the game. The best ones are usually on top.
-        </p>
-
-        <p>
-          <strong>INFORMATION</strong>: You're here right now
-        </p>
-
-        <p>
-          <strong>ARCADE</strong>: Enjoy yourself with some top-of-the-class
-          games
-        </p>
-
-        <p>
-          <strong>LOGOUT</strong>: No worries, it won't wipe your harddrive..
-        </p>
-      </div>
-
-      <p>
-        This game was made by three norgies that was seeking the nostaliga of
-        text-based mmorpg.
-      </p>
-
-      <p>
-        Thanks to Lukas, Vivian and Noellia for making the project come true.
-      </p>
-    </div>
-  ); */
 
 export default Information;

@@ -3,13 +3,12 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Alliance = require('../models/Alliance');
+const Message = require('../models/Message');
 const {
   checkCreateAllianceCriteria,
-  findAllianceStats,
+  findAllianceStats, inviteSendCriteria, answerCriterias,
 } = require('../middlewares/middleAlliance');
-const { saveAndUpdateUser } = require('./helper');
-
-// TODO SEEDS ARE NOT WORKING. alliances do not have members in it
+const { saveAndUpdateUser, getInbox } = require('./helper');
 
 // @GET
 // PRIVATE
@@ -19,8 +18,44 @@ router.get('/', async (req, res) => {
   const alliances = await Alliance.find();
   res.status(200).json({
     success: true,
-    message: 'Alliances loaded..',
+    message: 'Alliances loaded...',
     alliances,
+  });
+});
+
+// @GET
+// PRIVATE
+// Retrives dashboard information
+
+router.get('/dashboard', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const populateValues = [
+    'name',
+  ];
+  const alliance = await Alliance.findById(user.alliance)
+    .populate('boss', populateValues)
+    .populate('cto', populateValues)
+    .populate('analyst', populateValues)
+    .populate('firstLead', populateValues)
+    .populate('secondLead', populateValues)
+    .populate('firstMonkeys', populateValues)
+    .populate('secondMonkeys', populateValues)
+    .populate('invitedMembers', populateValues)
+    .populate('organizePermission', populateValues)
+    .populate('forumModeratorPermission', populateValues);
+
+  const users = await User.find({ 'account.isSetup': true })
+    .select({ name: 1, alliance: 1 })
+    .sort({ name: 1 });
+
+  res.status(200).json({
+    success: true,
+    message: 'Dashboard loaded...',
+    alliance,
+    users,
+
   });
 });
 
@@ -45,10 +80,10 @@ router.get('/ladder', async (req, res) => {
     .populate('secondLead', populateValues)
     .populate('firstMonkeys', populateValues)
     .populate('secondMonkeys', populateValues);
-  const totStats = findAllianceStats(alliances);
+  const totStats = await findAllianceStats(alliances);
   res.status(200).json({
     success: true,
-    message: 'alliances ladder loaded..',
+    message: 'alliances ladder loaded...',
     totStats,
   });
 });
@@ -84,12 +119,27 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.post('/invite', async (req, res) => {
-  // const userId = req.user._id;
-  // const user = await User.findById(userId);
+router.post('/invitation', async (req, res) => {
+  const userId = req.user._id;
+  const { id } = req.body;
 
-  const { invitedPlayer } = req.body;
-  const player = await User.findById(invitedPlayer);
+  const user = await User.findById(userId);
+  const alliance = await Alliance.findById(user.alliance);
+  const invitedUser = await User.findById(id);
+
+  const disallowed = inviteSendCriteria(user, alliance, invitedUser);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  const now = new Date(Date.now()).toString().slice(0, 21);
+  alliance.inviteMember(now, invitedUser);
+  await alliance.save();
+
   // const allianceName = user.alliance;
 
   //  const invitationText = `<p>${user.name} has invited you to join
@@ -98,35 +148,54 @@ router.post('/invite', async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: `invitation sent to ${player.name}`,
+    message: `invitation sent to ${invitedUser.name}`,
+    invitedUser,
   });
 });
 
-// router.delete('/unInvite', async (req, res) => {
-//   const userId = req.user._id;
-//   const { invitedPlayer } = req.body;
+// invited player declines or accepts invitation
+router.patch('/invitation', async (req, res) => {
+  const userId = req.user._id;
+  const { id, answer } = req.body;
 
-//   const user = await User.findById(userId);
+  const user = await User.findById(userId);
+  const alliance = await Alliance.findById(id);
+  let message;
 
-//   /* if you are not boss, consig ub, or cpt */
-// })
+  const disallowed = answerCriterias(user, alliance);
 
-// router.get('/invitation/:allianceName', async (req, res) => {
-// const userId = req.user._id;
-// const { allianceName } = req.params;
-//
-// const user = await User.findById(userId);
-// });
-//
-// router.delete('/invitation/:allianceName', async (req, res) => {
-// const userId = req.user._id;
-// const { allianceName } = req.params;
-//
-// const user = await User.findById(userId);
-// });
-//
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
 
-//
+  // accepts
+  if (answer) {
+    const role = Math.random() > 0.5 ? 'firstMonkeys' : 'secondMonkeys';
+    alliance.acceptInvitation(userId, role);
+    user.alliance = id;
+    user.allianceRole = role;
+    message = `You have joined ${alliance.name} alliance`;
+  } else {
+    alliance.declineInvitation(userId);
+    message = `You declined ${alliance.name} alliance`;
+  }
+
+  await alliance.save();
+  await user.save();
+  await Message.deleteOne({ allianceInvitation: id, to: userId });
+  const inbox = await getInbox(userId);
+
+  res.status(200).json({
+    success: true,
+    message,
+    alliance,
+    inbox,
+  });
+});
+
 // router.post('/kick', async (req, res) => {
 // const userId = req.user._id;
 // const user = await User.findById(userId);
@@ -183,7 +252,7 @@ router.get('/:id', async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: 'Alliance loaded..',
+    message: 'Alliance loaded...',
     alliance,
   });
 });
@@ -201,7 +270,7 @@ router.patch('/leave', async (req, res) => {
   const updatedUser = await saveAndUpdateUser(user);
   res.status(200).json({
     success: true,
-    message: `You left ${alliance.name}..`,
+    message: `You left ${alliance.name}...`,
     user: updatedUser,
   });
 });

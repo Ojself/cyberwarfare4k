@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
+const Message = require('./Message');
 
 const { Schema } = mongoose;
 
@@ -86,35 +87,33 @@ allianceSchema.methods.abandonAlliance = function () {
   console.log('abandon');
 };
 
-allianceSchema.methods.inviteMember = function (playerId) {
-  // player.sendNotication
-
+allianceSchema.methods.inviteMember = function (now, playerId) {
+  const text = `You have been invited to join the alliance ${this.name}`;
+  const newMessage = new Message({
+    from: this.boss,
+    to: playerId,
+    dateSent: now,
+    read: false,
+    allianceInvitation: this._id,
+    text,
+  });
   this.invitedMembers.push(playerId);
-  this.save();
+  newMessage.save();
 };
 
-allianceSchema.methods.withdrawInvitation = function (playerId) {
+allianceSchema.methods.declineInvitation = function (playerId) {
   // player.sendNotication
   const playerIndex = this.invitedMembers.indexOf(playerId);
   this.invitedMembers.splice(playerIndex, 1);
-  this.save();
 };
 
-allianceSchema.methods.acceptInvitation = function (playerId) {
+allianceSchema.methods.acceptInvitation = function (playerId, role) {
   // player.sendNotication
 
   const invitedPlayerIndex = this.invitedMembers.indexOf(playerId);
   this.invitedMembers.splice(invitedPlayerIndex, 1);
 
-  // this.members.push(playerId);
-  const randomBool = Math.random() > 0.5;
-  if (randomBool) {
-    this.firstMonkeys.push(playerId);
-  } else {
-    this.secondMonkeys.push(playerId);
-  }
-
-  this.save();
+  this[role].push(playerId);
 };
 
 allianceSchema.methods.toggleOrganizePermission = function (playerId) {

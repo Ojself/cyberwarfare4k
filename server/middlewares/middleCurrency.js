@@ -26,7 +26,7 @@ const buyRouteCriterias = (user, currency, amount) => {
     return 'Insufficent funds';
   }
   if (checkCurrencyMarketCap(user, currency, amount)) {
-    return `You can't buy OR hold more than 25% of the marketshare of ${currency.name}`;
+    return `You can't buy OR hold more than 20% of the marketshare of ${currency.name}`;
   }
   if (!checkCurrencyAvailablitiy(currency, amount)) {
     return "You're can't buy more than what is available in the market";
@@ -47,7 +47,7 @@ const checkCurrencyAvailablitiy = (currency, amount) => currency.available >= am
 const checkCurrencyMarketCap = (user, currency, amount) => {
   // what the user already has in his wallet
   const userCoins = user.currencies[currency.name];
-  return 0.25 * currency.marketCap < parseInt(amount, 10) + parseInt(userCoins, 10);
+  return 0.20 * currency.marketCap < parseInt(amount, 10) + parseInt(userCoins, 10);
 };
 
 // checks if user has the amount of currencies he's trying to sell

@@ -52,7 +52,7 @@ const crimeSkillDropChance = (user) => {
 const hackSkillDropChance = (user) => {
   const hackSkills = [
     'CPU',
-    'Encryption',
+    // 'Encryption',
     'AntiVirus',
   ];
 

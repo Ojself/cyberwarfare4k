@@ -24,8 +24,8 @@ const buyBodyguardCriterias = (user, cost) => {
   if (!checkFunds(user.playerStats.bitCoins, cost)) {
     return 'Insufficient funds';
   }
-  if (user.playerStats.bodyguards.alive >= 5) {
-    return 'You can\'t hire more than 5 bodyguards';
+  if (user.playerStats.bodyguards.alive.length >= 3) {
+    return 'You can\'t hire more than 3 bodyguards';
   }
   return null;
 };

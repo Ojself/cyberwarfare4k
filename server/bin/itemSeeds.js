@@ -52,35 +52,35 @@ const items = [
     name: 'A lighter and a can of fuel',
     type: 'Firewall',
     price: 15000,
-    bonus: 3,
+    bonus: 10,
   },
 
   {
     name: 'Linksys VPN router',
     type: 'Firewall',
     price: 50000,
-    bonus: 10,
+    bonus: 20,
   },
 
   {
     name: 'Zyxel ZYWALL110',
     type: 'Firewall',
-    price: 120000,
-    bonus: 20,
+    price: 150000,
+    bonus: 30,
   },
 
   {
     name: 'Zyxel USG1100 UTM BDL',
     type: 'Firewall',
-    price: 300000,
-    bonus: 50,
+    price: 3000000,
+    bonus: 40,
   },
 
   {
     name: 'Fortinet Firewall Solution',
     type: 'Firewall',
-    price: 1000000,
-    bonus: 100,
+    price: 10000000,
+    bonus: 50,
   },
 
   /* ANTIVIRUS (AVS) */

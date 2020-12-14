@@ -82,7 +82,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
           alt="Bodyguard"
         />
         <p className="my-0">
-          Hire Bodyguard {user.playerStats.bodyguards.alive}/5
+          Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
         </p>
         <p>
           <span style={{ color: "#F08F18" }}>&#8383;</span>

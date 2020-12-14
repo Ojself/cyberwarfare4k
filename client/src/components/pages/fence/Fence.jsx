@@ -36,7 +36,7 @@ const objectIsEmpty = (obj) => {
   return Object.values(obj).every(val=> val === 0)
 }
 
-export const ChipChopShop = ({ globalLoading, user, updateGlobalValues }) => {
+export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const [shopStash, setShopStash] = useState([]);
   const [loading, setLoading] = useState(true);
   const [transactionState, setTransactionState] = useState({
@@ -237,7 +237,7 @@ export const ChipChopShop = ({ globalLoading, user, updateGlobalValues }) => {
   return (
     <div className="page-container">
       <h1>
-        <span className="text-warning">Chip Chop Shop</span> in {city}
+        <span className="text-warning">Fence</span> in {city}
       </h1>
       <div className="content d-flex justify-content-center">
         {tableOverview}
@@ -246,4 +246,4 @@ export const ChipChopShop = ({ globalLoading, user, updateGlobalValues }) => {
   );
 };
 
-export default ChipChopShop;
+export default Fence;

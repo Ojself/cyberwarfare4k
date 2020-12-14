@@ -75,13 +75,11 @@ router.post('/login', (req, res, next) => {
       // "userDoc" will be empty if the email is wrong (no document in database)
       if (!userDoc) {
         res.status(403).json('Password or email is wrong');
-        // next(new Error('Password or email is wrong'));
-        return;
+        next(new Error('Password or email is wrong'));
       }
       if (!bcrypt.compareSync(password, userDoc.account.password)) {
         res.status(403).json('Password or email is wrong');
-        // next(new Error('Password or email is wrong'));
-        return;
+        next(new Error('Password or email is wrong'));
       }
       req.logIn(userDoc, () => {
         userDoc.password = undefined;
