@@ -15,7 +15,7 @@ const Information = () => {
   const infoSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setInfoOpen(!infoOpen)}
         style={{ marginBottom: "1rem" }}
@@ -74,7 +74,7 @@ const Information = () => {
   const communicationSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setCommunicationOpen(!communicationOpen)}
         style={{ marginBottom: "1rem" }}
@@ -109,7 +109,7 @@ const Information = () => {
   const allianceSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setAllianceOpen(!allianceOpen)}
         style={{ marginBottom: "1rem" }}
@@ -130,7 +130,7 @@ const Information = () => {
   const citySection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setCityOpen(!cityOpen)}
         style={{ marginBottom: "1rem" }}
@@ -200,7 +200,7 @@ const Information = () => {
   const hackSection = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="primary"
         onClick={() => setHackOpen(!hackOpen)}
         style={{ marginBottom: "1rem" }}
@@ -248,6 +248,12 @@ const Information = () => {
   return (
     <div className="page-container d-flex justify-content-center">
       <div className="w-75">
+        <h6>
+          Current Round: <strong>2</strong>
+        </h6>
+        <h6>
+          Round ends: <strong>TBA</strong>
+        </h6>
         <FAQ />
         <h1>SITE MAP</h1>
         {infoSection}

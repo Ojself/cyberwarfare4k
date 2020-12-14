@@ -118,7 +118,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         }
       )}
       <div className="my-4"></div>
-      {["CPU", "AntiVirus", "Encryption"].map((h) => {
+      {["CPU", "AntiVirus"].map((h) => { // "Encryption" <--- Add to array to see stats.
         return (
           <ProgressBarHackSkill
             color="primary"

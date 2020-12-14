@@ -40,6 +40,7 @@ const MarketPlace = ({ user, updateGlobalValues }) => {
     <div className="d-flex justify-content-around row">
       {["CPU", "AntiVirus", "Encryption", "Firewall"].map((item) => (
         <Itemtable
+          disabled={item === "Encryption"}
           key={item}
           userItem={user.marketPlaceItems[item]}
           handlePurchase={handleMarketPlaceItemPurchase}

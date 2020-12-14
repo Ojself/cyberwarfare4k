@@ -11,7 +11,7 @@ const FAQ = () => {
   const statPoints = (
     <div>
       <Button
-        className="w-25"
+        className="w-50"
         color="success"
         onClick={() => setStatPointOpen(!statPointOpen)}
         style={{ marginBottom: "1rem" }}
@@ -60,12 +60,12 @@ const FAQ = () => {
 const moneyMakingSystem = (
   <div>
     <Button
-      className="w-25"
+      className="w-50"
       color="success"
       onClick={() => setMoneyOpen(!moneyOpen)}
       style={{ marginBottom: "1rem" }}
     >
-      How do I earn bitcoins (moeny)?
+      How do I earn bitcoins (money)?
     </Button>
     <Collapse isOpen={moneyOpen}>
       <Card className="mb-2">
@@ -117,7 +117,7 @@ const moneyMakingSystem = (
 const earnBatterySystem = (
   <div>
     <Button
-      className="w-25"
+      className="w-50"
       color="success"
       onClick={() => setBatteryOpen(!batteryOpen)}
       style={{ marginBottom: "1rem" }}
@@ -182,7 +182,7 @@ const earnBatterySystem = (
 const combatSystem = (
   <div>
     <Button
-      className="w-25"
+      className="w-50"
       color="success"
       onClick={() => setAttackOpen(!attackOpen)}
       style={{ marginBottom: "1rem" }}

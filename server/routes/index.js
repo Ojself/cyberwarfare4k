@@ -108,7 +108,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
       .populate('marketPlaceItems.CPU')
       .populate('marketPlaceItems.Firewall')
       .populate('marketPlaceItems.AntiVirus')
-      .populate('marketPlaceItems.Encryption')
+      // .populate('marketPlaceItems.Encryption')
       .populate('alliance', 'name')
       .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
     const messages = await getInbox(userId);
@@ -224,7 +224,7 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const { statPoint } = req.body;
-  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption', 'exp', 'Firewall'];
+  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'exp', 'Firewall']; // 'Encryption',
   if (!possibleStatPoints.includes(statPoint)) {
     return res.status(400).json({
       success: false,

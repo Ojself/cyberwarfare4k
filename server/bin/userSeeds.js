@@ -64,7 +64,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
-          Encryption: 15,
         },
         account: {
           password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
@@ -74,9 +73,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 100000,
-          maxFireWall: 150,
-          currentFirewall: 150,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 0,
           rankName: 'Script kiddie',
@@ -90,7 +88,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
-          Encryption: 15,
         },
         _id: '5fca3b4a86e77b5c8e58b67a',
         fightInformation: {
@@ -109,9 +106,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 100000,
-          maxFireWall: 150,
-          currentFirewall: 150,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 1,
           rankName: 'Family IT-Support',
@@ -125,7 +121,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
-          Encryption: 15,
         },
         _id: '5fca3b4a86e77b5c8e58b67b',
         fightInformation: {
@@ -144,9 +139,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 100000,
-          maxFireWall: 150,
-          currentFirewall: 150,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 2,
           rankName: 'Blog Writer',
@@ -160,7 +154,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
-          Encryption: 15,
         },
         _id: '5fca3b4a86e77b5c8e58b67c',
         fightInformation: {
@@ -179,9 +172,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 100000,
-          maxFireWall: 150,
-          currentFirewall: 150,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 3,
           rankName: "HTML 'programmer'",
@@ -195,7 +187,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
-          Encryption: 15,
         },
         _id: '5fca3b4a86e77b5c8e58b67d',
         fightInformation: {
@@ -214,9 +205,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 100000,
-          maxFireWall: 150,
-          currentFirewall: 150,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 4,
           rankName: 'Jr. Web Dev',
@@ -230,7 +220,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 75,
-          Encryption: 55,
         },
         _id: '5fca3b4a86e77b5c8e58b67e',
         fightInformation: {
@@ -249,9 +238,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 250000,
-          maxFireWall: 250,
-          currentFirewall: 250,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 5,
           rankName: 'Sr. Web Dev',
@@ -265,7 +253,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 75,
-          Encryption: 55,
         },
         _id: '5fca3b4a86e77b5c8e58b680',
         fightInformation: {
@@ -284,9 +271,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 250000,
-          maxFireWall: 250,
-          currentFirewall: 250,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 6,
           rankName: 'System Dev',
@@ -300,7 +286,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 160,
-          Encryption: 150,
         },
         _id: '5fca3b4a86e77b5c8e58b67f',
         fightInformation: {
@@ -319,9 +304,8 @@ User.deleteMany()
           isSetup: true,
         },
         playerStats: {
-          bounty: 500000,
-          maxFireWall: 500,
-          currentFirewall: 500,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 7,
           rankName: 'Cyber Security Dev',
@@ -335,7 +319,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 125,
-          Encryption: 100,
         },
         _id: '5fca3b4a86e77b5c8e58b681',
         fightInformation: {
@@ -355,8 +338,8 @@ User.deleteMany()
         },
         playerStats: {
           bounty: 800000,
-          maxFireWall: 800,
-          currentFirewall: 800,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 8,
           rankName: 'Basement Dweller',
@@ -370,7 +353,6 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 200,
-          Encryption: 200,
         },
         _id: '5fca3b4a86e77b5c8e58b682',
         fightInformation: {
@@ -390,8 +372,8 @@ User.deleteMany()
         },
         playerStats: {
           bounty: 1000000,
-          maxFireWall: 1000,
-          currentFirewall: 1000,
+          maxFireWall: 200,
+          currentFirewall: 200,
           city: randomCityId(),
           rank: 9,
           rankName: 'Anonymous',

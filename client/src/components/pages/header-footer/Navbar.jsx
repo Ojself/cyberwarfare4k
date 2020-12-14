@@ -58,9 +58,6 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
               <DropdownMenu>
                 <DropdownItem href="/my-profile">My Profile</DropdownItem>
                 <DropdownItem href="/ladder">Top Hackers</DropdownItem>
-                <DropdownItem href="/alliance/ladder">
-                  Top Alliances
-                </DropdownItem>
                 <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
                 <DropdownItem href="/earn-battery">
                   Earn Battery{" "}
@@ -68,7 +65,9 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                     &#9889;
                   </span>
                 </DropdownItem>
-                <DropdownItem href="/information">Information & FAQ</DropdownItem>
+                <DropdownItem href="/information">
+                  Information & FAQ
+                </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -87,23 +86,32 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
               <DropdownToggle nav caret>
                 Alliance
               </DropdownToggle>
-              {user && user.alliance ? (
-                <DropdownMenu>
-                  <DropdownItem href={`/alliance/${user.alliance._id}`}>
-                    Hierarchy
-                  </DropdownItem>
-                  <DropdownItem href={`/alliance/${user.alliance._id}/beta-forum`}>
-                    Forum
-                  </DropdownItem>
-                  <DropdownItem href={`/alliance/dashboard`}>
-                    Dashboard
-                  </DropdownItem>
-                </DropdownMenu>
-              ) : (
-                <DropdownMenu id="allianceCreateNav">
-                  <DropdownItem href="/alliance/create">Create..</DropdownItem>
-                </DropdownMenu>
-              )}
+              <DropdownMenu>
+                <DropdownItem href="/alliance/ladder">
+                  Top Alliances
+                </DropdownItem>
+                {user && user.alliance ? (
+                  <>
+                    <DropdownItem href={`/alliance/${user.alliance._id}`}>
+                      Hierarchy
+                    </DropdownItem>
+                    <DropdownItem
+                      href={`/alliance/${user.alliance._id}/beta-forum`}
+                    >
+                      Forum
+                    </DropdownItem>
+                    <DropdownItem href={`/alliance/dashboard`}>
+                      Dashboard
+                    </DropdownItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownItem href="/alliance/create">
+                      Create..
+                    </DropdownItem>
+                  </>
+                )}
+              </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

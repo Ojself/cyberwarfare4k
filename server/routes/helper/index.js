@@ -107,7 +107,7 @@ const saveAndUpdateUser = async (user) => {
     .populate('marketPlaceItems.CPU')
     .populate('marketPlaceItems.Firewall')
     .populate('marketPlaceItems.AntiVirus')
-    .populate('marketPlaceItems.Encryption')
+    // .populate('marketPlaceItems.Encryption')
     .execPopulate();
   return populatedUser;
 };

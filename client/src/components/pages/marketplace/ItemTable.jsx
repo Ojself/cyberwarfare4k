@@ -9,7 +9,7 @@ const itemColors = {
   AntiVirus: "secondary",
 };
 
-const ItemTable = ({ userItem, items, handlePurchase }) => {
+const ItemTable = ({ userItem, items, handlePurchase, disabled }) => {
   items.sort((a,b)=>a.price-b.price)
   const itemsTable = (
     <>
@@ -36,7 +36,7 @@ const ItemTable = ({ userItem, items, handlePurchase }) => {
                 <td>+{item.bonus}</td>
                 <td>
                   <Button
-                    disabled={userHasItem}
+                    disabled={userHasItem || disabled}
                     color={itemColors[item.type]}
                     name={item._id}
                     onClick={(e) => handlePurchase(e)}

@@ -68,10 +68,10 @@ const userSchema = new Schema(
         type: Number,
         default: 2,
       },
-      Encryption: {
+      /* Encryption: {
         type: Number,
         default: 1,
-      },
+      }, */
     },
     crimeSkill: {
       Technical: {
@@ -253,7 +253,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   const currentItem = this.marketPlaceItems[item.type];
   // lower the stats so items doesn't stack
   if (currentItem) {
-    if (['CPU', 'AntiVirus', 'Encryption'].includes(currentItem.type)) {
+    if (['CPU', 'AntiVirus'].includes(currentItem.type)) { // 'Encryption'
       this.giveHackSkill(-currentItem.bonus, item.type);
     }
     if (currentItem.type === 'Firewall') {
@@ -265,7 +265,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   // gives the user the item
   this.marketPlaceItems[item.type] = item;
 
-  if (['CPU', 'AntiVirus', 'Encryption'].includes(item.type)) {
+  if (['CPU', 'AntiVirus'].includes(item.type)) { // 'Encryption'
     this.giveHackSkill(item.bonus, item.type);
   }
   if (item.type === 'Firewall') {
@@ -523,7 +523,8 @@ userSchema.methods.buyBodyguard = function () {
   this.playerStats.bodyguards.alive.push(100);
   this.playerStats.bodyguards.bought += 1;
   if (this.playerStats.bodyguards.bought > 3) {
-    this.playerStats.bodyguards.price *= 1.5;
+    const newPriceInPercentage = (this.playerStats.rank + 1) / 20;
+    this.playerStats.bodyguards.price *= (1 + newPriceInPercentage);
   }
 };
 
@@ -580,9 +581,9 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
     case 'AntiVirus':
       this.giveHackSkill(5, 'AntiVirus');
       break;
-    case 'Encryption':
+    /* case 'Encryption':
       this.giveHackSkill(5, 'Encryption');
-      break;
+      break; */
     case 'Technical':
       this.giveCrimeSkill(5, 'Technical');
       break;
@@ -629,7 +630,7 @@ userSchema.methods.die = async function () {
   this.hackSkill = {
     CPU: 0,
     AntiVirus: 0,
-    Encryption: 0,
+    // Encryption: 0,
   };
 
   this.crimeSkill = {
@@ -674,7 +675,7 @@ userSchema.methods.die = async function () {
     CPU: null,
     Firewall: null,
     AntiVirus: null,
-    Encryption: null,
+    // Encryption: null,
   };
 
   this.stash = {

@@ -19,6 +19,7 @@ import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread"; 
 */
 import EarnBattery from "./pages/earnBattery/EarnBattery";
+import HallOfFame from "./pages/HallOfFame";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import Home from "./pages/home/Home";
@@ -120,6 +121,10 @@ const App = () => {
       )}
       <Switch>
         <Route path="/" exact component={Home} />
+        <Route 
+        path="/hall-of-fame" 
+        render ={()=> <HallOfFame />}
+        />
         <Route
           path="/alliance/create"
           render={(props) => (
