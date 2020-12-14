@@ -31,11 +31,11 @@ currency in total wealth
 
 - Navbar logo color change
 - Max bodyguards is 3
+- Hall of fame page
 - Price adjustments for stash
 - Statusbar now shows real firewall (HP) instead of calculating it to percentage
 - Minor price adjustments for crypto currency
 - Your alive bodyguards can be seen in profile page
 - Small ui changes to notification page
 - Small penalty for attacking lower level users (damage dealt gets lowered)
-- Spacing between notifications
 - This changelog
