@@ -75,7 +75,7 @@ router.post('/redeem', async (req, res) => {
     });
   }
   const formattedCode = new RegExp(code, 'i');
-  const user = await User.findOne({ $or: [{ 'earnBattery.megarpg.code': { $regex: formattedCode } }, { 'earnBattery.chessathor.code': { $regex: formattedCode } }] });
+  const user = await User.findOne({ $or: [{ 'earnBattery.megarpg': { $regex: formattedCode } }, { 'earnBattery.chessathor': { $regex: formattedCode } }] });
 
   if (!user) {
     res.status(403).json({
