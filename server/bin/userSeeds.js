@@ -51,9 +51,7 @@ const getAlliances = async () => {
   greyAlliance = await Alliance.findOne({ name: 'Grey' });
 };
 
-function randomCityId() {
-  return cityIds[Math.floor(Math.random() * cityIds.length)];
-}
+const randomCityId = () => cityIds[Math.floor(Math.random() * cityIds.length)];
 
 User.deleteMany()
   .then(() => getCities())
