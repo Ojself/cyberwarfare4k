@@ -8,7 +8,7 @@ const Footer = () => {
       className="w-100 dark-light mt-5"
     >
       <div className="text-center py-3">
-        <p className="text-danger" style={{ fontSize: "0.75rem" }}>
+        <p className="text-danger" style={{ fontSize: "1.25rem" }}>
           Warning: The server and database will be reset{" "}
           <strong>14. December 19:00 CET </strong>
         </p>
