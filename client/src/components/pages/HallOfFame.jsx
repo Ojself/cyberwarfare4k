@@ -19,7 +19,7 @@ const HallOfFame = () => {
               15507711
             </p>
             <p>
-              🥉<strong>Billy Gates III</strong>{" "}
+              🥉<strong>R3v3ng3</strong>{" "}
               <span style={{ color: "#F08F18" }}>&#8383;</span>
               11842806
             </p>
@@ -106,7 +106,7 @@ const HallOfFame = () => {
             <div className="w-50">
               <h5 className="text-warning">Best Newcomer 🚀</h5>
               <p>
-                <strong>1.</strong> Billy Gates III 
+                <strong>1.</strong> Billy Gates III
               </p>
               <p>
                 <strong>2.</strong> NGVY3N
