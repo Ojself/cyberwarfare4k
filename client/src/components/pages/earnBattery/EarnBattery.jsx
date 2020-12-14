@@ -83,25 +83,22 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     let disabled = false;
     let cursor = "pointer";
     let width = "100%"
-
+  
     const currentGame = user.earnBattery[game];
-    const readyToGenerateNewCode = new Date(currentGame.expires) < Date.now();
+    console.log(currentGame,'current?')
 
-    if (!currentGame.code && readyToGenerateNewCode) {
-      innerText = "Generate code";
-    } else if (!!currentGame.code) {
-      onclick = () => navigator.clipboard.writeText(currentGame.code);
+    
+    if (currentGame) {
+      onclick = () => navigator.clipboard.writeText(currentGame);
       cursor = "copy";
-      innerText = currentGame.code;
-    } else if (!readyToGenerateNewCode) {
+      innerText = currentGame;
+    } else {
       onclick = () => {};
       disabled = true;
       width = "85%"
       cursor = "default";
       innerText = "New code tomorrow";
-    } else {
-      innerText = "Generate code!";
-    }
+    } 
     return (
       <InputGroup>
         <Button

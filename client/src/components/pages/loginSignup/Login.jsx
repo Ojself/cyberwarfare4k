@@ -40,10 +40,16 @@ const Login = (props) => {
 
   return (
     <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
+      <p>
+        <strong>
+          Expected <span className="text-success">online</span> 20:00
+        </strong>
+      </p>
       <h2 className="text-left mb-4">Login</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
+          disabled={true}
           className="w-100 mb-4"
           type="email"
           value={loginState.email}
@@ -52,6 +58,7 @@ const Login = (props) => {
         />
         <p className="mb-0">Password</p>
         <input
+          disabled={true}
           className="w-100"
           type="password"
           value={loginState.password}
@@ -60,6 +67,7 @@ const Login = (props) => {
         />
 
         <Button
+          disabled={true}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
@@ -68,9 +76,9 @@ const Login = (props) => {
         </Button>
       </form>
       {/* <p className="text-center mt-3">Forgot Password?</p> */}
-      
-        <div style={{minHeight:"8vh"}}className="text-danger">{failMessage}</div>
-      
+      <div style={{ minHeight: "8vh" }} className="text-danger">
+        {failMessage}
+      </div>
     </div>
   );
 };

@@ -68,6 +68,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 <DropdownItem href="/information">
                   Information & FAQ
                 </DropdownItem>
+                <DropdownItem href="/hall-of-fame">Hall Of Fame</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>

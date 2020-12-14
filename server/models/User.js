@@ -675,7 +675,8 @@ userSchema.methods.die = async function () {
     CPU: null,
     Firewall: null,
     AntiVirus: null,
-    // Encryption: null,
+    //
+    Encryption: null,
   };
 
   this.stash = {
