@@ -68,6 +68,7 @@ const Home = (props) => {
         </div>
         <div className="d-flex flex-column w-50 text-left">
           <h1 className="display-1 ">CyberhackerWarfare4000</h1>
+          <h6 className="text-warning">Round 2</h6>
           <h3 className="display-5 ">Multiplayer RPG Hacker Game</h3>
           <p className="">
             CyberhackerWarefare4000 is a free multiplyer hacker role playing game.
