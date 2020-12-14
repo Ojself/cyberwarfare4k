@@ -68,7 +68,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                     &#9889;
                   </span>
                 </DropdownItem>
-                <DropdownItem href="/information">Information</DropdownItem>
+                <DropdownItem href="/information">Information & FAQ</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <UncontrolledDropdown nav inNavbar>
@@ -117,7 +117,7 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                   Crypto Currency
                 </DropdownItem>
                 <DropdownItem href="/marketplace">Marketplace</DropdownItem>
-                <DropdownItem href="/chipchopshop">Chip Chop Shop</DropdownItem>
+                <DropdownItem href="/fence">Fence</DropdownItem>
                 <DropdownItem href="/ledger">Ledger</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

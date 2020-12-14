@@ -24,4 +24,10 @@ messageSchema.methods.readMe = function () {
   this.save();
 };
 
+/* messageSchema.methods.giveAnswer = function (answer, allianceName) {
+  this.read = true;
+  this.allianceInvitation = null;
+  this.text = `You ${answer ? 'accepted' : 'declined'} The answer from ${allianceName}`;
+}; */
+
 module.exports = mongoose.model('Message', messageSchema);

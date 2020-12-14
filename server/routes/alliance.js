@@ -6,9 +6,9 @@ const Alliance = require('../models/Alliance');
 const Message = require('../models/Message');
 const {
   checkCreateAllianceCriteria,
-  findAllianceStats,
+  findAllianceStats, inviteSendCriteria, answerCriterias,
 } = require('../middlewares/middleAlliance');
-const { saveAndUpdateUser } = require('./helper');
+const { saveAndUpdateUser, getInbox } = require('./helper');
 
 // @GET
 // PRIVATE
@@ -127,7 +127,14 @@ router.post('/invitation', async (req, res) => {
   const alliance = await Alliance.findById(user.alliance);
   const invitedUser = await User.findById(id);
 
-  // disallow, already alliance, not exist, already invited,
+  const disallowed = inviteSendCriteria(user, alliance, invitedUser);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
 
   const now = new Date(Date.now()).toString().slice(0, 21);
   alliance.inviteMember(now, invitedUser);
@@ -142,18 +149,27 @@ router.post('/invitation', async (req, res) => {
   res.status(200).json({
     success: true,
     message: `invitation sent to ${invitedUser.name}`,
+    invitedUser,
   });
 });
 
 // invited player declines or accepts invitation
 router.patch('/invitation', async (req, res) => {
-  console.log(req.body, 'req.body');
   const userId = req.user._id;
   const { id, answer } = req.body;
 
   const user = await User.findById(userId);
   const alliance = await Alliance.findById(id);
   let message;
+
+  const disallowed = answerCriterias(user, alliance);
+
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
 
   // accepts
   if (answer) {
@@ -170,11 +186,13 @@ router.patch('/invitation', async (req, res) => {
   await alliance.save();
   await user.save();
   await Message.deleteOne({ allianceInvitation: id, to: userId });
+  const inbox = await getInbox(userId);
 
   res.status(200).json({
     success: true,
     message,
     alliance,
+    inbox,
   });
 });
 

@@ -33,11 +33,7 @@ const StatusBar = ({ loading, user }) => {
 
           <li className="list-inline-item">
             <span style={{ color: "red" }}>&#9829;</span>
-            {(
-              (user.playerStats.currentFirewall /
-                user.playerStats.maxFirewall) *
-              100
-            ).toFixed(0)}
+            {user.playerStats.currentFirewall.toFixed(0)}
             %
           </li>
           <li className="list-inline-item ml-2">

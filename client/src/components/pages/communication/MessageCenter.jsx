@@ -122,26 +122,16 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
   };
 
   const answerAllianceInvitation = async (id,answer) => {
-    console.log(id, "id",'answer',answer);
     let data;
     try {
       data = await api.answerAllianceInvitation(id,answer);
     } catch (err) {
       console.log(err, "error");
+      updateGlobalValues(err,true,true)
+      return
     }
-    console.log(data, "decline data");
+    updateGlobalValues(data,true,true,data.inbox)
   };
-
-  /* const acceptAllianceInvitation = async (id)=> {
-    console.log(id,'id')
-    let data;
-    try {
-      data = await api.acceptAllianceInvitation(id);
-    } catch(err){
-      console.log(err,'error')
-    }
-    console.log(data, 'accept data')
-  } */
 
   const dataMassager = (userArray) => {
     const massagedUsers = [];

@@ -11,7 +11,7 @@ const DashboardBoss = () => {
             <p> Set vault password ✅ ❌</p>
             <p> Give organize permission </p>
             <p> Dissolve family</p> */}
-        <Button color="danger">Disolve family</Button>
+        <Button disabled={true} color="danger">Disolve family</Button>
       </div>
     );
 }

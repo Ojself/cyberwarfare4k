@@ -89,7 +89,41 @@ const findAllianceStats = async (alliances) => {
   return result;
 };
 
+const inviteSendCriteria = (user, alliance, invitedUser) => {
+  if (!user || !alliance || !invitedUser) {
+    return 'something went wrong...';
+  }
+  if (user.alliance.toString() !== alliance._id.toString()) {
+    return "You can't send invites on behalf of other alliances....";
+  }
+  if (user.allianceRole !== 'boss') {
+    return "You can't send invites...";
+  }
+  if (alliance.invitedMembers.includes(invitedUser._id)) {
+    return 'This user is already invited...';
+  }
+  if (invitedUser.alliance) {
+    return 'This user is already in an alliance...';
+  }
+  return null;
+};
+
+const answerCriterias = (user, alliance) => {
+  if (!user || !alliance) {
+    return 'something went wrong';
+  }
+  if (user.alliance || user.allianceRole) {
+    return 'you are already in an alliance';
+  }
+  if (!alliance.invitedMembers.includes(user._id)) {
+    return 'You are not invited to this alliance';
+  }
+  return null;
+};
+
 module.exports = {
   checkCreateAllianceCriteria,
   findAllianceStats,
+  inviteSendCriteria,
+  answerCriterias,
 };

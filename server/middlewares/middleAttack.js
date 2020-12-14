@@ -122,11 +122,11 @@ const attackRecursiveBattle = (result) => {
     return result;
   }
 
-  // hack lost
+  /* // hack lost
   // if user has been encrypted/blocked 4 times, the hack is considered lost
   if (checkOccuranceLimit(result.roundResult, 'blocked', 4)) {
     return result;
-  }
+  } */
 
   // SUCCESS
   if (checkOccuranceLimit(result.roundResult, 'win', 4)) {
@@ -143,32 +143,24 @@ const attackRecursiveBattle = (result) => {
       }
     } else {
       const { CPU } = result.user.hackSkill;
-      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.15 - CPU * 0.10) + CPU * 0.10);
+      let levelDifference = result.user.playerStats.rank - newResult.opponent.playerStats.rank;
+      if (levelDifference < 0)levelDifference = 0;
+      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.2 - CPU * 0.15) + CPU * 0.15) - (levelDifference * 2);
       // To prevent extreme damage
-      if (newResult.damageDealt > 30) {
-        newResult.damageDealt = 30;
+      if (newResult.damageDealt > 40) {
+        newResult.damageDealt = 40;
       }
     }
     return newResult;
   }
 
-  // Attacker gets blocked
-
+  /* // Attacker gets blocked
   const chanceForBlocked = calculateBlockChance(result.user.hackSkill.Encryption, result.opponent.hackSkill.CPU);
   if (chanceForBlocked >= Math.random()) {
     result.roundResult.push('blocked');
     return attackRecursiveBattle(result);
-  }
-
-  /* const attackNumber = damageCalculator(result.user);
-  const defenseNumber = defenseCalulator(result.opponent); */
-
-  // round lost
-  /* if (attackNumber <= defenseNumber) {
-    const status = result.opponent.hackSkill.AntiVirus > result.opponent.hackSkill.Encryption ? 'lost' : 'blocked';
-    result.roundResult.push(status);
-    return attackRecursiveBattle(result);
   } */
+
   const chanceForAttack = primitiveCalculateAttackChance(result.user.hackSkill.CPU, result.opponent.hackSkill.AntiVirus);
 
   // round win
@@ -181,44 +173,6 @@ const attackRecursiveBattle = (result) => {
   return attackRecursiveBattle(result);
 };
 // end of recursive
-
-/* const damageCalculator = (hacker) => {
-  const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
-  const max = (CPU * CPU) / (AntiVirus + Encryption);
-  const min = max / 3;
-
-  const damageNumber = Math.random() * (max - min) + min;
-  return Math.round(damageNumber);
-};
-
- const defenseCalulator = (hacker) => {
-  const { CPU, AntiVirus } = hacker.hackSkill;
-  const max = AntiVirus / CPU;
-  const min = max / 3;
-
-  const defenseNumber = Math.random() * (max - min) + min;
-  return Math.round(defenseNumber);
-};
-
-// deprecated
- const blockCalculator = (hacker) => {
-  const { CPU, Encryption, AntiVirus } = hacker.hackSkill;
-  const max = (Encryption * Encryption) / (CPU + AntiVirus);
-  const min = max / 3;
-  const encryptionNumber = Math.random() * (max - min) + min;
-  return Math.round(encryptionNumber);
-}; */
-
-/* const fraudCalculator = (hacker) => {
-  const crimeSkill = Object.values(hacker.crimeSkill).reduce((acc, cur) => acc + cur, 0);
-  const { CPU, Encryption } = hacker.hackSkill;
-
-  const max = (crimeSkill * crimeSkill) / (CPU + Encryption);
-  const min = max / 3;
-
-  const fraudDamage = Math.random() * (max - min) + min;
-  return Math.round(fraudDamage);
-}; */
 
 const fraudHacker = (user, opponent, batteryCost, now) => {
   const result = {
@@ -246,7 +200,7 @@ const fraudGenerator = (result) => {
   let bitCoinStolen = 0;
   for (let i = 0; i < 4; i += 1) {
     const attackInput = Object.values(result.user.crimeSkill).reduce((acc, curr) => acc + curr, 0) / 4;
-    const defenseInput = (result.opponent.hackSkill.AntiVirus + result.opponent.hackSkill.Encryption) / 2;
+    const defenseInput = result.opponent.hackSkill.AntiVirus;
     const chanceForSuccess = primitiveCalculateAttackChance(attackInput, defenseInput);
     /* const attackerChance = fraudCalculator(result.user);
     const opponentChance = fraudCalculator(result.opponent); */
@@ -266,13 +220,13 @@ const fraudGenerator = (result) => {
   return result;
 };
 
-// returns between 0.05 and 0.95
+/* // returns between 0.05 and 0.95
 const calculateBlockChance = (defenseStat, attackStat) => {
   const x = defenseStat / attackStat;
   const a = 6 * Math.sqrt(5 / 19999);
   const b = 13639 / 72000;
   return a * Math.sqrt(x + b);
-};
+}; */
 
 const primitiveCalculateAttackChance = (attackSkill, opponentSkill) => {
   const probability = attackSkill / (opponentSkill * 1.125);

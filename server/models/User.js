@@ -522,7 +522,7 @@ userSchema.methods.buyBodyguard = function () {
   this.bitCoinDrain(cost);
   this.playerStats.bodyguards.alive.push(100);
   this.playerStats.bodyguards.bought += 1;
-  if (this.playerStats.bodyguards.bought > 5) {
+  if (this.playerStats.bodyguards.bought > 3) {
     this.playerStats.bodyguards.price *= 1.5;
   }
 };
@@ -571,8 +571,8 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
   this.playerStats.statPoints -= 1;
   switch (statName) {
     case 'Firewall':
-      this.playerStats.maxFirewall += 15;
-      this.playerStats.currentFirewall += 15;
+      this.playerStats.maxFirewall += 10;
+      this.playerStats.currentFirewall += 10;
       break;
     case 'CPU':
       this.giveHackSkill(5, 'CPU');
@@ -596,7 +596,7 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.giveCrimeSkill(5, 'Cryptography');
       break;
     case 'exp':
-      this.playerStats.exp += this.playerStats.expToLevel * 0.08;
+      this.playerStats.exp += this.playerStats.expToLevel * 0.075;
       break;
     default:
       // gives back statpoints if something went wrong

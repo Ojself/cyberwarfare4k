@@ -31,18 +31,26 @@ const Dashboard = ({ updateGlobalValues }) => {
   const [alliance, setAlliance] = useState([]);
   const [users, setUsers] = useState([]);
   const [members, setMembers] = useState([]);
+  const [invitedMembers, setInvitedMembers] = useState([])
   const [selectedInvite, setSelectedInvite] = useState(null)
   const [selectedPromotion, setSelectedPromotion] = useState(null);
   const [loading, setLoading] = useState(true)
 
   const sendInvite = async (user)=> {
+    console.log(user,'user')
     const userId= user.value
     let data;
     try { data = await api.sendAllianceInvitation(userId)
     } catch (err){
       console.log(err,'err')
+      return updateGlobalValues(err)
     }
-    console.log(data,'data')
+    console.log(data,'data') 
+    updateGlobalValues(data);
+    const oldInvitedMembmers = invitedMembers.slice()
+    oldInvitedMembmers.unshift(data.invitedUser);
+    console.log(oldInvitedMembmers);
+    setInvitedMembers(oldInvitedMembmers);
 
   }
 
@@ -68,6 +76,7 @@ const Dashboard = ({ updateGlobalValues }) => {
         (user) => user.alliance === data.alliance._id
       );
       const members = dataMassager(allianceMembers);
+      setInvitedMembers(data.alliance.invitedMembers)
       setAlliance(data.alliance);
       setUsers(massagedAllUsers);
       setMembers(members);
@@ -92,7 +101,7 @@ const Dashboard = ({ updateGlobalValues }) => {
       <TabPane tabId="1">
         <Row>
           <Col sm="12">
-            {/* <p>Here you can see which cities you have chip chop shops</p> */}
+            {/* <p>Here you can see which cities you have fence</p> */}
             {!loading && (
               <DashboardOverview
                 allianceId={alliance._id}
@@ -102,18 +111,11 @@ const Dashboard = ({ updateGlobalValues }) => {
           </Col>
         </Row>
       </TabPane>
-      <TabPane tabId="2">
-        <Row>
-          <Col sm="12">
-            <p>Work in progress</p>
-          </Col>
-        </Row>
-      </TabPane>
 
-      <TabPane tabId="3">
+      <TabPane tabId="2">
         <DashboardVault />
       </TabPane>
-      <TabPane tabId="4">
+      <TabPane tabId="3">
         <Row>
           <Col sm="12">
             <DashboardOrganize
@@ -125,7 +127,7 @@ const Dashboard = ({ updateGlobalValues }) => {
           </Col>
         </Row>
       </TabPane>
-      <TabPane tabId="5">
+      <TabPane tabId="4">
         <Row>
           <Col sm="12">
             <DashboardInvite
@@ -134,12 +136,12 @@ const Dashboard = ({ updateGlobalValues }) => {
               handleInviteChange={handleInviteChange}
               users={users}
               loading={loading}
-              invitedMembers={alliance.invitedMembers}
+              invitedMembers={invitedMembers}
             />
           </Col>
         </Row>
       </TabPane>
-      <TabPane tabId="6">
+      <TabPane tabId="5">
         <Row>
           <Col sm="12">
             <DashboardBoss />
@@ -151,8 +153,7 @@ const Dashboard = ({ updateGlobalValues }) => {
 
   const tabs = (
     <Nav tabs className="d-flex justify-content-center">
-      
-        {["Overview","Notes", "Vault", "Organize", "Invite", "Boss Options"].map(
+        {["Overview", "Vault", "Organize", "Invite", "Boss Options"].map(
           (tabHeader, i) => {
             return (
               <NavItem key={i}>
@@ -168,7 +169,6 @@ const Dashboard = ({ updateGlobalValues }) => {
             );
           }
         )}
-      
       <div className="ml-5 w-100 ">{tabContent}</div>
     </Nav>
   );

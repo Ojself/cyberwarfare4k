@@ -4,19 +4,53 @@ const router = express.Router();
 const User = require('../models/User');
 const BetaForum = require('../models/BetaForum');
 
-const {
-  checkCommentPostCriteria, checkCommentDeleteCriteria, checkCommentEditCriteria,
-} = require('../middlewares/middleForum');
+const generateFakeComment = (userName) => [{
+  _id: '5fd68c2d87afd469a789f275',
+  edited: false,
+  deleted: false,
+  likes: [],
+  creator: {
+    _id: '5fca3b4a86e77b5c8e58b683',
+    account: { avatar: '/hackerAvatars/Waifu/greenblack.png' },
+    name: 'Admin_Tor',
+  },
+  comment: `I think ${userName} might be cheating.. what a fool!`,
+  alliance: null,
+  allianceForum: false,
+  createdAt: '2020-12-01T10:01:29.091Z',
+  updatedAt: '2020-12-01T10:01:30.348Z',
+}];
 
-/* TODO:
-fix routes, no need for params in .patch,post,delete
-level requirement for creating threads?
-admin roles for creating forum
-finish routes for creating,editing and deleting forums and threads
-*/
+const getBetaForumCriterias = (user) => {
+  if (!user) {
+    return 'something went wrong...';
+  }
+
+  return null;
+};
+
+const postBetaForumCriterias = (user, comment, params) => {
+  if (params.alliance !== 'global' && params.alliance && (user.alliance.toString() !== params.alliance)) {
+    return "you don't have access this forum";
+  }
+  if (comment.length > 250) {
+    return 'Your post is too long...';
+  }
+
+  if (comment.length < 2) {
+    return 'Your post is too short...';
+  }
+
+  if (comment.toLowerCase().includes('script>')) {
+    return 'no need for your script tags here...';
+  }
+  return null;
+};
 
 // gets forums and thread count
 router.get('/', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
   const params = {
     allianceForum: false,
     alliance: null,
@@ -26,6 +60,28 @@ router.get('/', async (req, res) => {
   if (query !== 'global') {
     params.allianceForum = true;
     params.alliance = query;
+  }
+
+  const disallowed = getBetaForumCriterias(user, params);
+
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  /* easter egg */
+  if (params.alliance !== 'global' && user.alliance) {
+    if (user.alliance.toString() !== params.alliance && params.alliance) {
+      const fakeComment = generateFakeComment(user.name);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Forum comments loaded...',
+        comments: fakeComment,
+      });
+    }
   }
 
   const comments = await BetaForum
@@ -45,7 +101,6 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { comment, forumType } = req.body;
-  console.log(req.body, 'reqbody');
 
   const params = {
     allianceForum: false,
@@ -58,15 +113,13 @@ router.post('/', async (req, res) => {
   }
 
   const user = await User.findById(userId);
-
-  /* const message = checkCommentPostCriteria(comment, thread, user);
-
-  if (message) {
+  const disallowed = postBetaForumCriterias(user, comment, params);
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
-  } */
+  }
 
   // createdAt might differ from server time
   const forumComment = new BetaForum({
@@ -106,7 +159,7 @@ router.put('/:commentId', async (req, res) => {
     message: 'Comment liked/unliked!',
   });
 });
-
+/*
 // deletes comment
 router.delete('/:id', async (req, res) => {
   const { commentId } = req.body;
@@ -129,8 +182,8 @@ router.delete('/:id', async (req, res) => {
     message: 'comment deleted',
   });
 });
-
-router.patch('/:id', async (req, res) => {
+ */
+/* router.patch('/:id', async (req, res) => {
   const userId = req.user._id;
   const { commentId, newComment } = req.body;
   const comment = await BetaForum.findById(commentId);
@@ -149,6 +202,6 @@ router.patch('/:id', async (req, res) => {
     success: true,
     message: 'Message successfuly edited',
   });
-});
+}); */
 
 module.exports = router;

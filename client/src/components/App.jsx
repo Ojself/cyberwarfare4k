@@ -6,7 +6,7 @@ import Typist from "react-typist";
 import AllianceLadder from "./pages/alliance/pages/Ladder";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
 import BetaForum from "./pages/_molecules/BetaForum"
-import ChipChopShop from "./pages/chipchopshop/ChipChopShop";
+import Fence from "./pages/fence/Fence";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
@@ -22,7 +22,7 @@ import EarnBattery from "./pages/earnBattery/EarnBattery";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
 import Home from "./pages/home/Home";
-import Information from "./pages/Information";
+import Information from "./pages/information/Information";
 import Ladder from "./pages/Ladder";
 import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
@@ -70,14 +70,15 @@ const App = () => {
     fetchUserData();
   }, []);
 
-  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false) => {
-    console.log("updating global", data);
-
+  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false, messages = false ) => {
     if (data.user) {
       setUser(data.user);
     }
     if (scrollToTop) {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (messages){
+      setMessages(messages);
     }
     if (renderMessage && data.message) {
       setGlobalMessage({
@@ -132,23 +133,32 @@ const App = () => {
         <Route path="/alliance/ladder" component={AllianceLadder} />
         <Route
           path="/alliance/dashboard"
-          render={() => <Dashboard globalLoading={loading} />}
+          render={() => (
+            <Dashboard
+              updateGlobalValues={updateGlobalValues}
+               globalLoading={loading}
+            />
+          )}
         />
 
         <Route
           path="/beta-forum"
-          render={() => <BetaForum user={user} updateGlobalValues={updateGlobalValues}  />}
+          render={() => (
+            <BetaForum user={user} updateGlobalValues={updateGlobalValues} />
+          )}
         />
         <Route
           path="/alliance/:id/beta-forum"
-          render={() => <BetaForum user={user} updateGlobalValues={updateGlobalValues}  />}
+          render={() => (
+            <BetaForum user={user} updateGlobalValues={updateGlobalValues} />
+          )}
         />
 
         <Route path="/alliance/:id" component={AllianceOverview} />
         <Route
-          path="/chipchopshop"
+          path="/fence"
           render={() => (
-            <ChipChopShop
+            <Fence
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
               user={user}
