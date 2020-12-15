@@ -57,9 +57,9 @@ const styles = {
 };
 
 const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
-  const handleGenerate = async (event) => {
+  const handlePostGithubUsername = async (event) => {
     const game = event.target.value;
-    const data = await api.createBatteryQuery(game);
+    const data = await api.postGithubUsername(game);
     updateGlobalValues(data,false);
   };
   const [githubName, setGithubName] = useState("");
@@ -78,15 +78,13 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
 
   const getButton = (game) => {
     if (!user || globalLoading) return;
-    let onclick = (e) => handleGenerate(e);
+    let onclick = () => console.log('Click..');
     let innerText;
     let disabled = false;
     let cursor = "pointer";
     let width = "100%"
-  
-    const currentGame = user.earnBattery[game];
 
-    
+    const currentGame = user.earnBattery[game];
     if (currentGame) {
       onclick = () => navigator.clipboard.writeText(currentGame);
       cursor = "copy";
@@ -150,7 +148,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             <Button
               value={githubName}
               name="githubUserName"
-              onClick={(e) => handleGenerate(e)}
+              onClick={(e) => handlePostGithubUsername(e)}
             >
               Submit
             </Button>

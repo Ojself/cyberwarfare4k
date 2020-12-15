@@ -428,9 +428,9 @@ export default {
 
   /* earn energy */
 
-  createBatteryQuery(game) {
+  postGithubUsername(githubUserName) {
     return service
-      .post(`/earnBattery`, { game })
+      .post(`/earnBattery`, { githubUserName })
       .then((res) => res.data)
       .catch(errHandler);
   },

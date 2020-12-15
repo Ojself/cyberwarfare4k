@@ -2,7 +2,7 @@ const { existingValue, checkFunds } = require('./middleHelpers');
 const User = require('../models/User');
 
 // Sees if everything is in order to add bounty
-function addBountyCriteria(user, opponent, bounty) {
+const addBountyCriteria = (user, opponent, bounty) =>{
   if (!existingValue(user)) {
     return "User doesn't exist";
   }

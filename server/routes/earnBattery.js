@@ -61,6 +61,7 @@ router.post('/redeem', async (req, res) => {
   // todo. ensure useragent and other creds is coming from heroku chessathor or megarpg
   const { code } = req.body;
 
+  
   if (req.body.payload) {
     // check headers
     return handleGithubEvent(req.body.payload);
@@ -98,8 +99,8 @@ router.post('/redeem', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { githubUserName } = req.body;
+  console.log(req.body, "reqbody");
   const user = await User.findById(userId);
-
   if (!githubUserName) {
     return res.status(403).json({
       success: false,

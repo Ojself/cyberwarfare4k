@@ -17,12 +17,10 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Add very beta forum to alliances and one global
 - Alliance dashboard
 - Earn battery codes auto generates once every day (so you don't lose hours between each generation)
-- All ladders (top lists) includes crypto 
-currency in total wealth
+- All ladders (top lists) includes crypto currency in total wealth
 - Alliance invite function
 - Data centers visible in profile and alliance dashboard
 - Bodyguards visible in profile page
-- Opening hours for crypto market (no purchases or sales during night)
 - Max ownage of one crypto currency is now 20% (from 25%)
 - Bodyguards now has "two lifes" before dying
 - Price adjustments for healing
