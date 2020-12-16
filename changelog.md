@@ -13,6 +13,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 - Fix bug where users gets the perks of leveling up without actually leveling up
 - Set max Battery to 200 for subscribers
+- Fix formatting of numbers in crypto charts
 
 ## [0.1.0] - 2020-12-14
 
