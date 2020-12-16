@@ -131,7 +131,7 @@ const crimeWin = (result, crime, user, decider) => {
   // TODO write legendaryGained
 
   result.won = true;
-  result.playerGains.exp = crimeWinExp(crime.difficulty);
+  result.playerGains.exp = crimeWinExp(crime.difficulty, user.playerStats.rank);
   result.playerGains.bitCoins = crimeWinBitcoins(crime.difficulty);
   result.playerGains.skillGained = skillGained(
     decider,
@@ -144,8 +144,11 @@ const crimeWin = (result, crime, user, decider) => {
 };
 
 const crimeWinBitcoins = (multiplier) => Math.floor(Math.random() * multiplier) * 1000;
-const crimeWinExp = (multiplier) => Math.floor(Math.random() * multiplier) * 300 // TODO balance this one
-;
+const crimeWinExp = (multiplier, userRank) => {
+  const max = (multiplier + (userRank*2)) * 350;
+  const min = multiplier * 150;
+  return Math.floor(Math.random() * (max - min) + min);
+}; 
 
 // returns a skill based on luck and rank. Higher rank gives lower chance
 const skillGained = (decider, rank, crimeType) => {

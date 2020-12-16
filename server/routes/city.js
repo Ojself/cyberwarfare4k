@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
   const oldCityId = user.playerStats.city;
   const oldCity = await City.findById(oldCityId);
 
-  const batteryCost = 4;
+  const batteryCost = 3;
 
   const message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
 

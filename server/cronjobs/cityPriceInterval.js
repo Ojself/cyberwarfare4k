@@ -7,7 +7,7 @@ const cityPriceInterval = async () => {
   const cities = await City.find({});
   cities.forEach((city) => {
     city.stashPriceMultiplier = (Math.random() / 4 + 1);
-    city.price = Math.floor(Math.random() * 2000 + 500);
+    city.price = Math.ceil(Math.random() * 5) * 1000;
   });
   await Promise.all(cities.map((city) => city.save()));
 };
