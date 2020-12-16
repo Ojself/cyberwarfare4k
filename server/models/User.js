@@ -346,7 +346,7 @@ userSchema.methods.withdrawLedger = function (bitCoins) {
   // todo fee?
 };
 
-userSchema.methods.handlePettyCrime = async function (result) {
+userSchema.methods.handlePettyCrime = function (result) {
   this.batteryDrain(result.battery);
   this.bitCoinGain(result.bitCoins);
   this.fightInformation.pettyCrimesInitiated += 1;
@@ -369,7 +369,7 @@ userSchema.methods.handlePettyCrime = async function (result) {
     this[result.legendaryGained] += 1;
   }
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
-    await this.setRank();
+    this.levelUp();
   }
 };
 
@@ -410,7 +410,7 @@ userSchema.methods.createAlliance = function (cost, allianceId) {
   this.allianceRole = 'boss';
 };
 
-userSchema.methods.handleCrime = async function (result) {
+userSchema.methods.handleCrime = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
   this.playerStats.bitCoins += result.playerGains.bitCoins;
   this.playerStats.exp += result.playerGains.exp;
@@ -426,18 +426,30 @@ userSchema.methods.handleCrime = async function (result) {
     this.legendaryGained[result.playerGains.legendaryGained] += 1;
   }
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
-    await this.setRank();
+    this.levelUp();
   }
 };
 
-userSchema.methods.setRank = async function (rank = undefined) {
-  if (rank) {
-    this.playerStats.rank = rank;
-  } else {
-    this.playerStats.rank += 1;
+/* userSchema.methods.levelUp = async function () {
+  let newRank;
+  this.playerStats.rank += 1
+  try {
+    newRank = await findOne({rank: this.playerStats.rank})
     this.playerStats.statPoints += 5;
+    this.playerStats.battery += (this.playerStats.rank * 10);
+    this.playerStats.rankName = newRank.name;
+    this.playerStats.expToLevel = newRank.expToNewRank;
+  } catch (err){
+    console.error('Error: ',err)
   }
-  const newRank = await Rank.findOne({ rank: this.playerStats.rank });
+};
+ */
+userSchema.methods.levelUp = function () {
+  console.info(`${this.name} is leveling up from ${this.playerStats.rank}`)
+  this.playerStats.rank += 1;
+  const newRank = ranks[this.playerStats.rank]
+
+  this.playerStats.statPoints += 5;
   this.playerStats.battery += (this.playerStats.rank * 10);
   this.playerStats.rankName = newRank.name;
   this.playerStats.expToLevel = newRank.expToNewRank;
@@ -568,7 +580,8 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
   this.playerStats.bounty += parseInt(bounty, 10);
 };
 
-userSchema.methods.handleNewStatpoint = async function (statName) {
+userSchema.methods.handleNewStatpoint = function (statName) {
+  /* console.info(`${this.name} is upgrading: ${statName}`) */
   this.playerStats.statPoints -= 1;
   switch (statName) {
     case 'Firewall':
@@ -604,7 +617,7 @@ userSchema.methods.handleNewStatpoint = async function (statName) {
       this.playerStats.statPoints += 1;
   }
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
-    await this.setRank();
+    this.levelUp();
   }
 };
 
@@ -709,3 +722,64 @@ userSchema.methods.die = async function () {
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+
+/* 
+
+const ranks = [
+
+  { 
+    expToNewRank : 10000, 
+    name : "Script kiddie", 
+    rank : 0, 
+},
+{ 
+    expToNewRank : 25000, 
+    name : "Family IT-Support", 
+    rank : 1, 
+},
+{ 
+    expToNewRank : 62500, 
+    name : "Blog Writer", 
+    rank : 2, 
+},
+{ 
+    expToNewRank : 156000, 
+    name : "HTML 'programmer'", 
+    rank : 3, 
+},
+{ 
+    expToNewRank : 390000, 
+    name : "Jr. Web Dev", 
+    rank : 4, 
+},
+{ 
+    expToNewRank : 975000, 
+    name : "Sr. Web Dev", 
+    rank : 5, 
+},
+{ 
+    expToNewRank : 2437500, 
+    name : "System Dev", 
+    rank : 6, 
+},
+{ 
+    expToNewRank : 6093314, 
+    name : "Cyber Security Dev", 
+    rank : 7, 
+},
+{ 
+    expToNewRank : 15231337, 
+    name : "Basement Dweller", 
+    rank : 8, 
+},
+{ 
+    expToNewRank : 9999999999999.0, 
+    name : "Anonymous", 
+    rank : 9, 
+},
+{ 
+    expToNewRank : Infinity, 
+    name : "Cheater", 
+    rank : 10, 
+}
+] */

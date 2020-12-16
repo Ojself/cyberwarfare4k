@@ -1,10 +1,10 @@
 const User = require('../models/User');
 
 const subscriptionBonus = {
-  Bronze: { battery: 1, max: 150 },
-  Silver: { battery: 2, max: 175 },
-  Gold: { battery: 3, max: 200 },
-  Platinum: { battery: 4, max: 200 },
+  Bronze: { battery: 1, max: 175 },
+  Silver: { battery: 2, max: 200 },
+  Gold: { battery: 3, max: 250 },
+  Platinum: { battery: 4, max: 300 },
 };
 
 /* Ensures that users gets more battery after cetain time and never exceeds 100 */

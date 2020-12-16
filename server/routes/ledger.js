@@ -37,7 +37,7 @@ const withdrawCriteria = (user, amount) => {
 // Retrives all users
 
 router.get('/', async (req, res) => {
-  const users = await User.find({}).select({ name: '1' });
+  const users = await User.find({'account.isSetup': true}).select({ name: '1' });
   if (!users) {
     return res.status(400).json({
       success: false,

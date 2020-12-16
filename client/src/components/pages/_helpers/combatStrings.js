@@ -1,6 +1,8 @@
 export const randomCrimeString = [
   "Selling fake nudes for bitcoins with deepfake",
+  "git push master --force",
   "Using your webdev skills to create a fake Paypal website.",
+  "Tricking all your friends to support you web application through Patreon",
   "Claiming to be a nigerian prince, and sends out a bunch of emails using advanced scripts...",
   "Asking your facebook friends for their password.",
   "Impersonate as the perfect girl on Tinder, asking guys for funds.",
@@ -29,7 +31,7 @@ export const randomCrimeString = [
   "Ip config. 15.345.1.508 annihilating system software extras and extracting new data to disc. Reallocating new Malware to system disc.",
   "Typescript system activated and transferred to new directory encrypted with an IBAN number of 19029839.",
   "Console logging that sucker to see if there is an end_result: var type_in_user = {aku += 10} to user: 'Some_basement_guy'. Response awaiting...",
-  "Searching the depths of web to solve an algorithm by applying the known map, filter => reduce technique.",
+  "Searching the depths of web to solve an algorithm by applying the known map, filter, reduce technique.",
   "Deploying repository and git commit -m 'Advanced Update': Functioning: 1002.10002. 333 updated!",
   "Userinterface activated by struct ip_hbs_active = resolution => return array[1223, 9532, 2846]. Looking for new updates to system-ware and hiking.",
   "Constructing a VPN to server: 100%, connecting through active_flow_chart123 and deploying mechanism... Active and responsive!",
@@ -43,7 +45,7 @@ export const randomCrimeString = [
 ];
 
 export const errorMessages = [
-  "Uncaught TypeError: Cannot read property",
+  "Uncaught TypeError: Cannot read property of undefined",
   "TypeError: ‘undefined’ is not an object (evaluating)",
   "TypeError: null is not an object (evaluating)",
   "(unknown): Script error",
@@ -54,6 +56,7 @@ export const errorMessages = [
   "500 internal server error",
   "503 Service Unavailable",
   "504 Gateway Timeout",
+  "418 I'm a teapot",
   "Access denied",
   "0x80070057, WindowsUpdate_8007002C, WindowsUpdate_dt000",
   "Runtime Error",
