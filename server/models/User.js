@@ -723,7 +723,7 @@ userSchema.methods.die = async function () {
 const User = mongoose.model('User', userSchema);
 module.exports = User;
 
-/* 
+
 
 const ranks = [
 
@@ -782,4 +782,4 @@ const ranks = [
     name : "Cheater", 
     rank : 10, 
 }
-] */
+] 
