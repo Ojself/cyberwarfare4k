@@ -8,6 +8,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - More options for the alliance in the dashboard
 - Easy overview when buying crypto currency
 
+## [0.1.2] - 2020-12-16
+
+- Change battery price for changing VPN. 4 -> 3
+- Change price of changing VPN (random between 1000-5000)
+- Change exp gain of crimes. It's now less random and pays out slightly more
+
 ## [0.1.1] - 2020-12-16
 ### Hotfix
 

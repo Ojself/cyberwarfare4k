@@ -64,7 +64,7 @@ const VPN = ({ updateGlobalValues }) => {
         <span role="img" aria-label="battery">
           &#9889;
         </span>
-        4
+        3
       </h6>
     </div>
   );
