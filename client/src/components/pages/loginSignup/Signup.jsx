@@ -58,7 +58,7 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="text-left bg-dark d-flex flex-column w-50 m-3 p-5">
+    <div className="text-left bg-dark d-flex flex-column w-100 m-3 p-5">
       <h2 className="text-left mb-4">Register</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>

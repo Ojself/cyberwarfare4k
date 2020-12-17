@@ -10,3 +10,22 @@
   width: 100%;
   height: 30vh;
 }
+
+@media screen and (min-width: 599px) {
+  
+#homeHeader::after{
+  content: "CyberhackerWarefare4000"
+}
+}
+@media only screen and (max-width: 600px) {
+  #homeHeader::after{
+      content: "CHWF4K"
+    }
+  #hackVideoesContainer {
+    display:none
+  }
+ #descriptionText2, #descriptionText1, #imageAndQuote{
+   display:none
+ }
+
+}

@@ -93,9 +93,6 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
                 </DropdownItem>
                 {user && user.alliance ? (
                   <>
-                    <DropdownItem href={`/alliance/${user.alliance._id}`}>
-                      Hierarchy
-                    </DropdownItem>
                     <DropdownItem
                       href={`/alliance/${user.alliance._id}/beta-forum`}
                     >

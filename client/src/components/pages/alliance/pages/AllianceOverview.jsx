@@ -8,8 +8,12 @@ const AllianceOverview = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(props,'props')
+    
     const getAlliance = async () => {
-      const allianceId = props.match.params.id;
+      const allianceId = props.allianceId
+        ? props.allianceId
+        : props.match.params.id;
       let data;
       try {
         data = await api.getAlliance(allianceId);
@@ -19,7 +23,7 @@ const AllianceOverview = (props) => {
         console.warn("error", err);
       }
     };
-    getAlliance();
+      getAlliance();
   }, []);
 
   const noAllianceFound = !loading && (

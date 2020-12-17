@@ -135,7 +135,7 @@ const attackRecursiveBattle = (result) => {
     // kills a bodyguard
 
     if (newResult.opponent.playerStats.bodyguards.alive.length) {
-      const randomBg = newResult.opponent.playerStats.bodyguards[Math.floor(Math.random() * newResult.opponent.playerStats.bodyguards.length)];
+      const randomBg = newResult.opponent.playerStats.bodyguards.alive[Math.floor(Math.random() * newResult.opponent.playerStats.bodyguards.alive.length)];
       if (randomBg > 50) {
         newResult.bodyGuardAttacked = true;
       } else {

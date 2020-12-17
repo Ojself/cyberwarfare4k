@@ -16,6 +16,7 @@ import DashboardVault from "./_molecules/DashboardVault"
 import DashboardBoss from "./_molecules/DashboardBoss";
 import DashboardOrganize from "./_molecules/DashboardOrganize";
 import DashboardInvite from "./_molecules/DashboardInvite"
+import AllianceOverview from "./AllianceOverview"
 
 const dataMassager = (userArray) => {
   return userArray.map((u) => {
@@ -123,11 +124,13 @@ const Dashboard = ({ updateGlobalValues }) => {
           </Col>
         </Row>
       </TabPane>
-
       <TabPane tabId="2">
-        <DashboardVault />
+        {!loading && <AllianceOverview allianceId={alliance._id} />}
       </TabPane>
       <TabPane tabId="3">
+        <DashboardVault />
+      </TabPane>
+      <TabPane tabId="4">
         <Row>
           <Col sm="12">
             <DashboardOrganize
@@ -140,7 +143,7 @@ const Dashboard = ({ updateGlobalValues }) => {
           </Col>
         </Row>
       </TabPane>
-      <TabPane tabId="4">
+      <TabPane tabId="5">
         <Row>
           <Col sm="12">
             <DashboardInvite
@@ -154,7 +157,7 @@ const Dashboard = ({ updateGlobalValues }) => {
           </Col>
         </Row>
       </TabPane>
-      <TabPane tabId="5">
+      <TabPane tabId="6">
         <Row>
           <Col sm="12">
             <DashboardBoss />
@@ -166,7 +169,7 @@ const Dashboard = ({ updateGlobalValues }) => {
 
   const tabs = (
     <Nav tabs className="d-flex justify-content-center">
-        {["Overview", "Vault", "Organize", "Invite", "Boss Options"].map(
+        {["Overview","Hierarchy", "Vault", "Organize", "Invite", "Boss Options"].map(
           (tabHeader, i) => {
             return (
               <NavItem key={i}>
