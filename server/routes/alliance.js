@@ -10,6 +10,39 @@ const {
 } = require('../middlewares/middleAlliance');
 const { saveAndUpdateUser, getInbox } = require('./helper');
 
+
+  const promoteCriterias = (user, promotedUser, alliance) => {
+    if (!user || !promotedUser || !alliance) {
+      return "Something went wrong...";
+    }
+    if (user.allianceRole !== "boss") {
+      return "You don't have permission to do this";
+    }
+    if (promotedUser.alliance.toString() !== alliance._id.toString()) {
+      return "This user doesn't belong to the correct alliance";
+    }
+    if (user._id.toString() === promotedUser._id.toString()) {
+      return "You can't promote yourself directly...";
+    }
+    return null;
+  };
+
+const findAllianceByIdAndPopulate = async (id) => {
+  const populateValues = ['name', 'account.avatar'];
+  const alliance = await Alliance.findById(id)
+    .populate('boss', populateValues)
+    .populate('cto', populateValues)
+    .populate('analyst', populateValues)
+    .populate('firstLead', populateValues)
+    .populate('secondLead', populateValues)
+    .populate('firstMonkeys', populateValues)
+    .populate('secondMonkeys', populateValues)
+    .populate('invitedMembers', populateValues)
+    .populate('organizePermission', populateValues)
+    .populate('forumModeratorPermission', populateValues);
+  return alliance;
+};
+
 // @GET
 // PRIVATE
 // Retrives all alliances
@@ -31,23 +64,10 @@ router.get('/dashboard', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const populateValues = [
-    'name',
-  ];
-  const alliance = await Alliance.findById(user.alliance)
-    .populate('boss', populateValues)
-    .populate('cto', populateValues)
-    .populate('analyst', populateValues)
-    .populate('firstLead', populateValues)
-    .populate('secondLead', populateValues)
-    .populate('firstMonkeys', populateValues)
-    .populate('secondMonkeys', populateValues)
-    .populate('invitedMembers', populateValues)
-    .populate('organizePermission', populateValues)
-    .populate('forumModeratorPermission', populateValues);
+  const alliance = await findAllianceByIdAndPopulate(user.alliance);
 
   const users = await User.find({ 'account.isSetup': true })
-    .select({ name: 1, alliance: 1 })
+    .select({ name: 1, alliance: 1, allianceRole: 1 })
     .sort({ name: 1 });
 
   res.status(200).json({
@@ -184,7 +204,7 @@ router.patch('/invitation', async (req, res) => {
   }
 
   await alliance.save();
-  await user.save();
+  const updatedUser = await saveAndUpdateUser(user);
   await Message.deleteOne({ allianceInvitation: id, to: userId });
   const inbox = await getInbox(userId);
 
@@ -193,6 +213,7 @@ router.patch('/invitation', async (req, res) => {
     message,
     alliance,
     inbox,
+    user: updatedUser,
   });
 });
 
@@ -204,16 +225,51 @@ router.patch('/invitation', async (req, res) => {
 // const player = await User.findById(playerId);
 // });
 //
-// router.put('/change-position', async (req, res) => {
-// const userId = req.user._id;
-// const user = await User.findById(userId);
-//
-// const { playerId, newRole } = req.body;
-// const player = await User.findById(playerId);
-//
-//  if check user is boss,ub,consig
-// everyone
-// });
+router.post('/promote', async (req, res) => {
+  const userId = req.user._id;
+  const { playerId, newTitle } = req.body;
+
+  const user = await User.findById(userId).lean();
+  const promotedUser = await User.findById(playerId);
+  const alliance = await Alliance.findById(user.alliance);
+
+
+  const disallowed = promoteCriterias(user, promotedUser, alliance, newTitle);
+
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  if (alliance[newTitle] && !Array.isArray(alliance[newTitle])){
+    const demotedUser = await User.findById(alliance[newTitle])
+    demotedUser.allianceRole = "firstMonkeys";
+    await demotedUser.save()
+  }
+
+  const oldTitle = promotedUser.allianceRole;
+  alliance.changeAllianceRole(playerId, newTitle, oldTitle);
+  promotedUser.allianceRole = newTitle;
+  await promotedUser.save();
+  await alliance.save();
+  // disallow. wrong alliance. not boss
+
+  const allianceMembers = await User.find({
+    alliance: alliance._id,
+    "account.isSetup": true,
+  })
+    .select({ name: 1, alliance: 1, allianceRole: 1 })
+    .sort({ name: 1 });
+  
+
+  res.status(200).json({
+    success: true,
+    message: `${promotedUser.name} was promoted to ${newTitle}`,
+    allianceMembers
+  });
+});
 //
 // router.delete('/dissolve', async (req, res) => {
 // const userId = req.user._id;
@@ -239,16 +295,8 @@ router.patch('/invitation', async (req, res) => {
 // PRIVATE
 // Retrives one alliance
 
-router.get('/:id', async (req, res) => {
-  const nameAndAvatar = ['name', 'account.avatar'];
-  const alliance = await Alliance.findById(req.params.id)
-    .populate('boss', nameAndAvatar)
-    .populate('cto', nameAndAvatar)
-    .populate('analyst', nameAndAvatar)
-    .populate('firstLead', nameAndAvatar)
-    .populate('secondLead', nameAndAvatar)
-    .populate('firstMonkeys', nameAndAvatar)
-    .populate('secondMonkeys', nameAndAvatar);
+router.get('/:allianceId', async (req, res) => {
+  const alliance = await findAllianceByIdAndPopulate(req.params.allianceId);
 
   res.status(200).json({
     success: true,

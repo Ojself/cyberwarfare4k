@@ -35,6 +35,7 @@ const CreateAlliance = (props) => {
       props.history.push("/my-profile");
     } catch (err) {
       console.error("error", err);
+      props.updateGlobalValues(err);
     }
   };
 

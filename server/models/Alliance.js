@@ -139,26 +139,28 @@ allianceSchema.methods.toggleForumModeratorPermission = function (playerId) {
   this.save();
 };
 
-allianceSchema.methods.changeAllianceRole = function (playerId, newPosition) {
-  // player.sendNotication
-  if (
-    ['boss', 'cto', 'analyst', 'firstLead', 'secondLead'].includes(newPosition)
-  ) {
+allianceSchema.methods.changeAllianceRole = async function (playerId, newPosition, oldTitle) {
+  // Checks if previous role is Array (code monkeys)
+  if (Array.isArray(this[oldTitle])) {
+    const playerIndex = this[oldTitle].indexOf(playerId);
+    if (playerIndex > -1) {
+      this[oldTitle].splice(playerIndex, 1);
+    }
+    // checks if old title is officer title
+  } else {
+    this[oldTitle] = null;
+  }
+
+  if (Array.isArray(this[newPosition])) {
+    this[newPosition].push(playerId);
+  } else {
     // sees if there is an existing player in the newposition and demotes this user to codemonkeys
     if (this[newPosition]) {
-      const randomBool = Math.random() > 0.5;
-      if (randomBool) {
-        this.firstMonkeys.push(this[newPosition]);
-      } else {
-        this.secondMonkeys.push(this[newPosition]);
-      }
+      this.firstMonkeys.push(this[newPosition]);
     }
     this[newPosition] = playerId;
   }
-  if (['firstMonkeys', 'secondMonkeys'].includes(newPosition)) {
-    this[newPosition].push(playerId);
-  }
-  this.save();
+
 };
 
 allianceSchema.methods.members = function (length = false) {

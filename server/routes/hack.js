@@ -168,7 +168,7 @@ router.post('/:opponentId', async (req, res) => {
   const now = Date.now();
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
-
+/* 
   const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
 
   if (disallowed) {
@@ -177,7 +177,7 @@ router.post('/:opponentId', async (req, res) => {
       message: disallowed,
     });
   }
-
+ */
   const finalResult = await fightHacker(user, opponent, batteryCost, now, userIsOnline);
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
@@ -193,7 +193,7 @@ router.post('/:opponentId', async (req, res) => {
     message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
   }
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
-    message = `SHUTDOWN! ${opponent.name} is dead`;
+    message = `SHUTDOWN! Target is dead`;
   }
   finalResult.opponent = null;
 

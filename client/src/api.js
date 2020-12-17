@@ -19,12 +19,10 @@ const errHandler = (err) => {
 
 export default {
   service: service,
-
   isLoggedIn() {
     return localStorage.getItem("user") != null;
   },
 
-  // This method returns the user from the localStorage
   getLocalStorageUser() {
     return JSON.parse(localStorage.getItem("user"));
   },
@@ -32,9 +30,7 @@ export default {
   getRedirectInfo() {
     return service
       .get("/user-setup-status")
-      .then((res) => {
-        return res.data;
-      })
+      .then((res) => res.data)
       .catch(errHandler);
   },
 
@@ -76,13 +72,6 @@ export default {
       .catch(errHandler);
   },
 
-  upgradeStats(statPoint) {
-    return service
-      .post("/upgradeStats", { statPoint })
-      .then((res) => res.data)
-      .catch(errHandler);
-  },
-
   getUser() {
     return service
       .get("/profile")
@@ -96,17 +85,16 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
-
-  getAllLadderUsers() {
+  upgradeStats(statPoint) {
     return service
-      .get("/ladder")
+      .post("/upgradeStats", { statPoint })
       .then((res) => res.data)
       .catch(errHandler);
   },
 
-  getAllianceLadder() {
+  getAllLadderUsers() {
     return service
-      .get("/alliance/ladder")
+      .get("/ladder")
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -158,6 +146,7 @@ export default {
 
   // CRYPTOCURRENCY
   // CRYPTOCURRENCY
+
   getCrypto() {
     return service
       .get("/currency/")
@@ -215,6 +204,16 @@ export default {
       .catch(errHandler);
   },
 
+  getLocals() {
+    return service
+      .get("/city/locals")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  // FENCE
+  // FENCE
+
   getStashes() {
     return service
       .get("./stashes")
@@ -231,13 +230,6 @@ export default {
   buyStashes(body) {
     return service
       .post("./stashes/buy", body)
-      .then((res) => res.data)
-      .catch(errHandler);
-  },
-
-  getLocals() {
-    return service
-      .get("/city/locals")
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -452,6 +444,13 @@ export default {
       .catch(errHandler);
   },
 
+  getAllianceLadder() {
+    return service
+      .get("/alliance/ladder")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   getAllianceDashBoard() {
     return service
       .get(`/alliance/dashboard`)
@@ -482,6 +481,12 @@ export default {
   answerAllianceInvitation(id, answer) {
     return service
       .patch("./alliance/invitation", { id, answer })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  promoteAllianceMember(playerId, newTitle) {
+    return service
+      .post("./alliance/promote", { playerId, newTitle })
       .then((res) => res.data)
       .catch(errHandler);
   },

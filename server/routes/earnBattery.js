@@ -99,7 +99,6 @@ router.post('/redeem', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { githubUserName } = req.body;
-  console.log(req.body, "reqbody");
   const user = await User.findById(userId);
   if (!githubUserName) {
     return res.status(403).json({

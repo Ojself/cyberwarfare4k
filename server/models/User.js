@@ -56,7 +56,7 @@ const userSchema = new Schema(
     },
     allianceRole: {
       type: String,
-      // enum: ['boss', 'cto', 'analyst', 'firstLead', 'secondLead', 'firstMonkeys', 'secondMonkeys'],
+      // enum: ['Boss', 'CTO', 'Analyst', 'First Lead', 'Second Lead', 'First Monkeys', 'Second Monkeys'],
     },
 
     hackSkill: {
@@ -307,9 +307,9 @@ userSchema.methods.batteryDrain = function (battery) {
 
 userSchema.methods.batteryGain = function (battery) {
   this.playerStats.battery += parseInt(battery, 10);
-  if (this.playerStats.battery > 100) {
+  /* if (this.playerStats.battery > 100) {
     this.playerStats.battery = 100;
-  }
+  } */
 };
 
 userSchema.methods.bitCoinDrain = function (bitCoins) {
@@ -445,9 +445,9 @@ userSchema.methods.handleCrime = function (result) {
 };
  */
 userSchema.methods.levelUp = function () {
-  console.info(`${this.name} is leveling up from ${this.playerStats.rank}`)
+  console.info(`${this.name} is leveling up from ${this.playerStats.rank}`);
   this.playerStats.rank += 1;
-  const newRank = ranks[this.playerStats.rank]
+  const newRank = ranks[this.playerStats.rank];
 
   this.playerStats.statPoints += 5;
   this.playerStats.battery += (this.playerStats.rank * 10);
@@ -482,17 +482,17 @@ userSchema.methods.handleAttack = function (result) {
   this.fightInformation.attacksInitiated += 1;
   /* todo. add message string if opponent is dead */
 };
-userSchema.methods.handleAttackDefense = function (result, gracePeriod) {
+userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
   const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
   if (result.bodyGuardAttacked) {
-    const fullHealthBg = this.playerStats.bodyguards.find((bg) => bg >= 50);
-    this.playerStats.bodyguards[this.playerStats.bodyguards.indexOf(fullHealthBg)] -= 50;
+    const fullHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg >= 50);
+    this.playerStats.bodyguards.alive[this.playerStats.bodyguards.alive.indexOf(fullHealthBg)] -= 50;
   }
   if (result.bodyguardKilled) {
-    const lowHealthBg = this.playerStats.bodyguards.find((bg) => bg < 50);
-    this.playerStats.bodyguards.splice(this.playerStats.bodyguards.indexOf(lowHealthBg));
+    const lowHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg < 50);
+    this.playerStats.bodyguards.alive.splice(this.playerStats.bodyguards.alive.indexOf(lowHealthBg));
   }
   if (!result.bodyGuardAttacked && !result.bodyguardKilled) {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
@@ -519,7 +519,7 @@ userSchema.methods.readNotifications = function () {
 
 userSchema.methods.repair = function (percentage, cost) {
   this.bitCoinDrain(cost);
-  const multiplier = (this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall;
+  const multiplier =  1 + ((this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall / 10);
 
   this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
@@ -623,6 +623,7 @@ userSchema.methods.handleNewStatpoint = function (statName) {
 
 // todo remove from city and alliance and datacenters
 userSchema.methods.die = async function () {
+  console.info(this.name +  " is dead")
   const city = await City.findById(this.playerStats.city);
   await city.departure(this._id);
 
@@ -635,7 +636,7 @@ userSchema.methods.die = async function () {
     const alliance = await Alliance.findById(this.alliance);
     alliance.leaveAlliance(this._id);
   }
-  this.name = '';
+  this.name = `UnconfirmedPlayer${Math.random()}`;
   this.account.isSetup = false;
   this.alliance = null;
   this.allianceRole = null;
@@ -666,7 +667,7 @@ userSchema.methods.die = async function () {
     city: null,
     repairCost: 50000,
     bodyguards: {
-      alive: 0,
+      alive: [],
       bought: 0,
       price: 100000,
     },
@@ -723,63 +724,61 @@ userSchema.methods.die = async function () {
 const User = mongoose.model('User', userSchema);
 module.exports = User;
 
-
-
 const ranks = [
 
-  { 
-    expToNewRank : 10000, 
-    name : "Script kiddie", 
-    rank : 0, 
-},
-{ 
-    expToNewRank : 25000, 
-    name : "Family IT-Support", 
-    rank : 1, 
-},
-{ 
-    expToNewRank : 62500, 
-    name : "Blog Writer", 
-    rank : 2, 
-},
-{ 
-    expToNewRank : 156000, 
-    name : "HTML 'programmer'", 
-    rank : 3, 
-},
-{ 
-    expToNewRank : 390000, 
-    name : "Jr. Web Dev", 
-    rank : 4, 
-},
-{ 
-    expToNewRank : 975000, 
-    name : "Sr. Web Dev", 
-    rank : 5, 
-},
-{ 
-    expToNewRank : 2437500, 
-    name : "System Dev", 
-    rank : 6, 
-},
-{ 
-    expToNewRank : 6093314, 
-    name : "Cyber Security Dev", 
-    rank : 7, 
-},
-{ 
-    expToNewRank : 15231337, 
-    name : "Basement Dweller", 
-    rank : 8, 
-},
-{ 
-    expToNewRank : 9999999999999.0, 
-    name : "Anonymous", 
-    rank : 9, 
-},
-{ 
-    expToNewRank : Infinity, 
-    name : "Cheater", 
-    rank : 10, 
-}
-] 
+  {
+    expToNewRank: 10000,
+    name: 'Script kiddie',
+    rank: 0,
+  },
+  {
+    expToNewRank: 25000,
+    name: 'Family IT-Support',
+    rank: 1,
+  },
+  {
+    expToNewRank: 62500,
+    name: 'Blog Writer',
+    rank: 2,
+  },
+  {
+    expToNewRank: 156000,
+    name: "HTML 'programmer'",
+    rank: 3,
+  },
+  {
+    expToNewRank: 390000,
+    name: 'Jr. Web Dev',
+    rank: 4,
+  },
+  {
+    expToNewRank: 975000,
+    name: 'Sr. Web Dev',
+    rank: 5,
+  },
+  {
+    expToNewRank: 2437500,
+    name: 'System Dev',
+    rank: 6,
+  },
+  {
+    expToNewRank: 6093314,
+    name: 'Cyber Security Dev',
+    rank: 7,
+  },
+  {
+    expToNewRank: 15231337,
+    name: 'Basement Dweller',
+    rank: 8,
+  },
+  {
+    expToNewRank: 9999999999999.0,
+    name: 'Anonymous',
+    rank: 9,
+  },
+  {
+    expToNewRank: Infinity,
+    name: 'Cheater',
+    rank: 10,
+  },
+];

@@ -19,9 +19,12 @@ import DashboardInvite from "./_molecules/DashboardInvite"
 
 const dataMassager = (userArray) => {
   return userArray.map((u) => {
+    let allianceRole;
+    if (u.allianceRole) allianceRole = u.allianceRole
     return {
       value: u._id,
       label: u.name,
+      allianceRole,
     };
   });
 };
@@ -48,7 +51,21 @@ const Dashboard = ({ updateGlobalValues }) => {
     const oldInvitedMembmers = invitedMembers.slice()
     oldInvitedMembmers.unshift(data.invitedUser);
     setInvitedMembers(oldInvitedMembmers);
+  }
 
+  const promote = async ( userId, title)=> {
+    let data;
+    try {data = await api.promoteAllianceMember(userId, title)
+    }catch (err){
+      console.error('err',err)
+      return updateGlobalValues(err)
+    }
+    updateGlobalValues(data);
+    const massagedAllianceMembers = dataMassager(data.allianceMembers);
+    setMembers(massagedAllianceMembers);
+    
+    //setSelectedPromotion(massagedPromotedUser)
+    return true
   }
 
   const handleInviteChange = (selectedOption) => {
@@ -118,6 +135,7 @@ const Dashboard = ({ updateGlobalValues }) => {
               selectedPromotion={selectedPromotion}
               members={members}
               loading={loading}
+              promote={promote}
             />
           </Col>
         </Row>
@@ -126,11 +144,11 @@ const Dashboard = ({ updateGlobalValues }) => {
         <Row>
           <Col sm="12">
             <DashboardInvite
-              sendInvite={sendInvite}
-              selectedInvite={selectedInvite}
               handleInviteChange={handleInviteChange}
+              selectedInvite={selectedInvite}
               users={users}
               loading={loading}
+              sendInvite={sendInvite}
               invitedMembers={invitedMembers}
             />
           </Col>

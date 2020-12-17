@@ -42,10 +42,31 @@ const getCorrectAllianceRoleName = (role) => {
       output = "Second Lead";
       break;
     case "firstMonkeys":
-      output = "Code Monkey";
+      output = "Code Monkey #1";
       break;
     case "secondMonkeys":
-      output = "Code Monkey";
+      output = "Code Monkey #2";
+      break;
+    case "Boss":
+      output = "boss";
+      break;
+    case "Analyst":
+      output = "analyst";
+      break;
+    case "CTO":
+      output = "cto";
+      break;
+    case "First Lead":
+      output = "firstLead";
+      break;
+    case "Second Lead":
+      output = "secondLead";
+      break;
+    case "Code Monkey #1":
+      output = "firstMonkeys";
+      break;
+    case "Code Monkey #2":
+      output = "secondMonkeys";
       break;
     default:
       output = "missing role";

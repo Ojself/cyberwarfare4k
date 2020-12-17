@@ -252,7 +252,7 @@ const Information = () => {
           Current Round: <strong>2</strong>
         </h6>
         <h6>
-          Round ends: <strong>TBA</strong>
+          Round ends: <strong>3rd January</strong>
         </h6>
         <FAQ />
         <h1>SITE MAP</h1>
