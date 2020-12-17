@@ -266,7 +266,7 @@ router.post('/promote', async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: `${promotedUser.name} was promoted to ${newTitle}`,
+    message: `${promotedUser.name} has been promoted to ${newTitle}`,
     allianceMembers
   });
 });

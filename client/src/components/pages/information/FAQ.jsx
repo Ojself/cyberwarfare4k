@@ -227,7 +227,7 @@ const combatSystem = (
           Damage inflication ={" "}
           <strong>(CPU * 0.2) - (difference in rank * 1.5)</strong>
           <br />
-          EG: (200 * 0.2) - (3 * 1.5) = <strong>35.5</strong> damage
+          EG: (200 * 0.16) - (3 * 1.5) = <strong>27.5</strong> damage
           <br />
           NB! A small random number generator (rng) is applied to every attack.
           <br />

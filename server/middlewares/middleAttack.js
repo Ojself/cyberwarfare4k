@@ -145,7 +145,7 @@ const attackRecursiveBattle = (result) => {
       const { CPU } = result.user.hackSkill;
       let levelDifference = result.user.playerStats.rank - newResult.opponent.playerStats.rank;
       if (levelDifference < 0)levelDifference = 0;
-      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.2 - CPU * 0.15) + CPU * 0.15) - (levelDifference * 2);
+      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.16 - CPU * 0.11) + CPU * 0.11) - (levelDifference * 2);
       // To prevent extreme damage
       if (newResult.damageDealt > 40) {
         newResult.damageDealt = 40;
