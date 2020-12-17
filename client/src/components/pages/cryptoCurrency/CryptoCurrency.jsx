@@ -20,12 +20,12 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     currencies: null,
     loading: true,
     massagedCurrency: null,
-    Litecoin: 0,
-    Ethereum: 0,
-    Ripple: 0,
-    Monero: 0,
-    Zcash: 0,
-    Dash:0
+    Litecoin: false,
+    Ethereum: false,
+    Ripple: false,
+    Monero: false,
+    Zcash: false,
+    Dash: false
   });
 
   useEffect(() => {
@@ -70,12 +70,12 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       data = await api.buyCrypto({ name, amount })
       setCryptoState({
         ...cryptoState,
-        Litecoin: 0,
-        Ethereum: 0,
-        Ripple: 0,
-        Monero: 0,
-        Zcash: 0,
-        Dash:0
+        Litecoin: false,
+        Ethereum: false,
+        Ripple: false,
+        Monero: false,
+        Zcash: false,
+        Dash: false
       });
     }catch(err){
       console.error(err)
@@ -93,12 +93,12 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       data = await api.sellCrypto({ name, amount })
       setCryptoState({
         ...cryptoState,
-        Litecoin: 0,
-        Ethereum: 0,
-        Ripple: 0,
-        Monero: 0,
-        Zcash: 0,
-        Dash: 0,
+        Litecoin: false,
+        Ethereum: false,
+        Ripple: false,
+        Monero: false,
+        Zcash: false,
+        Dash: false
       });
    } catch(err){
      console.error(err)
@@ -202,6 +202,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                         <Input
                           step={10}
                           min={0}
+                          placeholder={0}
                           type="number"
                           name={cu.name}
                           value={cryptoState[cu.name]}

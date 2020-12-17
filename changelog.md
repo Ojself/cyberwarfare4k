@@ -23,6 +23,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Change exp gain of crimes. It's now less random and pays out slightly more
 
 ## [0.1.1] - 2020-12-16
+
 ### Hotfix
 
 - Fix bug where users gets the perks of leveling up without actually leveling up
