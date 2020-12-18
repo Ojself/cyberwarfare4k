@@ -43,10 +43,12 @@ router.get('/', async (req, res) => {
     .populate('owner', ['name']);
 
   // filter out the datacenters that don't belong to the city the user is in
-  dataCenters = dataCenters.filter((dc) => {
-    const stringifiedObjectId = JSON.stringify(dc.city.residents);
-    return stringifiedObjectId.includes(userId.toString());
-  });
+  if (!req.query.owner){
+    dataCenters = dataCenters.filter((dc) => {
+      const stringifiedObjectId = JSON.stringify(dc.city.residents);
+      return stringifiedObjectId.includes(userId.toString());
+    });
+  }
   res.status(200).json({
     dataCenters,
     message: 'datacenters loaded...',

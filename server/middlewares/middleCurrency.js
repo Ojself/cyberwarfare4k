@@ -1,11 +1,9 @@
-const { existingValue } = require('./middleHelpers');
-
 // Sees if everything is in order to sell currency
 const soldRouteCriterias = (user, currency, amount) => {
-  if (!existingValue(user)) {
+  if (!user) {
     return "User doesn't exist";
   }
-  if (!existingValue(currency)) {
+  if (!currency) {
     return "Currency doesn't exist";
   }
   if (!checkUserStock(user, currency, amount)) {
@@ -16,7 +14,7 @@ const soldRouteCriterias = (user, currency, amount) => {
 
 // Sees if everything is in order to buy currency
 const buyRouteCriterias = (user, currency, amount) => {
-  if (!existingValue(currency)) {
+  if (!currency) {
     return "Currency doesn't exist";
   }
   if (!checkCurrencyRequiredLevel(user, currency)) {
@@ -30,6 +28,9 @@ const buyRouteCriterias = (user, currency, amount) => {
   }
   if (!checkCurrencyAvailablitiy(currency, amount)) {
     return "You're can't buy more than what is available in the market";
+  }
+  if (amount <=0){
+    return "You can't buy a negative amount of currency.."
   }
   return null;
 };

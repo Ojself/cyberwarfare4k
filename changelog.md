@@ -8,6 +8,13 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - More options for the alliance in the dashboard
 - Easy overview when buying crypto currency
 
+## [0.1.4] - 2020-12-18
+
+- Datacenter heal price is now visible in the profile (prototype)
+- Bug fix where personal datacenters were not visible when player changed VPN
+- Critical bug fix where you could buy negative amount of crypto currency
+- Minor gui fixes
+
 ## [0.1.3] - 2020-12-17
 
 - Change repair cost do be more dynamic

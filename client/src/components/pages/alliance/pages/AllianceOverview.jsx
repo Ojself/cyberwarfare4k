@@ -11,9 +11,12 @@ const AllianceOverview = (props) => {
     console.log(props,'props')
     
     const getAlliance = async () => {
-      const allianceId = props.allianceId
-        ? props.allianceId
-        : props.match.params.id;
+      const allianceIdFromUrl = window.location.pathname.match(/[a-f\d]{24}/)
+      
+      const allianceId = allianceIdFromUrl
+      ? allianceIdFromUrl[0]
+      : props.allianceId
+      
       let data;
       try {
         data = await api.getAlliance(allianceId);
@@ -172,7 +175,7 @@ const AllianceOverview = (props) => {
 
   return (
     <div className="page-container">
-      <h1 className="">{loading ? "Alliance" : alliance.name}</h1>
+      {props.enableHeader && <h1 className="">{loading ? "Alliance" : alliance.name}</h1>}
       {alliance ? hierarchyTree : noAllianceFound}
     </div>
   );

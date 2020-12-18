@@ -158,7 +158,10 @@ const App = () => {
           )}
         />
 
-        <Route path="/alliance/:id" component={AllianceOverview} />
+        <Route path="/alliance/:id"
+        render={()=> (
+          <AllianceOverview enableHeader={true}/>
+        )}  />
         <Route
           path="/fence"
           render={() => (

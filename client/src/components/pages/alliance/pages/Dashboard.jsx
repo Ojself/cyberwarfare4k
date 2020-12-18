@@ -114,7 +114,6 @@ const Dashboard = ({ updateGlobalValues }) => {
       <TabPane tabId="1">
         <Row>
           <Col sm="12">
-            {/* <p>Here you can see which cities you have fence</p> */}
             {!loading && (
               <DashboardOverview
                 allianceId={alliance._id}

@@ -34,6 +34,7 @@ const bitcoinIcon = <span style={{ color: "#F08F18" }}>&#8383;</span>;
 
 const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
     const [dataCenters, setDataCenters] = useState([]);
+    const [buttonText, setButtonText] = useState("Heal");
 
     useEffect(()=>{
         const getUserDataCenters = async () => {
@@ -49,8 +50,21 @@ const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
     const getDataCenterActionButton = (d) => {
     const percentage = (d.currentFirewall / d.maxFirewall) * 100;
     let disabled = percentage >= 100
+    const healPrice = (d.maxFirewall - d.currentFirewall) * 100;
+    
   
-    return <Button onClick={()=>handleHeal(d._id)} disabled={disabled} color="outline-warning">Heal</Button>;
+    return (
+      <Button
+        onMouseOver={() => setButtonText(healPrice)}
+        onMouseOut={() => setButtonText("Heal")}
+        onClick={() => handleHeal(d._id)}
+        disabled={disabled}
+        color="outline-warning"
+        className="col-12"
+      >
+        {buttonText}
+      </Button>
+    );
 };
 
     const handleHeal = async (id)=> {
