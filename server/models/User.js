@@ -510,7 +510,12 @@ userSchema.methods.handleAttack = function (result) {
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
-  const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardAttacked ? `dealt ${result.damageDealt} damage` : 'killed a bodyguard!'}!`;
+  let notificationMessage;
+  if (result.bodyguardAttacked || result.bodyguardKilled) {
+    notificationMessage = `${result.user.name} attacked you and ${result.bodyguardAttacked ? 'wounded your bodyguard' : 'killed a bodyguard'}!`;
+  } else {
+    notificationMessage = `${result.user.name} attacked you and dealt ${result.damageDealt} damage!`;
+  }
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
   if (result.bodyguardAttacked) {
