@@ -93,37 +93,38 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   });
 });
 
+const isGraced = (user, now) => user.fightInformation.gracePeriod > now;
 // @GET
 // PRIVATE
 // Retrives player profile
-
 router.get('/profile', isLoggedIn, async (req, res) => {
   if (!req.user) {
     return;
   }
   const userId = req.user._id;
 
-  try {
-    const user = await User.findById(userId)
-      .populate('marketPlaceItems.CPU')
-      .populate('marketPlaceItems.Firewall')
-      .populate('marketPlaceItems.AntiVirus')
-      // .populate('marketPlaceItems.Encryption')
-      .populate('alliance', 'name')
-      .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
-    const messages = await getInbox(userId);
-    res.status(200).json({
-      success: true,
-      message: 'user loaded..',
-      user,
-      messages,
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      message: `error: ${JSON.stringify(err)}`,
-    });
+  const user = await User.findById(userId)
+    .populate('marketPlaceItems.CPU')
+    .populate('marketPlaceItems.Firewall')
+    .populate('marketPlaceItems.AntiVirus')
+  // .populate('marketPlaceItems.Encryption')
+    .populate('alliance', 'name')
+    .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
+  const messages = await getInbox(userId);
+
+  const now = Date.now();
+  const userIsGracedMoreThanFiveMinuts = isGraced(user, (now + (1000 * 60 * 5)));
+  if (userIsGracedMoreThanFiveMinuts) {
+    // Sets the graceperiod to 5 minutes because the user logged on
+    user.setGracePeriod(now + (1000 * 60 * 5));
+    await user.save();
   }
+  res.status(200).json({
+    success: true,
+    message: 'user loaded..',
+    user,
+    messages,
+  });
 });
 
 // @GET

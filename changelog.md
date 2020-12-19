@@ -11,6 +11,8 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 ## [0.1.5] - 2020-12-19
 
 - Added Christmas event
+- Fix wrong notifications when attacking other players
+- If a user have more than 5 minute in graceperiod and logs on, it get's set to 5 minutes.
 
 ## [0.1.4] - 2020-12-18
 

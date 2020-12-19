@@ -303,9 +303,6 @@ userSchema.methods.handleItemPurchase = function (item) {
 };
 
 userSchema.methods.giveHackSkill = function (amount = 1, skill) {
-  if (!this.hackSkill[skill]) {
-    return;
-  }
   if (this.marketPlaceItems[skill] && this.hackSkill[skill] - this.marketPlaceItems[skill].bonus > 100) {
     return;
   }
