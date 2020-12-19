@@ -98,7 +98,7 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
     won: false,
     victimDead: false,
     bodyguardKilled: false,
-    bodyGuardAttacked: false,
+    bodyguardAttacked: false,
     playerGains: {
       batteryCost,
     },
@@ -138,7 +138,7 @@ const attackRecursiveBattle = (result) => {
       const firstBg = newResult.opponent.playerStats.bodyguards.alive[0];
       // more than 50 hp
       if (firstBg > 50) {
-        newResult.bodyGuardAttacked = true;
+        newResult.bodyguardAttacked = true;
       } else {
         newResult.bodyguardKilled = true;
       }
@@ -146,7 +146,9 @@ const attackRecursiveBattle = (result) => {
       const { CPU } = result.user.hackSkill;
       let levelDifference = result.user.playerStats.rank - newResult.opponent.playerStats.rank;
       if (levelDifference < 0)levelDifference = 0;
-      newResult.damageDealt = Math.round(Math.random() * (CPU * 0.16 - CPU * 0.11) + CPU * 0.11) - (levelDifference * 2);
+      const min = CPU * 0.11;
+      const max = CPU * 0.16;
+      newResult.damageDealt = Math.round(Math.random() * (max - min) + min) - (levelDifference * 2);
       // To prevent extreme damage
       if (newResult.damageDealt > 40) {
         newResult.damageDealt = 40;

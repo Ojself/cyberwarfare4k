@@ -510,10 +510,10 @@ userSchema.methods.handleAttack = function (result) {
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
-  const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? `dealt ${result.damageDealt} damage` : 'killed a bodyguard!'}!`;
+  const notificationMessage = `${result.user.name} attacked you and ${result.bodyguardAttacked ? `dealt ${result.damageDealt} damage` : 'killed a bodyguard!'}!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
-  if (result.bodyGuardAttacked) {
+  if (result.bodyguardAttacked) {
     this.playerStats.bodyguards.alive[0] = 50;
     this.markModified('playerStats.bodyguards.alive.0');
   }
@@ -521,7 +521,7 @@ userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
     this.playerStats.bodyguards.alive.shift();
     this.markModified('playerStats.bodyguards.alive.0');
   }
-  if (!result.bodyGuardAttacked && !result.bodyguardKilled) {
+  if (!result.bodyguardAttacked && !result.bodyguardKilled) {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);
   }
   this.fightInformation.attacksVictim += 1;
