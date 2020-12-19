@@ -7,7 +7,6 @@ const { saveAndUpdateUser } = require('./helper');
 const emojis = [
   '🎄',
   '❄️',
-  '🎁',
   '🎅',
   '🌟',
   '🍪',
