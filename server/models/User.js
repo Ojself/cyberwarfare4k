@@ -510,16 +510,20 @@ userSchema.methods.handleAttack = function (result) {
   /* todo. add message string if opponent is dead */
 };
 userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
-  const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? 'killed a bodyguard!' : `dealt ${result.damageDealt} damage`}!`;
+  const notificationMessage = `${result.user.name} attacked you and ${result.bodyGuardAttacked ? `dealt ${result.damageDealt} damage` : 'killed a bodyguard!' }!`;
   this.sendNotification(notificationMessage, result.now);
   this.setGracePeriod(gracePeriod);
   if (result.bodyGuardAttacked) {
-    const fullHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg >= 50);
-    this.playerStats.bodyguards.alive[this.playerStats.bodyguards.alive.indexOf(fullHealthBg)] -= 50;
+    const fullHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg > 50);
+    const bgIndex = this.playerStats.bodyguards.alive.indexOf(fullHealthBg)
+    this.markModified(`playerStats.bodyguards.alive.${bgIndex}`);
+    this.playerStats.bodyguards.alive[bgIndex] -= 50;
   }
   if (result.bodyguardKilled) {
-    const lowHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg < 50);
-    this.playerStats.bodyguards.alive.splice(this.playerStats.bodyguards.alive.indexOf(lowHealthBg));
+    const lowHealthBg = this.playerStats.bodyguards.alive.find((bg) => bg <= 50);
+    const bgIndex = this.playerStats.bodyguards.alive.indexOf(lowHealthBg);
+    this.markModified(`playerStats.bodyguards.alive.${bgIndex}`); // tODO, issue here?
+    this.playerStats.bodyguards.alive.splice(bgIndex);
   }
   if (!result.bodyGuardAttacked && !result.bodyguardKilled) {
     this.playerStats.currentFirewall -= parseInt(result.damageDealt, 10);

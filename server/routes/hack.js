@@ -187,13 +187,16 @@ router.post('/:opponentId', async (req, res) => {
   finalResult.now = null;
 
   let message;
+  console.log(finalResult, 'final');
   if (finalResult.bodyguardKilled) {
     message = `You attacked ${opponent.name} and killed a bodyguard!`;
+  } else if (finalResult.bodyguardAttacked) {
+    message = `You attacked ${opponent.name} and damaged a bodyguard!`;
   } else {
     message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
   }
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
-    message = `SHUTDOWN! Target is dead`;
+    message = 'SHUTDOWN! Target is dead';
   }
   finalResult.opponent = null;
 
