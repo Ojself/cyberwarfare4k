@@ -191,7 +191,7 @@ router.post('/:opponentId', async (req, res) => {
     message = `You attacked ${opponent.name} and killed a bodyguard!`;
   } else if (finalResult.bodyguardAttacked) {
     message = `You attacked ${opponent.name} and damaged a bodyguard!`;
-  } else {
+  } else if (!finalResult.bodyguardAttacked && !finalResult.bodyguardKilled) {
     message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
   }
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
