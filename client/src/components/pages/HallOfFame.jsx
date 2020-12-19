@@ -1,6 +1,7 @@
 import React from 'react'
+import Xmas from "../pages/_molecules/Xmas";
 
-const HallOfFame = () => {
+const HallOfFame = ({updateGlobalValues, user}) => {
     return (
       <div className="page-container">
         <h1>Hall Of Fame</h1>
@@ -64,6 +65,13 @@ const HallOfFame = () => {
           <div className="my-4 d-flex justify-content-around">
             <div className="w-50">
               <h5 className="text-warning">Most VPN changes</h5>
+              <Xmas
+                id={"hof"}
+                size={"l"}
+                updateGlobalValues={updateGlobalValues}
+                user={user}
+              />
+              
               <p>
                 <strong>1.</strong> NGVY3N (25)
               </p>

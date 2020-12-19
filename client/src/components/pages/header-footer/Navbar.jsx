@@ -45,8 +45,14 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
   return (
     <div>
       <Navbar color="dark" expand="md">
-        <NavbarBrand href="/">
-          <strong className="text-success">CHW4K</strong>
+        <NavbarBrand href="/my-profile">
+          <strong>
+            <span className="text-success">C</span>
+            <span className="text-danger">H</span>
+            <span className="text-success">W</span>
+            <span className="text-danger">4</span>
+            <span className="text-success">K</span>
+          </strong>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse navbar>

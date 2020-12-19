@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import { Button, Form, FormGroup } from "reactstrap";
 import Select from "react-select";
+import Xmas from "../pages/_molecules/Xmas";
 
 const dataMassager = (cities) => {
   const massagedCities = cities.map((city) => {
@@ -15,7 +16,7 @@ const dataMassager = (cities) => {
   return massagedCities;
 };
 
-const VPN = ({ updateGlobalValues }) => {
+const VPN = ({ updateGlobalValues,user }) => {
   const [vpnState, setVpnState] = useState({
     cities: null,
     massagedCities: null,
@@ -68,7 +69,6 @@ const VPN = ({ updateGlobalValues }) => {
       </h6>
     </div>
   );
-
   return (
     <div className="page-container">
       <h1 className="display-4">VPN</h1>
@@ -83,6 +83,14 @@ const VPN = ({ updateGlobalValues }) => {
           />
           {priceOverview}
         </FormGroup>
+      {vpnState.selectedOption && vpnState.selectedOption.label === "Hanoi" && (
+        <Xmas
+          id={"vpn"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />
+      )}
         <Button color="outline-info" onClick={() => handleTravel()}>
           Change VPN
         </Button>

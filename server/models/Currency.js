@@ -28,12 +28,9 @@ currencySchema.methods.purchaseHandle = function (amount, userId) {
   this.available -= amount;
   this.lastPurchasedBy = userId;
   // if the purchase is bigger than 8% of market cap. crush some coins
-  // and raise the price limits
-  if (amount > ((this.maxAmountHold - 2) / 100) * this.marketCap) {
-    this.lowerPrice *= 1.05;
-    this.higherPrice *= 1.1;
+  /* if (amount) {
     this.available -= (this.available * 0.01);
-  }
+  } */
   if (this.avialable < 0) {
     this.available = 0;
   }
@@ -42,6 +39,9 @@ currencySchema.methods.purchaseHandle = function (amount, userId) {
 
 currencySchema.methods.sellHandle = function (amount) {
   this.available += parseInt(amount, 10);
+  if (this.available > this.marketCap) {
+    this.marketCap = this.available;
+  }
   this.save();
 };
 

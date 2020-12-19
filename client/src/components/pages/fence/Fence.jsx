@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import { Button, Form, FormGroup, Input, Table } from "reactstrap";
+import Xmas from "../_molecules/Xmas";
+
 const MAX_ALLOWED_STASH = 50
 
 const getMaxBuyingVolume = (user, stashes,cityMultiplier)=>{
@@ -39,6 +41,7 @@ const objectIsEmpty = (obj) => {
 export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const [shopStash, setShopStash] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showGift, setShowGift] = useState(false);
   const [transactionState, setTransactionState] = useState({
     "Cables": 0,
     "Computer": 0,
@@ -66,6 +69,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   
 
   const handleTransactionChange = (event)=> {
+    setShowGift(true)
     setTransactionState({
       ...transactionState,
       [event.target.name]: event.target.value
@@ -238,6 +242,12 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
       <h1>
         <span className="text-warning">Fence</span> in {city}
       </h1>
+      {showGift && (<Xmas
+        id={"fence"}
+        size={"l"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />)}
       <div className="content d-flex justify-content-center">
         {tableOverview}
       </div>

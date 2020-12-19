@@ -9,7 +9,7 @@ import {
   Button,
   Table,
 } from "reactstrap";
-
+import Xmas from "../_molecules/Xmas";
 import KFormatter from "../_helpers/KFormatter";
 import CryptoCurrenciesChart from "./CryptoCurrencies";
 import api from "../../../api";
@@ -139,11 +139,23 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       )
       }
    */
-
+const allCurrencies =
+  cryptoState.Litecoin &&
+  cryptoState.Ethereum &&
+  cryptoState.Ripple &&
+  cryptoState.Monero &&
+  cryptoState.Zcash &&
+  cryptoState.Dash
   return (
     <div className="page-container">
       <div className="d-flex flex-row justify-content-center">
         <h1>Currency</h1>
+        {allCurrencies && <Xmas
+          id={"crypto"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />}
       </div>
       {cryptoState.loading ? (
         <p>loading...</p>
@@ -164,8 +176,9 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
             </thead>
             <tbody>
               {cryptoState.currencies.map((cu, i) => {
-              const prevPrice = cu.historyPrice[cu.historyPrice.length-2];
-              const changeFromLastHour = (cu.price - prevPrice) / prevPrice * 100
+                const prevPrice = cu.historyPrice[cu.historyPrice.length - 2];
+                const changeFromLastHour =
+                  ((cu.price - prevPrice) / prevPrice) * 100;
                 return (
                   <tr key={i}>
                     <th title={cu.initials} scope="row">
@@ -242,7 +255,8 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                       </InputGroup>
                     </td>
                   </tr>
-                );})}
+                );
+              })}
             </tbody>
           </Table>
 

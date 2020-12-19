@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import Xmas from "../pages/_molecules/Xmas";
 import {
   Button,
   Form,
@@ -19,7 +20,7 @@ import {
 /* rerender after add */
 /* styling */
 
-const WantedList = ({ updateGlobalValues }) => {
+const WantedList = ({ updateGlobalValues,user }) => {
   const [wantedState, setWantedState] = useState({
     users: [],
     bountyUsers: [],
@@ -156,12 +157,15 @@ const WantedList = ({ updateGlobalValues }) => {
         </tr>
       </thead>
       <tbody>
+        
         {wantedState.bountyUsers.map((user, i) => (
           <tr key={user._id}>
             <th scope="row">
               <Link className="text-light" to={`/hacker/${user._id}`}>
                 {user.name}
               </Link>
+
+              
             </th>
             <td>
               {user.alliance ? (
@@ -239,6 +243,13 @@ const WantedList = ({ updateGlobalValues }) => {
       ) : (
         <>
           <div> {ComponentAddUnlistedPlayer} </div>
+
+          <Xmas
+            id={"wanted"}
+            size={"l"}
+            updateGlobalValues={updateGlobalValues}
+            user={user}
+          />
           <div className="content"> {ComponentBountyUsersTable} </div>
         </>
       )}

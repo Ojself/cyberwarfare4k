@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import api from "../../../api";
+import Xmas from "../_molecules/Xmas";
 import { Link } from "react-router-dom";
 import {
   Form,
@@ -28,7 +29,7 @@ import classnames from "classnames";
 // alternate background color for easier reading
 // todo, linking color of names
 
-const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
+const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [users, setUsers] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -146,6 +147,28 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
   return (
     <div className="page-container">
       <h1>MessageCenter</h1>
+      <Xmas
+        id={"messages"}
+        size={"l"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
+      {selectedOption && (
+        <Xmas
+          id={"messagesHidden"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />
+      )}
+      {textArea.length > 5 && (
+        <Xmas
+          id={"messagesHidden2"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />
+      )}
       <div className="content d-flex flex-column w-50 ">
         <Nav tabs className="">
           {["Inbox", "Sent", "Compose"].map((t, i) => {
@@ -197,13 +220,16 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
                               {name}
                             </Link>
                           </ListGroupItemHeading>
-                          <ListGroupItemText>{`${date}: ${message}`}</ListGroupItemText>
+                          <ListGroupItemText className="mb-4">{`${date}: ${message}`}</ListGroupItemText>
                           <div className="d-flex justify-content-center flex-column">
                             {allianceInvitation ? (
                               <div className="d-flex justify-content-around flex-row">
                                 <Button
                                   onClick={() =>
-                                    answerAllianceInvitation(allianceInvitation,false)
+                                    answerAllianceInvitation(
+                                      allianceInvitation,
+                                      false
+                                    )
                                   }
                                   color="danger"
                                 >
@@ -211,7 +237,10 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
                                 </Button>
                                 <Button
                                   onClick={() =>
-                                    answerAllianceInvitation(allianceInvitation,true)
+                                    answerAllianceInvitation(
+                                      allianceInvitation,
+                                      true
+                                    )
                                   }
                                   color="success"
                                 >
@@ -220,7 +249,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages }) => {
                               </div>
                             ) : (
                               <Button
-                                className=""
+                                className="w-25 m-auto"
                                 onClick={() => {
                                   handleReply(name);
                                 }}

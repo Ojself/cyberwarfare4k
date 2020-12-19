@@ -8,6 +8,10 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - More options for the alliance in the dashboard
 - Easy overview when buying crypto currency
 
+## [0.1.5] - 2020-12-19
+
+- Added Christmas event
+
 ## [0.1.4] - 2020-12-18
 
 - Datacenter heal price is now visible in the profile (prototype)
@@ -30,8 +34,6 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Change exp gain of crimes. It's now less random and pays out slightly more
 
 ## [0.1.1] - 2020-12-16
-
-### Hotfix
 
 - Fix bug where users gets the perks of leveling up without actually leveling up
 - Set max Battery to 200 for subscribers

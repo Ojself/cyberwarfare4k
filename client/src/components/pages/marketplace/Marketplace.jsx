@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../../api";
 
 import Itemtable from "./ItemTable";
+import Xmas from "../_molecules/Xmas";
 
 const MarketPlace = ({ user, updateGlobalValues }) => {
   const [marketPlaceState, setMarketPlaceState] = useState({
@@ -52,6 +53,12 @@ const MarketPlace = ({ user, updateGlobalValues }) => {
   return (
     <div>
       <h1>Marketplace</h1>
+      <Xmas
+        id={"marketplace"}
+        size={"l"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
       {marketPlaceState.loading ? <p>loading..</p> : marketPlaceOverview}
     </div>
   );

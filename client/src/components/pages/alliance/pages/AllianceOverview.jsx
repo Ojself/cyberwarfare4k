@@ -8,7 +8,6 @@ const AllianceOverview = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(props,'props')
     
     const getAlliance = async () => {
       const allianceIdFromUrl = window.location.pathname.match(/[a-f\d]{24}/)

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
-
+import Xmas from "../../../pages/_molecules/Xmas";
 import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
-const CrimeTerminal = ({ result }) => {
+const CrimeTerminal = ({ result,user,updateGlobalValues }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
     progressMaxHp: 100,
@@ -36,7 +36,7 @@ const CrimeTerminal = ({ result }) => {
       ...terminalState,
       showResults: true,
     });
-    blinkDecorationColor();
+    decorateTerminalRed();
   };
 
   const giveLostString = () => {
@@ -77,24 +77,24 @@ const CrimeTerminal = ({ result }) => {
       </p>
       <p>XP: {result.playerGains.exp}</p>
       {result.playerGains.levelUp && <strong>NEW RANK!</strong>}
+
+      <Xmas
+        id={"crime"}
+        size={"l"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
       {/* <p>skill: {result.playerGains.skillGained}</p>
       <p>stashGained: {result.playerGains.skillGained}</p> */}
     </div>
   );
-  const blinkDecorationColor = () => {
+  const decorateTerminalRed = () => {
     if (result.won) return;
     setTerminalState({
       ...terminalState,
       decorationColor: "#ab0000",
       progressBarColor: "danger",
     });
-    /* This will blink it. Current behaviour is perma red terminal header */
-    /* setTimeout(() => {
-      setTerminalState({
-        ...terminalState,
-        decorationColor: "#08fe00",
-      });
-    }, 350); */
   };
 
   const terminalHeader = {

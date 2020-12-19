@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../../api";
 import CrimeTerminal from "./crimeTerminal";
+
 import { Table, UncontrolledTooltip } from "reactstrap";
 
 // props will be deconstr in parameters ({nameOfProp})
-const HackCrimes = ({ updateGlobalValues }) => {
+const HackCrimes = ({ updateGlobalValues,user }) => {
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
 
@@ -87,7 +88,11 @@ const HackCrimes = ({ updateGlobalValues }) => {
           </tbody>
         </Table>
 
-        <CrimeTerminal result={result} />
+        <CrimeTerminal
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+          result={result}
+        />
       </div>
     </div>
   );

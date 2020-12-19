@@ -1,6 +1,7 @@
 import React from "react";
+import Xmas from "../_molecules/Xmas";
 
-const Footer = () => {
+const Footer = ({user, updateGlobalValues}) => {
   const currentYear = new Date(Date.now()).getFullYear();
   return (
     <footer
@@ -27,8 +28,14 @@ const Footer = () => {
             rel="noopener noreferrer"
             href="https://github.com/Ojself/cyberwarfare4k/blob/master/changelog.md"
           >
-            0.1.4
+            0.1.5
           </a>{" "}
+          <Xmas
+            id={"footer"}
+            size={"m"}
+            updateGlobalValues={updateGlobalValues}
+            user={user}
+          />
         </div>
       </div>
     </footer>

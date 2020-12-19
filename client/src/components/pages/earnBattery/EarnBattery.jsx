@@ -305,6 +305,8 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
         <h1 className="w-25">Earn battery</h1>
         {!globalLoading && user &&(
         <GlobalIncome
+        user = {user}
+        updateGlobalValues={updateGlobalValues}
           batteryBonuses={batteryBonuses}
           userHasStarred={userHasStarred}
           userSubscription={user.account.subscription}

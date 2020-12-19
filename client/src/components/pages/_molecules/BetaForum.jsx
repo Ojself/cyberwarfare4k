@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import api from "../../../api";
 import TextInput from "./TextInput";
+import Xmas from "../_molecules/Xmas";
 
 
 import { dateConverter } from "../_helpers";
@@ -81,6 +82,14 @@ const handleCommentLike = async (id) => {
     <div className="page-container">
       <h1>{forumType !== "global" && "Alliance"} Forum</h1>
       <h6 className="text-warning">BETA</h6>
+      {textArea && textArea.length > 5 && (
+        <Xmas
+          id={"forumHidden"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />
+      )}
       <div className="content">
         {user && (
           <TextInput
@@ -113,6 +122,12 @@ const handleCommentLike = async (id) => {
           <p>No posts</p>
         )}
       </div>
+      <Xmas
+        id={"forum"}
+        size={"m"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
     </div>
   );
 };

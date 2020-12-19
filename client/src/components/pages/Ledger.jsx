@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import classnames from "classnames";
 import Select from "react-select";
+import Xmas from "../pages/_molecules/Xmas";
 
 import {
   InputGroup,
@@ -188,6 +189,12 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                   >
                     Deposit
                   </Button>
+                  <Xmas
+                    id={"ledger"}
+                    size={"l"}
+                    updateGlobalValues={updateGlobalValues}
+                    user={user}
+                  />
                   <Button
                     color="outline-light"
                     className="w-75 my-2 mx-auto"
@@ -206,6 +213,12 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
             <Row>
               <Col sm="12">
                 <Card body className="text-light">
+                  {ledgerState.selectedOption && ledgerState.selectedOption.label && (<Xmas
+                    id={"ledgerHidden"}
+                    size={"l"}
+                    updateGlobalValues={updateGlobalValues}
+                    user={user}
+                  />)}
                   <CardTitle>Transfer Bitcoins</CardTitle>
                   <CardText>5% admission fee </CardText>
                   <CardText>

@@ -1,5 +1,9 @@
 import React, {  useState } from "react";
+
+import Xmas from "../_molecules/Xmas";
+
 import {
+  Button,
   Table,
   TabContent,
   TabPane,
@@ -35,6 +39,38 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     const result = await api.upgradeStats(upgradeName);
     updateGlobalValues(result);
   };
+
+/* XMAS EVENT */
+const finishEvent = async ()=> {
+  let data;
+  try {
+    data = await api.xmasRedeem()
+  }catch (err){
+    console.error('error', err)
+    return updateGlobalValues(err)
+  }
+  updateGlobalValues(data)
+}
+
+const XmasOverview = ({list})=> {
+const count = Object.values(list).filter(Boolean).length
+if (count >= 24){
+  return (
+    <Button onClick={()=> finishEvent()} color="outline-light">
+      Finish event!
+    </Button>
+  )
+}
+return (
+  <li className="list-group-item bg-dark mb-2">
+    <strong>❄️ Gifts found: {count}/24 ❄️</strong>
+  </li>
+);
+  
+}
+/* XMAS EVENT */
+
+
 
   const getStashColor = (index) => {
     // todo. color should be consistent
@@ -90,6 +126,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             />
         </div> */}
       <div>
+        
         <img
           style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
           src={user.account.avatar}
@@ -118,7 +155,8 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         }
       )}
       <div className="my-4"></div>
-      {["CPU", "AntiVirus"].map((h) => { // "Encryption" <--- Add to array to see stats.
+      {["CPU", "AntiVirus"].map((h) => {
+        // "Encryption" <--- Add to array to see stats.
         return (
           <ProgressBarHackSkill
             color="primary"
@@ -131,7 +169,14 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           />
         );
       })}
-      <div className="my-4"></div>
+      <div className="my-4">
+        <Xmas
+          id={"profile"}
+          size={"l"}
+          updateGlobalValues={updateGlobalValues}
+          user={user}
+        />
+      </div>
       <ProgressBarExp
         color="warning"
         upgrade={(e) => handleUpgrade(e)}
@@ -147,13 +192,16 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         max={user.playerStats.maxFirewall}
         hasStatPoints={!!user.playerStats.statPoints}
       />
-      <div title="Bodyguards" className="d-flex justify-content-center">{bodyGuardDots(user.playerStats.bodyguards.alive)}</div>
+      <div title="Bodyguards" className="d-flex justify-content-center">
+        {bodyGuardDots(user.playerStats.bodyguards.alive)}
+      </div>
     </div>
   );
 
   const profileRankOverview = !globalLoading && (
     <div className="col-4">
       <ul className="list-group">
+        {!user.xmaxDone && <XmasOverview list={user.xmas}/>}
         <li className="list-group-item bg-dark mb-2">
           <SubscriptionIcon subscription={user.account.subscription} />
           {user.playerStats.rankName}
@@ -253,6 +301,12 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
+                <Xmas
+                  id={"profileCrypto"}
+                  size={"m"}
+                  updateGlobalValues={updateGlobalValues}
+                  user={user}
+                />
                 <Table responsive className="text-light">
                   <thead>
                     <tr>
@@ -312,9 +366,12 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             <Row>
               <Col sm="12">
                 <div className="d-flex row">
-                  {user &&<MiniDataCenterOverview
-                    owner={user._id} updateGlobalValues={updateGlobalValues}
-                  />}
+                  {user && (
+                    <MiniDataCenterOverview
+                      owner={user._id}
+                      updateGlobalValues={updateGlobalValues}
+                    />
+                  )}
                 </div>
               </Col>
             </Row>

@@ -163,7 +163,6 @@ router.put('/:commentId', async (req, res) => {
 // deletes comment
 router.delete('/:id', async (req, res) => {
   const { commentId } = req.body;
-  console.log(req.query, 'q', req.params, 'param');
   // const { threadId,forumId } = req.body
   const userId = req.user._id;
   const comment = await BetaForum.findById(commentId);

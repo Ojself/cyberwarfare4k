@@ -1,16 +1,26 @@
-import React from "react"
+import React, {useState} from "react"
 import {Button, ListGroupItem,
   ListGroup,
-  UncontrolledPopover,
+  Popover,
   PopoverHeader,
   PopoverBody} from 'reactstrap'
 
-const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
+  import Xmas from "../../pages/_molecules/Xmas";
+
+const GlobalIncome = ({
+  batteryBonuses,
+  userHasStarred,
+  userSubscription,
+  updateGlobalValues,
+  user,
+}) => {
   const githubBonus = userHasStarred ? 1 : 0;
   const subscriptionBonus = batteryBonuses[userSubscription] || 0;
   const totalBonus = 6 + githubBonus + subscriptionBonus;
   const totalCheckMark = userHasStarred && !!userSubscription;
+const [popoverOpen, setPopoverOpen] = useState(false);
 
+const toggle = () => setPopoverOpen(!popoverOpen);
   const getIcon = (active = false) => {
     return active ? <i className={`text-success fas fa-check`}></i> : "";
   };
@@ -24,17 +34,24 @@ const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
         </span>{" "}
         bonuses
       </Button>
-      <UncontrolledPopover
+      <Popover
         style={{ borderRadius: "2%", border: "1px #fbac73 solid" }}
-        trigger="focus"
         placement="left"
         target="showIncome"
+        isOpen={popoverOpen}
+        toggle={toggle}
       >
         <PopoverHeader>
           Hourly Income{" "}
           <span role="img" aria-label="battery">
             &#9889;
           </span>{" "}
+          <Xmas
+            id={"earnBattery"}
+            size={"m"}
+            updateGlobalValues={updateGlobalValues}
+            user={user}
+          />
         </PopoverHeader>
         <PopoverBody>
           <ListGroup>
@@ -54,6 +71,7 @@ const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
               )}{" "}
               Patreon Supporter {getIcon(userSubscription)}
             </ListGroupItem>
+
             <ListGroupItem>
               <strong>
                 <span className="text-warning">{totalBonus}</span> Total
@@ -62,7 +80,7 @@ const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
             </ListGroupItem>
           </ListGroup>
         </PopoverBody>
-      </UncontrolledPopover>
+      </Popover>
     </div>
   );
 };

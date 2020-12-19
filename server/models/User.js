@@ -240,6 +240,33 @@ const userSchema = new Schema(
       megarpg: { type: String },
       chessathor: { type: String },
     },
+    xmaxDone: false,
+    xmas: {
+      profile: false,
+      profileCrypto: false,
+      faq: false,
+      siteMap: false,
+      informationHidden: false,
+      footer: false,
+      earnBattery: false,
+      hof: false,
+      wanted: false,
+      crime: false,
+      topAlliances: false,
+      forum: false,
+      forumHidden: false,
+      serviceSupport: false,
+      vpn: false,
+      crypto: false,
+      marketplace: false,
+      fence: false,
+      ledger: false,
+      ledgerHidden: false,
+      messages: false,
+      messagesHidden: false,
+      messagesHidden2: false,
+      statusbar: false,
+    },
   },
   {
     timestamps: {
@@ -519,7 +546,7 @@ userSchema.methods.readNotifications = function () {
 
 userSchema.methods.repair = function (percentage, cost) {
   this.bitCoinDrain(cost);
-  const multiplier =  1 + ((this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall / 10);
+  const multiplier = 1 + ((this.playerStats.maxFirewall - this.playerStats.currentFirewall) / this.playerStats.currentFirewall / 10);
 
   this.playerStats.currentFirewall += (percentage * this.playerStats.maxFirewall) / 100;
 
@@ -623,7 +650,7 @@ userSchema.methods.handleNewStatpoint = function (statName) {
 
 // todo remove from city and alliance and datacenters
 userSchema.methods.die = async function () {
-  console.info(this.name +  " is dead")
+  console.info(`${this.name} is dead`);
   const city = await City.findById(this.playerStats.city);
   await city.departure(this._id);
 

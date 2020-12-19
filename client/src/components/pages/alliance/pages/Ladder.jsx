@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import api from "../../../../api";
+import Xmas from "../../../pages/_molecules/Xmas";
 /* todo styling */
-const Ladder = () => {
+const Ladder = ({user, updateGlobalValues}) => {
   const [ladderState, setLadderState] = useState({
     alliances: [],
     message: null,
@@ -78,6 +79,12 @@ const Ladder = () => {
     <div className="page-container ">
       <h1>Alliance Ladder</h1>
       <h6>Average</h6>
+      <Xmas
+        id={"topAlliances"}
+        size={"l"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
       <Table striped dark className="content">
         <thead>
           <tr>

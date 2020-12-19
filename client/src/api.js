@@ -216,20 +216,20 @@ export default {
 
   getStashes() {
     return service
-      .get("./stashes")
+      .get("/stashes")
       .then((res) => res.data)
       .catch(errHandler);
   },
 
   sellStashes(body) {
     return service
-      .post("./stashes/sell", body)
+      .post("/stashes/sell", body)
       .then((res) => res.data)
       .catch(errHandler);
   },
   buyStashes(body) {
     return service
-      .post("./stashes/buy", body)
+      .post("/stashes/buy", body)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -474,20 +474,33 @@ export default {
 
   sendAllianceInvitation(id) {
     return service
-      .post("./alliance/invitation", { id })
+      .post("/alliance/invitation", { id })
       .then((res) => res.data)
       .catch(errHandler);
   },
   answerAllianceInvitation(id, answer) {
     return service
-      .patch("./alliance/invitation", { id, answer })
+      .patch("/alliance/invitation", { id, answer })
       .then((res) => res.data)
       .catch(errHandler);
   },
   promoteAllianceMember(playerId, newTitle) {
     return service
-      .post("./alliance/promote", { playerId, newTitle })
+      .post("/alliance/promote", { playerId, newTitle })
       .then((res) => res.data)
       .catch(errHandler);
   },
+
+  xmasFind(id){
+    return service
+      .post("/xmas",{id})
+      .then((res)=> res.data)
+      .catch(errHandler)
+  },
+  xmasRedeem(){
+    return service
+      .put("/xmas")
+      .then((res)=> res.data)
+      .catch(errHandler)
+  }
 };

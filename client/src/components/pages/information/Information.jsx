@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
-
+import Xmas from "../_molecules/Xmas"
 import FAQ from "./FAQ"
 
-const Information = () => {
+const Information = ({ updateGlobalValues ,user}) => {
   const [infoOpen, setInfoOpen] = useState(false);
   const [hackOpen, setHackOpen] = useState(false);
   const [allianceOpen, setAllianceOpen] = useState(false);
@@ -22,6 +22,7 @@ const Information = () => {
       >
         Info
       </Button>
+      
       <Collapse isOpen={infoOpen}>
         <Card className="mb-2">
           <CardBody>
@@ -167,6 +168,12 @@ const Information = () => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Crypto Currency</CardTitle>
+            <Xmas
+              id={"siteMap"}
+              size={"l"}
+              updateGlobalValues={updateGlobalValues}
+              user={user}
+            />
             Buy and sell crypto currency. The prices changes every hour and are
             the same for every city. If you shutdown someone, you will get their
             currencies
@@ -182,7 +189,8 @@ const Information = () => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Fence</CardTitle>
-            Sell or buy your loot here. Prices varies from each city and each hour!
+            Sell or buy your loot here. Prices varies from each city and each
+            hour!
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -238,7 +246,8 @@ const Information = () => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Hack players</CardTitle>
-            Takes you to the local hackers in your city. You can commit attacks on their profile
+            Takes you to the local hackers in your city. You can commit attacks
+            on their profile
           </CardBody>
         </Card>
       </Collapse>
@@ -254,7 +263,19 @@ const Information = () => {
         <h6>
           Round ends: <strong>3rd January</strong>
         </h6>
-        <FAQ />
+        {infoOpen &&
+          hackOpen &&
+          allianceOpen &&
+          cityOpen &&
+          communicationOpen && (
+            <Xmas
+              id={"informationHidden"}
+              size={"l"}
+              updateGlobalValues={updateGlobalValues}
+              user={user}
+            />
+          )}
+        <FAQ updateGlobalValues={updateGlobalValues} user={user} />
         <h1>SITE MAP</h1>
         {infoSection}
         {hackSection}

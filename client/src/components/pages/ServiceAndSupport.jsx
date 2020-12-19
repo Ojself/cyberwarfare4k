@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../../api";
 import { Button } from "reactstrap";
+import Xmas from "../pages/_molecules/Xmas";
 
 const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   const handlePartial = async () => {
@@ -67,6 +68,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
         <p className="my-0">
           Heals <span style={{ color: "red" }}>&#9829;</span> 100%
         </p>
+        
         <p>
           <span style={{ color: "#F08F18" }}>&#8383;</span>
           {Math.round(user.playerStats.repairCost)}
@@ -99,6 +101,12 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     <div className="page-container">
       <h1>Service & Support</h1>
       {serviceContent}
+      <Xmas
+        id={"serviceSupport"}
+        size={"s"}
+        updateGlobalValues={updateGlobalValues}
+        user={user}
+      />
     </div>
   );
 };

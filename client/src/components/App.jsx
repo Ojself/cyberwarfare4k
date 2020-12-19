@@ -98,11 +98,15 @@ const App = () => {
         <>
           <NavbarComp
             updateGlobalValues={updateGlobalValues}
+            user={user}
             globalLoading={loading}
             messages={messages}
+          />
+          <StatusBar
+            updateGlobalValues={updateGlobalValues}
+            globalLoading={loading}
             user={user}
           />
-          <StatusBar globalLoading={loading} user={user} />
           <div className="globalMessage">
             {globalMessage.message && (
               <Typist
@@ -120,9 +124,11 @@ const App = () => {
       )}
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route 
-        path="/hall-of-fame" 
-        render ={()=> <HallOfFame />}
+        <Route
+          path="/hall-of-fame"
+          render={() => (
+            <HallOfFame updateGlobalValues={updateGlobalValues} user={user} />
+          )}
         />
         <Route
           path="/alliance/create"
@@ -134,13 +140,21 @@ const App = () => {
             />
           )}
         />
-        <Route path="/alliance/ladder" component={AllianceLadder} />
+        <Route
+          path="/alliance/ladder"
+          render={() => (
+            <AllianceLadder
+              updateGlobalValues={updateGlobalValues}
+              user={user}
+            />
+          )}
+        />
         <Route
           path="/alliance/dashboard"
           render={() => (
             <Dashboard
               updateGlobalValues={updateGlobalValues}
-               globalLoading={loading}
+              globalLoading={loading}
             />
           )}
         />
@@ -158,10 +172,10 @@ const App = () => {
           )}
         />
 
-        <Route path="/alliance/:id"
-        render={()=> (
-          <AllianceOverview enableHeader={true}/>
-        )}  />
+        <Route
+          path="/alliance/:id"
+          render={() => <AllianceOverview enableHeader={true} />}
+        />
         <Route
           path="/fence"
           render={() => (
@@ -211,7 +225,9 @@ const App = () => {
 
         <Route
           path="/hack-crimes"
-          render={() => <HackCrimes updateGlobalValues={updateGlobalValues} />}
+          render={() => (
+            <HackCrimes user={user} updateGlobalValues={updateGlobalValues} />
+          )}
         />
         <Route
           path="/hacker/:id"
@@ -244,7 +260,16 @@ const App = () => {
             />
           )}
         />
-        <Route path="/information" component={Information} />
+        <Route
+          path="/information"
+          render={() => (
+            <Information
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+              user={user}
+            />
+          )}
+        />
         <Route path="/ladder" component={Ladder} />
         <Route
           path="/ledger"
@@ -266,6 +291,7 @@ const App = () => {
           path="/messages"
           render={() => (
             <MessageCenter
+              user={user}
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
               messages={messages}
@@ -304,11 +330,13 @@ const App = () => {
         />
         <Route
           path="/wanted-list"
-          render={() => <WantedList updateGlobalValues={updateGlobalValues} />}
+          render={() => (
+            <WantedList user={user} updateGlobalValues={updateGlobalValues} />
+          )}
         />
         <Route render={() => <h2>404</h2>} />
       </Switch>
-      <Footer />
+      <Footer updateGlobalValues={updateGlobalValues} user={user} />
     </div>
   );
 };

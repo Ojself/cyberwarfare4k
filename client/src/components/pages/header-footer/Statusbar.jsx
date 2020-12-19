@@ -1,12 +1,13 @@
 import React from "react";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
+import Xmas from "../_molecules/Xmas";
 
-const StatusBar = ({ loading, user }) => {
-  const shouldRender = !loading && !!user;
+const StatusBar = ({ loading, user, updateGlobalValues }) => {
+  const visibleStatusBar = !loading && !!user;
   return (
     <div className="statusBar">
-      {shouldRender && (
+      {visibleStatusBar && (
         <ul className="list-unstyled">
           {user.alliance && user.alliance.name ? (
             <li className="list-inline-item">
@@ -33,8 +34,7 @@ const StatusBar = ({ loading, user }) => {
 
           <li className="list-inline-item">
             <span style={{ color: "red" }}>&#9829;</span>
-            {user.playerStats.currentFirewall.toFixed(0)}
-            %
+            {user.playerStats.currentFirewall.toFixed(0)}%
           </li>
           <li className="list-inline-item ml-2">
             <span role="img" aria-label="battery">
@@ -50,12 +50,18 @@ const StatusBar = ({ loading, user }) => {
           <li className="list-inline-item ml-2">{user.playerStats.rankName}</li>
           <li className="list-inline-item ml-2">XP:</li>
           <li style={{ width: "10vw" }} className="list-inline-item">
-            {/* <span style={{fontSize: "0.5rem"}}>123</span> */}
             <Progress
               title={`${user.playerStats.exp} / ${user.playerStats.expToLevel}`}
               color="warning"
               value={(user.playerStats.exp / user.playerStats.expToLevel) * 100}
-            ></Progress>
+            >
+              <Xmas
+                id={"statusbar"}
+                size={"s"}
+                updateGlobalValues={updateGlobalValues}
+                user={user}
+              />
+            </Progress>
           </li>
         </ul>
       )}
