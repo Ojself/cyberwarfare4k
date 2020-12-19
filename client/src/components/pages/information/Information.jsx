@@ -22,7 +22,6 @@ const Information = ({ updateGlobalValues ,user}) => {
       >
         Info
       </Button>
-      
       <Collapse isOpen={infoOpen}>
         <Card className="mb-2">
           <CardBody>

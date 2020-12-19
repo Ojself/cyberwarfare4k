@@ -139,10 +139,9 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       )
       }
    */
-const allCurrencies =
+const mostCurrencies =
   cryptoState.Litecoin &&
   cryptoState.Ethereum &&
-  cryptoState.Ripple &&
   cryptoState.Monero &&
   cryptoState.Zcash &&
   cryptoState.Dash
@@ -150,7 +149,7 @@ const allCurrencies =
     <div className="page-container">
       <div className="d-flex flex-row justify-content-center">
         <h1>Currency</h1>
-        {allCurrencies && <Xmas
+        {mostCurrencies && <Xmas
           id={"crypto"}
           size={"l"}
           updateGlobalValues={updateGlobalValues}

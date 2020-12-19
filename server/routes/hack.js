@@ -185,7 +185,6 @@ router.post('/:opponentId', async (req, res) => {
   await finalResult.opponent.save();
   finalResult.user = null;
   finalResult.now = null;
-  console.info('final result after attack info:\n', finalResult);
   let message;
   if (finalResult.bodyguardKilled) {
     message = `You attacked ${opponent.name} and killed a bodyguard!`;
