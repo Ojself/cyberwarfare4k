@@ -661,9 +661,10 @@ userSchema.methods.die = async function () {
     dataCenters.forEach((dataCenter) => dataCenter.handleDestroyed());
     await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
   }
-  if (this.alliance) {
-    const alliance = await Alliance.findById(this.alliance);
+  const alliance = await Alliance.findById(this.alliance);
+  if (alliance) {
     alliance.leaveAlliance(this._id);
+    await alliance.save()
   }
   this.name = `UnconfirmedPlayer${Math.random()}`;
   this.account.isSetup = false;

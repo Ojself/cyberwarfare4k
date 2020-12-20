@@ -144,7 +144,9 @@ const attackRecursiveBattle = (result) => {
       }
     } else {
       const { CPU } = result.user.hackSkill;
-      const rankPower = (result.user.playerStats.rank + 1) * 2;
+      const rankPowerMax = (result.user.playerStats.rank + 1) * 2;
+      const rankPowerMin = (result.user.playerStats.rank + 1) * 1.3
+      const rankPower = Math.round(Math.random() * (rankPowerMax - rankPowerMin) + rankPowerMin);
 
       const min = CPU * 0.05;
       const max = CPU * 0.1;
