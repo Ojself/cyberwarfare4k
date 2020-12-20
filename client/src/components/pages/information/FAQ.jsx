@@ -237,9 +237,9 @@ const FAQ = ({ updateGlobalValues ,user}) => {
             <strong>attackers CPU / (defenders AntiVirus * 1.125)</strong>
             <br />
             Damage inflication ={" "}
-            <strong>(CPU * 0.2) - (difference in rank * 1.5)</strong>
+            <strong>(CPU * 0.1) + (rank level * 2)</strong>
             <br />
-            EG: (200 * 0.16) - (3 * 1.5) = <strong>27.5</strong> damage
+            EG: (130 * 0.1) + (7 * 2) = <strong>27</strong> damage
             <br />
             NB! A small random number generator (rng) is applied to every
             attack.

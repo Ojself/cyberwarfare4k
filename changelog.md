@@ -8,6 +8,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - More options for the alliance in the dashboard
 - Easy overview when buying crypto currency
 
+## [0.1.6] - 2020-12-20
+
+- Change combat calculation to benefit players with more experience. See FAQ for more information
+
+- Small GUI changes
+
 ## [0.1.5] - 2020-12-19
 
 - Added Christmas event
