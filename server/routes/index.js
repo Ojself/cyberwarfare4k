@@ -169,10 +169,15 @@ router.get('/opponents/:id', async (req, res) => {
   opponentInformation.opponent.crimeSkill = null;
   opponentInformation.opponent.currencies = null;
   opponentInformation.opponent.playerStats.bodyguards = null;
+  opponentInformation.opponent.playerStats.repairCost = null;
+  opponentInformation.opponent.playerStats.statPoints = null;
   opponentInformation.opponent.playerStats.currentFirewall = null;
+  opponentInformation.opponent.playerStats.battery = null;
   opponentInformation.opponent.playerStats.maxFirewall = null;
   opponentInformation.opponent.playerStats.bitCoins = null;
   opponentInformation.opponent.playerStats.city = null;
+  opponentInformation.opponent.stash = null;
+  opponentInformation.opponent.fightInformation.gracePeriod = null;
 
   res.status(200).json({
     success: true,
