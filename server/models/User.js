@@ -661,8 +661,8 @@ userSchema.methods.die = async function () {
     dataCenters.forEach((dataCenter) => dataCenter.handleDestroyed());
     await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
   }
-  const alliance = await Alliance.findById(this.alliance);
-  if (alliance) {
+  if (this.alliance) {
+    const alliance = await Alliance.findById(this.alliance);
     alliance.leaveAlliance(this._id);
     await alliance.save()
   }

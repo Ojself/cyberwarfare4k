@@ -70,11 +70,11 @@ allianceSchema.methods.replaceBoss = function () {
       this.secondLead = null;
       break;
     case !!this.firstMonkeys.length:
-      [replacer] = this.firstMonkeys;
+      [replacer] = this.firstMonkeys[0];
       this.firstMonkeys.shift();
       break;
     case !!this.secondMonkeys.length:
-      [replacer] = this.secondMonkeys;
+      [replacer] = this.secondMonkeys[0];
       this.secondMonkeys.shift();
       break;
     default:

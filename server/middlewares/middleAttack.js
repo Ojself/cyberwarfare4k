@@ -132,6 +132,7 @@ const attackRecursiveBattle = (result) => {
   if (checkOccuranceLimit(result.roundResult, 'win', 4)) {
     const newResult = result;
     newResult.won = true;
+    newResult.expGained = newResult.opponent.playerStats.exp * 0.005
     // kills a bodyguard
 
     if (newResult.opponent.playerStats.bodyguards.alive.length) {

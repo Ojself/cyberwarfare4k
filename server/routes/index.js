@@ -162,6 +162,18 @@ router.get('/opponents/:id', async (req, res) => {
     allUsers,
   );
 
+  // stop hackers
+  opponentInformation.opponent.account.notifications = null;
+  opponentInformation.opponent.account.password = null;
+  opponentInformation.opponent.hackSkill = null;
+  opponentInformation.opponent.crimeSkill = null;
+  opponentInformation.opponent.currencies = null;
+  opponentInformation.opponent.playerStats.bodyguards = null;
+  opponentInformation.opponent.playerStats.currentFirewall = null;
+  opponentInformation.opponent.playerStats.maxFirewall = null;
+  opponentInformation.opponent.playerStats.bitCoins = null;
+  opponentInformation.opponent.playerStats.city = null;
+
   res.status(200).json({
     success: true,
     message: 'opponent loaded..',
