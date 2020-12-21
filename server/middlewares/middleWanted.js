@@ -2,7 +2,7 @@ const { existingValue, checkFunds } = require('./middleHelpers');
 const User = require('../models/User');
 
 // Sees if everything is in order to add bounty
-const addBountyCriteria = (user, opponent, bounty) =>{
+const addBountyCriteria = (user, opponent, bounty) => {
   if (!existingValue(user)) {
     return "User doesn't exist";
   }
@@ -16,12 +16,11 @@ const addBountyCriteria = (user, opponent, bounty) =>{
     return 'Bounty is too low';
   }
   return null;
-}
+};
 
 const getAllWantedUsers = async () => {
   const dbSelectOptions = {
     name: '1',
-    playerStats: '1',
     alliance: '1',
     'playerStats.bounty': '1',
     'playerStats.bountyDonors': '1',
