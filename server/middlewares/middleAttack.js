@@ -88,7 +88,7 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   return null;
 };
 
-const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
+const fightHacker = async (user, opponent, batteryCost, now, userIsOnline) => {
   const result = {
     user,
     opponent,
@@ -110,7 +110,7 @@ const fightHacker = (user, opponent, batteryCost, now, userIsOnline) => {
 
   user.handleAttack(finalResult);
   const gracePeriodExtra = userIsOnline ? 1000 * 60 * 5 : 1000 * 60 * 60;
-  opponent.handleAttackDefense(finalResult, now + gracePeriodExtra);
+  await opponent.handleAttackDefense(finalResult, now + gracePeriodExtra);
 
   return finalResult;
 };
@@ -132,7 +132,7 @@ const attackRecursiveBattle = (result) => {
   if (checkOccuranceLimit(result.roundResult, 'win', 4)) {
     const newResult = result;
     newResult.won = true;
-    newResult.expGained = newResult.opponent.playerStats.exp * 0.005
+    newResult.expGained = newResult.opponent.playerStats.exp * 0.005;
     // kills a bodyguard
 
     if (newResult.opponent.playerStats.bodyguards.alive.length) {
@@ -146,7 +146,7 @@ const attackRecursiveBattle = (result) => {
     } else {
       const { CPU } = result.user.hackSkill;
       const rankPowerMax = (result.user.playerStats.rank + 1) * 2;
-      const rankPowerMin = (result.user.playerStats.rank + 1) * 1.3
+      const rankPowerMin = (result.user.playerStats.rank + 1) * 1.3;
       const rankPower = Math.round(Math.random() * (rankPowerMax - rankPowerMin) + rankPowerMin);
 
       const min = CPU * 0.05;
