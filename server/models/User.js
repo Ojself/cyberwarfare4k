@@ -527,7 +527,11 @@ userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
   }
   this.fightInformation.attacksVictim += 1;
   if (this.playerStats.currentFirewall <= 0) {
-    await this.die();
+    try {
+      await this.die();
+    } catch (err) {
+      console.error('Error die function: ', err, ' \n Name: ', this.name);
+    }
   }
 };
 
@@ -658,12 +662,20 @@ userSchema.methods.die = async function () {
   const dataCenters = await DataCenter.find({ owner: this._id });
   if (dataCenters) {
     dataCenters.forEach((dataCenter) => dataCenter.handleDestroyed());
-    await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
+    try {
+      await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
+    } catch (err) {
+      console.error('error:', err);
+    }
   }
   if (this.alliance) {
     const alliance = await Alliance.findById(this.alliance);
     alliance.leaveAlliance(this._id);
-    await alliance.save();
+    try {
+      await alliance.save();
+    } catch (err) {
+      console.error('Error: ', err);
+    }
   }
   this.name = `UnconfirmedPlayer${Math.random()}`;
   this.account.isSetup = false;

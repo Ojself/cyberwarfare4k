@@ -25,6 +25,7 @@ const allianceSchema = new Schema({
 });
 
 allianceSchema.methods.leaveAlliance = function (playerId) {
+  console.info(playerId, ' is leaving the alliance ', this.name)
   // player.sendNotication
 
   [
@@ -34,14 +35,14 @@ allianceSchema.methods.leaveAlliance = function (playerId) {
     'organizePermission',
     'forumModeratorPermission',
   ].forEach((r) => {
-    const playerRoleIndex = this[r].indexOf(playerId);
+    const playerRoleIndex = this[r].indexOf(playerId.toString());
     if (playerRoleIndex !== -1) {
       this[r].splice(playerRoleIndex, 1);
     }
   });
 
   ['cto', 'analyst', 'firstLead', 'secondLead'].forEach((r) => {
-    if (this[r] === playerId) {
+    if (this[r] === playerId.toString()) {
       this[r] = null;
     }
   });
