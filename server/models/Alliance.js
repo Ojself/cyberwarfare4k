@@ -25,7 +25,7 @@ const allianceSchema = new Schema({
 });
 
 allianceSchema.methods.leaveAlliance = function (playerId) {
-  console.info(playerId, ' is leaving the alliance ', this.name)
+  console.info(playerId, ' is leaving the alliance ', this.name);
   // player.sendNotication
 
   [
