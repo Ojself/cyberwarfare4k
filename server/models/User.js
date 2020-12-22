@@ -5,7 +5,6 @@ const { Schema } = mongoose;
 const Alliance = require('./Alliance');
 const City = require('./City');
 const DataCenter = require('./DataCenter');
-const Rank = require('./Rank');
 
 const userSchema = new Schema(
   {
@@ -528,7 +527,7 @@ userSchema.methods.handleAttackDefense = async function (result, gracePeriod) {
   }
   this.fightInformation.attacksVictim += 1;
   if (this.playerStats.currentFirewall <= 0) {
-    this.die();
+    await this.die();
   }
 };
 
@@ -664,7 +663,7 @@ userSchema.methods.die = async function () {
   if (this.alliance) {
     const alliance = await Alliance.findById(this.alliance);
     alliance.leaveAlliance(this._id);
-    await alliance.save()
+    await alliance.save();
   }
   this.name = `UnconfirmedPlayer${Math.random()}`;
   this.account.isSetup = false;
