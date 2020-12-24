@@ -20,10 +20,9 @@ const batteryJob = new CronJob('2 */10 * * * *', (() => {
   batteryInterval();
 }), null, true, 'America/Los_Angeles');
 
-
 const currencyPriceJob = new CronJob('6 0 * * * *', (() => {
   console.log('currencyPriceJob started');
-  currencyPriceInterval();
+  // currencyPriceInterval();
 }), null, true, 'America/Los_Angeles');
 
 const bonusBatteryJob = new CronJob('10 0 * * * *', (() => {
@@ -63,6 +62,7 @@ mongoose
     currencyPriceJob.start();
     stashPriceJob.start();
     dataCenterPayoutJob.start();
+    earnBatteryIntervalJob.start(); // <-- Might be depricated
   })
   .catch((err) => {
     console.error('Error connecting to mongo', err);
