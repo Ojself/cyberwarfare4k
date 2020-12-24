@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
     .populate('owner', ['name']);
 
   // filter out the datacenters that don't belong to the city the user is in
-  if (!req.query.owner){
+  if (!req.query.owner) {
     dataCenters = dataCenters.filter((dc) => {
       const stringifiedObjectId = JSON.stringify(dc.city.residents);
       return stringifiedObjectId.includes(userId.toString());
@@ -56,12 +56,9 @@ router.get('/', async (req, res) => {
   });
 });
 
-// @GET
+// @PATCH
 // PRIVATE
-// Retrieve all datacenters and populate which stash is required
-// to hack them and which city they belong to
-
-// todo, allow alliance member to heal eachother datacenter?
+// Heals datacenter
 
 router.patch('/:dataCenterId', async (req, res) => {
   const { dataCenterId } = req.params;
@@ -165,7 +162,7 @@ router.post('/attack', async (req, res) => {
 
   const batteryCost = 5;
 
-  const disallowed = attackDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallowed = 'Merry christmas!'; // attackDataCenterCriterias(user, dataCenter, batteryCost);
 
   if (disallowed) {
     return res.status(400).json({

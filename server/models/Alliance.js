@@ -35,14 +35,14 @@ allianceSchema.methods.leaveAlliance = function (playerId) {
     'organizePermission',
     'forumModeratorPermission',
   ].forEach((r) => {
-    const playerRoleIndex = this[r].indexOf(playerId.toString());
+    const playerRoleIndex = this[r].indexOf(playerId);
     if (playerRoleIndex !== -1) {
       this[r].splice(playerRoleIndex, 1);
     }
   });
 
   ['cto', 'analyst', 'firstLead', 'secondLead'].forEach((r) => {
-    if (this[r] === playerId.toString()) {
+    if (this[r] === playerId) {
       this[r] = null;
     }
   });
@@ -161,7 +161,6 @@ allianceSchema.methods.changeAllianceRole = async function (playerId, newPositio
     }
     this[newPosition] = playerId;
   }
-
 };
 
 allianceSchema.methods.members = function (length = false) {

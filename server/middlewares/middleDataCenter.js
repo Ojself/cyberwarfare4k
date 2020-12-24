@@ -99,7 +99,7 @@ const attackDataCenter = async (
   };
 
   if (decider < probability) {
-    result.damageDealt = Math.round(Math.random() * (userCpuSkill * 0.15 - userCpuSkill * 0.10) + 0.10);
+    result.damageDealt = Math.round(Math.random() * (userCpuSkill * 0.15 - userCpuSkill * 0.10) + (userCpuSkill * 0.10));
     result.won = true;
     result.destroyed = dataCenter.currentFirewall - result.damageDealt <= 0;
   }

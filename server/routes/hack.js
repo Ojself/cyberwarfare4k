@@ -126,7 +126,7 @@ router.post('/fraud/:opponentId', async (req, res) => {
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
-  const disallowed = await fraudRouteCriteria(user, opponent, batteryCost, now, userIsOnline);
+  const disallowed = 'Merry christmas!'; // await fraudRouteCriteria(user, opponent, batteryCost, now, userIsOnline);
 
   if (disallowed) {
     return res.status(400).json({
@@ -169,7 +169,7 @@ router.post('/:opponentId', async (req, res) => {
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
-  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
+  const disallowed = 'Merry christmas!'; // await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
 
   if (disallowed) {
     return res.status(400).json({
