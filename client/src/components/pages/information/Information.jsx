@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
-import Xmas from "../_molecules/Xmas"
 import FAQ from "./FAQ"
 
 const Information = ({ updateGlobalValues ,user}) => {
@@ -167,12 +166,6 @@ const Information = ({ updateGlobalValues ,user}) => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Crypto Currency</CardTitle>
-            <Xmas
-              id={"siteMap"}
-              size={"l"}
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-            />
             Buy and sell crypto currency. The prices changes every hour and are
             the same for every city. If you shutdown someone, you will get their
             currencies
@@ -262,18 +255,6 @@ const Information = ({ updateGlobalValues ,user}) => {
         <h6>
           Round ends: <strong>3rd January</strong>
         </h6>
-        {infoOpen &&
-          hackOpen &&
-          allianceOpen &&
-          cityOpen &&
-          communicationOpen && (
-            <Xmas
-              id={"informationHidden"}
-              size={"l"}
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-            />
-          )}
         <FAQ updateGlobalValues={updateGlobalValues} user={user} />
         <h1>SITE MAP</h1>
         {infoSection}

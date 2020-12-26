@@ -1,7 +1,5 @@
 import React, {  useState } from "react";
 
-import Xmas from "../_molecules/Xmas";
-
 import {
   Button,
   Table,
@@ -170,12 +168,7 @@ return (
         );
       })}
       <div className="my-4">
-        <Xmas
-          id={"profile"}
-          size={"l"}
-          updateGlobalValues={updateGlobalValues}
-          user={user}
-        />
+        
       </div>
       <ProgressBarExp
         color="warning"
@@ -201,7 +194,6 @@ return (
   const profileRankOverview = !globalLoading && (
     <div className="col-4">
       <ul className="list-group">
-        {!user.xmaxDone && <XmasOverview list={user.xmas}/>}
         <li className="list-group-item bg-dark mb-2">
           <SubscriptionIcon subscription={user.account.subscription} />
           {user.playerStats.rankName}
@@ -301,12 +293,6 @@ return (
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
-                <Xmas
-                  id={"profileCrypto"}
-                  size={"m"}
-                  updateGlobalValues={updateGlobalValues}
-                  user={user}
-                />
                 <Table responsive className="text-light">
                   <thead>
                     <tr>

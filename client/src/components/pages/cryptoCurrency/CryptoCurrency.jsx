@@ -9,7 +9,6 @@ import {
   Button,
   Table,
 } from "reactstrap";
-import Xmas from "../_molecules/Xmas";
 import KFormatter from "../_helpers/KFormatter";
 import CryptoCurrenciesChart from "./CryptoCurrencies";
 import api from "../../../api";
@@ -139,22 +138,12 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       )
       }
    */
-const mostCurrencies =
-  cryptoState.Litecoin &&
-  cryptoState.Ethereum &&
-  cryptoState.Monero &&
-  cryptoState.Zcash &&
-  cryptoState.Dash
+
   return (
     <div className="page-container">
       <div className="d-flex flex-row justify-content-center">
         <h1>Currency</h1>
-        {mostCurrencies && <Xmas
-          id={"crypto"}
-          size={"l"}
-          updateGlobalValues={updateGlobalValues}
-          user={user}
-        />}
+        
       </div>
       {cryptoState.loading ? (
         <p>loading...</p>

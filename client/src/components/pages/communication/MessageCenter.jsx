@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import api from "../../../api";
-import Xmas from "../_molecules/Xmas";
 import { Link } from "react-router-dom";
 import {
   Form,
@@ -147,28 +146,6 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) =>
   return (
     <div className="page-container">
       <h1>MessageCenter</h1>
-      <Xmas
-        id={"messages"}
-        size={"l"}
-        updateGlobalValues={updateGlobalValues}
-        user={user}
-      />
-      {selectedOption && (
-        <Xmas
-          id={"messagesHidden"}
-          size={"l"}
-          updateGlobalValues={updateGlobalValues}
-          user={user}
-        />
-      )}
-      {textArea.length > 5 && (
-        <Xmas
-          id={"messagesHidden2"}
-          size={"l"}
-          updateGlobalValues={updateGlobalValues}
-          user={user}
-        />
-      )}
       <div className="content d-flex flex-column w-50 ">
         <Nav tabs className="">
           {["Inbox", "Sent", "Compose"].map((t, i) => {

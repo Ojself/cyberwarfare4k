@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import { Button, Form, FormGroup, Input, Table } from "reactstrap";
-import Xmas from "../_molecules/Xmas";
 
 const MAX_ALLOWED_STASH = 50
 
@@ -242,12 +241,6 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
       <h1>
         <span className="text-warning">Fence</span> in {city}
       </h1>
-      {showGift && (<Xmas
-        id={"fence"}
-        size={"l"}
-        updateGlobalValues={updateGlobalValues}
-        user={user}
-      />)}
       <div className="content d-flex justify-content-center">
         {tableOverview}
       </div>

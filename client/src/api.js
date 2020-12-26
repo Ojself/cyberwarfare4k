@@ -489,18 +489,5 @@ export default {
       .post("/alliance/promote", { playerId, newTitle })
       .then((res) => res.data)
       .catch(errHandler);
-  },
-
-  xmasFind(id){
-    return service
-      .post("/xmas",{id})
-      .then((res)=> res.data)
-      .catch(errHandler)
-  },
-  xmasRedeem(){
-    return service
-      .put("/xmas")
-      .then((res)=> res.data)
-      .catch(errHandler)
   }
 };

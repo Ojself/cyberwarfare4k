@@ -1,7 +1,6 @@
 import React from "react";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
-import Xmas from "../_molecules/Xmas";
 
 const StatusBar = ({ loading, user, updateGlobalValues }) => {
   const visibleStatusBar = !loading && !!user;
@@ -55,12 +54,6 @@ const StatusBar = ({ loading, user, updateGlobalValues }) => {
               color="warning"
               value={(user.playerStats.exp / user.playerStats.expToLevel) * 100}
             >
-              <Xmas
-                id={"statusbar"}
-                size={"s"}
-                updateGlobalValues={updateGlobalValues}
-                user={user}
-              />
             </Progress>
           </li>
         </ul>

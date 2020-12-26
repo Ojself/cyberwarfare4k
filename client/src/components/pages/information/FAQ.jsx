@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
-import Xmas from "../../pages/_molecules/Xmas";
 
 const FAQ = ({ updateGlobalValues ,user}) => {
   const [statPointOpen, setStatPointOpen] = useState(false);
@@ -93,12 +92,6 @@ const FAQ = ({ updateGlobalValues ,user}) => {
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <Xmas
-              id={"faq"}
-              size={"s"}
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-            />
             <CardTitle tag="h3">Fence</CardTitle>
             Gimmie the loot! The fence is always looking to buy your stolen
             stash. Head over to the shop and sell whatever you got. The prices

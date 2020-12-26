@@ -1,7 +1,6 @@
 import React from "react";
 import api from "../../api";
 import { Button } from "reactstrap";
-import Xmas from "../pages/_molecules/Xmas";
 
 const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   const handlePartial = async () => {
@@ -101,12 +100,6 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     <div className="page-container">
       <h1>Service & Support</h1>
       {serviceContent}
-      <Xmas
-        id={"serviceSupport"}
-        size={"s"}
-        updateGlobalValues={updateGlobalValues}
-        user={user}
-      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import {Button, ListGroupItem,
   PopoverHeader,
   PopoverBody} from 'reactstrap'
 
-  import Xmas from "../../pages/_molecules/Xmas";
+
 
 const GlobalIncome = ({
   batteryBonuses,
@@ -46,12 +46,6 @@ const toggle = () => setPopoverOpen(!popoverOpen);
           <span role="img" aria-label="battery">
             &#9889;
           </span>{" "}
-          <Xmas
-            id={"earnBattery"}
-            size={"m"}
-            updateGlobalValues={updateGlobalValues}
-            user={user}
-          />
         </PopoverHeader>
         <PopoverBody>
           <ListGroup>

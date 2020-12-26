@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import Typist from "react-typist";
 import { Progress } from "reactstrap";
-import Xmas from "../../../pages/_molecules/Xmas";
 import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
 const CrimeTerminal = ({ result,user,updateGlobalValues }) => {
@@ -77,15 +76,6 @@ const CrimeTerminal = ({ result,user,updateGlobalValues }) => {
       </p>
       <p>XP: {result.playerGains.exp}</p>
       {result.playerGains.levelUp && <strong>NEW RANK!</strong>}
-
-      <Xmas
-        id={"crime"}
-        size={"l"}
-        updateGlobalValues={updateGlobalValues}
-        user={user}
-      />
-      {/* <p>skill: {result.playerGains.skillGained}</p>
-      <p>stashGained: {result.playerGains.skillGained}</p> */}
     </div>
   );
   const decorateTerminalRed = () => {

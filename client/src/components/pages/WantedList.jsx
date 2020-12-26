@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "../../api";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import Xmas from "../pages/_molecules/Xmas";
 import {
   Button,
   Form,
@@ -243,13 +242,6 @@ const WantedList = ({ updateGlobalValues,user }) => {
       ) : (
         <>
           <div> {ComponentAddUnlistedPlayer} </div>
-
-          <Xmas
-            id={"wanted"}
-            size={"l"}
-            updateGlobalValues={updateGlobalValues}
-            user={user}
-          />
           <div className="content"> {ComponentBountyUsersTable} </div>
         </>
       )}
