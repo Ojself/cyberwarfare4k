@@ -162,7 +162,7 @@ router.post('/attack', async (req, res) => {
 
   const batteryCost = 5;
 
-  const disallowed = 'Merry christmas!'; // attackDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallowed = attackDataCenterCriterias(user, dataCenter, batteryCost);
 
   if (disallowed) {
     return res.status(400).json({
