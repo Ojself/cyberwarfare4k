@@ -10,7 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.12",
     "@nivo/core": "^0.66.0",
     "@nivo/line": "^0.66.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "classnames": "^2.2.6",
     "less": "^3.12.2",

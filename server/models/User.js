@@ -9,7 +9,7 @@ const DataCenter = require('./DataCenter');
 const userSchema = new Schema(
   {
     account: {
-      email: { type: String, unique: true },
+      email:  String ,
       password: String,
       ip: [String],
       confirmationCode: { type: String, default: `${Math.random()}` },

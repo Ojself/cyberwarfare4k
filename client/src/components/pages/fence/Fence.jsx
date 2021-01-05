@@ -40,7 +40,6 @@ const objectIsEmpty = (obj) => {
 export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const [shopStash, setShopStash] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showGift, setShowGift] = useState(false);
   const [transactionState, setTransactionState] = useState({
     "Cables": 0,
     "Computer": 0,
@@ -68,7 +67,6 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   
 
   const handleTransactionChange = (event)=> {
-    setShowGift(true)
     setTransactionState({
       ...transactionState,
       [event.target.name]: event.target.value

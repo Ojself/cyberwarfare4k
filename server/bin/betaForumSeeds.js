@@ -8,7 +8,6 @@ const User = require('../models/User');
 require('../configs/database');
 
 let users;
-let threads;
 
 const getUsers = async () => {
   users = await User.find({});
