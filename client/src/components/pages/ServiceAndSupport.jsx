@@ -1,6 +1,6 @@
 import React from "react";
 import api from "../../api";
-import { Button } from "reactstrap";
+import { Button, Row, Col, Container } from "reactstrap";
 
 const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   const handlePartial = async () => {
@@ -41,58 +41,68 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   };
   const serviceContent = user && (
     <div className="content d-flex justify-content-around">
-      <div className="d-flex flex-column ">
-        <img
-          style={style}
-          src="../../../utilPics/partialrepair.jpg"
-          alt="Partial Repari"
-        />
-        <p className="my-0">
-          Heals <span style={{ color: "red" }}>&#9829;</span> 20%
-        </p>
-        <p>
-          <span style={{ color: "#F08F18" }}>&#8383;</span>
-          {Math.round((user.playerStats.repairCost * 20) / 100)}
-        </p>
-        <Button color="success" onClick={() => handlePartial()}>
-          Partial repair
-        </Button>
-      </div>
-      <div className="d-flex flex-column">
-        <img
-          style={style}
-          src="../../../utilPics/fullrepair.jpg"
-          alt="Partial Repair"
-        />
-        <p className="my-0">
-          Heals <span style={{ color: "red" }}>&#9829;</span> 100%
-        </p>
-        
-        <p>
-          <span style={{ color: "#F08F18" }}>&#8383;</span>
-          {Math.round(user.playerStats.repairCost)}
-        </p>
-        <Button color="success" onClick={() => handleFull()}>
-          Full repair
-        </Button>
-      </div>
-      <div className="d-flex flex-column">
-        <img
-          style={style}
-          src="../../../utilPics/bodyguard.png"
-          alt="Bodyguard"
-        />
-        <p className="my-0">
-          Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
-        </p>
-        <p>
-          <span style={{ color: "#F08F18" }}>&#8383;</span>
-          {Math.round(user.playerStats.bodyguards.price)}
-        </p>
-        <Button color="success" onClick={() => handleBodyguard()}>
-          Hire!
-        </Button>
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <div className="d-flex flex-column ">
+              <img
+                style={style}
+                src="../../../utilPics/partialrepair.jpg"
+                alt="Partial Repari"
+              />
+              <p className="my-0">
+                Heals <span style={{ color: "red" }}>&#9829;</span> 20%
+              </p>
+              <p>
+                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                {Math.round((user.playerStats.repairCost * 20) / 100)}
+              </p>
+              <Button color="success" onClick={() => handlePartial()}>
+                Partial repair
+              </Button>
+            </div>
+          </Col>
+          <Col>
+            <div className="d-flex flex-column">
+              <img
+                style={style}
+                src="../../../utilPics/fullrepair.jpg"
+                alt="Partial Repair"
+              />
+              <p className="my-0">
+                Heals <span style={{ color: "red" }}>&#9829;</span> 100%
+              </p>
+
+              <p>
+                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                {Math.round(user.playerStats.repairCost)}
+              </p>
+              <Button color="success" onClick={() => handleFull()}>
+                Full repair
+              </Button>
+            </div>
+          </Col>
+          <Col>
+            <div className="d-flex flex-column">
+              <img
+                style={style}
+                src="../../../utilPics/bodyguard.png"
+                alt="Bodyguard"
+              />
+              <p className="my-0">
+                Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
+              </p>
+              <p>
+                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                {Math.round(user.playerStats.bodyguards.price)}
+              </p>
+              <Button color="success" onClick={() => handleBodyguard()}>
+                Hire!
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 

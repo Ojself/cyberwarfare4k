@@ -8,6 +8,17 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - More options for the alliance in the dashboard
 - Easy overview when buying crypto currency
 
+## [0.2.0] - 2021-x-x
+
+- Mobile friendly view
+- Scoped css files
+- Styled navbar with icons
+- Sorted items in Fence
+- NordVPN prototype for vpn changes
+- Minor changes to User db document
+- Change timezone to Europe/Oslo
+- Major cleanup of seed files
+
 ## [0.1.6] - 2020-12-20
 
 - Change combat calculation to benefit players with more experience. See FAQ for more information

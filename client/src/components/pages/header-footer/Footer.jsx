@@ -27,7 +27,7 @@ const Footer = ({user, updateGlobalValues}) => {
             rel="noopener noreferrer"
             href="https://github.com/Ojself/cyberwarfare4k/blob/master/changelog.md"
           >
-            0.1.6
+            0.2.0
           </a>{" "}
         </div>
       </div>

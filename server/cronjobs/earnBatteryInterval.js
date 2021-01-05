@@ -1,8 +1,5 @@
 const User = require('../models/User');
 
-// Sets a new price of the stash every hour based upon the lower price
-// Will never go over 2 times the price
-
 const generateQueryString = (game) => {
   const lexi = 'abcdefghijkmnpqrstuvwxyz23456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
   let query = '';

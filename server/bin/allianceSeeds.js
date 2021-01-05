@@ -1,9 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// To execute this seed, run from the root of the project
-// $ node bin/allianceSeeds.js
-
 const mongoose = require('mongoose');
 const Alliance = require('../models/Alliance');
 
@@ -29,16 +26,20 @@ const alliances = [
   {
     name: 'Grey',
     _id: '5fae6d7ee60018434108369c',
+    boss: '5fca3b4a86e77b5c8e58b682',
+    analyst: '5fca3b4a86e77b5c8e58b67f',
+    cto: '5fca3b4a86e77b5c8e58b681',
+    firstLead: '5fca3b4a86e77b5c8e58b67e',
+    secondLead: '5fca3b4a86e77b5c8e58b680',
+    firstMonkeys: ['5fae6d7ee60018434108369c', '5fca3b4a86e77b5c8e58b67a', '5fca3b4a86e77b5c8e58b67b'],
+    secondMonkeys: ['5fca3b4a86e77b5c8e58b67c', '5fca3b4a86e77b5c8e58b67d'],
   },
 ];
 
 Alliance.deleteMany()
   .then(() => Alliance.create(alliances))
   .then((alliancesCreated) => {
-    console.log(
-      `${alliancesCreated.length} alliances created with the following id:`,
-    );
-    console.log(alliancesCreated.map((u) => u._id));
+    console.info(`${alliancesCreated.length} alliances created`);
   })
   .then(() => {
     mongoose.disconnect();

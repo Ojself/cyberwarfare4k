@@ -1,0 +1,32 @@
+
+.dropdown-button {
+    //background-color: hsl(234, 29%, 7%);
+    //box-shadow:2px 2px 10px  sandybrown ;
+    //border-radius: 15%;
+    //border: 1px solid grey;
+    white-space: nowrap;
+    overflow: hidden;
+    min-width: 6rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    caret-color: #fbac73;
+}
+
+.dropdown-item {
+  color: #e4e2ff !important;
+}
+.nav-link {
+  color: #e4e2ff !important;
+}
+
+.dropdown-menu {
+  border: 1px #fbac73 solid !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .dropdown-button{
+        min-width: 3rem;
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+    }
+}

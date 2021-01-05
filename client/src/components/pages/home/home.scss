@@ -1,3 +1,4 @@
+
 #navbarReplacer {
   -webkit-mask-image: -webkit-gradient(
     linear,
@@ -11,6 +12,28 @@
   height: 30vh;
 }
 
+.hackVideoesContainer{
+  display:flex;
+  justify-content: center;
+  margin-top: 2%;
+  width:100%
+}
+.home{
+  display:flex;
+  justify-content: center;
+}
+.home-container{
+  display: flex;
+  flex-direction: column;
+  width:50%;
+  text-align:left
+}
+.imageAndQuote{
+  display: flex;
+  flex-direction: column;
+  width:25%;
+}
+
 @media screen and (min-width: 599px) {
   
 #homeHeader::after{
@@ -21,11 +44,13 @@
   #homeHeader::after{
       content: "CHWF4K"
     }
-  #hackVideoesContainer {
-    display:none
+  .hackVideoesContainer, .descriptionText, .imageAndQuote {
+    display: none;
   }
- #descriptionText2, #descriptionText1, #imageAndQuote{
-   display:none
- }
-
+  .home-container{
+    width:100%
+  }
 }
+
+
+

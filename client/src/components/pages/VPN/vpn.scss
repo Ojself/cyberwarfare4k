@@ -1,0 +1,18 @@
+@font-face {
+    font-family: Gordita;
+     src: url("./Gordita\ Regular.otf") 
+}
+
+// https://s1.nordcdn.com/nord/misc/0.3.0/vpn/brand/Fonts.pdf
+#nordvpn{
+    font-family: Gordita;
+    color: #73757a
+}
+.vpn-form{
+    width: 50%
+}
+@media only screen and (max-width: 600px) {
+    .vpn-form{
+    width: 100%
+}
+}

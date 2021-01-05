@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 // TODO, write a nice email
 exports.sendConfirmation = (email, confirmationCode) => transporter.sendMail({
-  from: 'Hacker',
+  from: 'CyberhackerWarfare4K',
   to: email,
   subject: 'Please confirm your account',
   html: `

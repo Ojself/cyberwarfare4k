@@ -14,7 +14,7 @@ const {
 // Retrives stashes
 
 router.get('/', async (req, res) => {
-  const stashes = await Stash.find();
+  const stashes = await Stash.find().sort({ price: 1 });
 
   res.status(200).json({
     success: true,

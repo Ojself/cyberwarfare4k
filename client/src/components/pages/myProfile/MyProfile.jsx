@@ -8,6 +8,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Container,
   Row,
   Col,
 } from "reactstrap";
@@ -38,35 +39,9 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     updateGlobalValues(result);
   };
 
-/* XMAS EVENT */
-const finishEvent = async ()=> {
-  let data;
-  try {
-    data = await api.xmasRedeem()
-  }catch (err){
-    console.error('error', err)
-    return updateGlobalValues(err)
-  }
-  updateGlobalValues(data)
-}
 
-const XmasOverview = ({list})=> {
-const count = Object.values(list).filter(Boolean).length
-if (count >= 24){
-  return (
-    <Button onClick={()=> finishEvent()} color="outline-light">
-      Finish event!
-    </Button>
-  )
-}
-return (
-  <li className="list-group-item bg-dark mb-2">
-    <strong>❄️ Gifts found: {count}/24 ❄️</strong>
-  </li>
-);
-  
-}
-/* XMAS EVENT */
+
+
 
 
 
@@ -136,7 +111,7 @@ return (
   );
 
   const profileSkills = !globalLoading && (
-    <div className="d-flex flex-column col-4">
+    <div className="d-flex flex-column w-100">
       {["Technical", "Forensics", "Social Engineering", "Cryptography"].map(
         (c) => {
           return (
@@ -192,7 +167,7 @@ return (
   );
 
   const profileRankOverview = !globalLoading && (
-    <div className="col-4">
+    <div className="w-100">
       <ul className="list-group">
         <li className="list-group-item bg-dark mb-2">
           <SubscriptionIcon subscription={user.account.subscription} />
@@ -229,7 +204,7 @@ return (
   );
 
   const profileBelongings = (
-    <div className="col-4">
+    <div className="w-100">
       <div>
         <Nav tabs>
           {["Items", "Crypto", "Stash", "DC"].map((t, i) => {
@@ -249,6 +224,7 @@ return (
         </Nav>
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
+            <Container>
             <Row>
               <Col sm="12">
                 <Table responsive className="text-light">
@@ -289,6 +265,7 @@ return (
                 </Table>
               </Col>
             </Row>
+            </Container>
           </TabPane>
           <TabPane tabId="2">
             <Row>
@@ -381,19 +358,27 @@ return (
   );
 
   const profilePage = (
-    <div className="container d-flex flex-column">
+    <div
+      className="container d-flex flex-column"
+    >
       {profileHeader}
       {profileAvatars}
-      <div className="d-flex">
-        {profileSkills}
-        {profileRankOverview}
-        {profileBelongings}
-      </div>
+      <Container>
+        <Row className="d-flex">
+          <Col md="4">{profileSkills}</Col>
+          <Col md="4">{profileRankOverview}</Col>
+          <Col md="4">{profileBelongings}</Col>
+        </Row>
+      </Container>
     </div>
   );
 
   return (
-    <div className="mt-5">{globalLoading ? <p>loading..</p> : profilePage}</div>
+    <div
+      className="mt-5"
+    >
+      {globalLoading ? <p>loading..</p> : profilePage}
+    </div>
   );
 };
 

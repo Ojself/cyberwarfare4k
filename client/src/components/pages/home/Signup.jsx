@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "reactstrap";
-
+import "./loginsignup.scss";
 import api from "../../../api";
 
 const validateInput = (data) => {
@@ -54,11 +54,12 @@ const Signup = (props) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       console.error(err, "err");
+      setFailMessage(err);
     }
   };
 
   return (
-    <div className="text-left bg-dark d-flex flex-column w-100 m-3 p-5">
+    <div className="login-signup-card">
       <h2 className="text-left mb-4">Register</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
@@ -80,14 +81,14 @@ const Signup = (props) => {
         />
 
         <Button
-        disabled={true}
+          disabled={true}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
         >
           Sign up
         </Button>
-        <div style={{ minHeight: "8vh" }} className="text-danger">
+        <div className="fail-message">
           {failMessage}
         </div>
       </form>

@@ -4,20 +4,14 @@ const bcrypt = require('bcrypt');
 
 const router = express.Router();
 const User = require('../models/User');
-const City = require('../models/City');
 
-const cityIds = [];
-
-(async function getCities() {
-  const cities = await City.find();
-  cities.forEach((element) => {
-    cityIds.push(element._id);
-  });
-}());
+const cityIds = ['5fae62409cbf7d270f23470b',
+  '5fae62409cbf7d270f23470c',
+  '5fae62409cbf7d270f23470d',
+  '5fae62409cbf7d270f23470e',
+  '5fae62409cbf7d270f23470f'];
 
 // const { sendConfirmation } = require('../configs/nodemailer');
-
-// Bcrypt to encrypt passwords
 const bcryptSalt = 10;
 
 // TODO: Change email to email.
@@ -28,8 +22,8 @@ router.post('/signup', (req, res, next) => {
     return;
   }
 
-  const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const confirmationCode = Array.from({ length: 25 }, ((_) => characters[Math.floor(Math.random() * characters.length)])).join('');
+  // const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  // const confirmationCode = Array.from({ length: 25 }, ((_) => characters[Math.floor(Math.random() * characters.length)])).join('');
 
   User.findOne({ 'account.email': email })
     .then((userDoc) => {
@@ -41,6 +35,7 @@ router.post('/signup', (req, res, next) => {
       const hashPass = bcrypt.hashSync(password, salt);
       const { ip } = req;
       const account = {
+        email,
         password: hashPass,
         ip: [ip],
       };
@@ -50,9 +45,7 @@ router.post('/signup', (req, res, next) => {
       };
 
       const newUser = new User({
-        email,
         account,
-        confirmationCode,
         name,
         playerStats,
       });
@@ -67,26 +60,30 @@ router.post('/signup', (req, res, next) => {
     .catch((err) => next(err));
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   const { email, password } = req.body;
+
   // first check to see if there's a document with that email
-  User.findOne({ email })
-    .then((userDoc) => {
-      // "userDoc" will be empty if the email is wrong (no document in database)
-      if (!userDoc) {
-        res.status(403).json('Password or email is wrong');
-        next(new Error('Password or email is wrong'));
-      }
-      if (!bcrypt.compareSync(password, userDoc.account.password)) {
-        res.status(403).json('Password or email is wrong');
-        next(new Error('Password or email is wrong'));
-      }
-      req.logIn(userDoc, () => {
-        userDoc.password = undefined;
-        res.json(userDoc);
-      });
-    })
-    .catch((err) => next(err));
+  let userDoc;
+  try {
+    userDoc = await User.findOne({ 'account.email': email });
+    if (!userDoc) {
+      res.status(403).json('Password or email is wrong');
+      next(new Error('Password or email is wrong'));
+    }
+    if (!bcrypt.compareSync(password, userDoc.account.password)) {
+      res.status(403).json('Password or email is wrong');
+      next(new Error('Password or email is wrong'));
+    }
+    req.logIn(userDoc, () => {
+      userDoc.account.password = null;
+      userDoc.account.ip = null;
+
+      res.json(userDoc);
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 // todo add ip when logging in. req.ip
 router.post('/login-with-passport-local-strategy', (req, res, next) => {
@@ -106,6 +103,7 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
         res.status(500).json({ message: 'Something went wrong' });
         return;
       }
+      console.log('reqlogin', req.user);
 
       res.json(req.user);
     });
@@ -124,8 +122,9 @@ router.get('/confirm/:confirmCode', (req, res) => {
     { $set: { status: 'Active' } },
   )
     .then((user) => {
-      // don't render. do something else. redirect to setup?
-      res.render('auth/confirmed', user);
+      res.status(200).json({
+        message: 'success',
+      });
     })
     .catch((err) => {
       console.log(err);

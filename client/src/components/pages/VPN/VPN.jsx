@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api from "../../api";
+import "./vpn.scss"
+import api from "../../../api";
 import { Button, Form, FormGroup } from "reactstrap";
 import Select from "react-select";
 
@@ -48,6 +49,7 @@ const VPN = ({ updateGlobalValues,user }) => {
     try {
       data = await api.changeCity({ cityId })
     } catch(err){
+      console.error("Error: ", err)
       updateGlobalValues(err);
       return
     }
@@ -57,7 +59,7 @@ const VPN = ({ updateGlobalValues,user }) => {
   const priceOverview = vpnState.selectedOption && (
     <div>
       <h6>
-        <span style={{ color: "#F08F18" }}>&#8383;</span>
+        <span className="bitcoinColor">&#8383;</span>
         {vpnState.selectedOption.price}
       </h6>
       <h6>
@@ -70,22 +72,37 @@ const VPN = ({ updateGlobalValues,user }) => {
   );
   return (
     <div className="page-container">
-      <h1 className="display-4">VPN</h1>
-
-      <Form style={{ width: "25%" }} className="content">
-        <FormGroup>
-          <Select
-            className={"text-dark mb-3"}
-            value={vpnState.selectedOption}
-            onChange={handleChange}
-            options={vpnState.loading ? "" : vpnState.massagedCities}
-          />
-          {priceOverview}
-        </FormGroup>
-        <Button color="outline-info" onClick={() => handleTravel()}>
-          Change VPN
-        </Button>
-      </Form>
+      <h1>VPN</h1>
+      <br />
+      <a
+        href="https://nordvpn.com/"
+        rel="noreferrer"
+        target="_blank"
+        id="nordvpn"
+      >
+        Sponsored by {" "}
+        <img
+          style={{ width: "4rem", margin: "0 0 0 1rem" }}
+          src={`nordvpn/logo_vertical-white.png`}
+          alt="NordVPN Logo"
+        />
+      </a>
+      <div className="content  d-flex justify-content-center">
+        <Form className="vpn-form">
+          <FormGroup>
+            <Select
+              className={"text-dark mb-3"}
+              value={vpnState.selectedOption}
+              onChange={handleChange}
+              options={vpnState.loading ? "" : vpnState.massagedCities}
+            />
+            {priceOverview}
+          </FormGroup>
+          <Button color="outline-info" onClick={() => handleTravel()}>
+            Change location!
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 };

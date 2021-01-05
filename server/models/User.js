@@ -8,27 +8,22 @@ const DataCenter = require('./DataCenter');
 
 const userSchema = new Schema(
   {
-    email: { type: String, unique: true },
     account: {
+      email: { type: String, unique: true },
       password: String,
       ip: [String],
-      status: {
-        type: String,
-        enum: ['Pending Confirmation', 'Active'],
-        default: 'Pending Confirmation',
+      confirmationCode: { type: String, default: `${Math.random()}` },
+      isSetup: {
+        type: Boolean,
+        default: false,
       },
       avatar: {
         type: String,
         default: '',
       },
-      confirmationCode: String,
       subscription: {
         type: String,
         enum: ['', 'Bronze', 'Silver', 'Gold', 'Platinum'],
-      },
-      isSetup: {
-        type: Boolean,
-        default: false,
       },
       notifications: {
         type: Array,
@@ -67,10 +62,10 @@ const userSchema = new Schema(
         type: Number,
         default: 2,
       },
-      /* Encryption: {
+      Encryption: {
         type: Number,
         default: 1,
-      }, */
+      },
     },
     crimeSkill: {
       Technical: {
@@ -221,7 +216,6 @@ const userSchema = new Schema(
       'Mini Hidden Camera': { type: Number, default: 0 },
     },
 
-    // Figth accessories
     fightInformation: {
       gracePeriod: { type: Date, default: Date.now() },
       shutdowns: { type: Number, default: 0 },
@@ -238,6 +232,7 @@ const userSchema = new Schema(
       githubStar: { type: Boolean, default: false },
       megarpg: { type: String },
       chessathor: { type: String },
+      stripe: { type: String },
     },
   },
   {
@@ -303,9 +298,6 @@ userSchema.methods.batteryDrain = function (battery) {
 
 userSchema.methods.batteryGain = function (battery) {
   this.playerStats.battery += parseInt(battery, 10);
-  /* if (this.playerStats.battery > 100) {
-    this.playerStats.battery = 100;
-  } */
 };
 
 userSchema.methods.bitCoinDrain = function (bitCoins) {

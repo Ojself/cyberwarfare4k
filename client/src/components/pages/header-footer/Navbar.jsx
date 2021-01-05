@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import api from "../../../api";
+import "./navbar.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfo, faMoneyBillAlt, faCity,  faComments ,faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import { faRedhat  } from "@fortawesome/free-brands-svg-icons"
 
 import {
-  Collapse,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
   Nav,
   NavItem,
@@ -15,8 +17,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
-  const [toolOpen, setToolOpen] = useState(false);
+const NavbarComp = ({ globalLoading, messages, user }) => {
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = () => {
@@ -38,135 +39,121 @@ const NavbarComp = ({ globalLoading, messages, user, updateGlobalValues }) => {
     return messages.inbox.length && !messages.inbox[0].read;
   };
 
-  const toggle = () => {
-    setToolOpen(!toolOpen);
-  };
-
   return (
     <div>
-      <Navbar color="dark" expand="md">
+      <Navbar color="dark" className="navbar-main" expand="xs">
         <NavbarBrand href="/my-profile">
-          <strong>
-            <span className="text-success">C</span>
-            <span className="text-danger">H</span>
-            <span className="text-success">W</span>
-            <span className="text-danger">4</span>
-            <span className="text-success">K</span>
-          </strong>
+          {/* <strong className="text-info">CHW4K</strong> */}
         </NavbarBrand>
-        <NavbarToggler onClick={toggle} />
-        <Collapse navbar>
-          <Nav className="ml-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Info
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/my-profile">My Profile</DropdownItem>
-                <DropdownItem href="/ladder">Top Hackers</DropdownItem>
-                <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
-                <DropdownItem href="/earn-battery">
-                  Earn Battery{" "}
-                  <span role="img" aria-label="battery">
-                    &#9889;
-                  </span>
-                </DropdownItem>
-                <DropdownItem href="/information">
-                  Information & FAQ
-                </DropdownItem>
-                <DropdownItem href="/hall-of-fame">Hall Of Fame</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Hack
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/petty-hacker">Petty</DropdownItem>
-                <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-                <DropdownItem disabled>Organized Crime</DropdownItem>
-                <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-                <DropdownItem href="/locals">Hack player</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Alliance
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/alliance/ladder">
-                  Top Alliances
-                </DropdownItem>
-                {user && user.alliance ? (
-                  <>
-                    <DropdownItem
-                      href={`/alliance/${user.alliance._id}/beta-forum`}
-                    >
-                      Forum
-                    </DropdownItem>
-                    <DropdownItem href={`/alliance/dashboard`}>
-                      Dashboard
-                    </DropdownItem>
-                  </>
-                ) : (
-                  <>
-                    <DropdownItem href="/alliance/create">
-                      Create..
-                    </DropdownItem>
-                  </>
-                )}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                {currentCity}
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/locals">Local Hackers</DropdownItem>
-                <DropdownItem href="/service">Service & Support</DropdownItem>
-                <DropdownItem href="/vpn">VPN</DropdownItem>
-                <DropdownItem href="/cryptocurrency">
-                  Crypto Currency
-                </DropdownItem>
-                <DropdownItem href="/marketplace">Marketplace</DropdownItem>
-                <DropdownItem href="/fence">Fence</DropdownItem>
-                <DropdownItem href="/ledger">Ledger</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle
-                className={checkAllCommunication() ? "text-danger" : null}
-                nav
-                caret
+        <Nav className="m-auto" navbar>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle caret  className="dropdown-button" nav>
+              <FontAwesomeIcon className="text-light" icon={faInfo} />
+              <span className="display-none-when-mobile"> Info</span>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="/my-profile">My Profile</DropdownItem>
+              <DropdownItem href="/ladder">Top Hackers</DropdownItem>
+              <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
+              <DropdownItem href="/earn-battery">
+                Earn Battery{" "}
+                <span role="img" aria-label="battery">
+                  &#9889;
+                </span>
+              </DropdownItem>
+              <DropdownItem href="/information">Information & FAQ</DropdownItem>
+              <DropdownItem href="/hall-of-fame">Hall Of Fame</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle caret className="dropdown-button" nav>
+              <FontAwesomeIcon className="text-light" icon={faMoneyBillAlt} />
+              <span className="display-none-when-mobile"> Hack</span>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="/petty-hacker">Petty</DropdownItem>
+              <DropdownItem href="/hack-crimes">Crime</DropdownItem>
+              <DropdownItem disabled>Organized Crime</DropdownItem>
+              <DropdownItem href="/datacenters">Datacenters</DropdownItem>
+              <DropdownItem href="/locals">Hack player</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle caret className="dropdown-button" nav>
+              <FontAwesomeIcon className="text-light" icon={faRedhat} />
+              <span className="display-none-when-mobile"> Alliance</span>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="/alliance/ladder">Top Alliances</DropdownItem>
+              {user && user.alliance ? (
+                <>
+                  <DropdownItem
+                    href={`/alliance/${user.alliance._id}/beta-forum`}
+                  >
+                    Forum
+                  </DropdownItem>
+                  <DropdownItem href={`/alliance/dashboard`}>
+                    Dashboard
+                  </DropdownItem>
+                </>
+              ) : (
+                <>
+                  <DropdownItem href="/alliance/create">Create..</DropdownItem>
+                </>
+              )}
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle caret className="dropdown-button" nav>
+              <FontAwesomeIcon className="text-light" icon={faCity} />
+              <span className="display-none-when-mobile"> {currentCity}</span>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="/locals">Local Hackers</DropdownItem>
+              <DropdownItem href="/service">Service & Support</DropdownItem>
+              <DropdownItem href="/vpn">VPN</DropdownItem>
+              <DropdownItem href="/cryptocurrency">
+                Crypto Currency
+              </DropdownItem>
+              <DropdownItem href="/marketplace">Marketplace</DropdownItem>
+              <DropdownItem href="/fence">Fence</DropdownItem>
+              <DropdownItem href="/ledger">Ledger</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle caret               className={`dropdown-button ${
+                checkAllCommunication() ? "text-danger" : null
+              }`}
+              nav
+            >
+              <FontAwesomeIcon className="text-light" icon={faComments} />
+              <span className="display-none-when-mobile"> Communication</span>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem href="/beta-forum">Public Forum</DropdownItem>
+              <DropdownItem
+                className={userHasMail() ? "text-danger" : null}
+                href="/messages"
               >
-                Communication
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem href="/beta-forum">Public Forum</DropdownItem>
-                <DropdownItem
-                  className={userHasMail() ? "text-danger" : null}
-                  href="/messages"
-                >
-                  Messages
-                </DropdownItem>
-                <DropdownItem
-                  className={userHasNotification() ? "text-danger" : null}
-                  href="/notifications"
-                >
-                  Notifications
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <NavItem>
-              <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
-                Logout
-                <p style={{ fontSize: "0.5em" }}>sudo rm -rf </p>
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
+                <span className="display-none-when-mobile"> Messages</span>
+              </DropdownItem>
+              <DropdownItem
+                className={userHasNotification() ? "text-danger" : null}
+                href="/notifications"
+              >
+                Notifications
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+          <NavItem className={"dropdown-button"}>
+            <NavLink href="/" onClick={(e) => handleLogoutClick(e)}>
+              <FontAwesomeIcon className="text-light" icon={faSignOutAlt} />
+              <span className="display-none-when-mobile"> Logout</span>
+            </NavLink>
+          </NavItem>
+        </Nav>
       </Navbar>
     </div>
   );
 };
-export default NavbarComp;      
+export default NavbarComp;

@@ -13,19 +13,17 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const rateLimit = require('express-rate-limit');
 
-// Thanks Jimenez
-/* const apiLimiter = rateLimit({
+const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
-}); */
+});
 
 const app = express();
 require('./configs/database');
 
-// app.use('/api/', apiLimiter);
+app.use('/api/', apiLimiter);
 app.use(nocache());
 
-// Set "Access-Control-Allow-Origin" header
 app.use(
   cors({
     origin: (origin, cb) => {

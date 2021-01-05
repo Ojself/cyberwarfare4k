@@ -53,9 +53,8 @@ BetaForum.deleteMany()
   .then(() => BetaForum.create(comments))
   .then((commentsCreated) => {
     console.log(
-      `${commentsCreated.length} comments created with the following id:`,
+      `${commentsCreated.length} beta comments created`,
     );
-    console.log(commentsCreated.map((u) => u._id));
   })
   .then(() => {
     console.log('disconnecting from mongoose');

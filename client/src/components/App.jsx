@@ -35,7 +35,7 @@ import Notifications from "./pages/communication/Notifications";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
-import VPN from "./pages/VPN";
+import VPN from "./pages/VPN/VPN";
 import WantedList from "./pages/WantedList";
 
 const App = () => {
@@ -53,9 +53,11 @@ const App = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      console.log('fetching')
       let data;
       try{
         data = await api.getUser()
+        console.log(data,'datafetch')
       }catch(err){
         console.error('error: ', err)
         return
@@ -90,10 +92,10 @@ const App = () => {
       }, 5000);
     }
   };
-
-  
   return (
-    <div className="App text-light">
+    <div
+      className="App text-light"
+    >
       {!userIsAtStarPage() && (
         <>
           <NavbarComp
@@ -122,8 +124,9 @@ const App = () => {
           </div>
         </>
       )}
+      
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact render={(props) => <Home {...props} />} />
         <Route
           path="/hall-of-fame"
           render={() => (
@@ -263,11 +266,7 @@ const App = () => {
         <Route
           path="/information"
           render={() => (
-            <Information
-              user={user}
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-            />
+            <Information user={user} updateGlobalValues={updateGlobalValues} />
           )}
         />
         <Route path="/ladder" component={Ladder} />

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
-
 const { CronJob } = require('cron');
+// /usr/share/zoneinfo  <-- Timezones
+const timeZone = 'Europe/Oslo';
+
+const uri = process.env.MONGODB_URI
+  || 'mongodb://localhost/please-set-process-env-mongodb-uri';
 
 const stashPriceInterval = require('../cronjobs/stashPriceInterval');
 const batteryInterval = require('../cronjobs/batteryInterval');
@@ -11,50 +15,43 @@ const cityPriceInterval = require('../cronjobs/cityPriceInterval');
 const earnBatteryInterval = require('../cronjobs/earnBatteryInterval');
 
 const earnBatteryIntervalJob = new CronJob('25 * 0 * * *', (() => {
-  console.log('earnBatteryIntervalJob started');
+  console.info('earnBatteryIntervalJob started');
   earnBatteryInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const batteryJob = new CronJob('2 */10 * * * *', (() => {
-  console.log('batteryJob started');
+  console.info('batteryJob started');
   batteryInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const currencyPriceJob = new CronJob('6 0 * * * *', (() => {
-  console.log('currencyPriceJob started');
+  console.info('currencyPriceJob started');
   currencyPriceInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const bonusBatteryJob = new CronJob('10 0 * * * *', (() => {
-  console.log('bonusBatteryJob started');
+  console.info('bonusBatteryJob started');
   bonusBatteryInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const stashPriceJob = new CronJob('15 59 * * * *', (() => {
-  console.log('stashPriceJob started');
+  console.info('stashPriceJob started');
   stashPriceInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const dataCenterPayoutJob = new CronJob('30 * * * * *', (() => {
-  console.log('dataCenterPayoutInterval started');
+  console.info('dataCenterPayoutInterval started');
   dataCenterPayoutInterval();
-}), null, true, 'America/Los_Angeles');
+}), null, true, timeZone);
 
 const cityMultiplierJob = new CronJob('45 59 * * * *', (() => {
-  console.log('cityMultiplierJob started');
+  console.info('cityMultiplierJob started');
   cityPriceInterval();
-}), null, true, 'America/Los_Angeles');
-
-const uri = process.env.MONGODB_URI
-  || 'mongodb://localhost/please-set-process-env-mongodb-uri';
+}), null, true, timeZone);
 
 mongoose
-  .connect(uri, { useNewUrlParser: true })
-  .then((x) => {
-    console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`,
-    );
-  })
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((db) => console.info(`Connected to MongoDB! Database name: "${db.connections[0].name}"`))
   .then(() => {
     batteryJob.start();
     bonusBatteryJob.start();
@@ -62,8 +59,7 @@ mongoose
     currencyPriceJob.start();
     stashPriceJob.start();
     dataCenterPayoutJob.start();
-    earnBatteryIntervalJob.start(); // <-- Might be depricated
+    earnBatteryIntervalJob.start(); // <-- Might be depricated TODO
   })
-  .catch((err) => {
-    console.error('Error connecting to mongo', err);
-  });
+  .catch((err) => console.error('Error connecting to mongo', err));
+mongoose.set('useCreateIndex', true);

@@ -10,56 +10,16 @@ require('../configs/database');
 // or a note of how to run the seeds in which order.
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const City = require('../models/City');
-const Alliance = require('../models/Alliance');
 
 const avatars = require('./avatars.json');
 
-const bcryptSalt = 10;
-
-let cities;
-let cityIds;
-let greyAlliance;
-
-const generateQueryString = (game) => {
-  const lexi = 'abcdefghijkmnpqrstuvwxyz23456789ABCDEFGHIJKLMNPQRSTUVWXYZ';
-  let query = '';
-  for (let i = 0; i < 6; i += 1) {
-    query += lexi[Math.floor(Math.random() * lexi.length)];
-  }
-  if (game === 'chessathor') {
-    query = `#${query}`;
-  }
-  return query;
-};
-
 const giveRandomAvatar = () => avatars[Math.floor(Math.random() * avatars.length)];
 
-const getUserId = (users, role) => {
-  const user = users.find((u) => u.allianceRole === role);
-  return user._id;
-};
-
-const getCities = async () => {
-  cities = await City.find();
-  cityIds = cities.map((c) => c._id);
-};
-
-const getAlliances = async () => {
-  greyAlliance = await Alliance.findOne({ name: 'Grey' });
-};
-
-const randomCityId = () => cityIds[Math.floor(Math.random() * cityIds.length)];
-
 User.deleteMany()
-  .then(() => getCities())
-  .then(() => getAlliances())
   .then(() => {
     const users = [
       {
-        email: 'alice@email.com',
         _id: '5fae6d7ee60018434108369c',
         fightInformation: {
           shutdowns: 0,
@@ -72,30 +32,30 @@ User.deleteMany()
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
+          Encryption: 25,
         },
         account: {
-          password: bcrypt.hashSync('alice', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'alice@email.com',
+          password: '$2b$10$UakxtcaByDAe.UYaG0l/WeXJ6kMvWy0hgCRGvN/H/9df9gi9IGiea',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470b', // Shanghai
           rank: 0,
           rankName: 'Script kiddie',
         },
         name: 'npc_alice',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'firstMonkeys',
       },
       {
-        email: 'bob@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67a',
         fightInformation: {
@@ -107,28 +67,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('bob', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'bob@email.com',
+          password: '$2b$10$8pLbWUz3jfdTqrFxo0O3e.afgMLCFyfPoLXapJRzNHKMHkukjMR7S',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470c', // Hanoi
           rank: 1,
           rankName: 'Family IT-Support',
         },
         name: 'npc_bob',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'firstMonkeys',
       },
       {
-        email: 'chuck@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67b',
         fightInformation: {
@@ -140,28 +99,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('chuck', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'chuck@email.com',
+          password: '$2b$10$QiVbeBQubHQLvJUZGgsN.e6qG7jqjVzKq//q3VhBIn4IwHW/5iRPy',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470d', // Stavanger
           rank: 2,
           rankName: 'Blog Writer',
         },
         name: 'npc_chuck',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'firstMonkeys',
       },
       {
-        email: 'craig@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67c',
         fightInformation: {
@@ -173,28 +131,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('craig', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'craig@email.com',
+          password: '$2b$10$tfG83xjjH7zNzY8bsi34COnGGiIN3hqYJPYKxHV3uREkg64oV5lP6',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470e', // Phoenix
           rank: 3,
           rankName: "HTML 'programmer'",
         },
         name: 'npc_craig',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'secondMonkeys',
       },
       {
-        email: 'eve@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 25,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67d',
         fightInformation: {
@@ -206,28 +163,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('eve', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'eve@email.com',
+          password: '$2b$10$2JvNYbiT8M0xlSDf.wxcle30u1tmZiR/aSwcnzdb5ezIZbsEqn2Jy',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470f', // Novosibirsk
           rank: 4,
           rankName: 'Jr. Web Dev',
         },
         name: 'npc_eve',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'secondMonkeys',
       },
       {
-        email: 'faythe@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 75,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67e',
         fightInformation: {
@@ -239,28 +195,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('faythe', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'faythe@email.com',
+          password: '$2b$10$tdqM1M7SoYQdZBtWMTkLs.bpdRUtdp8QxNoX1BJUPuX6JUuKp1CWy',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470b', // Shanghai
           rank: 5,
           rankName: 'Sr. Web Dev',
         },
         name: 'npc_fayth',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'firstLead',
       },
       {
-        email: 'mallory@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 75,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b680',
         fightInformation: {
@@ -272,28 +227,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('mallory', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'mallory@email.com',
+          password: '$2b$10$o4syLJwQN2eHRKuE.SJlP.zJQl3ui3cgLyLVhlot4mzYESedRWM76',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470c', // Hanoi
           rank: 6,
           rankName: 'System Dev',
         },
         name: 'npc_mallory',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'secondLead',
       },
       {
-        email: 'sybil@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 160,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b67f',
         fightInformation: {
@@ -305,28 +259,27 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('sybil', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'sybil@email.com',
+          password: '$2b$10$4doyGM5DNtRzjSuOAu2PNuU8JoMezyXUZVETxQjX/xr4QOPPYTESe',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470d', // Stavanger
           rank: 7,
           rankName: 'Cyber Security Dev',
         },
         name: 'npc_sybil',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'analyst',
       },
       {
-        email: 'trudy@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 125,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b681',
         fightInformation: {
@@ -338,29 +291,28 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('trudy', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'trudy@email.com',
+          password: '$2b$10$RLqNwdxrfEtd4IlBCeI0Fuj553IC50udq3o9Ax6DEzvk7TMETqrLe',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           bounty: 800000,
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470e', // Phoenix
           rank: 8,
           rankName: 'Basement Dweller',
         },
         name: 'npc_trudy',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'cto',
       },
       {
-        email: 'gerald@email.com',
         hackSkill: {
           CPU: 1,
           AntiVirus: 200,
+          Encryption: 25,
         },
         _id: '5fca3b4a86e77b5c8e58b682',
         fightInformation: {
@@ -372,75 +324,53 @@ User.deleteMany()
           currencyPurchases: Math.floor(Math.random() * 5),
         },
         account: {
-          password: bcrypt.hashSync('gerald', bcrypt.genSaltSync(bcryptSalt)),
+          email: 'gerald@email.com',
+          password: '$2b$10$cbgDBDZ29vPErIz78foiE.rIHbaibn2rGpfWaOMjj8uWJgRDFNoky',
           avatar: giveRandomAvatar(),
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           bounty: 1000000,
           maxFireWall: 200,
           currentFirewall: 200,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470f', // Novosibirisk
           rank: 9,
           rankName: 'Anonymous',
         },
         name: 'npc_gerald',
-        alliance: greyAlliance._id,
+        alliance: '5fae6d7ee60018434108369c',
         allianceRole: 'boss',
       },
       {
-        email: 'tormod@mail.com',
         name: 'Admin_Tor',
         _id: '5fca3b4a86e77b5c8e58b683',
         account: {
+          email: 'tormod@mail.com',
           password: '$2b$10$dXcx87D2LmkjravCI9UgROSW92oGCIx4qBb9qPiz.MCmlKo882uce',
           avatar: '/hackerAvatars/Waifu/greenblack.png',
-          subscription: 'Bronze',
-          ip: ['192.168.1.1', '192.168.1.2'],
           isSetup: true,
         },
         playerStats: {
           bounty: 0,
           maxFireWall: 100,
           currentFirewall: 100,
-          city: randomCityId(),
+          city: '5fae62409cbf7d270f23470f', // Novosibirisk
           rank: 0,
           rankName: 'Script kiddie',
         },
+
       },
     ];
 
     return User.create(users);
   })
-  .then(async (usersCreated) => {
-    cities.forEach(async (city) => {
-      city.residents = usersCreated
-        .filter((user) => user.playerStats.city._id.toString() === city._id.toString())
-        .map((user) => {
-          user._id;
-        });
-      await city.save();
-    });
-
-    console.log(`${usersCreated.length} users created`);
-    greyAlliance.boss = getUserId(usersCreated, 'boss');
-    greyAlliance.cto = getUserId(usersCreated, 'cto');
-    greyAlliance.analyst = getUserId(usersCreated, 'analyst');
-    greyAlliance.firstLead = getUserId(usersCreated, 'firstLead');
-    greyAlliance.secondLead = getUserId(usersCreated, 'secondLead');
-    greyAlliance.firstMonkeys = usersCreated.filter((user) => user.allianceRole === 'firstMonkeys');
-    greyAlliance.secondMonkeys = usersCreated.filter((user) => user.allianceRole === 'secondMonkeys');
-    greyAlliance.active = true;
-    await greyAlliance.save();
-  })
-  .then(() => {
+  .then((usersCreated) => {
+    console.info(`Success! ${usersCreated.length} users created!`);
     mongoose.disconnect();
     process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    console.error(err);
+    console.error('Error: ', err);
     process.exit(1);
   });

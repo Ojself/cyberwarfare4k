@@ -42,8 +42,7 @@ Message.deleteMany()
   })
   .then(() => Message.create(messages))
   .then((messagesCreated) => {
-    console.log(`${messagesCreated.length} messages created with the following id:`);
-    console.log(messagesCreated.map((u) => u._id));
+    console.log(`${messagesCreated.length} messages created`);
   })
   .then(() => {
     mongoose.disconnect();

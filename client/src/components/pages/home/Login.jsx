@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "reactstrap";
+import "./loginsignup.scss"
 
 import api from "../../../api";
 
-const Login = (props) => {
+const Login = () => {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -17,13 +18,24 @@ const Login = (props) => {
     });
   };
 
-  const handleClick = async (e) => {
+  const handleRedirect = (user) => {
+    if (user.account.isSetup) {
+      window.location.href = "/my-profile/";
+    } else {
+      window.location.href = "/create-hacker/";
+    }
+  }
+
+  const handleLogin = async () => {
     const {email,password} = loginState
     if (!email || !password)return
-    e.preventDefault();
+    let data
     try {
-      await api.login(loginState.email, loginState.password);
+      data = await api.login(loginState.email, loginState.password);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      handleRedirect(data)
     } catch (err) {
+      console.error('Error: ', err)
       setFailMessage(err)
       setLoginState({
       ...loginState,
@@ -32,15 +44,11 @@ const Login = (props) => {
       setTimeout(()=>setFailMessage(""),5000)
       return
     }
-    props.redirect("/create-hacker/");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    /* only temporary. the user will be redirected to profile */
-    /* props.redirect("/my-profile/"); */
   };
 
   return (
-    <div className="text-left bg-dark d-flex flex-column w-100 m-3 p-5">
-      <h2 className="text-left mb-4">Login</h2>
+    <div className="login-signup-card">
+      <h2 className="mb-4">Login</h2>
       <form>
         <p className="mb-0">E-Mail Address</p>
         <input
@@ -61,15 +69,13 @@ const Login = (props) => {
         <Button
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
-          onClick={(e) => handleClick(e)}
+          onClick={() => handleLogin()}
         >
           Login
         </Button>
       </form>
       {/* <p className="text-center mt-3">Forgot Password?</p> */}
-      <div style={{ minHeight: "8vh" }} className="text-danger">
-        {failMessage}
-      </div>
+      <div className="fail-message">{failMessage}</div>
     </div>
   );
 };

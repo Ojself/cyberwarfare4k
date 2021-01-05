@@ -1,13 +1,14 @@
 import React from "react";
 import { Progress } from "reactstrap";
 import { Link } from "react-router-dom";
+import "./statusbar.scss"
 
 const StatusBar = ({ loading, user, updateGlobalValues }) => {
   const visibleStatusBar = !loading && !!user;
   return (
-    <div className="statusBar">
+    <div className="status-bar">
       {visibleStatusBar && (
-        <ul className="list-unstyled">
+        <ul className="list-unstyled mb-0">
           {user.alliance && user.alliance.name ? (
             <li className="list-inline-item">
               <Link to={`/alliance/${user.alliance._id}`}>
@@ -23,17 +24,17 @@ const StatusBar = ({ loading, user, updateGlobalValues }) => {
           ) : (
             <li></li>
           )}
-          <li className="list-inline-item" to="#">
+          <li className="list-inline-item display-none-when-mobile" to="#">
             <strong>
-              <Link className="text-light" to={`/my-profile`}>
+              <Link className=" text-light" to={`/my-profile`}>
                 {user.name}
               </Link>
             </strong>
           </li>
 
           <li className="list-inline-item">
-            <span style={{ color: "red" }}>&#9829;</span>
-            {user.playerStats.currentFirewall.toFixed(0)}%
+            <span style={{color: "#dc3546"}}>&#9829;</span>
+            {user.playerStats.currentFirewall.toFixed(0)}
           </li>
           <li className="list-inline-item ml-2">
             <span role="img" aria-label="battery">
@@ -42,19 +43,22 @@ const StatusBar = ({ loading, user, updateGlobalValues }) => {
             {user.playerStats.battery}%
           </li>
           <li className="list-inline-item ml-2">
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinColor">&#8383;</span>
 
             {Math.floor(user.playerStats.bitCoins)}
           </li>
-          <li className="list-inline-item ml-2">{user.playerStats.rankName}</li>
-          <li className="list-inline-item ml-2">XP:</li>
-          <li style={{ width: "10vw" }} className="list-inline-item">
+          <li className="list-inline-item ml-2 display-none-when-mobile">
+            {user.playerStats.rankName}
+          </li>
+          <li className="list-inline-item ml-2 display-none-when-mobile">
+            XP:
+          </li>
+          <li id="experience-bar" className="list-inline-item">
             <Progress
               title={`${user.playerStats.exp} / ${user.playerStats.expToLevel}`}
               color="warning"
               value={(user.playerStats.exp / user.playerStats.expToLevel) * 100}
-            >
-            </Progress>
+            ></Progress>
           </li>
         </ul>
       )}

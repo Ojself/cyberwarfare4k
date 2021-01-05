@@ -1,17 +1,17 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const User = require('../models/User');
 
 passport.use(
   new LocalStrategy(
     {
       emailField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
     },
     (email, password, done) => {
-      User.findOne({ email })
-        .then(foundUser => {
+      User.findOne({ 'account.email': email })
+        .then((foundUser) => {
           if (!foundUser) {
             done(null, false, { message: 'Incorrect email' });
             return;
@@ -24,7 +24,7 @@ passport.use(
 
           done(null, foundUser);
         })
-        .catch(err => done(err));
-    }
-  )
+        .catch((err) => done(err));
+    },
+  ),
 );

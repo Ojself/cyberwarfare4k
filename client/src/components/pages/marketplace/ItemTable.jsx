@@ -14,7 +14,7 @@ const ItemTable = ({ userItem, items, handlePurchase, disabled }) => {
   const itemsTable = (
     <>
       <h4 className={`text-${itemColors[items[0].type]}`}>{items[0].type}</h4>
-      <Table style={{ minWidth: "40vw", marginBottom: "5vh" }} dark>
+      <Table style={{ minWidth: "35%", marginBottom: "5vh" }} dark>
         <thead>
           <tr>
             {["Name", "Price", "Bonus", "Purchase"].map(header=>{

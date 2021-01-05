@@ -141,7 +141,7 @@ Currency.deleteMany()
   .then(() => Currency.create(currency))
   .then((currencyCreated) => {
     console.log(
-      `${currencyCreated.length} currency created with the following id:`,
+      `${currencyCreated.length} currency created`,
     );
     console.log(currencyCreated.map((u) => u._id));
   })

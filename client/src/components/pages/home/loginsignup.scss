@@ -1,0 +1,15 @@
+.login-signup-card{
+    width:100%;
+    display: flex;
+    margin: auto;
+    margin-top:2rem;
+    text-align: left;
+    flex-direction: column;
+    padding:2rem;
+    background-color: #32334a 
+}
+
+.fail-message{
+    min-height: 8vh;
+    color: #ff3c5c // text-danger
+}
