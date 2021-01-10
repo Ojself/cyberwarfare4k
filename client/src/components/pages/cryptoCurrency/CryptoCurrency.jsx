@@ -8,6 +8,9 @@ import {
   Input,
   Button,
   Table,
+  Row,
+  Col,
+  Container,
 } from "reactstrap";
 import KFormatter from "../_helpers/KFormatter";
 import CryptoCurrenciesChart from "./CryptoCurrencies";
@@ -24,7 +27,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     Ripple: false,
     Monero: false,
     Zcash: false,
-    Dash: false
+    Dash: false,
   });
 
   useEffect(() => {
@@ -53,7 +56,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       return {
         x: apiData.historyTime[i],
         y: apiData.historyPrice[i],
-      }
+      };
     });
     return data;
   };
@@ -64,9 +67,9 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     const amount = cryptoState[name];
 
     let data;
-    
+
     try {
-      data = await api.buyCrypto({ name, amount })
+      data = await api.buyCrypto({ name, amount });
       setCryptoState({
         ...cryptoState,
         Litecoin: false,
@@ -74,22 +77,22 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
         Ripple: false,
         Monero: false,
         Zcash: false,
-        Dash: false
+        Dash: false,
       });
-    }catch(err){
-      console.error(err)
-      return updateGlobalValues(err)
+    } catch (err) {
+      console.error(err);
+      return updateGlobalValues(err);
     }
-    updateGlobalValues(data)
+    updateGlobalValues(data);
   };
 
   const handleSell = async (e) => {
     const { name } = e.target;
     const amount = cryptoState[name];
     let data;
-    
+
     try {
-      data = await api.sellCrypto({ name, amount })
+      data = await api.sellCrypto({ name, amount });
       setCryptoState({
         ...cryptoState,
         Litecoin: false,
@@ -97,14 +100,14 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
         Ripple: false,
         Monero: false,
         Zcash: false,
-        Dash: false
+        Dash: false,
       });
-   } catch(err){
-     console.error(err)
-      return updateGlobalValues(err)
+    } catch (err) {
+      console.error(err);
+      return updateGlobalValues(err);
     }
-    updateGlobalValues(data)
-  }
+    updateGlobalValues(data);
+  };
 
   const handleInputChange = (e) => {
     setCryptoState({
@@ -140,16 +143,15 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
    */
 
   return (
-    <div className="page-container">
+    <div className="crypto-page-container">
       <div className="d-flex flex-row justify-content-center">
         <h1>Currency</h1>
-        
       </div>
       {cryptoState.loading ? (
         <p>loading...</p>
       ) : (
         <>
-          <Table className="content" dark striped>
+          <Table className="crypto-table" size="sm" responsive dark striped>
             <thead>
               <tr>
                 <th>Name</th>
@@ -158,8 +160,8 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                 <th>Change last hour</th>
                 <th>Available</th>
                 <th>You have</th>
-                <th>Last purchased by:</th>
-                <th>Purchase</th>
+                <th className="display-none-when-mobile">Last purchased by:</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -187,7 +189,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     <td>{KFormatter(Math.floor(cu.available))}</td>
                     <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
                     {cu.lastPurchasedBy ? (
-                      <td>
+                      <td className="display-none-when-mobile">
                         <Link
                           className="text-white"
                           to={`hacker/${cu.lastPurchasedBy._id}`}
@@ -196,7 +198,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                         </Link>
                       </td>
                     ) : (
-                      <td> - </td>
+                      <td className="display-none-when-mobile"> - </td>
                     )}
                     <td>
                       <InputGroup id={`disableTip${i}`}>
@@ -214,7 +216,10 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                           }
                         />
 
-                        <InputGroupAddon addonType="append">
+                        <InputGroupAddon
+                          className="d-flex flex-row"
+                          addonType="append"
+                        >
                           <Button
                             name={cu.name}
                             onClick={(e) => handleBuy(e)}

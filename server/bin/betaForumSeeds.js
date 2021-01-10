@@ -10,7 +10,7 @@ require('../configs/database');
 let users;
 
 const getUsers = async () => {
-  users = await User.find({});
+  users = await User.find({"account.isSetup":true}).lean();
 };
 
 const generateRandomText = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -58,6 +58,7 @@ BetaForum.deleteMany()
   .then(() => {
     console.log('disconnecting from mongoose');
     mongoose.disconnect();
+    process.exit(0)
   })
   .catch((err) => {
     mongoose.disconnect();

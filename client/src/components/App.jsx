@@ -32,6 +32,7 @@ import MyProfile from "./pages/myProfile/MyProfile";
 import MessageCenter from "./pages/communication/MessageCenter";
 import NavbarComp from "./pages/header-footer/Navbar";
 import Notifications from "./pages/communication/Notifications";
+import OrgCrimes from "./pages/orgCrimes/OrgCrimes";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
@@ -53,11 +54,9 @@ const App = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log('fetching')
       let data;
       try{
         data = await api.getUser()
-        console.log(data,'datafetch')
       }catch(err){
         console.error('error: ', err)
         return
@@ -93,9 +92,7 @@ const App = () => {
     }
   };
   return (
-    <div
-      className="App text-light"
-    >
+    <div className="App text-light">
       {!userIsAtStarPage() && (
         <>
           <NavbarComp
@@ -124,7 +121,7 @@ const App = () => {
           </div>
         </>
       )}
-      
+
       <Switch>
         <Route path="/" exact render={(props) => <Home {...props} />} />
         <Route
@@ -247,6 +244,17 @@ const App = () => {
           path="/my-profile"
           render={() => (
             <MyProfile
+              globalLoading={loading}
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+            />
+          )}
+        />
+
+        <Route
+          path="/org-crimes"
+          render={() => (
+            <OrgCrimes
               globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}

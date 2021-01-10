@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
-import { Button, Form, FormGroup, Input, Table } from "reactstrap";
+import { Button, Form, FormGroup, Input, Table, Container, Row, Col } from "reactstrap";
+import "./fence.scss"
 
 const MAX_ALLOWED_STASH = 50
 
@@ -149,9 +150,9 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
 
       return (
         <tr key={name}>
-          <td className="d-flex">
+          <td className="d-flex align-items-center">
             <img
-              style={{ maxWidth: "30px", width: "100%" }}
+              style={{ maxHeight:"30px",maxWidth: "30px", width: "100%" }}
               src={`/stashPics/${name}/${getStashColor(i)}.png`}
               title={name}
               alt={name}
@@ -219,27 +220,32 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   );
 
   const tableOverview = (
-    <Table className="w-75" size={"sm"} dark>
-      <thead>
-        <tr>
-          <th>ITEM</th>
-          <th>YOU HAVE</th>
-          <th>PRICE</th>
-          <th>AMOUNT</th>
-        </tr>
-      </thead>
-      <tbody >
-        {tableBody}
-        {buttonGroup}
-      </tbody>
-    </Table>
+    <Container className="p-2">
+      <Row className="d-flex justify-content-center">
+        <Col sm="12" md="10" className="p-0" >
+          <Table className="" size={"sm"} dark>
+            <thead>
+              <tr>
+                <th>ITEM</th>
+                <th>YOU HAVE</th>
+                <th>PRICE</th>
+                <th>AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableBody}
+              {buttonGroup}
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+    </Container>
   );
   return (
-    <div className="page-container">
-      <h1>
-        <span className="text-warning">Fence</span> in {city}
-      </h1>
-      <div className="content d-flex justify-content-center">
+    <div className="fence-page-container">
+      <h1>Fence</h1>
+      <h6>{city}</h6>
+      <div className="content">
         {tableOverview}
       </div>
     </div>

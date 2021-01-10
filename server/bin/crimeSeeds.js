@@ -17,14 +17,6 @@ const firewallValues = {
   impossible: 450,
 };
 
-const difficultyValues = {
-  easy: 30,
-  medium: 50,
-  hard: 70,
-  challenging: 90,
-  impossible: 150,
-};
-
 const crimes = [
   // SE
   {

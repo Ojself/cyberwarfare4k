@@ -3,12 +3,12 @@ const DataCenter = require('../models/DataCenter');
 const User = require('../models/User');
 
 const dataCenterPayoutInterval = async () => {
-  const dataCenters = await DataCenter.find({ status: 'Owned' });
+  const dataCenters = await DataCenter.find({ owner: { $exists: true, $ne: null } });
 
   if (dataCenters) {
   // eslint-disable-next-line no-restricted-syntax
     for (const dataCenter of dataCenters) {
-      if (dataCenter.status === 'Owned') {
+      if (dataCenter.owner) {
         const owner = await User.findById(dataCenter.owner);
         if (owner) {
           owner.bitCoinGain(dataCenter.minutlyrevenue);

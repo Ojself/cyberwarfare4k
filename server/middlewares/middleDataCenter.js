@@ -1,8 +1,8 @@
 const {
   batteryCheck,
   checkFunds,
-  checkSameValue,
 } = require('./middleHelpers');
+const DataCenter = require('../models/DataCenter');
 
 const healDataCenterCriterias = (user, dataCenter) => {
   if (!user) {
@@ -18,21 +18,20 @@ const healDataCenterCriterias = (user, dataCenter) => {
 };
 
 // Sees if everything is in order to buy dataCenter
-const purchaseDataCenterCriterias = (user, dataCenter) => {
+const purchaseDataCenterCriterias = (user, dataCenter, now) => {
   if (!user) {
     return "User doesn't exist";
   }
   if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
-  if (checkSameValue(user.playerStats.city.toString(), dataCenter.city.toString())
-  ) {
+  if (user.playerStats.city.toString() !== dataCenter.city.toString()) {
     return "You can't purchase a datacenter outside your city";
   }
   if (dataCenter.owner) {
     return 'This datacenter already has an owner';
   }
-  if (dataCenter.gracePeriod) {
+  if (dataCenter.gracePeriod > now) {
     return 'This datacenter is not available at the moment';
   }
   if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
@@ -42,7 +41,7 @@ const purchaseDataCenterCriterias = (user, dataCenter) => {
 };
 
 // Sees if everything is in order to attack datacenter
-const attackDataCenterCriterias = (user, dataCenter, batteryCost) => {
+const attackDataCenterCriterias = (user, dataCenter, batteryCost, now) => {
   if (!user) {
     return "User doesn't exist";
   }
@@ -52,7 +51,7 @@ const attackDataCenterCriterias = (user, dataCenter, batteryCost) => {
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-  if (dataCenter.gracePeriod) {
+  if (dataCenter.gracePeriod > now) {
     return 'This datacenter is currently graced';
   }
   if (JSON.stringify(user._id) === JSON.stringify(dataCenter.owner._id)) {
@@ -105,7 +104,7 @@ const attackDataCenter = async (
   }
   const now = Date.now();
   user.handleDataCenterAttack(dataCenter, result);
-  dataCenter.handleAttack(user._id, result);
+  dataCenter.handleAttack(user._id, result, now);
 
   const notificationMessage = `Datacenter ${dataCenter.name} was attacked ${
     result.destroyed ? 'and destroyed' : ''
@@ -130,10 +129,47 @@ const hasRequiredStash = (userStash, requiredStash) => {
   const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => requiredStashObj[stash] <= userStash[stash]);
   return userHasRequiredStash;
 };
+
+const attachDatacenterStatus = (dataCenters) => {
+  const now = Date.now();
+  const sixtySec = 1000 * 60;
+
+  dataCenters.forEach((dc) => {
+    let status = 'Available';
+    if (dc.owner) {
+      status = 'Owned';
+      if (dc.attacker && dc.gracePeriod - sixtySec < now && dc.gracePeriod > now) {
+        status = 'Under Attack';
+      }
+    } else if (dc.gracePeriod > now) {
+      status = 'Resetting';
+    }
+    dc.gracePeriod = null;
+    dc.status = status;
+  });
+  return dataCenters;
+};
+
+const findDataCenters = async (params, owner, userId) => {
+  let dataCenters = await DataCenter.find(params)
+    .populate('requiredStash', ['name', 'price'])
+    .populate('city', ['name', 'residents'])
+    .populate('owner', 'name')
+    .populate('attacker', 'name');
+  // filter out the datacenters that don't belong to the city the user is in
+  if (!owner) {
+    dataCenters = dataCenters.filter((dc) => {
+      const stringifiedObjectId = JSON.stringify(dc.city.residents);
+      return stringifiedObjectId.includes(userId.toString());
+    });
+  }
+  return attachDatacenterStatus(dataCenters);
+};
 module.exports = {
   purchaseDataCenterCriterias,
   attackDataCenterCriterias,
   attackDataCenter,
   purchaseDataCenter,
   healDataCenterCriterias,
+  findDataCenters,
 };

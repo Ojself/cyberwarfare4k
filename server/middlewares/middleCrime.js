@@ -5,21 +5,22 @@ const {
 
 // Sees if everything is in order to perform crime
 
-const crimeRouteCriterias = (crime, user, batteryCost) => {
-  if (!crime) {
-    return 'Crime not found with ';
+const crimeRouteCriterias = (crime, user, batteryCost, now) => {
+  if (!crime || !user) {
+    return 'Something went wrong';
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
   }
-  if (!crime.available) {
+  if (!crime.gracePeriod > now) {
     return 'This crime is not available at the moment';
   }
   return null;
 };
 
-const fightCrime = async (user, crime, batteryCost) => {
+const fightCrime = async (user, crime, batteryCost, now) => {
   const result = {
+    now,
     user,
     crimeType: crime.crimeType,
     roundResult: [],
@@ -96,11 +97,7 @@ const crimeRecursiveBattle = (user, crime, result) => {
 const chanceCalculator = (user, crime) => {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
-  // if user tried to do crimes way over his level, give him 5% chance for success
-  /* if (crimeSkillNumber - userSkillNumber > 30) {
-    return 0.05;
-  } */
-  const probability = (userSkillNumber - crimeSkillNumber) / 100 + Math.random();
+  const probability = (userSkillNumber - crimeSkillNumber) / 100 + (Math.random() / 2);
   return probability;
 };
 
@@ -145,10 +142,10 @@ const crimeWin = (result, crime, user, decider) => {
 
 const crimeWinBitcoins = (multiplier) => Math.floor(Math.random() * multiplier) * 1000;
 const crimeWinExp = (multiplier, userRank) => {
-  const max = (multiplier + (userRank*2)) * 350;
+  const max = (multiplier + (userRank * 2)) * 350;
   const min = multiplier * 150;
   return Math.floor(Math.random() * (max - min) + min);
-}; 
+};
 
 // returns a skill based on luck and rank. Higher rank gives lower chance
 const skillGained = (decider, rank, crimeType) => {

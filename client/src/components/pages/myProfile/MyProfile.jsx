@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 
 import {
   Button,
@@ -20,12 +20,10 @@ import ProgressBarFirewallSkill from "./molecules/ProgressBarFirewallSkill";
 import ProgressBarExp from "./molecules/ProgressBarExp";
 
 import { getCorrectAllianceRoleName } from "../_helpers";
-import SubscriptionIcon from "../_molecules/SubscriptionIcon"
+import SubscriptionIcon from "../_molecules/SubscriptionIcon";
 
 import api from "../../../api";
 import classnames from "classnames";
-
-
 
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
@@ -38,12 +36,6 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     const result = await api.upgradeStats(upgradeName);
     updateGlobalValues(result);
   };
-
-
-
-
-
-
 
   const getStashColor = (index) => {
     // todo. color should be consistent
@@ -69,37 +61,29 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     }
     return user.currencies[name];
   };
-  const bodyGuardDots = (bgs)=>{
-    if (!bgs || !bgs.length)return
+  const bodyGuardDots = (bgs) => {
+    if (!bgs || !bgs.length) return;
     return bgs
       .sort((a, b) => b - a)
-      .map((bg,i) => {
+      .map((bg, i) => {
         return (
-          <svg key={`${bg}${i}`} title="bodyguard" className="mx-1" width="10" height="10">
+          <svg
+            key={`${bg}${i}`}
+            title="bodyguard"
+            className="mx-1"
+            width="10"
+            height="10"
+          >
             <circle cx="5" cy="5" r="5" fill={bg > 50 ? "#FF3C5B" : "grey"} />
             <path d="M0, 5 a1,1 0 0,0 10,0" fill="#FF3C5B" />
           </svg>
         );
       });
-  }
+  };
 
   const profileAvatars = !globalLoading && (
     <div className="d-flex justify-content-center mb-2">
-      {/* <div >
-            <img
-              style={{ maxWidth: "200px", width: "65%" }}
-              src={
-                user.alliance &&
-                user.alliance.name
-                  ? `/alliancePics/${user.alliance.name}.png`
-                  : ""
-              }
-              alt={"Alliance"}
-              title="Alliance"
-            />
-        </div> */}
       <div>
-        
         <img
           style={{ maxWidth: "120px", width: "100%", borderRadius: "50%" }}
           src={user.account.avatar}
@@ -142,9 +126,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           />
         );
       })}
-      <div className="my-4">
-        
-      </div>
+      <div className="my-4"></div>
       <ProgressBarExp
         color="warning"
         upgrade={(e) => handleUpgrade(e)}
@@ -225,46 +207,48 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Container>
-            <Row>
-              <Col sm="12">
-                <Table responsive className="text-light">
-                  <thead>
-                    <tr>
-                      <th>CPU</th>
-                      <th>AVS</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        {getMarketPlaceItemValue("CPU", "name") || "none"}
-                      </td>
-                      <td>
-                        {getMarketPlaceItemValue("AntiVirus", "name") || "none"}
-                      </td>
-                    </tr>
-                  </tbody>
+              <Row>
+                <Col sm="12">
+                  <Table responsive className="text-light">
+                    <thead>
+                      <tr>
+                        <th>CPU</th>
+                        <th>AVS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          {getMarketPlaceItemValue("CPU", "name") || "none"}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue("AntiVirus", "name") ||
+                            "none"}
+                        </td>
+                      </tr>
+                    </tbody>
 
-                  <thead>
-                    <tr>
-                      <th>Encryption</th>
-                      <th>Firewall</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        {getMarketPlaceItemValue("Encryption", "name") ||
-                          "none "}
-                      </td>
-                      <td>
-                        {getMarketPlaceItemValue("Firewall", "name") || "none"}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
+                    <thead>
+                      <tr>
+                        <th>Encryption</th>
+                        <th>Firewall</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          {getMarketPlaceItemValue("Encryption", "name") ||
+                            "none "}
+                        </td>
+                        <td>
+                          {getMarketPlaceItemValue("Firewall", "name") ||
+                            "none"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </Col>
+              </Row>
             </Container>
           </TabPane>
           <TabPane tabId="2">
@@ -358,9 +342,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   );
 
   const profilePage = (
-    <div
-      className="container d-flex flex-column"
-    >
+    <div className="container d-flex flex-column">
       {profileHeader}
       {profileAvatars}
       <Container>
@@ -374,11 +356,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   );
 
   return (
-    <div
-      className="mt-5"
-    >
-      {globalLoading ? <p>loading..</p> : profilePage}
-    </div>
+    <div className="mt-5">{globalLoading ? <p>loading..</p> : profilePage}</div>
   );
 };
 

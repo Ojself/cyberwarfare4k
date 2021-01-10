@@ -3,6 +3,9 @@ import api from "../../api";
 
 import { Table, Button, UncontrolledTooltip, Progress } from "reactstrap";
 
+const stashColors = ['blue','green','orange','red']
+const getStashColor = (row,col) => stashColors[(row+col) % stashColors.length];
+
 const getHealthBar = (dc) => {
   const percentage = (dc.currentFirewall / dc.maxFirewall) * 100;
   let color;
@@ -38,6 +41,7 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
   useEffect(() => {
     const fetchDataCenters = async () => {
       const data = await api.getDataCenters();
+      console.log(data,'data')
       setDataCenterState({
         ...dataCenterState,
         dataCenters: data.dataCenters,
@@ -87,7 +91,11 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
       disabled = true;
       innerText = "Yours";
       buttonColor = "success";
-    } else if (dc.status === "Malfunctioning" || dc.status === "Resetting") {
+    } else if (dc.status === "Under Attack") {
+      disabled = true
+      buttonColor = "outline-danger";
+      innerText = "Attack";
+    } else if (dc.status === "Resetting") {
       disabled = true;
     } else if (dc.status === "Owned") {
       buttonColor = "outline-danger";
@@ -135,12 +143,12 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
             <td className="d">
               {dc.status === "Owned" && (
                 <>
-                  {dc.requiredStash.map((stash, i) => (
+                  {dc.requiredStash.map((stash, j) => (
                     <img
                       title={stash.name}
-                      key={`${stash._id}${i}`}
-                      style={{ width: "50px" }}
-                      src={`../../stashPics/${stash.name}/blue.png`}
+                      key={`${stash._id}${j}`}
+                      style={{ width: "2.25rem", marginLeft: "2px" }}
+                      src={`../../stashPics/${stash.name}/${getStashColor(i,j)}.png`}
                       alt={stash.name}
                     ></img>
                   ))}
@@ -161,6 +169,11 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
             {dc.status === "Owned" && (
               <UncontrolledTooltip placement="top" target={`ownerTip${i}`}>
                 {dc.owner.name}
+              </UncontrolledTooltip>
+            )}
+            {dc.status === "Under Attack" && (
+              <UncontrolledTooltip placement="top" target={`ownerTip${i}`}>
+                {`Attacked by ${dc.attacker.name}`}
               </UncontrolledTooltip>
             )}
           </tr>

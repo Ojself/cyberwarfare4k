@@ -4,6 +4,7 @@ import "./navbar.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo, faMoneyBillAlt, faCity,  faComments ,faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import { faRedhat  } from "@fortawesome/free-brands-svg-icons"
+import Clock from "../_molecules/Clock";
 
 import {
   DropdownToggle,
@@ -42,12 +43,13 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
   return (
     <div>
       <Navbar color="dark" className="navbar-main" expand="xs">
-        <NavbarBrand href="/my-profile">
-          {/* <strong className="text-info">CHW4K</strong> */}
-        </NavbarBrand>
+        {/* <NavbarBrand href="/" className="mr-auto display-none-when-mobile">
+          <Clock />
+        </NavbarBrand> */}
+
         <Nav className="m-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle caret  className="dropdown-button" nav>
+            <DropdownToggle caret className="dropdown-button" nav>
               <FontAwesomeIcon className="text-light" icon={faInfo} />
               <span className="display-none-when-mobile"> Info</span>
             </DropdownToggle>
@@ -73,7 +75,7 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             <DropdownMenu>
               <DropdownItem href="/petty-hacker">Petty</DropdownItem>
               <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-              <DropdownItem disabled>Organized Crime</DropdownItem>
+              <DropdownItem href="/org-crimes" >Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
               <DropdownItem href="/locals">Hack player</DropdownItem>
             </DropdownMenu>
@@ -121,7 +123,9 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle caret               className={`dropdown-button ${
+            <DropdownToggle
+              caret
+              className={`dropdown-button ${
                 checkAllCommunication() ? "text-danger" : null
               }`}
               nav
@@ -152,6 +156,9 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             </NavLink>
           </NavItem>
         </Nav>
+        {/* <NavbarBrand href="/" className="display-none-when-mobile ml-auto">
+          
+        </NavbarBrand> */}
       </Navbar>
     </div>
   );

@@ -250,10 +250,10 @@ const Information = ({ updateGlobalValues ,user}) => {
     <div className="page-container d-flex justify-content-center">
       <div className="w-75">
         <h6>
-          Current Round: <strong>2</strong>
+          Current Round: <strong>3</strong>
         </h6>
         <h6>
-          Round ends: <strong>3rd January</strong>
+          Round ends: <strong>TBA</strong>
         </h6>
         <FAQ updateGlobalValues={updateGlobalValues} user={user} />
         <h1>SITE MAP</h1>

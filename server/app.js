@@ -67,6 +67,7 @@ app.use('/api/forum', require('./routes/forum'));
 app.use('/api/hack', require('./routes/hack'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/marketplace', require('./routes/marketplace'));
+app.use('/api/org-crime', require('./routes/orgCrime'));
 app.use('/api/service', require('./routes/service'));
 app.use('/api/stashes', require('./routes/stashes'));
 app.use('/api/wanted', require('./routes/wanted'));

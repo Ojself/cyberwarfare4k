@@ -64,7 +64,8 @@ router.post('/pettyCrime', async (req, res) => {
 
 router.get('/crimes', async (req, res) => {
   try {
-    const crimes = await Crime.find({ available: true }).sort({ crimeType: 1, difficulty: 1 });
+    const now = Date.now();
+    const crimes = await Crime.find({ gracePeriod: { $lte: now } }).sort({ crimeType: 1, difficulty: 1 });
     return res.status(200).json({
       success: true,
       message: 'Crimes loaded..',
@@ -86,11 +87,11 @@ router.post('/crimes', async (req, res) => {
   const userId = req.user._id;
   const { crimeId } = req.body;
   const batteryCost = 5;
-
+  const now = Date.now();
   const user = await User.findById(userId);
   const crime = await Crime.findById(crimeId);
 
-  const disallowed = crimeRouteCriterias(crime, user, batteryCost);
+  const disallowed = crimeRouteCriterias(crime, user, batteryCost, now);
 
   if (disallowed) {
     return res.status(400).json({
@@ -100,8 +101,8 @@ router.post('/crimes', async (req, res) => {
   }
 
   // commits crime and returns result object
-  const finalResult = await fightCrime(user, crime, batteryCost);
-  const crimes = await Crime.find({ available: true }).sort({ crimeType: 1, difficulty: 1 });
+  const finalResult = await fightCrime(user, crime, batteryCost, now);
+  const crimes = await Crime.find({ gracePeriod: { $lte: now } }).sort({ crimeType: 1, difficulty: 1 });
 
   return res.status(200).json({
     success: true,

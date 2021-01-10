@@ -7,18 +7,21 @@ const citySchema = new Schema({
   price: { type: Number, default: 2000 },
   residents: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   stashPriceMultiplier: { type: Number },
-  allianceBase: { type: Schema.Types.ObjectId, ref: 'Alliance' },
+  owner: { type: Schema.Types.ObjectId, ref: 'Alliance' },
 });
 
 // pushes userId into residents so server (and client) knows which hacker is in which city
 citySchema.methods.arrival = function (userId) {
-  this.residents.addToSet({ _id: userId });
+  const oldArray = this.residents;
+  oldArray.push(userId);
+  this.residents = oldArray;
   this.save();
 };
 
 // pop/pull userId into residents so server (and client) knows which hacker is in which city
 citySchema.methods.departure = function (userId) {
-  this.residents.pull({ _id: userId });
+  const oldArray = this.residents.filter((resident) => resident.toString() !== userId.toString());
+  this.residents = oldArray;
 
   this.save();
 };

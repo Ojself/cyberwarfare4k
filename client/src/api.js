@@ -9,7 +9,7 @@ const service = axios.create({
 });
 
 const errHandler = (err) => {
-  console.error(err);
+  console.error('errHandler: ',err);
   if (err.response && err.response.data) {
     console.error("API response", err.response.data);
     throw err.response.data;
@@ -21,10 +21,6 @@ export default {
   service: service,
   isLoggedIn() {
     return localStorage.getItem("user") != null;
-  },
-
-  getLocalStorageUser() {
-    return JSON.parse(localStorage.getItem("user"));
   },
 
   getRedirectInfo() {
@@ -140,6 +136,28 @@ export default {
   fraudOpponent(opponentId) {
     return service
       .post(`/hack/fraud/${opponentId}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  // Organized Crime
+  // Organized Crime
+
+  getOrgCrimes() {
+    return service
+      .get("/org-crime")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  claimOrgCrime(crimeId) {
+    return service
+      .put("/org-crime", { crimeId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  claimOrgCrimeRole(crimeId, role) {
+    return service
+      .patch("/org-crime", { crimeId, role })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -489,5 +507,5 @@ export default {
       .post("/alliance/promote", { playerId, newTitle })
       .then((res) => res.data)
       .catch(errHandler);
-  }
+  },
 };

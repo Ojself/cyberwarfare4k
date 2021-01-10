@@ -10,14 +10,16 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 ## [0.2.0] - 2021-x-x
 
-- Mobile friendly view
-- Scoped css files
+- More mobile friendly view
+- Major file structuring overhaul
 - Styled navbar with icons
 - Sorted items in Fence
-- NordVPN prototype for vpn changes
+- NordVPN affiliation 
 - Minor changes to User db document
 - Change timezone to Europe/Oslo
 - Major cleanup of seed files
+- Change out all set timeouts in server with fixed times (crimes, datacenters)
+- Add digital clock with server time
 
 ## [0.1.6] - 2020-12-20
 

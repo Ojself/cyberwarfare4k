@@ -1,6 +1,5 @@
 import React from "react";
 import "./pettyStyling.scss";
-import {} from "@fortawesome/free-solid-svg-icons";
 
 const PettyResult = (props) => {
   const {
@@ -13,16 +12,7 @@ const PettyResult = (props) => {
     skillGained,
   } = props.result;
 
-  const userNames = [
-    "HawkMaster",
-    "odCy",
-    "Witzer",
-    "Fenrew",
-    "Darkchamp",
-    "Derneld Tremfp",
-    "Xaviior",
-    "IceFlapp",
-  ];
+  
 
   const getSkillColor = (skill)=> {
     if (["CPU", "Encryption", "AntiVirus"].includes( skill)){
@@ -61,9 +51,7 @@ const PettyResult = (props) => {
 
   const winStrings = [
     "You succeeded at commiting a petty crime",
-    `You scammed someone online named ${
-      userNames[props.index % userNames.length]
-    }`,
+    "You scammed someone online",
     "You successfully committed an online crime",
   ];
 

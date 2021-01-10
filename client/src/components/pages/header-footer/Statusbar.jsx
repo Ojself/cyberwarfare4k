@@ -1,9 +1,11 @@
-import React from "react";
-import { Progress } from "reactstrap";
+import React, {useState} from "react";
+import { Progress, Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./statusbar.scss"
 
-const StatusBar = ({ loading, user, updateGlobalValues }) => {
+const StatusBar = ({ loading, user }) => {
+  const [expTooltip, setExpTooltip] = useState(false);
+  const toggleExpTooltip = () => setExpTooltip(!expTooltip);
   const visibleStatusBar = !loading && !!user;
   return (
     <div className="status-bar">
@@ -33,7 +35,7 @@ const StatusBar = ({ loading, user, updateGlobalValues }) => {
           </li>
 
           <li className="list-inline-item">
-            <span style={{color: "#dc3546"}}>&#9829;</span>
+            <span style={{ color: "#dc3546" }}>&#9829;</span>
             {user.playerStats.currentFirewall.toFixed(0)}
           </li>
           <li className="list-inline-item ml-2">
@@ -55,10 +57,18 @@ const StatusBar = ({ loading, user, updateGlobalValues }) => {
           </li>
           <li id="experience-bar" className="list-inline-item">
             <Progress
-              title={`${user.playerStats.exp} / ${user.playerStats.expToLevel}`}
+              id="expTooltip"
               color="warning"
               value={(user.playerStats.exp / user.playerStats.expToLevel) * 100}
             ></Progress>
+            <Tooltip
+              placement="bottom"
+              isOpen={expTooltip}
+              target="expTooltip"
+              toggle={toggleExpTooltip}
+            >
+              {`${user.playerStats.exp} / ${user.playerStats.expToLevel}`}
+            </Tooltip>
           </li>
         </ul>
       )}

@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const crimeSchema = new Schema({
   name: String,
   descrjption: String,
-  available: { type: Boolean, default: true },
+  gracePeriod: { type: Date, default: Date.now() },
   crimeType: {
     type: String,
     enum: ['Technical', 'Social Engineering', 'Forensics', 'Cryptography'],
@@ -28,14 +28,8 @@ const crimeSchema = new Schema({
 });
 
 crimeSchema.methods.handleCrime = function (finalResult) {
-  this.available = false;
-  // makes the crime unavailable for a short period < 3 minutes
-  setTimeout(() => {
-    this.available = true;
-
-    this.save();
-  }, 1000 * this.difficulty);
-
+  console.log(finalResult.now, finalResult.now + (1000 * this.difficulty));
+  this.gracePeriod = finalResult.now + (1000 * this.difficulty);
   if (finalResult.won) {
     this.defeatedBy.push(finalResult.user._id);
   }

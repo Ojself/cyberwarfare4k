@@ -25,6 +25,7 @@ const alliances = [
   },
   {
     name: 'Grey',
+    active: true,
     _id: '5fae6d7ee60018434108369c',
     boss: '5fca3b4a86e77b5c8e58b682',
     analyst: '5fca3b4a86e77b5c8e58b67f',

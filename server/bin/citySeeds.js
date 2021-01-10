@@ -10,6 +10,7 @@ const cities = [
     _id: '5fae62409cbf7d270f23470b',
     stashPriceMultiplier: 1.09,
     residents: ['5fae6d7ee60018434108369c', '5fca3b4a86e77b5c8e58b67e'],
+    owner: '5fae6d7ee60018434108369c', // Grey alliance (npc)
 
   },
   {

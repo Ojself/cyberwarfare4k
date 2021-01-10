@@ -12,7 +12,6 @@ const MarketPlace = ({ user, updateGlobalValues }) => {
   useEffect(() => {
     const fetchMarketPlaceItems = async () => {
       const data = await api.getMarketPlaceItems();
-      const { items } = data;
       setMarketPlaceState({
         ...marketPlaceState,
         items: data.items,

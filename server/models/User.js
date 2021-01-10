@@ -9,7 +9,7 @@ const DataCenter = require('./DataCenter');
 const userSchema = new Schema(
   {
     account: {
-      email:  String ,
+      email: String,
       password: String,
       ip: [String],
       confirmationCode: { type: String, default: `${Math.random()}` },
@@ -164,7 +164,7 @@ const userSchema = new Schema(
       Firewall: {
         type: Schema.Types.ObjectId,
         ref: 'Item',
-        default: null,
+        default: '5fc13fcf7e196b5b2c875e4d',
       },
       AntiVirus: {
         type: Schema.Types.ObjectId,

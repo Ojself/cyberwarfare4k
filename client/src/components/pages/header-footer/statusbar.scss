@@ -2,16 +2,15 @@
 
 .status-bar {
   height: 4%;
+  min-height:1rem;
   background-color: #32334a;
   color: white;
-  
 li:last-child {
   width:10vw
 }  
 }
 
 @media only screen and (max-width: 600px) {
-
   .status-bar {
     li:last-child {
     width:20vw;

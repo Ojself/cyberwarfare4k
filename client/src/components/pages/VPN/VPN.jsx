@@ -70,22 +70,24 @@ const VPN = ({ updateGlobalValues,user }) => {
       </h6>
     </div>
   );
+  const nordvpnImage = (
+    <img
+      style={{ width: "4rem", margin: "0 0 2.5rem 0.5rem" }}
+      src={`nordvpn/logo_vertical-${vpnState.selectedOption? 'original': 'white'}.png`}
+      alt="NordVPN"
+    />
+  );
   return (
     <div className="page-container">
-      <h1>VPN</h1>
-      <br />
+      {/* <h1>VPN</h1> */}
+
       <a
-        href="https://nordvpn.com/"
+        href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=50381&url_id=902"
         rel="noreferrer"
         target="_blank"
         id="nordvpn"
       >
-        Sponsored by {" "}
-        <img
-          style={{ width: "4rem", margin: "0 0 0 1rem" }}
-          src={`nordvpn/logo_vertical-white.png`}
-          alt="NordVPN Logo"
-        />
+        Affiliated by {nordvpnImage}
       </a>
       <div className="content  d-flex justify-content-center">
         <Form className="vpn-form">
@@ -94,6 +96,7 @@ const VPN = ({ updateGlobalValues,user }) => {
               className={"text-dark mb-3"}
               value={vpnState.selectedOption}
               onChange={handleChange}
+              x
               options={vpnState.loading ? "" : vpnState.massagedCities}
             />
             {priceOverview}

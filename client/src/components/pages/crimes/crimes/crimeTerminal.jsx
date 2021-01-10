@@ -4,7 +4,7 @@ import Typist from "react-typist";
 import { Progress } from "reactstrap";
 import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
-const CrimeTerminal = ({ result,user,updateGlobalValues }) => {
+const CrimeTerminal = ({ result }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
     progressMaxHp: 100,
@@ -98,7 +98,7 @@ const CrimeTerminal = ({ result,user,updateGlobalValues }) => {
   };
 
   return (
-    <div className="col-5">
+    <div className="col-12">
       {result && (
         <div style={terminalBorder} className="w-100">
           <div style={terminalHeader}>

@@ -6,6 +6,7 @@ const {
   attackDataCenterCriterias,
   healDataCenterCriterias,
   attackDataCenter,
+  findDataCenters,
 } = require('../middlewares/middleDataCenter');
 
 const { saveAndUpdateUser } = require('./helper');
@@ -34,21 +35,8 @@ router.get('/', async (req, res) => {
       params = { owner: allianceUsers };
     }
   }
+  const dataCenters = await findDataCenters(params, req.query.owner, userId);
 
-  let dataCenters;
-
-  dataCenters = await DataCenter.find(params)
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents'])
-    .populate('owner', ['name']);
-
-  // filter out the datacenters that don't belong to the city the user is in
-  if (!req.query.owner) {
-    dataCenters = dataCenters.filter((dc) => {
-      const stringifiedObjectId = JSON.stringify(dc.city.residents);
-      return stringifiedObjectId.includes(userId.toString());
-    });
-  }
   res.status(200).json({
     dataCenters,
     message: 'datacenters loaded...',
@@ -69,7 +57,6 @@ router.patch('/:dataCenterId', async (req, res) => {
   const user = await User.findById(userId);
   const dataCenter = await DataCenter.findById(dataCenterId);
   const healCost = (dataCenter.maxFirewall - dataCenter.currentFirewall) * 100;
-
   const disallow = healDataCenterCriterias(user, dataCenter);
 
   if (disallow) {
@@ -86,7 +73,9 @@ router.patch('/:dataCenterId', async (req, res) => {
   user.bitCoinDrain(healCost);
   const updatedUser = await saveAndUpdateUser(user);
 
-  let dataCenters = await DataCenter.find(params)
+  const dataCenters = await findDataCenters(params, null, userId);
+
+  /* let dataCenters = await DataCenter.find(params)
     .populate('requiredStash', ['name', 'price'])
     .populate('city', ['name', 'residents'])
     .populate('owner', ['name']);
@@ -94,7 +83,7 @@ router.patch('/:dataCenterId', async (req, res) => {
   dataCenters = dataCenters.filter((dc) => {
     const stringifiedObjectId = JSON.stringify(dc.city.residents);
     return stringifiedObjectId.includes(userId.toString());
-  });
+  }); */
 
   res.status(200).json({
     dataCenters,
@@ -114,7 +103,8 @@ router.post('/purchase', async (req, res) => {
 
   const { dataCenterName } = req.body;
   const dataCenter = await DataCenter.findOne({ name: dataCenterName });
-  const disallow = purchaseDataCenterCriterias(user, dataCenter);
+  const now = Date.now();
+  const disallow = purchaseDataCenterCriterias(user, dataCenter, now);
 
   if (disallow) {
     return res.status(400).json({
@@ -125,16 +115,7 @@ router.post('/purchase', async (req, res) => {
 
   await purchaseDataCenter(user, dataCenter);
 
-  let dataCenters = await DataCenter.find()
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents'])
-    .populate('owner', ['name']);
-
-  // filter out the datacenters that don't belong to the city the user is in
-  dataCenters = dataCenters.filter((dc) => {
-    const stringifiedObjectId = JSON.stringify(dc.city.residents);
-    return stringifiedObjectId.includes(userId.toString());
-  });
+  const dataCenters = await findDataCenters({ city: user.playerStats.city._id }, null, userId);
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
@@ -160,9 +141,10 @@ router.post('/attack', async (req, res) => {
   const dataCenterOwnerId = dataCenter.owner;
   const dataCenterOwner = await User.findById(dataCenterOwnerId);
 
-  const batteryCost = 5;
+  const batteryCost = 4;
+  const now = Date.now();
 
-  const disallowed = attackDataCenterCriterias(user, dataCenter, batteryCost);
+  const disallowed = attackDataCenterCriterias(user, dataCenter, batteryCost, now);
 
   if (disallowed) {
     return res.status(400).json({
@@ -179,12 +161,7 @@ router.post('/attack', async (req, res) => {
   );
 
   const updatedUser = await saveAndUpdateUser(attack.user);
-  const dataCenters = await DataCenter.find({
-    city: updatedUser.playerStats.city._id,
-  })
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents'])
-    .populate('owner', ['name']);
+  const dataCenters = await findDataCenters({ }, null, userId);
 
   const message = attack.result.destroyed
     ? `You destroyed ${dataCenter.name}`

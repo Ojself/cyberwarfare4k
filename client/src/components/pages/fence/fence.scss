@@ -1,0 +1,21 @@
+.fence-page-container {
+  margin: 0 auto;
+  margin-top: 3%;
+  height: 100%;
+  min-height: 60vh;
+
+  .content {
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 3%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+    
+  .fence-page-container {
+  .content {
+    width: 100%;
+  }
+}
+}

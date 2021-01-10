@@ -3,7 +3,7 @@ import Typist from "react-typist";
 import api from "../../../../api";
 import { pettyStrings } from "../../_helpers/pettyStrings";
 import PettyResult from "./pettyResult";
-import { Button } from "reactstrap";
+import { Button, Container, Col, Row  } from "reactstrap";
 
 const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
   const [pettyState, setPettyState] = useState({
@@ -154,24 +154,24 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
   };
 
   return (
-    <div className="page-container">
-      <h1 className="">Petty hackr</h1>
+    <div className="petty-page-container">
+      <h1 >Petty hackr</h1>
       <div className="content">
         {getActionButton(pettyState)}
         <div className="d-flex w-100 mt-3">
-          <div className="terminal">
+          
             {/* phrases */}
-            {pettyState.hackingPhrases
-              .map((p, i) => {
-                return <div key={`${p}${i}`}>{p}</div>;
-              })}
+            <Container>
+              <Row>
+                <Col className="display-none-when-mobile" md="6">
+                  {pettyState.hackingPhrases.map((p, i) => <div key={`${p}${i}`}>{p}</div>)}
+                </Col>
+                <Col sm="12" md="6">{pettyState.results.map((r) => r)}</Col>
+              </Row>
+            </Container>
           </div>
-          <div className="result-list">
-            {pettyState.results.map((r, i) => {
-              return r;
-            })}
-          </div>
-        </div>
+          {/* <div className="result-list"></div> */}
+        
       </div>
     </div>
   );
