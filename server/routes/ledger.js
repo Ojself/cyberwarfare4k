@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-const { tranfserCriteria } = require('../middlewares/middleLedger.js');
+const { tranfserCriteria } = require('../logic/ledger.js');
 const { saveAndUpdateUser } = require('./helper'); // move to middleware?
 
 const depositCriteria = (user, amount) => {
@@ -37,7 +37,7 @@ const withdrawCriteria = (user, amount) => {
 // Retrives all users
 
 router.get('/', async (req, res) => {
-  const users = await User.find({'account.isSetup': true}).select({ name: '1' });
+  const users = await User.find({ 'account.isSetup': true }).select({ name: '1' });
   if (!users) {
     return res.status(400).json({
       success: false,

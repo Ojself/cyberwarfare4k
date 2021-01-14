@@ -6,7 +6,7 @@ const City = require('../models/City');
 const {
   changeCityRouteCriterias,
   getCityRouteCriterias,
-} = require('../middlewares/middleCity.js');
+} = require('../logic/city.js');
 
 const { getOnlineUsers, saveAndUpdateUser } = require('./helper');
 

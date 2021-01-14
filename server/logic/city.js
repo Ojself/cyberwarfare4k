@@ -1,7 +1,7 @@
 const {
   batteryCheck,
   existingValue,
-} = require('./middleHelpers');
+} = require('./_helpers');
 
 // Sees if everything is in order to get cities
 const getCityRouteCriterias = (cities) => {

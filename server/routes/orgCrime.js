@@ -9,14 +9,12 @@ const { saveAndUpdateUser } = require('./helper'); // move to middleware?
 
 const findAndCatgeorizeOrgCrimes = async () => {
   const now = Date.now();
-  const allOrgCrimes = await OrgCrime.find({ gracePeriod: { $lte: now } })
+  const allOrgCrimes = await OrgCrime.find({ gracePeriod: { $lte: now } }).lean()
     .populate('owner', 'name')
     .populate('ownerAlliance', 'name')
-    .populate('TN.owner', 'name')
-    .populate('SE.owner', 'name')
-    .populate('FE.owner', 'name')
-    .populate('CG.owner', 'name');
-  console.log(allOrgCrimes[0].Technical.owner);
+    .populate('roles.owner', 'name');
+  // console.log(allOrgCrimes, '?');
+
   const orgCrimes = allOrgCrimes.filter((crime) => !crime.ownerAlliance);
   const claimedOwnOrgCrimes = allOrgCrimes.filter((crime) => crime.ownerAlliance);
 
@@ -28,8 +26,8 @@ const findAndCatgeorizeOrgCrimes = async () => {
 // Retrives all organized crimes
 
 router.get('/', async (req, res) => {
-  const userId = req.user._id;
-  const user = await User.findById(userId).select({ alliance: 1 }).lean();
+  /* const userId = req.user._id;
+  const user = await User.findById(userId).select({ alliance: 1 }).lean(); */
   const allOrgCrimes = await findAndCatgeorizeOrgCrimes();
 
   /* IF active until is expired, clean it */
@@ -49,7 +47,6 @@ router.put('/', async (req, res) => {
   const now = Date.now();
   const userId = req.user._id;
   const { crimeId } = req.body;
-  console.log(req.body, 'reqbody');
   const user = await User.findById(userId).select({ alliance: 1 }).lean();
   const orgCrime = await OrgCrime.findById(crimeId);
   orgCrime.claimOwner(user._id, user.alliance, now);
@@ -86,23 +83,44 @@ router.patch('/', async (req, res) => {
   });
 });
 
+const commitOrginaziedCrime = async (orgCrime) => {
+  console.log(orgCrime);
+  const result = {
+    win: false,
+    winPercentage: 0,
+    responses: [],
+    orgCrime,
+    xp: null,
+    stash: null,
+  };
+  /* orgCrime.roles.forEach((role) => {
+    const currentUser = users.find((u) => JSON.stringify(role.owner) === JSON.stringify(u._id));
+    const userSkillNumber = currentUser.crimeSkill[role.name];
+    const crimeSkillNumber = role.difficulty;
+    const probability = (userSkillNumber - crimeSkillNumber) / 70;
+  }); */
+};
+
 // @PATCH
 // PRIVATE
 // Carries out organized crime
 router.post('/', async (req, res) => {
-  // const userId = req.user._id;
-  const { crimeId, userId } = req.body;
-  const orgCrime = await OrgCrime.findById(crimeId);
-  // const users = await User.findById(userId).select({ alliance: 1 }).lean();
-  /* orgCrime.commit(user._id);
+  const userId = req.user._id;
+  const { crimeId } = req.body;
+  const orgCrime = await OrgCrime.findById(crimeId)
+    .populate('roles');
+
+  const finalResult = await commitOrginaziedCrime(orgCrime);
+  orgCrime.cleanCrime();
   await orgCrime.save();
- */
-  const orgCrimes = await findAndCatgeorizeOrgCrimes();
+
+  const allOrgCrimes = await findAndCatgeorizeOrgCrimes();
 
   return res.status(200).json({
     success: true,
     message: `Organized crime ${orgCrime.name} commited..`,
-    orgCrimes,
+    orgCrimes: allOrgCrimes.orgCrimes,
+    claimedOwnOrgCrimes: allOrgCrimes.claimedOwnOrgCrimes,
   });
 });
 

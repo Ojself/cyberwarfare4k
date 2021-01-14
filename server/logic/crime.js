@@ -1,7 +1,7 @@
 const {
   batteryCheck,
   checkOccuranceLimit,
-} = require('./middleHelpers');
+} = require('./_helpers');
 
 // Sees if everything is in order to perform crime
 

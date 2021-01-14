@@ -1,7 +1,7 @@
 const {
   batteryCheck,
   checkFunds,
-} = require('./middleHelpers');
+} = require('./_helpers');
 const DataCenter = require('../models/DataCenter');
 
 const healDataCenterCriterias = (user, dataCenter) => {

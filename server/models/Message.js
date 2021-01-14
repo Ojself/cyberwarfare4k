@@ -8,9 +8,8 @@ const messageSchema = new Schema({
   dateSent: String,
   read: Boolean,
   text: String,
+  genre: { type: String, enum: ['Message', 'Notification', 'SpyReport'], default: 'Message' },
   allianceInvitation: { type: Schema.Types.ObjectId, ref: 'Alliance' },
-  // organizedCrimeInvitation: { type: Schema.Types.ObjectId, ref: '' },
-
 },
 {
   timestamps: {

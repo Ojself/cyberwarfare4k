@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/User');
-const { addBountyCriteria, getAllWantedUsers } = require('../middlewares/middleWanted.js');
+const { addBountyCriteria, getAllWantedUsers } = require('../logic/wanted.js');
 const { saveAndUpdateUser } = require('./helper');
 
 // @GET

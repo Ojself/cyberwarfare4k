@@ -6,10 +6,10 @@ const Forum = require('../models/Forum');
 const ForumThread = require('../models/ForumThread');
 const ForumComment = require('../models/ForumComment');
 
-const { removeBlankValuesFromObject } = require('../middlewares/middleHelpers');
+const { removeBlankValuesFromObject } = require('../logic/_helpers');
 const {
   putOriginalCommentFirst, checkCommentPostCriteria, checkCommentDeleteCriteria, checkCommentEditCriteria,
-} = require('../middlewares/middleForum');
+} = require('../logic/forum');
 
 /* TODO:
 fix routes, no need for params in .patch,post,delete

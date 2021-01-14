@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "reactstrap";
+import { Label, FormGroup, Input, Form, Button } from "reactstrap";
 import "./loginsignup.scss";
 import api from "../../../api";
 
@@ -61,37 +61,37 @@ const Signup = (props) => {
   return (
     <div className="login-signup-card">
       <h2 className="text-left mb-4">Register</h2>
-      <form>
-        <p className="mb-0">E-Mail Address</p>
-        <input
-          className="w-100 mb-4"
-          type="email"
-          value={signupState.email}
-          name="email"
-          onChange={handleInputChange}
-        />
-
-        <p className="mb-0">Password</p>
-        <input
-          className="w-100"
-          type="password"
-          value={signupState.password}
-          name="password"
-          onChange={handleInputChange}
-        />
-
+      <Form>
+        <FormGroup>
+          <Label className="mb-0" for="Email">Email</Label>
+          <Input
+            className="w-100 mb-4"
+            type="email"
+            value={signupState.email}
+            name="email"
+            onChange={handleInputChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label className="mb-0" for="Password">Password</Label>
+          <Input
+            className="w-100"
+            type="password"
+            value={signupState.password}
+            name="password"
+            onChange={handleInputChange}
+          />
+        </FormGroup>
         <Button
-          disabled={true}
+          disabled={false}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
           onClick={(e) => handleClick(e)}
         >
           Sign up
         </Button>
-        <div className="fail-message">
-          {failMessage}
-        </div>
-      </form>
+        <div className="fail-message">{failMessage}</div>
+      </Form>
     </div>
   );
 };

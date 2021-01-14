@@ -10,22 +10,11 @@ import {
   Tooltip
 } from "reactstrap";
 
-const findRequiredHackers = (crime)=>{
-    let requiredHackers = [];
-    ['Forensics', 'Technical', 'Social Engineering', 'Cryptography'].forEach(type=>{
-        if (Object.keys(crime).includes(type)){
-        requiredHackers.push(type)
-        }
-    })
-    return requiredHackers;
-}
-
 const OrgCrimeCard = ({crime, claimCrime}) => {
     const [descriptionTooltip, setDescriptionTooltip] = useState(false);
     const [requiredHackersTooltip, setRequiredHackersTooltip] = useState(false);
     const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
     const toggleReq = () => setRequiredHackersTooltip(!requiredHackersTooltip);
-    const requiredHackers = findRequiredHackers(crime)
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -56,7 +45,7 @@ const OrgCrimeCard = ({crime, claimCrime}) => {
             tag="h6"
             className="mb-2 text-muted"
           >
-            Required Hackers: {requiredHackers.length}
+            Required Hackers: {crime.roles.length}
           </CardSubtitle>
           <Tooltip
             placement="right"
@@ -64,10 +53,10 @@ const OrgCrimeCard = ({crime, claimCrime}) => {
             target={"requiredHackers-" + crime._id}
             toggle={toggleReq}
           >
-            {requiredHackers.map((hacker) => {
+            {crime.roles.map((role) => {
               return (
                 <Badge color="success" pill>
-                  {hacker}
+                  {role.role}
                 </Badge>
               );
             })}

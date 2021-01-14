@@ -1,9 +1,9 @@
 const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
+const { isLoggedIn } = require('../logic/auth');
 const {
   buyRouteCriterias,
   soldRouteCriterias,
-} = require('../middlewares/middleCurrency');
+} = require('../logic/currency');
 const { saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();

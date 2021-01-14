@@ -6,6 +6,64 @@ const Alliance = require('./Alliance');
 const City = require('./City');
 const DataCenter = require('./DataCenter');
 
+const ranks = [
+  {
+    expToNewRank: 10000,
+    name: 'Script kiddie',
+    rank: 0,
+  },
+  {
+    expToNewRank: 25000,
+    name: 'Family IT-Support',
+    rank: 1,
+  },
+  {
+    expToNewRank: 62500,
+    name: 'Blog Writer',
+    rank: 2,
+  },
+  {
+    expToNewRank: 156000,
+    name: "HTML 'programmer'",
+    rank: 3,
+  },
+  {
+    expToNewRank: 420000,
+    name: 'Jr. Web Dev',
+    rank: 4,
+  },
+  {
+    expToNewRank: 1015000,
+    name: 'Sr. Web Dev',
+    rank: 5,
+  },
+  {
+    expToNewRank: 2437500,
+    name: 'System Dev',
+    rank: 6,
+  },
+  {
+    expToNewRank: 6093314,
+    name: 'Cyber Security Dev',
+    rank: 7,
+  },
+  {
+    expToNewRank: 15231337,
+    name: 'Basement Dweller',
+    rank: 8,
+  },
+  {
+    expToNewRank: 9999999999999.0,
+    name: 'Anonymous',
+    rank: 9,
+  },
+  {
+    expToNewRank: Infinity,
+    name: 'Cheater',
+    rank: 10,
+  },
+];
+
 const userSchema = new Schema(
   {
     account: {
@@ -50,7 +108,6 @@ const userSchema = new Schema(
     },
     allianceRole: {
       type: String,
-      // enum: ['Boss', 'CTO', 'Analyst', 'First Lead', 'Second Lead', 'First Monkeys', 'Second Monkeys'],
     },
 
     hackSkill: {
@@ -95,7 +152,6 @@ const userSchema = new Schema(
       Dash: { type: Number, default: 0 },
     },
 
-    // Player stats
     playerStats: {
       city: { type: Schema.Types.ObjectId, ref: 'City' },
       repairCost: { type: Number, default: 100000 },
@@ -103,6 +159,11 @@ const userSchema = new Schema(
         alive: { type: [Number], default: [] },
         bought: { type: Number, default: 0 },
         price: { type: Number, default: 100000 },
+      },
+      equippedWeapon: {
+        type: String,
+        enum: ['CPU', 'Encryption', 'AntiVirus'],
+        default: 'CPU',
       },
       statPoints: {
         type: Number,
@@ -120,7 +181,6 @@ const userSchema = new Schema(
         type: Number,
         default: 125,
       },
-
       bitCoins: {
         type: Number,
         default: 1000,
@@ -128,6 +188,10 @@ const userSchema = new Schema(
       ledger: {
         type: Number,
         default: 1500,
+      },
+      vault: {
+        type: Number,
+        default: 0,
       },
       bounty: {
         type: Number,
@@ -177,28 +241,6 @@ const userSchema = new Schema(
         default: null,
       },
     },
-    /* Special weapons */
-    specialWeapons: {
-      equipped: {
-        type: String,
-        default: '',
-      },
-      emp: {
-        type: Number,
-        default: 0,
-      },
-
-      geostorm: {
-        type: Number,
-        default: 0,
-      },
-
-      medusa: {
-        type: Number,
-        default: 0,
-      },
-    },
-
     stash: {
       Cables: { type: Number, default: 5 },
       'Linux for dummies': { type: Number, default: 1 },
@@ -418,20 +460,6 @@ userSchema.methods.handleCrime = function (result) {
   }
 };
 
-/* userSchema.methods.levelUp = async function () {
-  let newRank;
-  this.playerStats.rank += 1
-  try {
-    newRank = await findOne({rank: this.playerStats.rank})
-    this.playerStats.statPoints += 5;
-    this.playerStats.battery += (this.playerStats.rank * 10);
-    this.playerStats.rankName = newRank.name;
-    this.playerStats.expToLevel = newRank.expToNewRank;
-  } catch (err){
-    console.error('Error: ',err)
-  }
-};
- */
 userSchema.methods.levelUp = function () {
   console.info(`${this.name} is leveling up from ${this.playerStats.rank}`);
   this.playerStats.rank += 1;
@@ -695,7 +723,6 @@ userSchema.methods.die = async function () {
     CPU: null,
     Firewall: null,
     AntiVirus: null,
-    //
     Encryption: null,
   };
 
@@ -729,62 +756,3 @@ userSchema.methods.die = async function () {
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
-
-const ranks = [
-
-  {
-    expToNewRank: 10000,
-    name: 'Script kiddie',
-    rank: 0,
-  },
-  {
-    expToNewRank: 25000,
-    name: 'Family IT-Support',
-    rank: 1,
-  },
-  {
-    expToNewRank: 62500,
-    name: 'Blog Writer',
-    rank: 2,
-  },
-  {
-    expToNewRank: 156000,
-    name: "HTML 'programmer'",
-    rank: 3,
-  },
-  {
-    expToNewRank: 390000,
-    name: 'Jr. Web Dev',
-    rank: 4,
-  },
-  {
-    expToNewRank: 975000,
-    name: 'Sr. Web Dev',
-    rank: 5,
-  },
-  {
-    expToNewRank: 2437500,
-    name: 'System Dev',
-    rank: 6,
-  },
-  {
-    expToNewRank: 6093314,
-    name: 'Cyber Security Dev',
-    rank: 7,
-  },
-  {
-    expToNewRank: 15231337,
-    name: 'Basement Dweller',
-    rank: 8,
-  },
-  {
-    expToNewRank: 9999999999999.0,
-    name: 'Anonymous',
-    rank: 9,
-  },
-  {
-    expToNewRank: Infinity,
-    name: 'Cheater',
-    rank: 10,
-  },
-];

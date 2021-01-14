@@ -10,10 +10,8 @@ function orgCrimes({ user, updateGlobalValues }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    console.log('using effect')
     const fetchOrgCrimes = async () => {
       const data = await api.getOrgCrimes();
-      console.log(data,'data')
       updateGlobalValues(data);
       setOrgCrimes(data.orgCrimes)
       setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
@@ -21,27 +19,42 @@ function orgCrimes({ user, updateGlobalValues }) {
     };
     fetchOrgCrimes();
   }, []);
-  const commitCrime = async (crimeId) => {
-    console.log(crimeId);
+  const commitOrgCrime = async (crimeId) => {
+    let data;
+    try {
+      data = await api.commitOrgCrime(crimeId);
+    } catch(e){
+      console.error('Error: ', e)
+      updateGlobalValues(e)
+    }
+    updateGlobalValues(data);
+    setOrgCrimes(data.orgCrimes);
+    setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
   };
   const claimRole = async (crimeId, role)=>{
-      setLoading(true)
-      const data = await api.claimOrgCrimeRole(crimeId,role);
-      console.log(data,'data')
-      updateGlobalValues(data);
+      let data;
+      try {
+        data = await api.claimOrgCrimeRole(crimeId,role);
+      } catch(e){
+        console.error('Error: ', e)
+        updateGlobalValues(e)
+      }
+      updateGlobalValues(data,false);
       setOrgCrimes(data.orgCrimes)
       setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
-      setLoading(false)
 
   }
   const claimCrime = async (crimeId)=> {
-      setLoading(true)
-      const data = await api.claimOrgCrime(crimeId);
-      console.log(data,'data')
+      let data;
+      try {
+        data = await api.claimOrgCrime(crimeId);
+      } catch(e){
+        console.error('Error: ', e)
+        updateGlobalValues(e)
+      }
       updateGlobalValues(data);
       setOrgCrimes(data.orgCrimes)
       setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
-      setLoading(false)
   }
 
   return (
@@ -52,12 +65,14 @@ function orgCrimes({ user, updateGlobalValues }) {
         <h5>Claimed</h5>
           <Row>
             {!loading &&
-              claimedOwnOrgCrimes.map((crime, i) => {
+              claimedOwnOrgCrimes.map((crime) => {
                 return (
                   <Col>
                     {" "}
                     <OrgCrimeCardClaimed
+                      key={crime._id}
                       claimRole={claimRole}
+                      commitOrgCrime={commitOrgCrime}
                       crime={crime}
                     />
                   </Col>
@@ -67,11 +82,15 @@ function orgCrimes({ user, updateGlobalValues }) {
           <h5>Available</h5>
           <Row>
             {!loading &&
-              orgCrimes.map((crime, i) => {
+              orgCrimes.map((crime) => {
                 return (
                   <Col>
                     {" "}
-                    <OrgCrimeCard claimCrime={claimCrime} crime={crime} />
+                    <OrgCrimeCard
+                      key={crime._id}
+                      claimCrime={claimCrime}
+                      crime={crime}
+                    />
                   </Col>
                 );
               })}

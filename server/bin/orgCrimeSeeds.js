@@ -21,52 +21,84 @@ const orgCrimes = [
     description: 'Steal login credentials, compromise decryption keys, crack the AES-128 algorithm and steal personal information from 500 million guests',
     batteryCost: 30,
     image: 'hacker3',
-    TE: {
-      name: 'Technical',
-      description: 'Steal personal information',
-      difficulty: difficultyValues.impossible,
-    },
-    SE: {
-      name: 'Social Engineering',
-      description: 'Steal login credentials',
-      difficulty: difficultyValues.impossible,
-    },
-    FE: {
-      name: 'Forensics',
-      description: 'Compromise decryption keys',
-      difficulty: difficultyValues.impossible,
-    },
-    CG: {
-      name: 'Cryptography',
-      description: 'Crack the AES-128 algorithm',
-      difficulty: difficultyValues.impossible,
-    },
+    roles: [
+      {
+        role: 'Technical',
+        description: 'Steal personal information',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Social Engineering',
+        description: 'Steal login credentials',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Forensics',
+        description: 'Compromise decryption keys',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Cryptography',
+        description: 'Crack the AES-128 algorithm',
+        difficulty: difficultyValues.impossible,
+      },
+    ],
   },
   {
-    name: 'Equifax data breach',
+    name: 'Equifax',
     description: 'Exploit the unpatched servers through the Apache Struts vulnerability and steal personal information from millions of users',
     batteryCost: 30,
     image: 'security',
-    TN: {
-      name: 'Technical',
-      description: 'Spread malware throughout servers',
-      difficulty: difficultyValues.impossible,
-    },
-    SE: {
-      name: 'Social Engineering',
-      description: 'Pose as unhappy customer in web portal',
-      difficulty: difficultyValues.impossible,
-    },
-    FE: {
-      name: 'Forensics',
-      description: 'Compromise decryption keys',
-      difficulty: difficultyValues.impossible,
-    },
-    CG: {
-      name: 'Cryptography',
-      description: 'Pull data from servers',
-      difficulty: difficultyValues.impossible,
-    },
+    roles: [
+      {
+        role: 'Technical',
+        description: 'Spread malware throughout servers',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Social Engineering',
+        description: 'Pose as unhappy customer in web portal',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Forensics',
+        description: 'Compromise decryption keys',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Cryptography',
+        description: 'Pull data from servers',
+        difficulty: difficultyValues.impossible,
+      },
+    ],
+  },
+  {
+    name: 'JP Morgan',
+    description: 'Trick employee to hand over login credentials, exploit heartbleed vulnerability, brute force firewall defense, hide identy behind dozens of shell companies and steal personal information from millions of users',
+    batteryCost: 30,
+    image: 'security',
+    roles: [
+      {
+        role: 'Technical',
+        description: 'Brute force firewall defense',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Social Engineering',
+        description: 'Trick employee to hand over login credentials',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Forensics',
+        description: 'Hide identy behind dozens of shell companies',
+        difficulty: difficultyValues.impossible,
+      },
+      {
+        role: 'Cryptography',
+        description: 'Exploit heartbleed vulnerability',
+        difficulty: difficultyValues.impossible,
+      },
+    ],
   },
 ];
 

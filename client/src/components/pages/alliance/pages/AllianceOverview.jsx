@@ -8,14 +8,11 @@ const AllianceOverview = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const getAlliance = async () => {
       const allianceIdFromUrl = window.location.pathname.match(/[a-f\d]{24}/)
-      
       const allianceId = allianceIdFromUrl
       ? allianceIdFromUrl[0]
       : props.allianceId
-      
       let data;
       try {
         data = await api.getAlliance(allianceId);
@@ -42,7 +39,6 @@ const AllianceOverview = (props) => {
           <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
             <CardTitle tag="h5">Boss</CardTitle>
             <CardImg
-              
               style={{
                 margin: "auto",
                 width: "30%",

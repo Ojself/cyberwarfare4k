@@ -1,3 +1,5 @@
+/* This generates new codes for chessathor and cyberhacker every 24 hour (default) */
+
 const User = require('../models/User');
 
 const generateQueryString = (game) => {

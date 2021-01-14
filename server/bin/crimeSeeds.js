@@ -9,6 +9,14 @@ const Crime = require('../models/Crime');
 
 require('../configs/database');
 
+const difficultyValues = {
+  easy: 30,
+  medium: 50,
+  hard: 70,
+  challenging: 90,
+  impossible: 150,
+};
+
 const firewallValues = {
   easy: 90,
   medium: 150,

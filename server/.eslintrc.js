@@ -15,6 +15,7 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    "no-underscore-dangle": 0
+    "no-underscore-dangle": 0,
+    "quotes": [2, "single", { "avoidEscape": true }]
   },
 };

@@ -7,10 +7,16 @@ const calculatePrice = (min, max) => {
 
 const currencyPriceInterval = async () => {
   const currentHour = new Date().getHours();
+  const isNightTime = currentHour < 6;
   const currencies = await Currency.find({});
   currencies.forEach((c) => {
-    c.price = calculatePrice(c.lowerPrice, c.higherPrice);
-    c.historyPrice.push(c.price);
+    // No new price at night
+    if (isNightTime) {
+      c.historyPrice.push(c.price);
+    } else {
+      c.price = calculatePrice(c.lowerPrice, c.higherPrice);
+      c.historyPrice.push(c.price);
+    }
     c.historyTime.push(currentHour);
     if (c.historyPrice.length > 12) {
       c.historyPrice.shift();

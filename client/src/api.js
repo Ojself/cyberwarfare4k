@@ -161,6 +161,12 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+  commitOrgCrime(crimeId) {
+    return service
+      .post("/org-crime", { crimeId })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
 
   // CRYPTOCURRENCY
   // CRYPTOCURRENCY

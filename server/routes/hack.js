@@ -6,17 +6,17 @@ const router = express.Router();
 const {
   pettyCrime,
   pettyHackRouteCriterias,
-} = require('../middlewares/middlePettyHack');
+} = require('../logic/pettyHack');
 const {
   crimeRouteCriterias,
   fightCrime,
-} = require('../middlewares/middleCrime');
+} = require('../logic/crime');
 const {
   fraudHacker,
   fraudRouteCriteria,
   attackRouteCriterias,
   fightHacker,
-} = require('../middlewares/middleAttack');
+} = require('../logic/attack');
 
 const User = require('../models/User');
 const Crime = require('../models/Crime');
@@ -125,9 +125,7 @@ router.post('/fraud/:opponentId', async (req, res) => {
   const opponent = await User.findById(opponentId);
   const now = Date.now();
 
-  const userIsOnline = await getOnlineUsers(opponent._id.toString());
-
-  const disallowed = await fraudRouteCriteria(user, opponent, batteryCost, now, userIsOnline);
+  const disallowed = await fraudRouteCriteria(user, opponent, batteryCost, now);
 
   if (disallowed) {
     return res.status(400).json({
@@ -170,7 +168,7 @@ router.post('/:opponentId', async (req, res) => {
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
-  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now, userIsOnline);
+  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now);
 
   if (disallowed) {
     return res.status(400).json({

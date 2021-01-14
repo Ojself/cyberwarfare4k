@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "reactstrap";
+import { Label, FormGroup, Input, Form, Button } from "reactstrap";
 import "./loginsignup.scss"
 
 import api from "../../../api";
@@ -26,7 +26,8 @@ const Login = () => {
     }
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    console.log(event,'event')
     const {email,password} = loginState
     if (!email || !password)return
     let data
@@ -48,34 +49,42 @@ const Login = () => {
 
   return (
     <div className="login-signup-card">
-      <h2 className="mb-4">Login</h2>
-      <form>
-        <p className="mb-0">E-Mail Address</p>
-        <input
-          className="w-100 mb-4"
-          type="email"
-          value={loginState.email}
-          name="email"
-          onChange={handleInputChange}
-        />
-        <p className="mb-0">Password</p>
-        <input
-          className="w-100"
-          type="password"
-          value={loginState.password}
-          name="password"
-          onChange={handleInputChange}
-        />
+      <h2 className="text-left mb-4">Login</h2>
+      <Form >
+        <FormGroup>
+          <Label className="mb-0" for="Email">
+            Email
+          </Label>
+          <Input
+            className="w-100 mb-4"
+            type="email"
+            value={loginState.email}
+            name="email"
+            onChange={handleInputChange}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label className="mb-0" for="Password">
+            Password
+          </Label>
+          <Input
+            className="w-100"
+            type="password"
+            value={loginState.password}
+            name="password"
+            onChange={handleInputChange}
+          />
+        </FormGroup>
         <Button
+          disabled={false}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
-          onClick={() => handleLogin()}
+          onClick={(e)=> handleLogin(e)}
         >
           Login
         </Button>
-      </form>
-      {/* <p className="text-center mt-3">Forgot Password?</p> */}
-      <div className="fail-message">{failMessage}</div>
+        <div className="fail-message">{failMessage}</div>
+      </Form>
     </div>
   );
 };

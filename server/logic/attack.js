@@ -1,12 +1,28 @@
 const {
   batteryCheck,
   checkOccuranceLimit,
-} = require('./middleHelpers');
+} = require('./_helpers');
+
+const config = {
+  low: {
+    chance: 0.55,
+    multiplier: 0.9,
+  },
+  med: {
+    chance: 0.65,
+    multiplier: 1.05,
+  },
+  high: {
+    chance: 0.75,
+    multiplier: 1.3,
+  },
+  maxDamage: 40,
+};
 
 // Sees if everything is in order to perform attack
 const isGraced = (opponent, now) => opponent.fightInformation.gracePeriod > now;
 
-const fraudRouteCriteria = async (user, opponent, batteryCost, now, userIsOnline) => {
+const fraudRouteCriteria = async (user, opponent, batteryCost, now) => {
   if (!user) {
     return "User doesn't exist";
   }
@@ -15,13 +31,6 @@ const fraudRouteCriteria = async (user, opponent, batteryCost, now, userIsOnline
   }
   if (!opponent) {
     return "Opponent doesn't exist";
-  }
-  /* restarts counter if opponent is online after being graced for more than five minutes */
-  const userIsGracedMoreThanFiveMinuts = isGraced(opponent, (now + (1000 * 60 * 5)));
-  if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
-    opponent.setGracePeriod(now + (1000 * 60 * 5));
-    await opponent.save();
-    return `${opponent.name} is currently graced, try again later!`;
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
@@ -47,7 +56,7 @@ const fraudRouteCriteria = async (user, opponent, batteryCost, now, userIsOnline
   return null;
 };
 
-const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnline) => {
+const attackRouteCriterias = async (user, opponent, batteryCost, now) => {
   if (!user) {
     return "User doesn't exist";
   }
@@ -56,13 +65,6 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   }
   if (!opponent) {
     return "Opponent doesn't exist";
-  }
-  /* restarts counter if opponent is online after being graced for more than five minutes */
-  const userIsGracedMoreThanFiveMinuts = isGraced(opponent, (now + (1000 * 60 * 5)));
-  if (userIsOnline && userIsGracedMoreThanFiveMinuts) {
-    opponent.setGracePeriod(now + (1000 * 60 * 5));
-    await opponent.save();
-    return `${opponent.name} is currently graced, try again later!`;
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'Insufficent battery';
@@ -88,12 +90,85 @@ const attackRouteCriterias = async (user, opponent, batteryCost, now, userIsOnli
   return null;
 };
 
+// Rock - paper - scissor concept
+const getAttackValue = (attackWeapon, defendWeapon, type = 'chance') => {
+  if (attackWeapon === defendWeapon) return config.med[type];
+  if (attackWeapon === 'CPU' && defendWeapon === 'AntiVirus') return config.high[type];
+  if (attackWeapon === 'AntiVirus' && defendWeapon === 'Encryption') return config.high[type];
+  if (attackWeapon === 'Encryption' && defendWeapon === 'CPU') return config.high[type];
+  return config.med[type];
+};
+
+const attackRecursiveBattle = (result) => {
+  // hack lost
+  // if user has lost 4 times, the hack is considered lost
+  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
+    return result;
+  }
+
+  // SUCCESS
+  if (checkOccuranceLimit(result.roundResult, 'win', 4)) {
+    const newResult = result;
+    newResult.won = true;
+    newResult.expGained = newResult.opponent.playerStats.exp * 0.005;
+
+    // kills a bodyguard
+    if (newResult.opponent.playerStats.bodyguards.alive.length) {
+      const firstBg = newResult.opponent.playerStats.bodyguards.alive[0];
+      // Wounds a bodyguard
+      if (firstBg > 50) {
+        newResult.bodyguardAttacked = true;
+      // kills a bodyguard
+      } else {
+        newResult.bodyguardKilled = true;
+      }
+      // Inflicts damage upon player
+    } else {
+      const attackWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
+      const defenseWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
+
+      const multiplier = getAttackValue(attackWeapon, defenseWeapon, 'multiplier');
+
+      const rankPower = (result.user.playerStats.rank + 1) * 1.5;
+      const attackPower = attackWeapon * multiplier * 0.1;
+
+      const max = rankPower + attackPower;
+      const min = (max) * 0.85;
+      newResult.damageDealt = Math.round(Math.random() * (max - min) + min);
+
+      // To prevent extreme damage
+      if (newResult.damageDealt > config.maxDamage) {
+        newResult.damageDealt = config.maxDamage;
+      }
+      if (newResult.damageDealt <= 0) {
+        newResult.damageDealt = 1;
+      }
+    }
+    return newResult;
+  }
+
+  const attackerWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
+  const defenderWeapon = result.opponent.hackSkill[result.user.playerStats.equippedWeapon];
+
+  const chanceForAttack = getAttackValue(attackerWeapon, defenderWeapon);
+
+  // round win
+  if (chanceForAttack > Math.random()) {
+    result.roundResult.push('win');
+  } else {
+    result.roundResult.push('lost');
+  }
+
+  return attackRecursiveBattle(result);
+};
+// end of recursive
+
 const fightHacker = async (user, opponent, batteryCost, now, userIsOnline) => {
   const result = {
     user,
     opponent,
     now,
-    roundResult: [], // 'win', 'blocked', 'lost', 'lost'
+    roundResult: [], // 'win', 'lost', 'lost'
     damageDealt: 0,
     won: false,
     victimDead: false,
@@ -115,70 +190,30 @@ const fightHacker = async (user, opponent, batteryCost, now, userIsOnline) => {
   return finalResult;
 };
 
-const attackRecursiveBattle = (result) => {
+const fraudGenerator = (result) => {
   // hack lost
   // if user has lost 4 times, the hack is considered lost
-  if (checkOccuranceLimit(result.roundResult, 'lost', 4)) {
-    return result;
-  }
-
-  /* // hack lost
-  // if user has been encrypted/blocked 4 times, the hack is considered lost
-  if (checkOccuranceLimit(result.roundResult, 'blocked', 4)) {
-    return result;
-  } */
-
-  // SUCCESS
-  if (checkOccuranceLimit(result.roundResult, 'win', 4)) {
-    const newResult = result;
-    newResult.won = true;
-    newResult.expGained = newResult.opponent.playerStats.exp * 0.005;
-    // kills a bodyguard
-
-    if (newResult.opponent.playerStats.bodyguards.alive.length) {
-      const firstBg = newResult.opponent.playerStats.bodyguards.alive[0];
-      // more than 50 hp
-      if (firstBg > 50) {
-        newResult.bodyguardAttacked = true;
-      } else {
-        newResult.bodyguardKilled = true;
-      }
-    } else {
-      const { CPU } = result.user.hackSkill;
-      const rankPowerMax = (result.user.playerStats.rank + 1) * 2;
-      const rankPowerMin = (result.user.playerStats.rank + 1) * 1.3;
-      const rankPower = Math.round(Math.random() * (rankPowerMax - rankPowerMin) + rankPowerMin);
-
-      const min = CPU * 0.05;
-      const max = CPU * 0.1;
-      newResult.damageDealt = Math.round(Math.random() * (max - min) + min) + rankPower;
-      // To prevent extreme damage
-      if (newResult.damageDealt > 40) {
-        newResult.damageDealt = 40;
-      }
+  let bitCoinStolen = 0;
+  for (let i = 0; i < 4; i += 1) {
+    let chanceForSuccess = Object.values(result.user.crimeSkill).reduce((acc, curr) => acc + curr, 0) / 100;
+    if (chanceForSuccess > 0.9) {
+      chanceForSuccess = 0.9;
     }
-    return newResult;
+
+    if (chanceForSuccess > Math.random()) {
+      const multiplier = 1 + result.user.playerStats.rank;
+      const rng = Math.random() * (multiplier - multiplier / 2) + (multiplier / 2);
+      const percentage = rng / 100;
+      bitCoinStolen += Math.floor(percentage * result.opponent.playerStats.bitCoins);
+    }
   }
 
-  /* // Attacker gets blocked
-  const chanceForBlocked = calculateBlockChance(result.user.hackSkill.Encryption, result.opponent.hackSkill.CPU);
-  if (chanceForBlocked >= Math.random()) {
-    result.roundResult.push('blocked');
-    return attackRecursiveBattle(result);
-  } */
-
-  const chanceForAttack = primitiveCalculateAttackChance(result.user.hackSkill.CPU, result.opponent.hackSkill.AntiVirus);
-
-  // round win
-  if (chanceForAttack > Math.random()) {
-    result.roundResult.push('win');
-  } else {
-    result.roundResult.push('lost');
+  if (bitCoinStolen > 0) {
+    result.won = true;
+    result.playerGains.bitCoinStolen = bitCoinStolen;
   }
-
-  return attackRecursiveBattle(result);
+  return result;
 };
-// end of recursive
 
 const fraudHacker = (user, opponent, batteryCost, now) => {
   const result = {
@@ -198,51 +233,6 @@ const fraudHacker = (user, opponent, batteryCost, now) => {
   opponent.handleFraudDefense(finalResult, now + gracePeriod);
 
   return finalResult;
-};
-
-const fraudGenerator = (result) => {
-  // hack lost
-  // if user has lost 4 times, the hack is considered lost
-  let bitCoinStolen = 0;
-  for (let i = 0; i < 4; i += 1) {
-    const attackInput = Object.values(result.user.crimeSkill).reduce((acc, curr) => acc + curr, 0) / 4;
-    const defenseInput = result.opponent.hackSkill.AntiVirus;
-    const chanceForSuccess = primitiveCalculateAttackChance(attackInput, defenseInput);
-    /* const attackerChance = fraudCalculator(result.user);
-    const opponentChance = fraudCalculator(result.opponent); */
-
-    if (chanceForSuccess > Math.random()) {
-      const multiplier = 1 + result.user.playerStats.rank;
-      const rng = Math.random() * (multiplier - multiplier / 2) + (multiplier / 2);
-      const percentage = rng / 100;
-      bitCoinStolen += Math.floor(percentage * result.opponent.playerStats.bitCoins);
-    }
-  }
-
-  if (bitCoinStolen > 0) {
-    result.won = true;
-    result.playerGains.bitCoinStolen = bitCoinStolen;
-  }
-  return result;
-};
-
-/* // returns between 0.05 and 0.95
-const calculateBlockChance = (defenseStat, attackStat) => {
-  const x = defenseStat / attackStat;
-  const a = 6 * Math.sqrt(5 / 19999);
-  const b = 13639 / 72000;
-  return a * Math.sqrt(x + b);
-}; */
-
-const primitiveCalculateAttackChance = (attackSkill, opponentSkill) => {
-  const probability = attackSkill / (opponentSkill * 1.125);
-  if (probability >= 0.90) {
-    return 0.90;
-  }
-  if (probability < 0.05) {
-    return 0.05;
-  }
-  return probability;
 };
 
 module.exports = {

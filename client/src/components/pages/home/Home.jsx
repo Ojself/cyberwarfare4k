@@ -75,7 +75,6 @@ const Home = (props) => {
           <h3 className="display-5 text-center text-warning">
             Multiplayer RPG Hacker Game
           </h3>
-          <h6 className="text-center text-info">NordVPN prototype w/ Laura</h6>
           <div className="descriptionText">
             <p>
               CyberhackerWarefare4000 is a free multiplyer hacker role playing

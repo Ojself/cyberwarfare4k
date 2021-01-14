@@ -1,6 +1,6 @@
 const {
   checkFunds,
-} = require('./middleHelpers');
+} = require('./_helpers');
 
 const isUserFullHealth = (user) => user.playerStats.currentFirewall !== user.playerStats.maxFirewall;
 

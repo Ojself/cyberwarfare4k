@@ -7,7 +7,7 @@ const User = require('../models/User');
 const { saveAndUpdateUser } = require('./helper');
 const {
   checkBuyStashCriteria, checkSellStashCriteria, cleanObj, summarizeStash,
-} = require('../middlewares/middleStash');
+} = require('../logic/stash');
 
 // @GET
 // PRIVATE

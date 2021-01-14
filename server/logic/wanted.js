@@ -1,4 +1,4 @@
-const { existingValue, checkFunds } = require('./middleHelpers');
+const { existingValue, checkFunds } = require('./_helpers');
 const User = require('../models/User');
 
 // Sees if everything is in order to add bounty

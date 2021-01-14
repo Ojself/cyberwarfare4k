@@ -5,7 +5,7 @@ const {
   batteryCheck,
   existingValue,
   randomNumberMinMax,
-} = require('./middleHelpers');
+} = require('./_helpers');
 
 const pettyWinBitcoins = (multiplier) => {
   const bonus = 1000 + (multiplier * 500);

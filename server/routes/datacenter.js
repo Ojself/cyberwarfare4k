@@ -7,7 +7,7 @@ const {
   healDataCenterCriterias,
   attackDataCenter,
   findDataCenters,
-} = require('../middlewares/middleDataCenter');
+} = require('../logic/dataCenter');
 
 const { saveAndUpdateUser } = require('./helper');
 

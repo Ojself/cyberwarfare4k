@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {Link} from "react-router-dom";
 import {
   Badge,
   Card,
@@ -11,23 +12,11 @@ import {
 } from "reactstrap";
 import "./orgCrimes.scss"
 
-const findRequiredHackers = (crime) => {
-  let requiredHackers = [];
-  ["Forensics", "Technical", "Cryptography", "Social Engineering"].forEach(
-    (type) => {
-      if (Object.keys(crime).includes(type)) {
-        requiredHackers.push(type);
-      }
-    }
-  );
-  return requiredHackers;
-};
-
-const OrgCrimeCardClaimed = ({ crime, claimRole, commitCrime }) => {
-  const requiredHackers = findRequiredHackers(crime);
+const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
   const [descriptionTooltip, setDescriptionTooltip] = useState(false);
 
   const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
+  console.log(crime,'crime')
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -43,7 +32,16 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitCrime }) => {
             className="text-warning"
             tag="h5"
           >
-            {crime.name}
+            <Link to={`/alliance/${crime.ownerAlliance._id}`}>
+              <i
+                style={{
+                  color: crime.ownerAlliance.name,
+                  fontSize: "20px",
+                }}
+                className="fab fa-redhat"
+              ></i>
+            </Link>
+            {" "}{crime.name}
           </CardTitle>
           <Tooltip
             placement="right"
@@ -57,11 +55,16 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitCrime }) => {
           </CardSubtitle> */}
           <CardText>
             <div className="d-flex flex-column  w-100">
-              {requiredHackers.map((role) => {
-                const hackerName = crime[role].owner ? (
-                  <strong>{crime[role].owner.name}</strong>
+              {crime.roles.map((role) => {
+                const hackerName = role.owner ? (
+                  <strong>{role.owner.name}</strong>
                 ) : (
-                  <span id="org-crime-join" onClick={() => claimRole(crime._id, role)}>Join</span>
+                  <span
+                    id="org-crime-join"
+                    onClick={() => claimRole(crime._id, role.role)}
+                  >
+                    Join
+                  </span>
                 );
                 return (
                   <div className="d-flex flex-row w-100">
@@ -73,7 +76,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitCrime }) => {
                       }}
                       color="success"
                     >
-                      {role}
+                      {role.role}
                     </Badge>
                     <div
                       style={{
@@ -91,7 +94,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitCrime }) => {
           </CardText>
           <Button
             color="outline-danger"
-            onClick={() => commitCrime( crime._id)}
+            onClick={() => commitOrgCrime(crime._id)}
           >
             Commit
           </Button>

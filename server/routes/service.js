@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/User');
-const { repairRouteCriterias, buyBodyguardCriterias } = require('../middlewares/middleService');
+const { repairRouteCriterias, buyBodyguardCriterias } = require('../logic/serviceSupport');
 const { saveAndUpdateUser } = require('./helper');
 
 // @POST

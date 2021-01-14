@@ -1,5 +1,5 @@
 const express = require('express');
-const { isLoggedIn } = require('../middlewares/middleAuth');
+const { isLoggedIn } = require('../logic/auth');
 const {
   calculateNetworth, getInbox, getOpponentInformation, saveAndUpdateUser,
 } = require('./helper');

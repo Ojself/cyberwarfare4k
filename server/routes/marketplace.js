@@ -1,5 +1,5 @@
 const express = require('express');
-const { marketPlaceCriterias } = require('../middlewares/middleMarketPlace');
+const { marketPlaceCriterias } = require('../logic/marketPlace');
 const { saveAndUpdateUser } = require('./helper');
 
 const router = express.Router();

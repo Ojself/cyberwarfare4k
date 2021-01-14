@@ -113,7 +113,7 @@ const App = () => {
                 className={`terminalFont ${
                   globalMessage.success ? "terminalTextwin" : "terminalTextlost"
                 }`}
-                cursor={{ hideWhenDone: true }}
+                cursor={{ show: false }}
               >
                 {globalMessage.message}
               </Typist>
