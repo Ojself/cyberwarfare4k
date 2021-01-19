@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 
 const router = express.Router();
-const { saveAndUpdateUser } = require('./helper');
+const { saveAndUpdateUser } = require('../logic/_helpers');
 const User = require('../models/User');
 
 const handleGithubEvent = async (payload) => {
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
 // this is being called from outside
 router.post('/redeem', async (req, res) => {
   const { code } = req.body;
-  console.info(req.body, '/redeem ')
+  console.info(req.body, '/redeem ');
   if (req.body.payload) {
     // check headers
     return handleGithubEvent(req.body.payload);

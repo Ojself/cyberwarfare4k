@@ -55,8 +55,8 @@ const OrgCrimeCard = ({crime, claimCrime}) => {
           >
             {crime.roles.map((role) => {
               return (
-                <Badge color="success" pill>
-                  {role.role}
+                <Badge key={role.roleName} color="success" pill>
+                  {role.roleName}
                 </Badge>
               );
             })}

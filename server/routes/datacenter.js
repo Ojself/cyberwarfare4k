@@ -9,7 +9,7 @@ const {
   findDataCenters,
 } = require('../logic/dataCenter');
 
-const { saveAndUpdateUser } = require('./helper');
+const { saveAndUpdateUser } = require('../logic/_helpers');
 
 const router = express.Router();
 const DataCenter = require('../models/DataCenter');

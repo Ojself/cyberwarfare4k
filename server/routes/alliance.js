@@ -5,42 +5,9 @@ const User = require('../models/User');
 const Alliance = require('../models/Alliance');
 const Message = require('../models/Message');
 const {
-  checkCreateAllianceCriteria,
-  findAllianceStats, inviteSendCriteria, answerCriterias,
+  checkCreateAllianceCriteria, saveAndUpdateUser, getInbox, findAllianceByIdAndPopulate,
+  findAllianceStats, inviteSendCriteria, answerCriterias, promoteCriterias,
 } = require('../logic/alliance');
-const { saveAndUpdateUser, getInbox } = require('./helper');
-
-const promoteCriterias = (user, promotedUser, alliance) => {
-  if (!user || !promotedUser || !alliance) {
-    return 'Something went wrong...';
-  }
-  if (user.allianceRole !== 'boss') {
-    return "You don't have permission to do this";
-  }
-  if (promotedUser.alliance.toString() !== alliance._id.toString()) {
-    return "This user doesn't belong to the correct alliance";
-  }
-  if (user._id.toString() === promotedUser._id.toString()) {
-    return "You can't promote yourself directly...";
-  }
-  return null;
-};
-
-const findAllianceByIdAndPopulate = async (id) => {
-  const populateValues = ['name', 'account.avatar'];
-  const alliance = await Alliance.findById(id)
-    .populate('boss', populateValues)
-    .populate('cto', populateValues)
-    .populate('analyst', populateValues)
-    .populate('firstLead', populateValues)
-    .populate('secondLead', populateValues)
-    .populate('firstMonkeys', populateValues)
-    .populate('secondMonkeys', populateValues)
-    .populate('invitedMembers', populateValues)
-    .populate('organizePermission', populateValues)
-    .populate('forumModeratorPermission', populateValues);
-  return alliance;
-};
 
 // @GET
 // PRIVATE

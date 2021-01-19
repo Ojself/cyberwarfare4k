@@ -34,7 +34,6 @@ const fightCrime = async (user, crime, batteryCost, now) => {
       bitCoins: 0,
       skillGained: null,
       stashGained: null,
-      legendaryGained: null,
     },
   };
   const finalResult = crimeRecursiveBattle(user, crime, result);
@@ -125,8 +124,6 @@ const roundLost = (result) => {
 };
 
 const crimeWin = (result, crime, user, decider) => {
-  // TODO write legendaryGained
-
   result.won = true;
   result.playerGains.exp = crimeWinExp(crime.difficulty, user.playerStats.rank);
   result.playerGains.bitCoins = crimeWinBitcoins(crime.difficulty);
@@ -136,7 +133,6 @@ const crimeWin = (result, crime, user, decider) => {
     crime.crimeType,
   );
   result.playerGains.statGained = statGained(decider, user.playerStats.rank);
-  result.playerGains.legendaryGained = '';
   return result;
 };
 

@@ -53,15 +53,14 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
           </Tooltip>
           {/* <CardSubtitle tag="h6" className="mb-2 text-muted">
           </CardSubtitle> */}
-          <CardText>
-            <div className="d-flex flex-column  w-100">
+          <CardText className="d-flex flex-column w-100">
               {crime.roles.map((role) => {
                 const hackerName = role.owner ? (
                   <strong>{role.owner.name}</strong>
                 ) : (
                   <span
                     id="org-crime-join"
-                    onClick={() => claimRole(crime._id, role.role)}
+                    onClick={() => claimRole(crime._id, role.roleName)}
                   >
                     Join
                   </span>
@@ -76,7 +75,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
                       }}
                       color="success"
                     >
-                      {role.role}
+                      {role.roleName}
                     </Badge>
                     <div
                       style={{
@@ -90,7 +89,6 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
                   </div>
                 );
               })}
-            </div>
           </CardText>
           <Button
             color="outline-danger"

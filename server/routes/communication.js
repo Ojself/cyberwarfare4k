@@ -3,82 +3,53 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
-const { getInbox } = require('./helper');
+const { getNotifications, getInbox, generateMessage } = require('../logic/_helpers');
 
-const generateMessage = (userId, receiverId, text) => {
-  const now = new Date(Date.now()).toString().slice(0, 21);
+const readAllNotifications = async (userId) => {
+  const notifications = await Notification.find({ to: userId, read: false });
+  notifications.forEach((n) => n.readMe());
+  await Promise.all(notifications.map((n) => n.save()));
+};
 
-  const newMessage = new Message({
-    from: userId,
-    to: receiverId,
-    dateSent: now,
-    read: false,
-    text,
-  });
-  return newMessage.save();
+const readAllMessages = async (userId) => {
+  const messages = await Message.find({ to: userId, read: false });
+  messages.forEach((n) => n.readMe());
+  await Promise.all(messages.map((m) => m.save()));
 };
 
 // @GET
 // PRIVATE
 // get all messages for user
 
-router.get('/', async (req, res) => {
+router.get('/messages', async (req, res) => {
   const userId = req.user._id;
-  const inbox = await getInbox(userId);
-  const sent = await Message.find({ from: userId })
-    .populate('to', 'name')
-    .sort({ createdAt: -1 });
-  const jsonMessage = `${sent.length ? sent.length : 0} messages loaded...`;
-  return res.status(200).json({
+  const messages = await getInbox(userId);
+  const jsonMessage = `${messages && messages.length ? messages.length : 0} messages loaded...`;
+  res.status(200).json({
     success: true,
     message: jsonMessage,
-    messages: {
-      inbox,
-      sent,
-    },
+    messages,
   });
+
+  readAllMessages(userId);
 });
 
-// @PATCH
+// @GET
 // PRIVATE
-// reads all messages
-
-router.patch('/', async (req, res) => {
+// get all notifications for user
+router.get('/notifications', async (req, res) => {
   const userId = req.user._id;
-  const { communication } = req.body;
-
-  if (communication === 'messages') {
-    try {
-      const messages = await Message.find({ to: userId, read: false });
-      await messages.forEach(async (m) => {
-        m.readMe();
-      });
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: `error: ${JSON.stringify(e)}`,
-      });
-    }
-  }
-
-  if (communication === 'notifications') {
-    try {
-      const user = await User.findById(userId);
-      user.readNotifications();
-      await user.save();
-    } catch (e) {
-      res.status(400).json({
-        success: false,
-        message: `error: ${JSON.stringify(e)}`,
-      });
-    }
-  }
-
-  return res.status(200).json({
+  const notifications = await getNotifications(userId);
+  const jsonMessage = `${notifications && notifications.length ? notifications.length : 0} notifications loaded...`;
+  res.status(200).json({
     success: true,
-    message: 'notifications read',
+    message: jsonMessage,
+    notifications,
   });
+
+  readAllNotifications(userId);
 });
 
 // @POST

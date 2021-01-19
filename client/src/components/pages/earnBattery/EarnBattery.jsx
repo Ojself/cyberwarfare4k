@@ -132,8 +132,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
         />
         {userHasGithub ? (
           <InputGroupText
-            className="text-success "
-            className={`d-flex justify-content-center ${
+            className={`text-success d-flex justify-content-center ${
               user.earnBattery.githubStar && "text-success"
             }`}
             title={

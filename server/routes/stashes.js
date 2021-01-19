@@ -4,7 +4,7 @@ const router = express.Router();
 
 const Stash = require('../models/Stash');
 const User = require('../models/User');
-const { saveAndUpdateUser } = require('./helper');
+const { saveAndUpdateUser } = require('../logic/_helpers');
 const {
   checkBuyStashCriteria, checkSellStashCriteria, cleanObj, summarizeStash,
 } = require('../logic/stash');

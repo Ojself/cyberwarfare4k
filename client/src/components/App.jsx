@@ -41,7 +41,8 @@ import WantedList from "./pages/WantedList";
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [unreadMessage, setUnreadMessage] = useState(false)
+  const [unreadNotification, setUnreadNotification] = useState(false);
   const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +66,8 @@ const App = () => {
         window.location.pathname = "/create-hacker";
       }
       setUser(data.user);
-      setMessages(data.messages);
+      setUnreadMessage(data.unreadMessageExist);
+      setUnreadNotification(data.unreadNotificationExist);
       setLoading(false);
     };
     fetchUserData();
@@ -77,9 +79,6 @@ const App = () => {
     }
     if (scrollToTop) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    if (messages){
-      setMessages(messages);
     }
     if (renderMessage && data.message) {
       setGlobalMessage({
@@ -99,7 +98,8 @@ const App = () => {
             updateGlobalValues={updateGlobalValues}
             user={user}
             globalLoading={loading}
-            messages={messages}
+            unreadMessage={unreadMessage}
+            unreadNotification={unreadNotification}
           />
           <StatusBar
             updateGlobalValues={updateGlobalValues}
@@ -301,7 +301,6 @@ const App = () => {
               user={user}
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
-              messages={messages}
             />
           )}
         />
@@ -349,18 +348,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-   
-{
-  /* <Route
-          path="/forum"
-          render={() => <ForumOverview globalLoading={loading} user={user} />}
-        />
-        <Route path="/forum/:forumId" render={() => <ThreadOverview />} />
-        <Route
-          path="/forum/:forumId/:threadId"
-          render={() => <ForumThread globalLoading={loading} user={user} />}
-        /> */
-}

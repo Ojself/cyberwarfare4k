@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
-const Message = require('./Message');
+const { generateMessage } = require('../logic/_helpers');
 
 const { Schema } = mongoose;
 
@@ -8,6 +8,7 @@ const allianceSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
     enum: ['Black', 'White', 'Red', 'Grey', 'Brown'],
   },
   active: { type: Boolean, default: false },
@@ -96,22 +97,13 @@ allianceSchema.methods.abandonAlliance = function () {
   this.secondMonkeys = [];
 };
 
-allianceSchema.methods.inviteMember = function (now, playerId) {
+allianceSchema.methods.inviteMember = async function (now, playerId) {
   const text = `You have been invited to join the alliance ${this.name}`;
-  const newMessage = new Message({
-    from: this.boss,
-    to: playerId,
-    dateSent: now,
-    read: false,
-    allianceInvitation: this._id,
-    text,
-  });
   this.invitedMembers.push(playerId);
-  newMessage.save();
+  await generateMessage(this.boss, playerId, text, 'Message', this._id);
 };
 
 allianceSchema.methods.declineInvitation = function (playerId) {
-  // player.sendNotication
   const playerIndex = this.invitedMembers.indexOf(playerId);
   this.invitedMembers.splice(playerIndex, 1);
 };

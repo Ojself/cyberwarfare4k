@@ -12,7 +12,7 @@ const OrgCrimeSchema = new Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User', default: null },
   ownerAlliance: { type: Schema.Types.ObjectId, ref: 'Alliance', default: null },
   roles: [{
-    role: String,
+    roleName: String,
     description: String,
     difficulty: Number,
     owner: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -28,12 +28,12 @@ OrgCrimeSchema.methods.claimOwner = function (userId, allianceId, now) {
   this.roles[0].owner = userId;
 };
 
-OrgCrimeSchema.methods.claimRole = function (userId, role) {
+OrgCrimeSchema.methods.claimRole = function (userId, roleName) {
   const oldRoleIndex = this.roles.findIndex((r) => JSON.stringify(r.owner) === JSON.stringify(userId));
   if (oldRoleIndex >= 0) {
     this.roles[oldRoleIndex].owner = null;
   }
-  const newRoleIndex = this.roles.findIndex((r) => r.role === role);
+  const newRoleIndex = this.roles.findIndex((r) => r.roleName === roleName);
   if (newRoleIndex >= 0) {
     this.roles[newRoleIndex].owner = userId;
   }

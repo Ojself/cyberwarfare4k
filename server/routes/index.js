@@ -1,14 +1,16 @@
 const express = require('express');
 const { isLoggedIn } = require('../logic/auth');
 const {
-  calculateNetworth, getInbox, getOpponentInformation, saveAndUpdateUser,
-} = require('./helper');
+  calculateNetworth, getOpponentInformation, saveAndUpdateUser,
+} = require('../logic/_helpers');
 
 const router = express.Router();
 
 const User = require('../models/User');
 const City = require('../models/City');
 const Currency = require('../models/Currency');
+const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
 // might be written wrongly TODO
 const setupPlayer = async (user, name, city, avatar) => {
@@ -107,10 +109,12 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     .populate('marketPlaceItems.CPU')
     .populate('marketPlaceItems.Firewall')
     .populate('marketPlaceItems.AntiVirus')
-  // .populate('marketPlaceItems.Encryption')
+    .populate('marketPlaceItems.Encryption')
     .populate('alliance', 'name')
     .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
-  const messages = await getInbox(userId);
+
+  const unreadMessageExist = await Message.exists({ to: userId, read: false });
+  const unreadNotificationExist = await Notification.exists({ to: userId, read: false });
 
   const now = Date.now();
   const userIsGracedMoreThanFiveMinuts = isGraced(user, (now + (1000 * 60 * 5)));
@@ -123,7 +127,8 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     success: true,
     message: 'user loaded..',
     user,
-    messages,
+    unreadMessageExist,
+    unreadNotificationExist,
   });
 });
 
@@ -163,7 +168,6 @@ router.get('/opponents/:id', async (req, res) => {
   );
 
   // stop hackers
-  opponentInformation.opponent.account.notifications = null;
   opponentInformation.opponent.account.password = null;
   opponentInformation.opponent.hackSkill = null;
   opponentInformation.opponent.crimeSkill = null;
@@ -239,7 +243,7 @@ router.get('/ladder', async (req, res) => {
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const { statPoint } = req.body;
-  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'exp', 'Firewall']; // 'Encryption',
+  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'exp', 'Firewall', 'Encryption'];
   if (!possibleStatPoints.includes(statPoint)) {
     return res.status(400).json({
       success: false,

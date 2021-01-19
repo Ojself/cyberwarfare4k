@@ -15,4 +15,30 @@ const tranfserCriteria = (user, receiver, amount) => {
   return null;
 };
 
-module.exports = { tranfserCriteria };
+const depositCriteria = (user, amount) => {
+  if (!user) {
+    return 'No user found';
+  }
+  if (!amount) {
+    return 'Missing input';
+  }
+  if (amount > user.playerStats.bitCoins) {
+    return 'You can\'t deposit money you don\'t have..';
+  }
+  return null;
+};
+
+const withdrawCriteria = (user, amount) => {
+  if (!user) {
+    return 'No user found';
+  }
+  if (!amount) {
+    return 'Missing input';
+  }
+  if (amount > user.playerStats.ledger) {
+    return 'You can\'t withdraw money you don\'t have..';
+  }
+  return null;
+};
+
+module.exports = { tranfserCriteria, withdrawCriteria, depositCriteria };

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Input} from 'reactstrap'
+/* import {Button, Input} from 'reactstrap' */
 
 const DashboardVault = ({openVault, vaultIsOpen}) => {
     return (

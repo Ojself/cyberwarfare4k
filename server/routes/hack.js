@@ -1,22 +1,36 @@
 const express = require('express');
-const { getOnlineUsers, saveAndUpdateUser } = require('./helper');
+const { getOnlineUsers, saveAndUpdateUser, generateNotification } = require('../logic/_helpers');
 
 const router = express.Router();
 
-const {
-  pettyCrime,
-  pettyHackRouteCriterias,
-} = require('../logic/pettyHack');
-const {
-  crimeRouteCriterias,
-  fightCrime,
-} = require('../logic/crime');
+const { pettyCrime, pettyHackRouteCriterias } = require('../logic/pettyHack');
+const { crimeRouteCriterias, fightCrime } = require('../logic/crime');
 const {
   fraudHacker,
   fraudRouteCriteria,
   attackRouteCriterias,
   fightHacker,
-} = require('../logic/attack');
+} = require('../logic/hack');
+
+const getHackFeedback = (finalResult, opponent) => {
+  let message;
+  let notification;
+  if (finalResult.bodyguardKilled) {
+    message = `You attacked ${opponent.name} and killed a bodyguard!`;
+    notification = `${finalResult.user.name} attacked you and killed a bodyguard}!`;
+  } else if (finalResult.bodyguardAttacked) {
+    message = `You attacked ${opponent.name} and damaged a bodyguard!`;
+    notification = `${finalResult.user.name} attacked you and wounded your bodyguard`;
+  } else if (!finalResult.bodyguardAttacked && !finalResult.bodyguardKilled) {
+    message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
+    notification = `${finalResult.user.name} attacked you and dealt ${finalResult.damageDealt} damage!`;
+  }
+  if (finalResult.opponent.playerStats.currentFirewall <= 0) {
+    message = `SHUTDOWN! ${opponent.name} is dead`;
+    notification = `You were shutdown by ${finalResult.user.name}`;
+  }
+  return { message, notification };
+};
 
 const User = require('../models/User');
 const Crime = require('../models/Crime');
@@ -135,14 +149,18 @@ router.post('/fraud/:opponentId', async (req, res) => {
   }
 
   const finalResult = await fraudHacker(user, opponent, batteryCost, now);
-
   const updatedUser = await saveAndUpdateUser(finalResult.user);
+
   await finalResult.opponent.save();
+
+  const notificationMessage = `${finalResult.user.name} stole ${finalResult.playerGains.bitCoinStolen} from you!`;
+  await generateNotification(finalResult.opponent._id, notificationMessage);
   finalResult.user = null;
   finalResult.opponent = null;
   finalResult.now = null;
 
   const message = `You stole ${finalResult.playerGains.bitCoinStolen} from ${opponent.name}`;
+  await generateNotification(user._id, `${message} in ${updatedUser.playerStats.city.name}`, 'Logs', true);
   const success = !!finalResult.playerGains.bitCoinStolen;
   return res.status(200).json({
     success,
@@ -184,22 +202,16 @@ router.post('/:opponentId', async (req, res) => {
   await finalResult.opponent.save();
   finalResult.user = null;
   finalResult.now = null;
-  let message;
-  if (finalResult.bodyguardKilled) {
-    message = `You attacked ${opponent.name} and killed a bodyguard!`;
-  } else if (finalResult.bodyguardAttacked) {
-    message = `You attacked ${opponent.name} and damaged a bodyguard!`;
-  } else if (!finalResult.bodyguardAttacked && !finalResult.bodyguardKilled) {
-    message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
-  }
-  if (finalResult.opponent.playerStats.currentFirewall <= 0) {
-    message = 'SHUTDOWN! Target is dead';
-  }
+
+  const feedback = getHackFeedback(finalResult, opponent);
+  await generateNotification(finalResult.opponent._id, feedback.notification);
+  await generateNotification(finalResult.user._id, feedback.message, 'Logs', true);
+
   finalResult.opponent = null;
 
   return res.status(200).json({
     success: true,
-    message,
+    message: feedback.message,
     finalResult,
     user: updatedUser,
 

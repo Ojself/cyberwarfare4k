@@ -1,9 +1,7 @@
 const {
   skillDropChance,
   stashDropChance,
-  legendaryDropChance,
   batteryCheck,
-  existingValue,
   randomNumberMinMax,
 } = require('./_helpers');
 
@@ -21,8 +19,8 @@ const pettyWinExp = (multiplier) => {
 
 // Sees if everything is in order to perform petty crime
 const pettyHackRouteCriterias = (user, batteryCost) => {
-  if (!existingValue(user)) {
-    return "User doesn't exist";
+  if (!user) {
+    return 'Something went wrong';
   }
   if (!batteryCheck(user, batteryCost)) {
     return 'insufficent battery';
@@ -43,14 +41,13 @@ const pettyCrime = async (user, batteryCost) => {
     bitCoins: 0,
     exp: 0,
     battery: batteryCost,
-    stashGained: '',
-    skillGained: '',
-    legendaryGained: '',
+    stashGained: null,
+    skillGained: null,
   };
 
   let probabiltiy = (crimeSkillsSum / 53) + (Math.random() / 4);
-  if (crimeSkillsSum <= 5 || probabiltiy > 0.95) {
-    probabiltiy = 0.95;
+  if (crimeSkillsSum <= 5 || probabiltiy > 0.90) {
+    probabiltiy = 0.90;
   }
   /* Checking for success */
   if (probabiltiy > decider) {
@@ -60,7 +57,6 @@ const pettyCrime = async (user, batteryCost) => {
     if (probabiltiy > (decider + (user.playerStats.rank / 13))) {
       pettyResult.stashGained = stashDropChance(user, crimeSkillsSum);
       pettyResult.skillGained = skillDropChance(user);
-      pettyResult.legendaryGained = legendaryDropChance(user);
     }
   }
 

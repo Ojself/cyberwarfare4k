@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import {
-  Button,
   Table,
   TabContent,
   TabPane,
@@ -112,8 +111,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
         }
       )}
       <div className="my-4"></div>
-      {["CPU", "AntiVirus"].map((h) => {
-        // "Encryption" <--- Add to array to see stats.
+      {["CPU", "AntiVirus", "Encryption"].map((h) => {
         return (
           <ProgressBarHackSkill
             color="primary"

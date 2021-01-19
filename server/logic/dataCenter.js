@@ -1,6 +1,7 @@
 const {
   batteryCheck,
   checkFunds,
+  generateNotification,
 } = require('./_helpers');
 const DataCenter = require('../models/DataCenter');
 
@@ -106,10 +107,9 @@ const attackDataCenter = async (
   user.handleDataCenterAttack(dataCenter, result);
   dataCenter.handleAttack(user._id, result, now);
 
-  const notificationMessage = `Datacenter ${dataCenter.name} was attacked ${
-    result.destroyed ? 'and destroyed' : ''
-  } by ${user.name}!`;
-  dataCenterOwner.sendNotification(notificationMessage, now);
+  const notificationText = `Datacenter ${dataCenter.name} was attacked ${
+    result.destroyed ? 'and destroyed' : ''} by ${user.name}!`;
+  await generateNotification(dataCenterOwner._id, notificationText);
 
   await dataCenterOwner.save();
   await dataCenter.save();

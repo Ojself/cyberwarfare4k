@@ -8,7 +8,7 @@ const {
   getCityRouteCriterias,
 } = require('../logic/city.js');
 
-const { getOnlineUsers, saveAndUpdateUser } = require('./helper');
+const { getOnlineUsers, saveAndUpdateUser } = require('../logic/_helpers');
 
 // @GET
 // PRIVATE

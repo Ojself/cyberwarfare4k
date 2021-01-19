@@ -9,7 +9,7 @@ const service = axios.create({
 });
 
 const errHandler = (err) => {
-  console.error('errHandler: ',err);
+  console.error("errHandler: ", err);
   if (err.response && err.response.data) {
     console.error("API response", err.response.data);
     throw err.response.data;
@@ -19,9 +19,6 @@ const errHandler = (err) => {
 
 export default {
   service: service,
-  isLoggedIn() {
-    return localStorage.getItem("user") != null;
-  },
 
   getRedirectInfo() {
     return service
@@ -155,9 +152,9 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
-  claimOrgCrimeRole(crimeId, role) {
+  claimOrgCrimeRole(crimeId, roleName) {
     return service
-      .patch("/org-crime", { crimeId, role })
+      .patch("/org-crime", { crimeId, roleName })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -354,9 +351,16 @@ export default {
   //COMMUNICATIONS
   //COMMUNICATIONS
 
-  readAllCommunication(communication) {
+  getNotifications() {
     return service
-      .patch(`/communication/`, { communication })
+      .get(`/communication/notifications`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  getMessages() {
+    return service
+      .get(`/communication/messages`)
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -415,7 +419,7 @@ export default {
   /* FORUM */
   /* FORUM */
   /* FORUM */
-  getForums() {
+  /* getForums() {
     return service
       .get("/forum")
       .then((res) => res.data)
@@ -440,10 +444,9 @@ export default {
       .post(`/forum/thread/comment`, { comment, threadId })
       .then((res) => res.data)
       .catch(errHandler);
-  },
+  }, */
 
-  /* earn energy */
-
+  /* EARN ENERGY */
   postGithubUsername(githubUserName) {
     return service
       .post(`/earnBattery`, { githubUserName })

@@ -8,9 +8,6 @@ import {
   Input,
   Button,
   Table,
-  Row,
-  Col,
-  Container,
 } from "reactstrap";
 import KFormatter from "../_helpers/KFormatter";
 import CryptoCurrenciesChart from "./CryptoCurrencies";

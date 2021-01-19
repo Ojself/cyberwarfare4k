@@ -4,7 +4,7 @@ const {
   buyRouteCriterias,
   soldRouteCriterias,
 } = require('../logic/currency');
-const { saveAndUpdateUser } = require('./helper');
+const { saveAndUpdateUser } = require('../logic/_helpers');
 
 const router = express.Router();
 const User = require('../models/User');

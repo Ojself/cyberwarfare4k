@@ -16,7 +16,6 @@ const BetaForum = ({ user, updateGlobalValues }) => {
 
   useEffect(() => {
     const getBetaForum = async (forumType) => {
-
       let data;
       try {
         data = await api.getBetaForum(forumType);

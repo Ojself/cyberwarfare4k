@@ -23,22 +23,22 @@ const orgCrimes = [
     image: 'hacker3',
     roles: [
       {
-        role: 'Technical',
+        roleName: 'Technical',
         description: 'Steal personal information',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Social Engineering',
+        roleName: 'Social Engineering',
         description: 'Steal login credentials',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Forensics',
+        roleName: 'Forensics',
         description: 'Compromise decryption keys',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Cryptography',
+        roleName: 'Cryptography',
         description: 'Crack the AES-128 algorithm',
         difficulty: difficultyValues.impossible,
       },
@@ -51,22 +51,22 @@ const orgCrimes = [
     image: 'security',
     roles: [
       {
-        role: 'Technical',
+        roleName: 'Technical',
         description: 'Spread malware throughout servers',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Social Engineering',
+        roleName: 'Social Engineering',
         description: 'Pose as unhappy customer in web portal',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Forensics',
+        roleName: 'Forensics',
         description: 'Compromise decryption keys',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Cryptography',
+        roleName: 'Cryptography',
         description: 'Pull data from servers',
         difficulty: difficultyValues.impossible,
       },
@@ -79,22 +79,22 @@ const orgCrimes = [
     image: 'security',
     roles: [
       {
-        role: 'Technical',
+        roleName: 'Technical',
         description: 'Brute force firewall defense',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Social Engineering',
+        roleName: 'Social Engineering',
         description: 'Trick employee to hand over login credentials',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Forensics',
+        roleName: 'Forensics',
         description: 'Hide identy behind dozens of shell companies',
         difficulty: difficultyValues.impossible,
       },
       {
-        role: 'Cryptography',
+        roleName: 'Cryptography',
         description: 'Exploit heartbleed vulnerability',
         difficulty: difficultyValues.impossible,
       },

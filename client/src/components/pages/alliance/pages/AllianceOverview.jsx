@@ -63,7 +63,6 @@ const AllianceOverview = (props) => {
           <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
             <CardTitle tag="h5">analyst</CardTitle>
             <CardImg
-              middle
               style={{
                 margin: "auto",
                 width: "30%",
@@ -85,7 +84,6 @@ const AllianceOverview = (props) => {
           <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
             <CardTitle tag="h5">CTO</CardTitle>
             <CardImg
-              middle
               style={{
                 margin: "auto",
                 width: "30%",

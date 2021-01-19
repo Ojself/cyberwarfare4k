@@ -1,6 +1,7 @@
 const {
   batteryCheck,
   checkOccuranceLimit,
+  generateNotification,
 } = require('./_helpers');
 
 const config = {
@@ -124,8 +125,8 @@ const attackRecursiveBattle = (result) => {
       }
       // Inflicts damage upon player
     } else {
-      const attackWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
-      const defenseWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
+      const attackWeapon = result.user.hackSkill[result.user.fightInformation.equippedWeapon];
+      const defenseWeapon = result.user.hackSkill[result.user.fightInformation.equippedWeapon];
 
       const multiplier = getAttackValue(attackWeapon, defenseWeapon, 'multiplier');
 
@@ -147,8 +148,8 @@ const attackRecursiveBattle = (result) => {
     return newResult;
   }
 
-  const attackerWeapon = result.user.hackSkill[result.user.playerStats.equippedWeapon];
-  const defenderWeapon = result.opponent.hackSkill[result.user.playerStats.equippedWeapon];
+  const attackerWeapon = result.user.hackSkill[result.user.fightInformation.equippedWeapon];
+  const defenderWeapon = result.opponent.hackSkill[result.user.fightInformation.equippedWeapon];
 
   const chanceForAttack = getAttackValue(attackerWeapon, defenderWeapon);
 
@@ -227,7 +228,6 @@ const fraudHacker = (user, opponent, batteryCost, now) => {
     },
   };
   const finalResult = fraudGenerator(result);
-
   user.handleFraud(finalResult);
   const gracePeriod = 1000 * 60 * 5;
   opponent.handleFraudDefense(finalResult, now + gracePeriod);

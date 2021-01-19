@@ -13,10 +13,18 @@
 }
 
 .dropdown-item {
-  color: #e4e2ff !important;
+  color: #e4e2ff 
+}
+.dropdown-item:hover {
+  color: #e4e2ff;
+  font-weight: bold;
 }
 .nav-link {
-  color: #e4e2ff !important;
+  color: #e4e2ff
+}
+.nav-link:hover {
+  color: #e4e2ff;
+  font-weight: bold;
 }
 
 .dropdown-menu {

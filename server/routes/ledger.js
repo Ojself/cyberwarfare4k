@@ -3,34 +3,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-const { tranfserCriteria } = require('../logic/ledger.js');
-const { saveAndUpdateUser } = require('./helper'); // move to middleware?
-
-const depositCriteria = (user, amount) => {
-  if (!user) {
-    return 'No user found';
-  }
-  if (!amount) {
-    return 'Missing input';
-  }
-  if (amount > user.playerStats.bitCoins) {
-    return 'You can\'t deposit money you don\'t have..';
-  }
-  return null;
-};
-
-const withdrawCriteria = (user, amount) => {
-  if (!user) {
-    return 'No user found';
-  }
-  if (!amount) {
-    return 'Missing input';
-  }
-  if (amount > user.playerStats.ledger) {
-    return 'You can\'t withdraw money you don\'t have..';
-  }
-  return null;
-};
+const { tranfserCriteria, depositCriteria, withdrawCriteria } = require('../logic/ledger.js');
+const { saveAndUpdateUser, generateNotification } = require('../logic/_helpers'); // move to middleware?
 
 // @GET
 // PRIVATE
@@ -131,8 +105,10 @@ router.post('/transfer/:id', async (req, res) => {
       message,
     });
   }
-  const notificationMessage = `You received ${transferAmount} from ${user.name}`;
-  receiver.sendNotification(notificationMessage, Date.now());
+  
+  const notificationText = `You received ${transferAmount} from ${user.name}`;
+  await generateNotification(receiver._id, notificationText);
+
   user.ledgerDrain(amount);
   receiver.ledgerGain(transferAmount);
   await receiver.save();

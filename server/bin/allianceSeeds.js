@@ -48,6 +48,6 @@ Alliance.deleteMany()
   })
   .catch((err) => {
     mongoose.disconnect();
-    console.error(err);
+    console.error('Error: ', err);
     process.exit(1);
   });

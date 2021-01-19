@@ -1,9 +1,15 @@
 import React from "react";
 import api from "../../../api";
-import "./navbar.scss"
+import "./navbar.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfo, faMoneyBillAlt, faCity,  faComments ,faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
-import { faRedhat  } from "@fortawesome/free-brands-svg-icons"
+import {
+  faInfo,
+  faMoneyBillAlt,
+  faCity,
+  faComments,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { faRedhat } from "@fortawesome/free-brands-svg-icons";
 import Clock from "../_molecules/Clock";
 
 import {
@@ -18,7 +24,12 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 
-const NavbarComp = ({ globalLoading, messages, user }) => {
+const NavbarComp = ({
+  globalLoading,
+  unreadMessage,
+  unreadNotification,
+  user,
+}) => {
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = () => {
@@ -26,26 +37,28 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
   };
 
   const checkAllCommunication = () => {
+    console.log("hello");
     return userHasMail() || userHasNotification();
   };
   const userHasNotification = () => {
     if (globalLoading) return false;
-    return user.account.notifications.some(
-      (notification) => notification.read === false
-    );
+    return unreadNotification;
   };
 
   const userHasMail = () => {
     if (globalLoading) return false;
-    return messages.inbox.length && !messages.inbox[0].read;
+    return unreadMessage;
   };
 
   return (
     <div>
       <Navbar color="dark" className="navbar-main" expand="xs">
-        {/* <NavbarBrand href="/" className="mr-auto display-none-when-mobile">
+        <NavbarBrand
+          href="/my-profile"
+          className="mr-auto display-none-when-mobile"
+        >
           <Clock />
-        </NavbarBrand> */}
+        </NavbarBrand>
 
         <Nav className="m-auto" navbar>
           <UncontrolledDropdown nav inNavbar>
@@ -75,7 +88,7 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             <DropdownMenu>
               <DropdownItem href="/petty-hacker">Petty</DropdownItem>
               <DropdownItem href="/hack-crimes">Crime</DropdownItem>
-              <DropdownItem href="/org-crimes" >Organized Crime</DropdownItem>
+              <DropdownItem href="/org-crimes">Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
               <DropdownItem href="/locals">Hack player</DropdownItem>
             </DropdownMenu>
@@ -126,7 +139,7 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             <DropdownToggle
               caret
               className={`dropdown-button ${
-                checkAllCommunication() ? "text-danger" : null
+                checkAllCommunication() && "text-danger"
               }`}
               nav
             >
@@ -156,9 +169,9 @@ const NavbarComp = ({ globalLoading, messages, user }) => {
             </NavLink>
           </NavItem>
         </Nav>
-        {/* <NavbarBrand href="/" className="display-none-when-mobile ml-auto">
-          
-        </NavbarBrand> */}
+        <NavbarBrand href="/" className="display-none-when-mobile ml-auto">
+          <Clock />
+        </NavbarBrand>
       </Navbar>
     </div>
   );

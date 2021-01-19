@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-const { saveAndUpdateUser } = require('./helper'); // move to middleware?
+const { saveAndUpdateUser } = require('../logic/_helpers');
 
 const depositCriteria = (user, amount) => {
   if (!user) {
@@ -23,18 +23,12 @@ const depositCriteria = (user, amount) => {
 // Get active spies
 
 router.get('/', async (req, res) => {
-  const users = await User.find({ 'account.isSetup': true }).select({ name: '1' });
-  if (!users) {
-    return res.status(400).json({
-      success: false,
-      message: 'no hackers found, try again later..',
-    });
-  }
+  const userId = req.user._id;
+  const user = await User.findById(userId);
 
   return res.status(200).json({
     success: true,
-    message: 'hackers loaded..',
-    users,
+    message: 'Vault loaded..',
   });
 });
 

@@ -30,12 +30,6 @@ const stash = [
     price: 3.45,
   },
   {
-    _id: '5fd7c635382e6600042582f4',
-    name: 'Proxmark3 Kit',
-    lowerPrice: 300,
-    price: 353.01,
-  },
-  {
     _id: '5fd7c635382e6600042582f2',
     name: 'Linux for dummies',
     lowerPrice: 10,
@@ -47,47 +41,12 @@ const stash = [
     lowerPrice: 15,
     price: 15.82,
   },
-  {
-    _id: '5fd7c635382e6600042582f6',
-    name: 'Keylogger',
-    lowerPrice: 50,
-    price: 75.39,
-  },
-  {
-    _id: '5fd7c635382e6600042582f8',
-    name: 'WiFi Pineapple',
-    lowerPrice: 400,
-    price: 523.17,
-  },
-  {
-    _id: '5fd7c635382e6600042582f7',
-    name: 'EyeSpy Digital Spy Recorder',
-    lowerPrice: 80,
-    price: 82.41,
-  },
-  {
-    _id: '5fd7c635382e6600042582f5',
-    name: 'Rubber Ducky',
-    lowerPrice: 100,
-    price: 109.55,
-  },
-  {
-    _id: '5fd7c635382e6600042582fa',
-    name: 'Computer',
-    lowerPrice: 1000,
-    price: 1007.51,
-  },
+
   {
     _id: '5fd7c635382e6600042582fb',
     name: 'Ubertooth One',
     lowerPrice: 25,
     price: 31.75,
-  },
-  {
-    _id: '5fd7c635382e6600042582fc',
-    name: 'Magspoof',
-    lowerPrice: 60,
-    price: 62.44,
   },
   {
     _id: '5fd7c635382e6600042582fd',
@@ -96,31 +55,72 @@ const stash = [
     price: 35.19,
   },
   {
+    _id: '5fd7c635382e6600042582f6',
+    name: 'Keylogger',
+    lowerPrice: 50,
+    price: 75.39,
+  },
+  {
+    _id: '5fd7c635382e6600042582fe',
+    name: 'Mini Hidden Camera',
+    lowerPrice: 90,
+    price: 82.61,
+  },
+
+  {
+    _id: '5fd7c635382e6600042582f7',
+    name: 'EyeSpy Digital Spy Recorder',
+    lowerPrice: 80,
+    price: 113.41,
+  },
+
+  {
+    _id: '5fd7c635382e6600042582fc',
+    name: 'Magspoof',
+    lowerPrice: 60,
+    price: 170.44,
+  },
+  {
+    _id: '5fd7c635382e6600042582f5',
+    name: 'Rubber Ducky',
+    lowerPrice: 100,
+    price: 209.55,
+  },
+  {
+    _id: '5fd7c635382e6600042582f4',
+    name: 'Proxmark3 Kit',
+    lowerPrice: 300,
+    price: 453.01,
+  },
+  {
+    _id: '5fd7c635382e6600042582f8',
+    name: 'WiFi Pineapple',
+    lowerPrice: 400,
+    price: 523.17,
+  },
+  {
     _id: '5fd7c635382e6600042582f9',
     name: 'HackRf One',
     lowerPrice: 600,
     price: 685.8,
   },
   {
-    _id: '5fd7c635382e6600042582fe',
-    name: 'Mini Hidden Camera',
-    lowerPrice: 90,
-    price: 114.61,
+    _id: '5fd7c635382e6600042582fa',
+    name: 'Computer',
+    lowerPrice: 1000,
+    price: 1007.51,
   },
 ];
 
 Stash.deleteMany()
   .then(() => Stash.create(stash))
-  .then((stashCreated) => {
-    console.log(`${stashCreated.length} stash created with the following id:`);
-    console.log(stashCreated.map((u) => u._id));
-  })
+  .then((stashCreated) => console.log(`${stashCreated.length} stash created`))
   .then(() => {
     mongoose.disconnect();
     process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    console.error(err);
+    console.error('Error: ', err);
     process.exit(1);
   });
