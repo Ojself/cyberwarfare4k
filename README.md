@@ -1,4 +1,3 @@
-
 # [CyberhackerWarfare4000](https://chw4k.herokuapp.com/)
 
 CyberHackerWareFare4000 is a free multiplyer hacker role playing game.
@@ -9,19 +8,11 @@ _Best experienced on a computer screen_
 
 <img src="./chw4kscreenshot.png" width="800" height="auto">
 
-## Upcoming features
-
-- Dashboard for alliances (invite, kick, promote etc)
-- Terminal UI when attacking other players ✅
-- Mug/Fraud other players ✅
-- Forum
-- Organized Crimes
-
 ## Contributing
 
-CyberhackerWarfare4k is an open source project with one main developer. 
-Feel free to contribute with pull requests, opening issues, bug reporting or sending 
-feedback through [mail](tormod.flesjo@gmail.com)
+CyberhackerWarfare4k is an open source project with one main developer.
+Feel free to contribute with pull requests, opening issues, bug reporting or sending
+feedback through [mail](mailto:tormod.flesjo@gmail.com?subject=CHWF4K))
 
 ## Crowdfunding
 
@@ -35,7 +26,8 @@ Distributed under the GNU General Public License v3.0. See [LICENSE](./LICENSE) 
 ## Acknowledgments
 
 CyberhackerWarfare4k is a sequal game made by
-[Markus](https://github.com/fenrew)  and [Haakon](https://www.linkedin.com/in/haakon-foyen/)
+[Markus](https://github.com/fenrew) and [Haakon](https://www.linkedin.com/in/haakon-foyen/)
+
 ## Contact
 
 Created with 💙 by [Tor](https://github.com/Ojself) in his free time. Don't be too hard on me.

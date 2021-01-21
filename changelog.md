@@ -2,30 +2,31 @@
 
 All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
-
-
 ## [0.2.0] - 2021-x-x
 
 - More mobile friendly view
 - Major file structuring overhaul
 - Styled navbar with icons
 - Sorted items in Fence
-- NordVPN affiliation 
+- Sorted Datacenters by price
+- NordVPN affiliation
 - Minor changes to User db document
 - Change timezone to Europe/Oslo
 - Major cleanup of seed files
 - Change out all set timeouts in server with fixed times (crimes, datacenters)
 - Add Vault w/ espionage
-- Changed combat system
+- Changed combat system to a rock - paper - scissor system
 - New signup login form
 - Crypto currency doesn't change at night
 - NPC have data centers
-
-Coming:
-- OC
 - Digital clock
-- More options for alliance
-- Add digital clock with server time 
+- Tabs in notification
+- Cables needed for upkeep of Datacenters
+- Organized Crimes
+- Alliances can claim cities
+- Taxes upon fence for alliances
+- Alliances have a safe
+
 ## [0.1.6] - 2020-12-20
 
 - Change combat calculation to benefit players with more experience. See FAQ for more information
@@ -67,8 +68,6 @@ Coming:
 
 ## [0.1.0] - 2020-12-14
 
-### Normal updates
-
 - FAQ section
 - Encryption stat is removed temporarily
 - Add very beta forum to alliances and one global
@@ -81,9 +80,6 @@ Coming:
 - Max ownage of one crypto currency is now 20% (from 25%)
 - Bodyguards now has "two lifes" before dying
 - Price adjustments for healing
-
-### Minor updates
-
 - Navbar logo color change
 - Max bodyguards is 3
 - Hall of fame page
