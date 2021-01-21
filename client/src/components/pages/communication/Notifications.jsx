@@ -17,7 +17,7 @@ import {
 
 import "./notifications.scss";
 
-const Notification = ({}) => {
+const Notification = () => {
   const [loading, setLoading] = useState(true);
   const [generalNotifications, setGeneralNotifications] = useState([]);
   const [crimeNotifications, setCrimeNotifications] = useState([]);
@@ -53,7 +53,6 @@ const Notification = ({}) => {
   };
 
   const NotificationList = ({ loading, notifications }) => {
-    console.log(notifications, "not?");
     return loading ? (
       <p>Loading..</p>
     ) : (
@@ -82,6 +81,20 @@ const Notification = ({}) => {
     );
   };
 
+  const tabsHelper = {
+    General: generalNotifications,
+    "Organized Crime": crimeNotifications,
+    "Spy Report": spyNotifications,
+    Logs: logsNotifications,
+  };
+
+  const unreadTab = (tab) => {
+    if (tabsHelper[tab].some((notification) => notification.read === false)) {
+      return "text-danger";
+    }
+    return "";
+  };
+
   return (
     <div className="page-container">
       <h1>Notification</h1>
@@ -89,9 +102,11 @@ const Notification = ({}) => {
         <Nav className="d-flex justify-content-center w-100 m-0" tabs>
           {allTabs.map((tab) => {
             return (
-              <NavItem>
+              <NavItem key={tab}>
                 <NavLink
-                  className={classnames({ active: activeTab === tab })}
+                  className={
+                    (classnames({ active: activeTab === tab }), unreadTab(tab))
+                  }
                   onClick={() => toggle(tab)}
                 >
                   {tab}

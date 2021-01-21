@@ -265,6 +265,9 @@ const users = [
       avatar: getRandomFromArray(avatars),
       isSetup: true,
     },
+    stash: {
+      Cables: 1000000,
+    },
     playerStats: {
       maxFireWall: 200,
       currentFirewall: 200,
@@ -297,6 +300,9 @@ const users = [
       password: '$2b$10$RLqNwdxrfEtd4IlBCeI0Fuj553IC50udq3o9Ax6DEzvk7TMETqrLe',
       avatar: getRandomFromArray(avatars),
       isSetup: true,
+    },
+    stash: {
+      Cables: 1000000,
     },
     playerStats: {
       bounty: 800000,
@@ -332,6 +338,9 @@ const users = [
       password: '$2b$10$cbgDBDZ29vPErIz78foiE.rIHbaibn2rGpfWaOMjj8uWJgRDFNoky',
       avatar: getRandomFromArray(avatars),
       isSetup: true,
+    },
+    stash: {
+      Cables: 1000000,
     },
     playerStats: {
       bounty: 1000000,

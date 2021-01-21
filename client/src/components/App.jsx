@@ -5,12 +5,12 @@ import Typist from "react-typist";
 
 import AllianceLadder from "./pages/alliance/pages/Ladder";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
-import BetaForum from "./pages/_molecules/BetaForum"
+import BetaForum from "./pages/_molecules/BetaForum";
 import Fence from "./pages/fence/Fence";
 import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
-import Dashboard from "./pages/alliance/pages/Dashboard"
+import Dashboard from "./pages/alliance/pages/Dashboard";
 import DataCenters from "./pages/DataCenters";
 import Footer from "./pages/header-footer/Footer";
 /* 
@@ -36,12 +36,13 @@ import OrgCrimes from "./pages/orgCrimes/OrgCrimes";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
+import Vault from "./pages/vault/Vault";
 import VPN from "./pages/VPN/VPN";
 import WantedList from "./pages/WantedList";
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [unreadMessage, setUnreadMessage] = useState(false)
+  const [unreadMessage, setUnreadMessage] = useState(false);
   const [unreadNotification, setUnreadNotification] = useState(false);
   const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
@@ -56,13 +57,13 @@ const App = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       let data;
-      try{
-        data = await api.getUser()
-      }catch(err){
-        console.error('error: ', err)
-        return
+      try {
+        data = await api.getUser();
+      } catch (err) {
+        console.error("error: ", err);
+        return;
       }
-      if (!data.user.account.isSetup && !userIsAtStarPage()){
+      if (!data.user.account.isSetup && !userIsAtStarPage()) {
         window.location.pathname = "/create-hacker";
       }
       setUser(data.user);
@@ -73,7 +74,11 @@ const App = () => {
     fetchUserData();
   }, []);
 
-  const updateGlobalValues = (data, renderMessage = true, scrollToTop = false, messages = false ) => {
+  const updateGlobalValues = (
+    data,
+    renderMessage = true,
+    scrollToTop = false
+  ) => {
     if (data.user) {
       setUser(data.user);
     }
@@ -321,6 +326,17 @@ const App = () => {
             <ServiceAndSupport
               user={user}
               updateGlobalValues={updateGlobalValues}
+            />
+          )}
+        />
+        <Route
+          path="/vault"
+          render={() => (
+            <Vault
+              updateGlobalValues={updateGlobalValues}
+              globalLoading={loading}
+              user={user}
+              setUnreadNotification={setUnreadNotification}
             />
           )}
         />

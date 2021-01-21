@@ -272,6 +272,37 @@ export default {
       .catch(errHandler);
   },
 
+  // VAULT
+  // VAULT
+
+  getVaultInformation() {
+    return service
+      .get("/vault")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  depositVault(depositAmount) {
+    return service
+      .post("/vault/deposit", { depositAmount })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  sendSpy(opponentId, bitCoinSpent) {
+    return service
+      .post("/vault", { opponentId, bitCoinSpent })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  cancelSpy(id) {
+    return service
+      .delete(`/vault/${id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   // LEDGER
   // LEDGER
 

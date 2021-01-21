@@ -252,9 +252,16 @@ const userSchema = new Schema(
         enum: ['CPU', 'Encryption', 'AntiVirus'],
         default: 'CPU',
       },
-      activeSpy: {
-
-      },
+      activeSpies: [{
+        target: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        id: String,
+        arrives: Date,
+        timeLeft: Number,
+        bitCoinSpent: Number,
+      }],
       shutdowns: { type: Number, default: 0 },
       attacksInitiated: { type: Number, default: 0 },
       attacksVictim: { type: Number, default: 0 },
@@ -362,17 +369,59 @@ userSchema.methods.ledgerGain = function (bitCoins) {
 userSchema.methods.depositLedger = function (bitCoins) {
   this.bitCoinDrain(bitCoins);
   this.ledgerGain(bitCoins);
-  // this.playerStats.bitCoins -= bitCoins * fee;
 };
 
 userSchema.methods.withdrawLedger = function (bitCoins) {
   this.bitCoinGain(bitCoins);
   this.ledgerDrain(bitCoins);
-  // todo fee?
+};
+
+// VAULT
+// VAULT
+
+userSchema.methods.depositVault = function (bitCoins) {
+  this.bitCoinDrain(bitCoins);
+  this.vaultGain(bitCoins);
+};
+
+userSchema.methods.vaultGain = function (bitCoins) {
+  this.playerStats.vault += parseInt(bitCoins, 10);
+};
+
+userSchema.methods.vaultDrain = function (bitCoins) {
+  this.playerStats.vault -= parseInt(bitCoins, 10);
+};
+
+userSchema.methods.sendSpy = function (bitCoins, target, date) {
+  this.vaultDrain(bitCoins);
+  const randomNumber = `${Math.random()}`;
+  const id = randomNumber.replace('0.', '');
+  const spy = {
+    target,
+    id,
+    arrives: date,
+    bitCoinSpent: bitCoins,
+  };
+  const oldArray = this.fightInformation.activeSpies;
+  oldArray.unshift(spy);
+  this.fightInformation.activeSpies = oldArray;
+  return id;
+};
+
+userSchema.methods.deleteSpy = function (id) {
+  const spyToBeDeleted = this.fightInformation.activeSpies.find((spy) => spy.id === id.toString());
+  const oldArray = this.fightInformation.activeSpies.filter((spy) => spy.id !== id.toString());
+
+  this.fightInformation.activeSpies = oldArray;
+  this.vaultGain(spyToBeDeleted.bitCoinSpent);
+};
+
+userSchema.methods.cleanSpies = function (now) {
+  const oldArray = this.fightInformation.activeSpies.filter((spy) => spy.arrives.getTime() + (1000 * 120) > now);
+  this.fightInformation.activeSpies = oldArray;
 };
 
 userSchema.methods.giveExp = function (exp) {
-  console.log('giveExp', exp);
   this.playerStats.exp += parseInt(exp, 10);
   if (this.playerStats.exp >= this.playerStats.expToLevel) {
     this.levelUp();

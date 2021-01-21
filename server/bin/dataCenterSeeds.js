@@ -65,8 +65,6 @@ const config = {
 DataCenter.deleteMany()
   .then(() => {
     const dataCenters = [
-      // SHANGHAI
-      // SHANGHAI
       {
         _id: '5fd7c67df260ed00042f3b42',
         status: 'Available',
@@ -92,7 +90,7 @@ DataCenter.deleteMany()
         name: 'China Unicom',
         difficulty: config.medium.difficulty,
         minutlyrevenue: config.medium.minutlyrevenue,
-        owner: '5fca3b4a86e77b5c8e58b681',
+        owner: '5fca3b4a86e77b5c8e58b681', // npc_trudy
         city: '5fae62409cbf7d270f23470b',
         __v: 0,
       },
@@ -107,7 +105,7 @@ DataCenter.deleteMany()
         name: 'China Mobile Hohot',
         difficulty: config.hard.difficulty,
         minutlyrevenue: config.hard.minutlyrevenue,
-        owner: '5fca3b4a86e77b5c8e58b682',
+        owner: '5fca3b4a86e77b5c8e58b682', // npc_grace
         city: '5fae62409cbf7d270f23470b',
         __v: 0,
       },
@@ -136,7 +134,7 @@ DataCenter.deleteMany()
         name: 'Range International Data Centre',
         difficulty: config.impossible.difficulty,
         minutlyrevenue: config.impossible.minutlyrevenue,
-        owner: '5fca3b4a86e77b5c8e58b67f',
+        owner: '5fca3b4a86e77b5c8e58b67f', // npc_sybil
         city: '5fae62409cbf7d270f23470b',
         __v: 0,
       },

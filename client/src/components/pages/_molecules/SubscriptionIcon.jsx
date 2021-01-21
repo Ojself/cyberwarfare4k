@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const SubscriptionIcon = ({ subscription }) => {
   const subIcons = {
@@ -12,8 +12,8 @@ const SubscriptionIcon = ({ subscription }) => {
   }
   return (
     <span
-      role="img"
       title={`${subscription} supporter!`}
+      role="img"
       aria-label="subscription-icon"
     >
       {subIcons[subscription]}
@@ -21,4 +21,4 @@ const SubscriptionIcon = ({ subscription }) => {
   );
 };
 
-export default SubscriptionIcon
+export default SubscriptionIcon;

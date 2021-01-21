@@ -10,8 +10,9 @@ const { saveAndUpdateUser, generateNotification } = require('../logic/_helpers')
 // PRIVATE
 // Retrives all users
 
+// TODO! SANITIZE!
 router.get('/', async (req, res) => {
-  const users = await User.find({ 'account.isSetup': true }).select({ name: '1' });
+  const users = await User.find({ 'account.isSetup': true }).select({ name: '1' }).lean();
   if (!users) {
     return res.status(400).json({
       success: false,
@@ -105,7 +106,7 @@ router.post('/transfer/:id', async (req, res) => {
       message,
     });
   }
-  
+
   const notificationText = `You received ${transferAmount} from ${user.name}`;
   await generateNotification(receiver._id, notificationText);
 

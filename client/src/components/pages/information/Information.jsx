@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
-import FAQ from "./FAQ"
+import FAQ from "./FAQ";
 
-const Information = ({ updateGlobalValues ,user}) => {
+const Information = ({ updateGlobalValues, user }) => {
   const [infoOpen, setInfoOpen] = useState(false);
   const [hackOpen, setHackOpen] = useState(false);
   const [allianceOpen, setAllianceOpen] = useState(false);
@@ -83,22 +83,21 @@ const Information = ({ updateGlobalValues ,user}) => {
       <Collapse isOpen={communicationOpen}>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Public Forum</CardTitle>
-            Work in progress
+            <CardTitle tag="h3">Public Forum</CardTitle>A beta forum is in place
+            for you to communicate to the world!
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Messages</CardTitle>
-            Send messages to other hackers. This will be red if you have an
-            unread message
+            Send messages to other hackers.
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Notifications</CardTitle>
-            Whenever you are notified with an event, it will pop up here. This
-            will be red if you have an unread notification
+            Whenever you are notified with an event, it will pop up here. Your
+            personal log is also available in this section.
           </CardBody>
         </Card>
       </Collapse>
@@ -118,8 +117,28 @@ const Information = ({ updateGlobalValues ,user}) => {
       <Collapse isOpen={allianceOpen}>
         <Card className="mb-2">
           <CardBody>
+            <CardTitle tag="h3">Top Alliances</CardTitle>
+            An overview of the active alliances
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
             <CardTitle tag="h3">Create</CardTitle>
             Form an alliance, if you have the bitcoins for it
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Forum</CardTitle>
+            Alliance forum
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Dashboard</CardTitle>
+            The dashboard shows you and your alliance members aditional
+            information about the alliance you're in. The Boss can do aditional
+            settings in the dashboard
           </CardBody>
         </Card>
       </Collapse>
@@ -226,20 +245,37 @@ const Information = ({ updateGlobalValues ,user}) => {
             <CardTitle tag="h3">Datacenters</CardTitle>
             There are 5 datacenters in each city that you can own. By owning one
             or more, they will give you revenue by the minute. If owned by
-            someone else, you can attack and destroy it
+            someone else, you can attack and destroy it. Make sure to have
+            cables stacked up in your inventory, as it's needed for the upkeep.
+            If your in alliance and you own datacenters in that city, the
+            centers will be more difficult to attack.
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Organized Crimes</CardTitle>
-            Work in progress..
+            Commit crimes with your fellow alliance members. Make sure to fill
+            up all the positions in order to get the maximum loot. Upon success,
+            you will be notified with the result.
+          </CardBody>
+        </Card>
+        <Card className="mb-2">
+          <CardBody>
+            <CardTitle tag="h3">Vault</CardTitle>
+            The vault is your personal espionage center. You buy spies and send
+            it to whomever. If the money you spend is more than what the
+            opponent have in their vault, you will be notified with precious
+            information. If it's less however, their vault will be lowered with
+            the amount you spent, and they will be notified that you tried to
+            spy on them.
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Hack players</CardTitle>
             Takes you to the local hackers in your city. You can commit attacks
-            on their profile
+            on their profile. Make sure to have the right weapon equipped, as it
+            will give you advantage when going into combat!
           </CardBody>
         </Card>
       </Collapse>
@@ -253,9 +289,9 @@ const Information = ({ updateGlobalValues ,user}) => {
           Current Round: <strong>3</strong>
         </h6>
         <h6>
-          Round ends: <strong>TBA</strong>
+          Round ends: <strong>01.03</strong>
         </h6>
-        <FAQ updateGlobalValues={updateGlobalValues} user={user} />
+        <FAQ />
         <h1>SITE MAP</h1>
         {infoSection}
         {hackSection}
@@ -266,7 +302,5 @@ const Information = ({ updateGlobalValues ,user}) => {
     </div>
   );
 };
-
-
 
 export default Information;

@@ -19,7 +19,7 @@ import {
 /* rerender after add */
 /* styling */
 
-const WantedList = ({ updateGlobalValues,user }) => {
+const WantedList = ({ updateGlobalValues, user }) => {
   const [wantedState, setWantedState] = useState({
     users: [],
     bountyUsers: [],
@@ -55,13 +55,12 @@ const WantedList = ({ updateGlobalValues,user }) => {
 
   /* todo, this is being used many times */
   const dataMassagerForSelectComponent = (userArray) => {
-    const massagedUsers = userArray.map((u) => {
+    return userArray.map((u) => {
       return {
         value: u._id,
         label: u.name,
       };
     });
-    return massagedUsers;
   };
 
   const addBounty = async (bountyTargetId, bounty, clearName = "") => {
@@ -156,15 +155,12 @@ const WantedList = ({ updateGlobalValues,user }) => {
         </tr>
       </thead>
       <tbody>
-        
         {wantedState.bountyUsers.map((user, i) => (
           <tr key={user._id}>
             <th scope="row">
               <Link className="text-light" to={`/hacker/${user._id}`}>
                 {user.name}
               </Link>
-
-              
             </th>
             <td>
               {user.alliance ? (

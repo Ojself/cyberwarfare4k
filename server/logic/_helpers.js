@@ -174,7 +174,7 @@ const generateMessage = (from, to, text, allianceId = null, read = false) => {
 const generateNotification = (to, text, genre = 'General', read = false) => {
   if (!to || !text) return;
   const now = new Date(Date.now());
-  let formatted = now.toString().slice(4, 21);
+  let formatted = now.toString().slice(4, 24);
   formatted = formatted.replace(now.getFullYear(), '-');
   const formattedText = Array.isArray(text) ? text : [text];
   const newNotification = new Notification({

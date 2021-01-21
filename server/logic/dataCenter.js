@@ -155,7 +155,8 @@ const findDataCenters = async (params, owner, userId) => {
     .populate('requiredStash', ['name', 'price'])
     .populate('city', ['name', 'residents'])
     .populate('owner', 'name')
-    .populate('attacker', 'name');
+    .populate('attacker', 'name')
+    .sort({ price: 1 });
   // filter out the datacenters that don't belong to the city the user is in
   if (!owner) {
     dataCenters = dataCenters.filter((dc) => {

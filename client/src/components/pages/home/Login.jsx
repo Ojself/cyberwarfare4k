@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Label, FormGroup, Input, Form, Button } from "reactstrap";
-import "./loginsignup.scss"
+import "./loginsignup.scss";
 
 import api from "../../../api";
 
@@ -9,7 +9,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [failMessage, setFailMessage] = useState("")
+  const [failMessage, setFailMessage] = useState("");
 
   const handleInputChange = (e) => {
     setLoginState({
@@ -24,33 +24,32 @@ const Login = () => {
     } else {
       window.location.href = "/create-hacker/";
     }
-  }
+  };
 
   const handleLogin = async (event) => {
-    console.log(event,'event')
-    const {email,password} = loginState
-    if (!email || !password)return
-    let data
+    const { email, password } = loginState;
+    if (!email || !password) return;
+    let data;
     try {
       data = await api.login(loginState.email, loginState.password);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      handleRedirect(data)
+      handleRedirect(data);
     } catch (err) {
-      console.error('Error: ', err)
-      setFailMessage(err)
+      console.error("Error: ", err);
+      setFailMessage(err);
       setLoginState({
-      ...loginState,
-      password:""
-    });
-      setTimeout(()=>setFailMessage(""),5000)
-      return
+        ...loginState,
+        password: "",
+      });
+      setTimeout(() => setFailMessage(""), 5000);
+      return;
     }
   };
 
   return (
     <div className="login-signup-card">
       <h2 className="text-left mb-4">Login</h2>
-      <Form >
+      <Form>
         <FormGroup>
           <Label className="mb-0" for="Email">
             Email
@@ -79,7 +78,7 @@ const Login = () => {
           disabled={false}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
-          onClick={(e)=> handleLogin(e)}
+          onClick={(e) => handleLogin(e)}
         >
           Login
         </Button>

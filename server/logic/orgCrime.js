@@ -18,14 +18,14 @@ const calculateOutcome = (result) => {
       if (currentWinPercentage === 0)probability += config.increaseChanceOnFail;
       for (let i = 0; i < config.chancesToAttack; i += 1) {
         if (Math.random() < probability) {
-          currentWinPercentage += 50 / result.orgCrime.roles.length / config.chancesToAttack;
+          currentWinPercentage += 50 / result.amountRoles / config.chancesToAttack;
         }
       }
 
       let response = '';
       if (currentWinPercentage) {
         response += `${role.owner.name} SUCCEEDED to ${role.description}`;
-        if (currentWinPercentage === 50 / result.orgCrime.roles.length) {
+        if (currentWinPercentage === 50 / result.amountRoles) {
           response += ' ⭐️';
         }
       } else {
@@ -40,7 +40,7 @@ const calculateOutcome = (result) => {
   result.responses.unshift(result.orgCrime.name);
 
   // Reward for having every role equipped
-  if (result.amountMembers === result.amountRoles) {
+  if (result.amountMembers === result.amountRoles && result.winPercentage > 21) {
     result.winPercentage += 50;
   }
   return result;

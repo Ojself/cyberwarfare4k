@@ -3,8 +3,9 @@ import api from "../../api";
 
 import { Table, Button, UncontrolledTooltip, Progress } from "reactstrap";
 
-const stashColors = ['blue','green','orange','red']
-const getStashColor = (row,col) => stashColors[(row+col) % stashColors.length];
+const stashColors = ["blue", "green", "orange", "red"];
+const getStashColor = (row, col) =>
+  stashColors[(row + col) % stashColors.length];
 
 const getHealthBar = (dc) => {
   const percentage = (dc.currentFirewall / dc.maxFirewall) * 100;
@@ -41,7 +42,6 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
   useEffect(() => {
     const fetchDataCenters = async () => {
       const data = await api.getDataCenters();
-      console.log(data,'data')
       setDataCenterState({
         ...dataCenterState,
         dataCenters: data.dataCenters,
@@ -92,7 +92,7 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
       innerText = "Yours";
       buttonColor = "success";
     } else if (dc.status === "Under Attack") {
-      disabled = true
+      disabled = true;
       buttonColor = "outline-danger";
       innerText = "Attack";
     } else if (dc.status === "Resetting") {
@@ -148,7 +148,10 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
                       title={stash.name}
                       key={`${stash._id}${j}`}
                       style={{ width: "2.25rem", marginLeft: "2px" }}
-                      src={`../../stashPics/${stash.name}/${getStashColor(i,j)}.png`}
+                      src={`../../stashPics/${stash.name}/${getStashColor(
+                        i,
+                        j
+                      )}.png`}
                       alt={stash.name}
                     ></img>
                   ))}

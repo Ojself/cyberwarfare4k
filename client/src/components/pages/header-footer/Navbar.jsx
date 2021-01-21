@@ -37,7 +37,6 @@ const NavbarComp = ({
   };
 
   const checkAllCommunication = () => {
-    console.log("hello");
     return userHasMail() || userHasNotification();
   };
   const userHasNotification = () => {
@@ -90,6 +89,7 @@ const NavbarComp = ({
               <DropdownItem href="/hack-crimes">Crime</DropdownItem>
               <DropdownItem href="/org-crimes">Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
+              <DropdownItem href="/vault">Vault</DropdownItem>
               <DropdownItem href="/locals">Hack player</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

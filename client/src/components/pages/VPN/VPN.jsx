@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./vpn.scss"
+import "./vpn.scss";
 import api from "../../../api";
 import { Button, Form, FormGroup } from "reactstrap";
 import Select from "react-select";
@@ -16,7 +16,7 @@ const dataMassager = (cities) => {
   return massagedCities;
 };
 
-const VPN = ({ updateGlobalValues,user }) => {
+const VPN = ({ updateGlobalValues, user }) => {
   const [vpnState, setVpnState] = useState({
     cities: null,
     massagedCities: null,
@@ -47,11 +47,11 @@ const VPN = ({ updateGlobalValues,user }) => {
     const cityId = vpnState.selectedOption.value;
     let data;
     try {
-      data = await api.changeCity({ cityId })
-    } catch(err){
-      console.error("Error: ", err)
+      data = await api.changeCity({ cityId });
+    } catch (err) {
+      console.error("Error: ", err);
       updateGlobalValues(err);
-      return
+      return;
     }
     updateGlobalValues(data);
   };
@@ -73,7 +73,9 @@ const VPN = ({ updateGlobalValues,user }) => {
   const nordvpnImage = (
     <img
       style={{ width: "4rem", margin: "0 0 2.5rem 0.5rem" }}
-      src={`nordvpn/logo_vertical-${vpnState.selectedOption? 'original': 'white'}.png`}
+      src={`nordvpn/logo_vertical-${
+        vpnState.selectedOption ? "original" : "white"
+      }.png`}
       alt="NordVPN"
     />
   );
@@ -83,7 +85,7 @@ const VPN = ({ updateGlobalValues,user }) => {
 
       <a
         href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=50381&url_id=902"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
         id="nordvpn"
       >

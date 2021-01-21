@@ -70,6 +70,7 @@ app.use('/api/marketplace', require('./routes/marketplace'));
 app.use('/api/org-crime', require('./routes/orgCrime'));
 app.use('/api/service', require('./routes/service'));
 app.use('/api/stashes', require('./routes/stashes'));
+app.use('/api/vault', require('./routes/vault'));
 app.use('/api/wanted', require('./routes/wanted'));
 
 // For any routes that starts with "/api", catch 404 and forward to error handler

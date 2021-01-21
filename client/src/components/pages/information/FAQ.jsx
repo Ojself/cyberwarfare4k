@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
 
-const FAQ = ({ updateGlobalValues ,user}) => {
+const FAQ = () => {
   const [statPointOpen, setStatPointOpen] = useState(false);
   const [attackOpen, setAttackOpen] = useState(false);
   const [moneyOpen, setMoneyOpen] = useState(false);
@@ -31,23 +31,22 @@ const FAQ = ({ updateGlobalValues ,user}) => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Hack skills</CardTitle>
-            There are 2 hack skills: CPU and AntiVirus. These skills determines
-            your hit/miss chance when going into battle with an opponent hacker.
-            CPU also determines how much damage is being done towards your
-            victim. Having 200 CPU will result in a 30-40 damage infliction if
-            your opponent is roughly on the same level. Having a lot of skills
-            with the AntiVirus will help you defend yourself against attackers.
-            Read more about the combat section below. You can buy components in
-            the market place if you have the bitcoins
+            There are 3 hack skills: CPU, AntiVirus and Encryption. These skills
+            determines your hit/miss chance when going into battle with an
+            opponent hacker. CPU is effective versus AntiVirus, AntiVirus is
+            good versus Encryption and Encryption is effective versus CPU. Make
+            sure to have the right equipped weapon when going into battle - or
+            when suspecting an incoming attack. You can buy components in the
+            market place if you have the bitcoins
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Firewall</CardTitle>
             The firewall stat point represents your overall HP. You start off
-            with 100%, but this can be upgraded with statpoints or in the market
-            place. Your firewall might go down when attacked by others. But you
-            can repair yourself in the Service & Support.
+            with 100HP, but this can be upgraded with statpoints or in the
+            market place. Your Firewall might go down when attacked by others.
+            But you can repair yourself in the Service & Support.
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -76,9 +75,9 @@ const FAQ = ({ updateGlobalValues ,user}) => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Crimes</CardTitle>
-            All sorts of crimes will give you both experience and bitcoins. The
-            higher your crime skills, the more successful you are, which results
-            in more bitcoins and experience.
+            All sorts of crimes will give you both experience and bitcoins or
+            stash. The higher your crime skills, the more successful you are,
+            which results in more bitcoins and experience.
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -95,7 +94,8 @@ const FAQ = ({ updateGlobalValues ,user}) => {
             <CardTitle tag="h3">Fence</CardTitle>
             Gimmie the loot! The fence is always looking to buy your stolen
             stash. Head over to the shop and sell whatever you got. The prices
-            varies from each hour and city.
+            varies from each hour and city. Also, the local alliance might take
+            a fee for selling your items in their city!
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -103,7 +103,8 @@ const FAQ = ({ updateGlobalValues ,user}) => {
             <CardTitle tag="h3">Data centers</CardTitle>
             There are 5 data centers in each city throughout the world of
             cyberhackerwarfare4000. Upon purchase, you will receive a small
-            income every minute.
+            income every minute. Make sure to stock up on cables as they are
+            required to recieve your income.
           </CardBody>
         </Card>
         <Card className="mb-2">
@@ -111,8 +112,8 @@ const FAQ = ({ updateGlobalValues ,user}) => {
             <CardTitle tag="h3">Crypto Currency</CardTitle>
             Arguably the best way to get rich fast. The rules are simple, buy
             low and sell high. Be careful, though, as your name will show as
-            most recent buyer after purchasing. Prices changes every hour and is
-            the same for every city.
+            most recent buyer after purchasing. Prices changes every hour
+            (except at night) and is the same for every city.
           </CardBody>
         </Card>
       </Collapse>
@@ -229,8 +230,7 @@ const FAQ = ({ updateGlobalValues ,user}) => {
             <br /> Chance for getting through the defense ={" "}
             <strong>attackers CPU / (defenders AntiVirus * 1.125)</strong>
             <br />
-            Damage inflication ={" "}
-            <strong>(CPU * 0.1) + (rank level * 2)</strong>
+            Damage inflication = <strong>(CPU * 0.1) + (rank level * 2)</strong>
             <br />
             EG: (130 * 0.1) + (7 * 2) = <strong>27</strong> damage
             <br />
@@ -266,6 +266,5 @@ const FAQ = ({ updateGlobalValues ,user}) => {
     </div>
   );
 };
-
 
 export default FAQ;
