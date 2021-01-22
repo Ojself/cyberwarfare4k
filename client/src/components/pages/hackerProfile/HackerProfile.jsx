@@ -7,10 +7,13 @@ import {
   Input,
   InputGroupAddon,
   InputGroup,
+  Row,
+  Col,
+  Container,
 } from "reactstrap";
-import {Link} from 'react-router-dom'
-import SubscriptionIcon from "../_molecules/SubscriptionIcon"
-import AttackTerminal from "./AttackTerminal"
+import { Link } from "react-router-dom";
+import SubscriptionIcon from "../_molecules/SubscriptionIcon";
+import AttackTerminal from "./AttackTerminal";
 
 import api from "../../../api";
 
@@ -23,7 +26,6 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   });
   const [attackResult, setAttackResult] = useState(null);
   const [message, setMessage] = useState("");
-
 
   useEffect(() => {
     const opponentId = match.params.id;
@@ -55,9 +57,9 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       updateGlobalValues(err);
       return;
     }
-    updateGlobalValues(data,false);
+    updateGlobalValues(data, false);
     setAttackResult(data.finalResult);
-    setMessage(data.message)
+    setMessage(data.message);
   };
 
   const handleFraudClick = async () => {
@@ -131,7 +133,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     </div>
   );
   const opponentGlobalRanking = !opponentState.loading && (
-    <div className="col-2 ">
+    <div className="w-100 ">
       <ListGroup className="text-left">
         <ListGroupItem className="justify-content-between bg-dark text-center">
           <strong>
@@ -168,11 +170,13 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const opponentOverview = !opponentState.loading && (
-    <div className="col-3 d-flex flex-column ">
+    <div className="w-100 d-flex flex-column ">
       <ListGroup className="text-center mb-5">
         <ListGroupItem className="justify-content-between bg-dark">
           {" "}
-          <SubscriptionIcon subscription={opponentState.opponent.account.subscription} />
+          <SubscriptionIcon
+            subscription={opponentState.opponent.account.subscription}
+          />
           {opponentState.opponent.playerStats.rankName}{" "}
         </ListGroupItem>
 
@@ -209,8 +213,8 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const opponentActions = !opponentState.loading && (
-    <div className="d-flex flex-column col-4">
-      <div className="d-flex justify-content-around w-75">
+    <div className="d-flex flex-column w-100">
+      <div className="d-flex justify-content-around w-100">
         <Button color="outline-info" onClick={() => handleMessageClick()}>
           Message
         </Button>
@@ -234,15 +238,17 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const profilePage = (
-    <div className="">
+    <div className="mt-3">
       {avatarImages}
       {playerName}
-      <div className="d-flex justify-content-between mt-5 ">
-        <div className="col-2"></div>
-        {opponentGlobalRanking}
-        {opponentOverview}
-        {opponentActions}
-      </div>
+
+      <Container>
+        <Row className="d-flex mt-5">
+          <Col md="4">{opponentGlobalRanking}</Col>
+          <Col md="4">{opponentOverview}</Col>
+          <Col md="4">{opponentActions}</Col>
+        </Row>
+      </Container>
     </div>
   );
 

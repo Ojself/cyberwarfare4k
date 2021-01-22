@@ -85,6 +85,13 @@ export default {
       .catch(errHandler);
   },
 
+  changeWeapon(weapon) {
+    return service
+      .post("/changeWeapon", { weapon })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
   getAllLadderUsers() {
     return service
       .get("/ladder")

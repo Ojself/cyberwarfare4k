@@ -276,6 +276,41 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   });
 });
 
+// @POST
+// PRIVATE
+// Lets user change weapon
+
+router.post('/changeWeapon', isLoggedIn, async (req, res) => {
+  const userId = req.user._id;
+  const { weapon } = req.body;
+
+  const allowedWeapons = ['CPU', 'AntiVirus', 'Encryption'];
+  if (!allowedWeapons.includes(weapon)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Illegal input',
+    });
+  }
+
+  const user = await User.findById(userId);
+
+  if (user.fightInformation.equipedWeapon === weapon) {
+    return res.status(400).json({
+      success: false,
+      message: `You already have ${weapon} equipped`,
+    });
+  }
+
+  await user.changeWeapon(weapon);
+  const updatedUser = await saveAndUpdateUser(user);
+
+  return res.status(200).json({
+    success: true,
+    message: `You equipped ${weapon}..`,
+    user: updatedUser,
+  });
+});
+
 // @GET
 // PUBLIC
 // See if the user is loggedin and setup to redirect the user

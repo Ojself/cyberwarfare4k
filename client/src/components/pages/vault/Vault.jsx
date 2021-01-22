@@ -30,10 +30,6 @@ const Vault = ({
   const [selectedOption, setSelectedOption] = useState(null);
   const [activeSpies, setActiveSpies] = useState([]);
   const [opponents, setOpponents] = useState([]);
-  // api get
-  // api post
-  // api post deposit
-  // api delete
 
   useEffect(() => {
     const getVaultInformation = async () => {
@@ -64,7 +60,6 @@ const Vault = ({
   };
 
   const cancelSpy = async (id) => {
-    console.log(id, "id");
     let data;
     try {
       data = await api.cancelSpy(id);

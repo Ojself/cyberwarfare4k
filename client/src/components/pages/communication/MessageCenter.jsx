@@ -28,12 +28,13 @@ import classnames from "classnames";
 // alternate background color for easier reading
 // todo, linking color of names
 
-const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) => {
+const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [users, setUsers] = useState([]);
-  const [loadingUsers, setLoadingUsers] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState(null);
   const [textArea, setTextArea] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -82,16 +83,20 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) =>
   };
 
   useEffect(() => {
+    const getMessages = async () => {
+      let data = await api.getMessages();
+      setMessages(data.messages);
+    };
     const fetchHackerNames = async () => {
       const data = await api.getHackerNames();
       const { users } = data;
       const massagedUsers = dataMassager(users);
 
       await setUsers(massagedUsers);
-      setLoadingUsers(false);
-      await api.readAllCommunication("messages");
       setAutoComposeTo(window.location.pathname, users);
+      setLoading(false);
     };
+    getMessages();
     fetchHackerNames();
   }, []);
 
@@ -120,16 +125,16 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) =>
     return !criterias;
   };
 
-  const answerAllianceInvitation = async (id,answer) => {
+  const answerAllianceInvitation = async (id, answer) => {
     let data;
     try {
-      data = await api.answerAllianceInvitation(id,answer);
+      data = await api.answerAllianceInvitation(id, answer);
     } catch (err) {
       console.error(err, "error");
-      updateGlobalValues(err,true,true)
-      return
+      updateGlobalValues(err, true, true);
+      return;
     }
-    updateGlobalValues(data,true,true,data.inbox)
+    updateGlobalValues(data, true, true, data.inbox);
   };
 
   const dataMassager = (userArray) => {
@@ -285,7 +290,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, messages, user }) =>
                       className="text-dark w-50 mb-5"
                       value={selectedOption}
                       onChange={handleChange}
-                      options={loadingUsers ? "" : users}
+                      options={loading ? "" : users}
                     />
                     <FormGroup className="text-dark">
                       <Label for="messageText">Message</Label>

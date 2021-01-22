@@ -10,7 +10,7 @@ const ProgressBarHackSkill = (props) => {
     }
   };
 
-  const blinkMe = (e) => {
+  const blinkMe = () => {
     if (props.hasStatPoints) {
       setBlink(true);
       props.upgrade(props.name);
@@ -29,11 +29,13 @@ const ProgressBarHackSkill = (props) => {
     }
     return "myprofile-statpoint";
   };
-  
-  let skillWithoutBonus = props.bonus ? props.value - props.bonus: props.value
+
+  let skillWithoutBonus = props.bonus ? props.value - props.bonus : props.value;
   if (skillWithoutBonus <= 0) {
     skillWithoutBonus = props.value;
   }
+
+  console.log(props, "pr");
 
   return (
     <div
@@ -41,7 +43,7 @@ const ProgressBarHackSkill = (props) => {
       className={whatsMyClass()}
       onMouseEnter={toggleHover}
       onMouseLeave={toggleHover}
-      onClick={(e) => blinkMe(e)}
+      onClick={() => blinkMe()}
     >
       <div style={{ fontSize: "0.7rem" }} className="text-center text-light">
         {`${props.name} ${skillWithoutBonus}% ${
@@ -49,8 +51,22 @@ const ProgressBarHackSkill = (props) => {
         }`}
       </div>
       <Progress multi className="mb-2 mx-2" name={props.name}>
-        <Progress bar color={props.color} value={skillWithoutBonus} max={100} />
-        <Progress bar color="warning" value={props.bonus} max={100} />
+        <Progress
+          bar
+          striped={props.active}
+          animated={props.active}
+          color={props.color}
+          value={skillWithoutBonus}
+          max={100}
+        />
+        <Progress
+          bar
+          striped={props.active}
+          animated={props.active}
+          color="warning"
+          value={props.bonus}
+          max={100}
+        />
         <Progress
           bar
           color="dark"

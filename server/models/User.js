@@ -627,6 +627,10 @@ userSchema.methods.addBounty = function (bountyDonor, bounty) {
   this.playerStats.bounty += parseInt(bounty, 10);
 };
 
+userSchema.methods.changeWeapon = function (weapon) {
+  this.fightInformation.equippedWeapon = weapon;
+};
+
 userSchema.methods.handleNewStatpoint = function (statName) {
   /* console.info(`${this.name} is upgrading: ${statName}`) */
   this.playerStats.statPoints -= 1;

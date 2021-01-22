@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     });
   }
 
-  // same object is being sent twice.
+  // TODO same object is being sent twice.
   res.status(200).json({
     success: true,
     message: 'wanted hackers loaded..',

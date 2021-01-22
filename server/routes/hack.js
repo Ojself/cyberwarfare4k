@@ -200,13 +200,13 @@ router.post('/:opponentId', async (req, res) => {
   const updatedUser = await saveAndUpdateUser(finalResult.user);
 
   await finalResult.opponent.save();
-  finalResult.user = null;
-  finalResult.now = null;
 
   const feedback = getHackFeedback(finalResult, opponent);
   await generateNotification(finalResult.opponent._id, feedback.notification);
   await generateNotification(finalResult.user._id, feedback.message, 'Logs', true);
 
+  finalResult.user = null;
+  finalResult.now = null;
   finalResult.opponent = null;
 
   return res.status(200).json({

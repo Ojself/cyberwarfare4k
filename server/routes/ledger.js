@@ -10,7 +10,6 @@ const { saveAndUpdateUser, generateNotification } = require('../logic/_helpers')
 // PRIVATE
 // Retrives all users
 
-// TODO! SANITIZE!
 router.get('/', async (req, res) => {
   const users = await User.find({ 'account.isSetup': true }).select({ name: '1' }).lean();
   if (!users) {

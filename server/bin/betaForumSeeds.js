@@ -10,7 +10,7 @@ require('../configs/database');
 let users;
 
 const getUsers = async () => {
-  users = await User.find({"account.isSetup":true}).lean();
+  users = await User.find({ 'account.isSetup': true }).lean();
 };
 
 const generateRandomText = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -41,7 +41,7 @@ BetaForum.deleteMany()
         creator: users[Math.floor(Math.random() * users.length)]._id,
         comment: generateRandomText(),
         allianceForum: i % 2 === 0,
-        alliance: i % 2 === 0 ? '5fae6d7ee600184341083698' : null,
+        alliance: i % 2 === 0 ? '5fae6d7ee60018434108369c' : null,
         edited: randomBool(0.75),
         deleted: randomBool(0.95),
         likes: getCommentLikes(),
@@ -58,7 +58,7 @@ BetaForum.deleteMany()
   .then(() => {
     console.log('disconnecting from mongoose');
     mongoose.disconnect();
-    process.exit(0)
+    process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();

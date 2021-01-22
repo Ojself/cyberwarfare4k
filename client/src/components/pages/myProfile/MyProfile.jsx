@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 
 import {
-  Table,
-  TabContent,
-  TabPane,
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
   Nav,
   NavItem,
   NavLink,
-  Container,
   Row,
-  Col,
+  Table,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
 import MiniDataCenterOverview from "./molecules/MiniDataCenterOverview";
@@ -80,6 +82,16 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
       });
   };
 
+  const equipWeapon = async (weapon) => {
+    let data;
+    try {
+      data = await api.changeWeapon(weapon);
+    } catch (err) {
+      return updateGlobalValues(err);
+    }
+    updateGlobalValues(data);
+  };
+
   const profileAvatars = !globalLoading && (
     <div className="d-flex justify-content-center mb-2">
       <div>
@@ -118,6 +130,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             key={h}
             upgrade={(e) => handleUpgrade(e)}
             name={h}
+            active={user.fightInformation.equippedWeapon === h}
             value={user.hackSkill[h]}
             hasStatPoints={!!user.playerStats.statPoints}
             bonus={getMarketPlaceItemValue(h, "bonus")}
@@ -183,10 +196,31 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
     </div>
   );
 
-  const profileBelongings = (
+  const profileBelongings = !globalLoading && user && (
     <div className="w-100">
-      <div>
-        <Nav tabs>
+      <>
+        <ButtonGroup className="d-flex">
+          {["CPU", "AntiVirus", "Encryption"].map((weapon) => {
+            return (
+              <Button
+                key={weapon}
+                className="col-4"
+                size="sm"
+                color="outline-primary"
+                onClick={() => equipWeapon(weapon)}
+                active={user.fightInformation.equippedWeapon === weapon}
+              >
+                {weapon}
+              </Button>
+            );
+          })}
+        </ButtonGroup>
+
+        <p style={{ fontSize: "0.7rem" }} className="text-center text-light">
+          Equiped weapon: {user.fightInformation.equippedWeapon}
+        </p>
+
+        <Nav className="mt-5" tabs>
           {["Items", "Crypto", "Stash", "DC"].map((t, i) => {
             return (
               <NavItem key={i}>
@@ -290,19 +324,18 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             <Row>
               <Col sm="12">
                 <div className="d-flex row">
-                  {!globalLoading &&
-                    Object.keys(user.stash).map((s, i) => (
-                      <div key={i}>
-                        <img
-                          style={{ maxWidth: "75px", width: "100%" }}
-                          src={`/stashPics/${s}/${getStashColor(i)}.png`}
-                          title={s}
-                          alt={s}
-                        />
+                  {Object.keys(user.stash).map((s, i) => (
+                    <div key={i}>
+                      <img
+                        style={{ maxWidth: "75px", width: "100%" }}
+                        src={`/stashPics/${s}/${getStashColor(i)}.png`}
+                        title={s}
+                        alt={s}
+                      />
 
-                        <p>{user.stash[s]}</p>
-                      </div>
-                    ))}
+                      <p>{user.stash[s]}</p>
+                    </div>
+                  ))}
                 </div>
               </Col>
             </Row>
@@ -311,18 +344,16 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             <Row>
               <Col sm="12">
                 <div className="d-flex row">
-                  {user && (
-                    <MiniDataCenterOverview
-                      owner={user._id}
-                      updateGlobalValues={updateGlobalValues}
-                    />
-                  )}
+                  <MiniDataCenterOverview
+                    owner={user._id}
+                    updateGlobalValues={updateGlobalValues}
+                  />
                 </div>
               </Col>
             </Row>
           </TabPane>
         </TabContent>
-      </div>
+      </>
     </div>
   );
 
