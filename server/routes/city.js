@@ -15,19 +15,11 @@ const { getOnlineUsers, saveAndUpdateUser } = require('../logic/_helpers');
 // Retrives all cities
 
 router.get('/', async (req, res) => {
-  let cities;
   const dbSelectOptions = {
     price: '1',
     name: '1',
   };
-  try {
-    cities = await City.find().select(dbSelectOptions);
-  } catch (e) {
-    return res.status(400).json({
-      success: false,
-      message: JSON.stringify(e),
-    });
-  }
+  const cities = await City.find().select(dbSelectOptions);
 
   const message = getCityRouteCriterias(cities);
   if (message) {
@@ -91,17 +83,19 @@ router.post('/', async (req, res) => {
 
   const batteryCost = 3;
 
-  const message = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
+  const disallowed = changeCityRouteCriterias(user, newCity, oldCity, batteryCost);
 
-  if (message) {
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message: disallowed,
     });
   }
-  await newCity.arrival(user._id);
+  newCity.arrival(user._id);
+  await newCity.save();
   await user.changeCity(newCity, batteryCost);
-  await oldCity.departure(user._id);
+  oldCity.departure(user._id);
+  await oldCity.save();
 
   const updatedUser = await saveAndUpdateUser(user);
 
@@ -109,6 +103,55 @@ router.post('/', async (req, res) => {
     success: true,
     message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,
     user: updatedUser,
+  });
+});
+
+// @POST
+// PRIVATE
+// Change city fee
+
+const changeCityFeeCriterias = (user, city, fee) => {
+  if (!user || !city) {
+    return 'Something went wrong';
+  }
+  if (user.alliance.toString() !== city.allianceOwner.toString()) {
+    return 'You can\t change the fee of this city';
+  }
+  if (!fee) {
+    return 'Missing input';
+  }
+  if (fee > 1) {
+    return 'Fee is too high';
+  }
+  if (fee < 0) {
+    return 'Fee is too low';
+  }
+  return null;
+};
+
+router.post('/fee', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const { fee } = req.body;
+
+  const city = await City.find({ allianceOwner: user.alliance });
+
+  const disallowed = changeCityFeeCriterias(user, city, fee);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+  city.setFee(fee);
+  const updatedCity = await city.save();
+
+  return res.status(200).json({
+    success: true,
+    message: `You changed your VPN from ${oldCity.name} to ${newCity.name}`,
+    city: updatedCity,
   });
 });
 

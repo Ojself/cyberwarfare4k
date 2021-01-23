@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Progress } from "reactstrap";
-import api from '../../../../api';
+import api from "../../../../api";
 
 const getHealthBar = (dc) => {
   const percentage = (dc.currentFirewall / dc.maxFirewall) * 100;
@@ -28,31 +28,28 @@ const getHealthBar = (dc) => {
   );
 };
 
+const bitcoinIcon = <span className="bitcoinColor">&#8383;</span>;
 
+const MiniDataCenterOverview = ({ updateGlobalValues, owner }) => {
+  const [dataCenters, setDataCenters] = useState([]);
+  const [buttonText, setButtonText] = useState("Heal");
 
-const bitcoinIcon = <span style={{ color: "#F08F18" }}>&#8383;</span>;
+  useEffect(() => {
+    const getUserDataCenters = async () => {
+      const data = await api.getDataCenters({ owner });
+      if (data.dataCenters && data.dataCenters.length) {
+        data.dataCenters.sort((a, b) => b.city.name - a.city.name);
+      }
+      setDataCenters(data.dataCenters);
+    };
+    getUserDataCenters();
+  }, []);
 
-const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
-    const [dataCenters, setDataCenters] = useState([]);
-    const [buttonText, setButtonText] = useState("Heal");
-
-    useEffect(()=>{
-        const getUserDataCenters = async () => {
-          const data = await api.getDataCenters({ owner });
-          if (data.dataCenters && data.dataCenters.length){
-            data.dataCenters.sort((a, b) => b.city.name - a.city.name);
-          }
-          setDataCenters(data.dataCenters);
-        };
-        getUserDataCenters();
-    },[])
-
-    const getDataCenterActionButton = (d) => {
+  const getDataCenterActionButton = (d) => {
     const percentage = (d.currentFirewall / d.maxFirewall) * 100;
-    let disabled = percentage >= 100
+    let disabled = percentage >= 100;
     const healPrice = (d.maxFirewall - d.currentFirewall) * 100;
-    
-  
+
     return (
       <Button
         onMouseOver={() => setButtonText(healPrice)}
@@ -65,36 +62,34 @@ const MiniDataCenterOverview = ({updateGlobalValues, owner}) => {
         {buttonText}
       </Button>
     );
-};
+  };
 
-    const handleHeal = async (id)=> {
+  const handleHeal = async (id) => {
     let data;
     try {
       data = await api.healDataCenter(id);
     } catch (err) {
-        console.error('err',err)
+      console.error("err", err);
       return updateGlobalValues(err);
     }
     setDataCenters(data.dataCenters);
-    }
-    const getTotalIncome = ()=>{
-        if (!dataCenters.length) return
+  };
+  const getTotalIncome = () => {
+    if (!dataCenters.length) return;
 
-        const income = dataCenters.reduce((acc, cur) => {
-          return acc + cur.minutlyrevenue;
-        }, 0);
-        const incomeTitle = (
-          <p>
-            Income:  {income}
-            {bitcoinIcon}
-          </p>
-        );
+    const income = dataCenters.reduce((acc, cur) => {
+      return acc + cur.minutlyrevenue;
+    }, 0);
+    const incomeTitle = (
+      <p>
+        Income: {income}
+        {bitcoinIcon}
+      </p>
+    );
 
-        return incomeTitle;
-
-    }
-const tableOverview =
-   dataCenters.length ? (
+    return incomeTitle;
+  };
+  const tableOverview = dataCenters.length ? (
     <Table className="content" dark>
       <thead>
         <tr>
@@ -120,13 +115,12 @@ const tableOverview =
     <p> You don't have any datacenters </p>
   );
 
-    return (
-      <div>
-        {getTotalIncome()}
-        {tableOverview}
-      </div>
-    );
-}
-
+  return (
+    <div>
+      {getTotalIncome()}
+      {tableOverview}
+    </div>
+  );
+};
 
 export default MiniDataCenterOverview;

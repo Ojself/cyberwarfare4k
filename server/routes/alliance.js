@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Alliance = require('../models/Alliance');
+const City = require('../models/City');
 const Message = require('../models/Message');
 const {
   checkCreateAllianceCriteria, saveAndUpdateUser, getInbox, findAllianceByIdAndPopulate,
@@ -11,14 +12,20 @@ const {
 
 // @GET
 // PRIVATE
-// Retrives all alliances
+// Retrives all alliances and available cities
 
 router.get('/', async (req, res) => {
-  const alliances = await Alliance.find();
+  const alliances = await Alliance.find()
+    .lean();
+  const availableCities = await City.find({ allianceOwner: null })
+    .select({ name: 1 })
+    .lean();
+
   res.status(200).json({
     success: true,
     message: 'Alliances loaded...',
     alliances,
+    cities: availableCities,
   });
 });
 
@@ -50,7 +57,7 @@ router.get('/dashboard', async (req, res) => {
 // Retrives all alliances with stats
 
 router.get('/ladder', async (req, res) => {
-  const populateValues = [
+  const memberPopulateValues = [
     'hackSkill',
     'crimeSkill',
     'currencies',
@@ -59,13 +66,14 @@ router.get('/ladder', async (req, res) => {
     'name',
   ];
   const alliances = await Alliance.find({ active: true })
-    .populate('boss', populateValues)
-    .populate('cto', populateValues)
-    .populate('analyst', populateValues)
-    .populate('firstLead', populateValues)
-    .populate('secondLead', populateValues)
-    .populate('firstMonkeys', populateValues)
-    .populate('secondMonkeys', populateValues);
+    .populate('city', 'name')
+    .populate('boss', memberPopulateValues)
+    .populate('cto', memberPopulateValues)
+    .populate('analyst', memberPopulateValues)
+    .populate('firstLead', memberPopulateValues)
+    .populate('secondLead', memberPopulateValues)
+    .populate('firstMonkeys', memberPopulateValues)
+    .populate('secondMonkeys', memberPopulateValues);
   const totStats = await findAllianceStats(alliances);
   res.status(200).json({
     success: true,
@@ -77,14 +85,15 @@ router.get('/ladder', async (req, res) => {
 // creating an alliance
 router.post('/', async (req, res) => {
   const userId = req.user._id;
-  const { allianceId } = req.body;
+  const { allianceId, cityId } = req.body;
 
   const createCost = 1000000;
 
   const alliance = await Alliance.findById(allianceId);
   const user = await User.findById(userId);
+  const city = await City.findById(cityId);
 
-  const disallowed = checkCreateAllianceCriteria(user, alliance, createCost);
+  const disallowed = checkCreateAllianceCriteria(user, alliance, createCost, city);
 
   if (disallowed) {
     return res.status(403).json({
@@ -92,10 +101,12 @@ router.post('/', async (req, res) => {
       message: disallowed,
     });
   }
-  alliance.boss = user._id;
-  alliance.active = true;
+  alliance.claimAlliance(userId);
   user.createAlliance(createCost, alliance._id);
+  city.setNewOwner(alliance._id);
+
   await alliance.save();
+  await city.save();
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({

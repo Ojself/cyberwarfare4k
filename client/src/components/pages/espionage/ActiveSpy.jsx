@@ -27,7 +27,7 @@ const ActiveSpy = ({ spy, cancelSpy, setUnreadNotification }) => {
         <ListGroupItemHeading className="d-flex">
           <p className="m-0">
             {`Spy heading towards ${spy.target.name} - ${spy.bitCoinSpent}`}
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinColor">&#8383;</span>
           </p>
           <Button
             className="ml-auto"

@@ -18,6 +18,7 @@ import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread"; 
 */
+import Espionage from "./pages/espionage/Espionage";
 import EarnBattery from "./pages/earnBattery/EarnBattery";
 import HallOfFame from "./pages/HallOfFame";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
@@ -36,7 +37,6 @@ import OrgCrimes from "./pages/orgCrimes/OrgCrimes";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
-import Vault from "./pages/vault/Vault";
 import VPN from "./pages/VPN/VPN";
 import WantedList from "./pages/WantedList";
 
@@ -330,9 +330,9 @@ const App = () => {
           )}
         />
         <Route
-          path="/vault"
+          path="/espionage"
           render={() => (
-            <Vault
+            <Espionage
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
               user={user}

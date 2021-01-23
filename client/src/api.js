@@ -279,8 +279,8 @@ export default {
       .catch(errHandler);
   },
 
-  // VAULT
-  // VAULT
+  // espionage
+  // espionage
 
   getVaultInformation() {
     return service
@@ -530,9 +530,9 @@ export default {
       .catch(errHandler);
   },
 
-  createAlliance(allianceId) {
+  createAlliance(allianceId,cityId) {
     return service
-      .post("/alliance", { allianceId })
+      .post("/alliance", { allianceId,cityId })
       .then((res) => res.data)
       .catch(errHandler);
   },

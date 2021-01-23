@@ -4,6 +4,7 @@ const router = express.Router();
 
 const Stash = require('../models/Stash');
 const User = require('../models/User');
+const Alliance = require('../models/Alliance');
 const { saveAndUpdateUser } = require('../logic/_helpers');
 const {
   checkBuyStashCriteria, checkSellStashCriteria, cleanObj, summarizeStash,
@@ -60,11 +61,12 @@ router.post('/buy', async (req, res) => {
 
 router.post('/sell', async (req, res) => {
   const userId = req.user._id;
-  const user = await User.findById(userId).populate('playerStats.city', 'stashPriceMultiplier');
+  const user = await User.findById(userId)
+    .populate('playerStats.city', 'stashPriceMultiplier', 'allianceFee', 'allianceOwner');
   const dbStashes = await Stash.find().lean();
 
   const stashToSell = cleanObj(req.body);
-  const totalSum = summarizeStash(user, dbStashes, stashToSell);
+  let totalSum = summarizeStash(user, dbStashes, stashToSell);
 
   const disallowed = checkSellStashCriteria(stashToSell, user);
   if (disallowed) {
@@ -73,15 +75,22 @@ router.post('/sell', async (req, res) => {
       message: disallowed,
     });
   }
+  if (user.playerStats.city.allianceOwner && user.playerStats.city.allianceFee) {
+    const { allianceFee } = user.playerStats.city;
+    const feeToAlliance = totalSum * allianceFee;
+    totalSum *= (1 - allianceFee);
+    const alliance = await Alliance.findById(user.playerStats.city.allianceOwner);
+    alliance.depositSafe(feeToAlliance);
+    await alliance.save();
+  }
 
   user.handleSellStash(stashToSell, totalSum);
   const updatedUser = await saveAndUpdateUser(user);
 
   res.status(200).json({
     success: true,
-    message: `You sold stash for ${Math.round(totalSum)}..`,
+    message: `You sold stash for ${Math.round(totalSum)}`,
     user: updatedUser,
-
   });
 });
 

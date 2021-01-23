@@ -120,7 +120,6 @@ const Ladder = () => {
         toggleSort("networth");
         sortedUsers = ladderState.users.sort((b, a) => {
           if (sortState.networth) {
-      
             return a.playerStats.bitCoins - b.playerStats.bitCoins;
           }
           return b.playerStats.bitCoins - a.playerStats.bitCoins;
@@ -185,7 +184,7 @@ const Ladder = () => {
               <td>{user.fightInformation.crimesInitiated}</td>
               <td>
                 {Math.round(user.playerStats.bitCoins)}
-                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                <span className="bitcoinColor">&#8383;</span>
               </td>
             </tr>
           ))}

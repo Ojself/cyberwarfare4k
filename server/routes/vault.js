@@ -110,7 +110,8 @@ router.delete('/:id', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   const { id } = req.params;
-  const disallowed = cancelSpyCriteria(user, id);
+  const now = Date.now();
+  const disallowed = cancelSpyCriteria(user, id, now);
 
   if (disallowed) {
     return res.status(400).json({
@@ -124,7 +125,6 @@ router.delete('/:id', async (req, res) => {
   const updatedUser = await savedUser
     .populate('fightInformation.activeSpies.target', 'name');
 
-  const now = Date.now();
   const { activeSpies } = updatedUser.fightInformation;
   const updatedSpies = attachRemainingTimeToSpiesAndFilter(activeSpies, now);
 

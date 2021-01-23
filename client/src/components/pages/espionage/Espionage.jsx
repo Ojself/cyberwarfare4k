@@ -18,7 +18,7 @@ import Select from "react-select";
 
 import ActiveSpy from "./ActiveSpy";
 
-const Vault = ({
+const Espionage = ({
   updateGlobalValues,
   globalLoading,
   user,
@@ -102,11 +102,11 @@ const Vault = ({
       <Card body className="text-light">
         <CardText>
           <strong>In vault</strong>:{" "}
-          <span style={{ color: "#F08F18" }}>&#8383;</span>
+          <span className="bitcoinColor">&#8383;</span>
           {Math.floor(user.playerStats.vault)}
         </CardText>
         <CardText>
-          On hand: <span style={{ color: "#F08F18" }}>&#8383;</span>
+          On hand: <span className="bitcoinColor">&#8383;</span>
           {Math.floor(user.playerStats.bitCoins)}
         </CardText>
         <InputGroup>
@@ -148,9 +148,7 @@ const Vault = ({
       <div className="">
         <InputGroup>
           <InputGroupAddon addonType="prepend">
-            <InputGroupText style={{ color: "#F08F18" }}>
-              &#8383;
-            </InputGroupText>
+            <InputGroupText className="bitcoinColor">&#8383;</InputGroupText>
           </InputGroupAddon>
           <Input
             type="number"
@@ -178,7 +176,7 @@ const Vault = ({
 
   return (
     <div className="page-container">
-      <h1> Vault </h1>
+      <h1> Espionage </h1>
       <Container>
         {activeSpies.length ? (
           <Row>
@@ -212,4 +210,4 @@ const Vault = ({
   );
 };
 
-export default Vault;
+export default Espionage;

@@ -1,6 +1,10 @@
 const { generateNotification } = require('./_helpers');
 const User = require('../models/User');
 
+const config = {
+  minimumSendSpyAmount: 100000,
+};
+
 const depositCriteria = (user, amount) => {
   if (!user) {
     return 'Something went wrong';
@@ -46,14 +50,13 @@ const handleSpy = async (userId, opponentId, id) => {
 
   const spyInAction = user.fightInformation.activeSpies.find((spy) => spy.id === id);
   if (!spyInAction) {
-    console.log('No spy found');
+    console.info(`User: ${user.name} - No spy found`);
     return;
   }
 
   const success = spyInAction.bitCoinSpent > opponent.playerStats.vault;
 
   if (success) {
-    console.log('success');
     const spyInformation = getSpyInfo(opponent);
     generateNotification(userId, spyInformation, 'Spy Report');
   } else {
@@ -66,16 +69,39 @@ const handleSpy = async (userId, opponentId, id) => {
   }
 };
 
-// missing users
-// missing input
-// sufficent money in vault
-const sendSpyCriteria = (user, opponent, bitCoinSpent) => null;
+const sendSpyCriteria = (user, opponent, bitCoinSpent) => {
+  if (!user || !opponent) {
+    return 'Something went wrong..';
+  }
+  if (!bitCoinSpent) {
+    return 'Missing input';
+  }
+  if (bitCoinSpent > user.playerStats.vault) {
+    return 'You have insufficent bitcoins in your vault';
+  }
+  if (bitCoinSpent < config.minimumSendSpyAmount) {
+    return `Minimum amount is ${config.minimumSendSpyAmount}`;
+  }
+  if (user._id.toString() === opponent._id.toString()) {
+    return 'You tried to spy on yourself, but failed';
+  }
+  return null;
+};
 
-// missing users
-// timed out or less than 3 seconds
-// existing
+const cancelSpyCriteria = (user, id, now) => {
+  if (!user || !id) {
+    return 'Something went wrong..';
+  }
+  const spy = user.fightInformation.activeSpies.find((s) => s.id === id);
+  if (!spy) {
+    return 'This spy doesn\'t exist';
+  }
+  if (now > spy.arrives) {
+    return 'This spy is inactive';
+  }
 
-const cancelSpyCriteria = (user, id) => null;
+  return null;
+};
 
 module.exports = {
   depositCriteria, handleSpy, sendSpyCriteria, cancelSpyCriteria, attachRemainingTimeToSpiesAndFilter,

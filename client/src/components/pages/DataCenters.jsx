@@ -164,7 +164,7 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
             <td>{getHealthBar(dc)}</td>
 
             <UncontrolledTooltip placement="top" target={`revenueTip${i}`}>
-              <span style={{ fontSize: "1rem", color: "#F08F18" }}>
+              <span className="bitcoinColor" style={{ fontSize: "1rem" }}>
                 &#8383;
               </span>
               {dc.minutlyrevenue} per minute

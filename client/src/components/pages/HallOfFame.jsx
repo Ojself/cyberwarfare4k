@@ -13,7 +13,7 @@ const HallOfFame = ({ updateGlobalValues, user }) => {
               🥇
             </span>
             <strong>KimDotCom</strong>{" "}
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinColor">&#8383;</span>
             21268594
           </p>
           <p>
@@ -21,7 +21,7 @@ const HallOfFame = ({ updateGlobalValues, user }) => {
               🥈
             </span>
             <strong>Xaviior</strong>{" "}
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinCOlor">&#8383;</span>
             15507711
           </p>
           <p>
@@ -29,7 +29,7 @@ const HallOfFame = ({ updateGlobalValues, user }) => {
               🥉
             </span>
             <strong>R3v3ng3</strong>{" "}
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinCOlor">&#8383;</span>
             11842806
           </p>
         </div>
@@ -39,17 +39,17 @@ const HallOfFame = ({ updateGlobalValues, user }) => {
             <h5 className="text-warning">Top alliances</h5>
             <p>
               <strong>1.</strong> Black{" "}
-              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              <span className="bitcoinCOlor">&#8383;</span>
               48079110
             </p>
             <p>
               <strong>2.</strong> White{" "}
-              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              <span className="bitcoinCOlor">&#8383;</span>
               11423073
             </p>
             <p>
               <strong>3.</strong> Grey{" "}
-              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              <span className="bitcoinCOlor">&#8383;</span>
               23800
             </p>
           </div>

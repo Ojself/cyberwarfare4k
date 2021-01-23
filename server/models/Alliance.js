@@ -11,6 +11,7 @@ const allianceSchema = new Schema({
     unique: true,
     enum: ['Black', 'White', 'Red', 'Grey', 'Brown'],
   },
+  safe: { type: Number, default: 0 },
   active: { type: Boolean, default: false },
   invitedMembers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   boss: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -20,10 +21,22 @@ const allianceSchema = new Schema({
   secondLead: { type: Schema.Types.ObjectId, ref: 'User' },
   firstMonkeys: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   secondMonkeys: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-
   organizePermission: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   forumModeratorPermission: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
+
+allianceSchema.methods.depositSafe = async function (bitCoins) {
+  this.safe += parseInt(bitCoins, 10);
+};
+
+allianceSchema.methods.withdrawSafe = async function (bitCoins) {
+  this.safe -= parseInt(bitCoins, 10);
+};
+
+allianceSchema.methods.claimAlliance = async function (userId) {
+  this.active = true;
+  this.boss = userId;
+};
 
 allianceSchema.methods.leaveAlliance = function (playerId) {
   console.info(playerId, ' is leaving the alliance ', this.name);

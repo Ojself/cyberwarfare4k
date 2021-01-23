@@ -676,7 +676,8 @@ userSchema.methods.handleNewStatpoint = function (statName) {
 userSchema.methods.die = async function () {
   console.info(`${this.name} is dead`);
   const city = await City.findById(this.playerStats.city);
-  await city.departure(this._id);
+  city.departure(this._id);
+  await city.save();
 
   const dataCenters = await DataCenter.find({ owner: this._id });
   if (dataCenters) {

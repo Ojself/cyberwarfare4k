@@ -21,7 +21,7 @@ const currency = [
     color: 'hsl(255, 70%, 75%)',
     initials: 'LTC',
     lowerPrice: 35,
-    higherPrice: 55,
+    higherPrice: 65,
     price: 35,
     levelReq: 5,
     historyPrice: getHistoryPrice(35, 55),
@@ -78,8 +78,8 @@ const currency = [
     levelReq: 2,
     historyPrice: getHistoryPrice(10, 15),
     historyTime: getHistoryTime(),
-    available: 15000,
-    marketCap: 15000,
+    available: 150000,
+    marketCap: 150000,
   },
   {
     name: 'Dash',
@@ -139,18 +139,13 @@ const currency = [
 
 Currency.deleteMany()
   .then(() => Currency.create(currency))
-  .then((currencyCreated) => {
-    console.log(
-      `${currencyCreated.length} currency created`,
-    );
-    console.log(currencyCreated.map((u) => u._id));
-  })
+  .then((currencyCreated) => console.log(`${currencyCreated.length} currency created`))
   .then(() => {
     mongoose.disconnect();
     process.exit(0);
   })
   .catch((err) => {
     mongoose.disconnect();
-    console.error(err);
+    console.error('Error: ', err);
     process.exit(1);
   });

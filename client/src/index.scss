@@ -1,5 +1,12 @@
-// --------------------
-// Style reusable for all components
+$hackerGreen: #148e56;
+$hackerPurple: #aa94ec;
+$hackerOrange: #fbac73;
+$hackerRed: #ff8a9d;
+
+$terminalGreen: #06a308;
+$terminalRed: #8b0503;
+
+
 html {
   background-color: #050505;
 }
@@ -7,20 +14,22 @@ html {
   font-family: "Courier New", Courier, monospace;
 }
 
+.App {
+  text-align: center;
+}
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100%;
   background-image: linear-gradient(to top, #161411, #0c0d16);
-  /* max-width: 100% !important;
-  overflow-x: hidden !important; */
 }
 
 .globalMessage {
   min-height: 4vh;
   width: 45%;
   margin: auto;
-  color: #06a308;
+  color: $terminalGreen;
 }
 
 .page-container {
@@ -36,29 +45,8 @@ body {
   }
 }
 
-// --------------------
-// Style for App component
-.App {
-  text-align: center;
-  //background-color: #050505;
-}
-
-
-.hackerGreen {
-  background-color: #148e56 !important;
-}
-.hackerPurple {
-  background-color: #aa94ec !important;
-}
-.hackerOrange {
-  background-color: #fbac73 !important;
-}
-.hackerRed {
-  background-color: #ff8a9d !important;
-}
-
-.bitcoinColor{
-  color: #F08F18
+.bitcoinColor {
+  color: #f08f18;
 }
 
 .terminalFont {
@@ -67,26 +55,16 @@ body {
 }
 
 .terminalTextwin {
-  color: #06a308;
+  color: $terminalGreen;
 }
 
 .terminalTextlost {
-  color: #8b0503;
+  color: $terminalRed;
 }
-.terminalTextblocked{
-  color: #aa94ec
+.terminalTextblocked {
+  color: #aa94ec;
 }
 
-.crimeTerminalResultWrapper {
-  margin: auto;
-  width: 50%;
-  padding-left: 0.5rem;
-  p,
-  h5 {
-    text-align: center;
-    font-size: 0.75;
-  }
-}
 
 .AttackTerminalResultWrapper {
   margin: auto;
@@ -172,11 +150,11 @@ body {
 }
 
 @media only screen and (max-width: 600px) {
-    .display-none-when-mobile{
-        display:none !important;
-    }
-    .globalMessage{
-      width: 95%;
-      font-size: smaller;
-    }
+  .display-none-when-mobile {
+    display: none !important;
+  }
+  .globalMessage {
+    width: 95%;
+    font-size: smaller;
+  }
 }

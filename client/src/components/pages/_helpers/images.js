@@ -260,11 +260,6 @@ const waifuAvatars = [
   },
   {
     id: 4,
-    src: "/hackerAvatars/Waifu/cyka.jpg",
-    title: "Cyka",
-  },
-  {
-    id: 5,
     src: "/hackerAvatars/Waifu/greenblack.png",
     title: "Green black",
   },

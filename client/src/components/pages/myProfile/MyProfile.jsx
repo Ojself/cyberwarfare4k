@@ -172,7 +172,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           </li>
         )}
         <li className="list-group-item bg-dark mb-2">
-          Networth: <span style={{ color: "#F08F18" }}>&#8383; </span>
+          Networth: <span className="bitcoinColor">&#8383; </span>
           {user.playerStats.bitCoins + user.playerStats.ledger}
         </li>
         <li className="list-group-item bg-dark mb-2">
@@ -185,7 +185,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           Shutdowns: {user.fightInformation.shutdowns}
         </li>
         <li className="list-group-item bg-dark mb-2">
-          Bounty: <span style={{ color: "#F08F18" }}>&#8383; </span>
+          Bounty: <span className="bitcoinColor">&#8383; </span>
           {user.playerStats.bounty}
         </li>
         {/* todo clickable with bounty donor? module */}

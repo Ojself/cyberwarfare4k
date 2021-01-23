@@ -111,9 +111,7 @@ const WantedList = ({ updateGlobalValues, user }) => {
       <div className="w-25">
         <InputGroup>
           <InputGroupAddon addonType="prepend">
-            <InputGroupText style={{ color: "#F08F18" }}>
-              &#8383;
-            </InputGroupText>
+            <InputGroupText className="bitcoinColor">&#8383;</InputGroupText>
           </InputGroupAddon>
           <Input
             type="number"
@@ -197,7 +195,7 @@ const WantedList = ({ updateGlobalValues, user }) => {
             </td>
 
             <td className="text-right">
-              <span style={{ color: "#F08F18" }}>&#8383;</span>
+              <span className="bitcoinColor">&#8383;</span>
               {user.playerStats.bounty}
             </td>
             <td>

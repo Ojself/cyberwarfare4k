@@ -10,15 +10,14 @@ const cities = [
     _id: '5fae62409cbf7d270f23470b',
     stashPriceMultiplier: 1.09,
     residents: ['5fae6d7ee60018434108369c', '5fca3b4a86e77b5c8e58b67e'],
-    owner: '5fae6d7ee60018434108369c', // Grey alliance (npc)
-
+    allianceOwner: '5fae62409cbf7d270f23470b',
+    allianceFee: 0.05,
   },
   {
     name: 'Hanoi',
     _id: '5fae62409cbf7d270f23470c',
     stashPriceMultiplier: 1.02,
     residents: ['5fca3b4a86e77b5c8e58b67a', '5fca3b4a86e77b5c8e58b680'],
-
   },
   {
     name: 'Stavanger',
@@ -31,7 +30,6 @@ const cities = [
     _id: '5fae62409cbf7d270f23470e',
     stashPriceMultiplier: 1.12,
     residents: ['5fca3b4a86e77b5c8e58b67c', '5fca3b4a86e77b5c8e58b681'],
-
   },
   {
     name: 'Novosibirsk',

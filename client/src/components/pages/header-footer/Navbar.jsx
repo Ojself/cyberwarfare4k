@@ -89,7 +89,7 @@ const NavbarComp = ({
               <DropdownItem href="/hack-crimes">Crime</DropdownItem>
               <DropdownItem href="/org-crimes">Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
-              <DropdownItem href="/vault">Vault</DropdownItem>
+              <DropdownItem href="/espionage">Espionage</DropdownItem>
               <DropdownItem href="/locals">Hack player</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

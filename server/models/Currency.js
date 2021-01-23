@@ -34,7 +34,6 @@ currencySchema.methods.purchaseHandle = function (amount, userId) {
   if (this.avialable < 0) {
     this.available = 0;
   }
-  this.save();
 };
 
 currencySchema.methods.sellHandle = function (amount) {
@@ -42,7 +41,6 @@ currencySchema.methods.sellHandle = function (amount) {
   if (this.available > this.marketCap) {
     this.marketCap = this.available;
   }
-  this.save();
 };
 
 module.exports = mongoose.model('Currency', currencySchema);

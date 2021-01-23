@@ -261,8 +261,8 @@ const Information = ({ updateGlobalValues, user }) => {
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Vault</CardTitle>
-            The vault is your personal espionage center. You buy spies and send
+            <CardTitle tag="h3">Espionage</CardTitle>
+            The espionage is your personal intelligence center. You buy spies and send
             it to whomever. If the money you spend is more than what the
             opponent have in their vault, you will be notified with precious
             information. If it's less however, their vault will be lowered with

@@ -158,11 +158,11 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                 <Card body className="text-light">
                   {/* <CardTitle>0% admission fee </CardTitle> */}
                   <CardText>
-                    In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
+                    In ledger: <span className="bitcoinColor">&#8383;</span>
                     {globalLoading ? 0 : Math.floor(user.playerStats.ledger)}
                   </CardText>
                   <CardText>
-                    On hand: <span style={{ color: "#F08F18" }}>&#8383;</span>
+                    On hand: <span className="bitcoinColor">&#8383;</span>
                     {globalLoading ? 0 : Math.floor(user.playerStats.bitCoins)}
                   </CardText>
                   <InputGroup>
@@ -209,7 +209,7 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                   <CardTitle>Transfer Bitcoins</CardTitle>
                   <CardText>5% admission fee </CardText>
                   <CardText>
-                    In ledger: <span style={{ color: "#F08F18" }}>&#8383;</span>
+                    In ledger: <span className="bitcoinColor">&#8383;</span>
                     {globalLoading ? 0 : user.playerStats.ledger}
                   </CardText>
                   <Select

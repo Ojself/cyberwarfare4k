@@ -12,14 +12,12 @@ const PettyResult = (props) => {
     skillGained,
   } = props.result;
 
-  
-
-  const getSkillColor = (skill)=> {
-    if (["CPU", "Encryption", "AntiVirus"].includes( skill)){
-      return 'primary'
+  const getSkillColor = (skill) => {
+    if (["CPU", "Encryption", "AntiVirus"].includes(skill)) {
+      return "primary";
     }
-    return 'success'
-  }
+    return "success";
+  };
 
   const getStashColor = (colorDecider = 0) => {
     const defaultColors = ["red", "blue", "orange", "green"];
@@ -78,7 +76,7 @@ const PettyResult = (props) => {
             <strong>{winStrings[props.index % winStrings.length]}</strong>
           </p>
           <p>
-            + <span style={{ color: "#F08F18" }}>&#8383;</span>
+            + <span className="bitcoinColor">&#8383;</span>
             {bitCoins} bitcoins!
           </p>
           <p> + {exp} XP!</p>
@@ -90,8 +88,10 @@ const PettyResult = (props) => {
           {stashGained && <p> new stash: {stashGained}!</p>}
           {skillGained && (
             <p>
-              <span className={`text-${getSkillColor(skillGained)}`}>{skillGained}</span> skill
-              gained!
+              <span className={`text-${getSkillColor(skillGained)}`}>
+                {skillGained}
+              </span>{" "}
+              skill gained!
             </p>
           )}
           <p>

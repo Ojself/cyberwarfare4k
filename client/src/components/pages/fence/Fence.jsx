@@ -1,13 +1,41 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
-import { Button, Form, FormGroup, Input, Table, Container, Row, Col } from "reactstrap";
-import "./fence.scss"
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Table,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+import "./fence.scss";
 
-const MAX_ALLOWED_STASH = 50
+const MAX_ALLOWED_STASH = 50;
 
-const getMaxBuyingVolume = (user, stashes,cityMultiplier)=>{
-  const copiedStashes = JSON.parse(JSON.stringify(stashes))
-  let wallet = user.playerStats.bitCoins
+const defaultColors = ["red", "blue", "orange", "green"];
+
+const defaultValues = {
+  Cables: 0,
+  Computer: 0,
+  "EyeSpy Digital Spy Recorder": 0,
+  "HackRf One": 0,
+  Keylogger: 0,
+  "Linux for dummies": 0,
+  "Lock pick set": 0,
+  Magspoof: 0,
+  "Mini Hidden Camera": 0,
+  "Proxmark3 Kit": 0,
+  "Raspberry Pi": 0,
+  "Rubber Ducky": 0,
+  "Ubertooth One": 0,
+  "WiFi Pineapple": 0,
+};
+
+const getMaxBuyingVolume = (user, stashes, cityMultiplier) => {
+  const copiedStashes = JSON.parse(JSON.stringify(stashes));
+  let wallet = user.playerStats.bitCoins;
   const max = copiedStashes
     .map((stash) => {
       stash.price = stash.price * cityMultiplier;
@@ -32,94 +60,70 @@ const getMaxBuyingVolume = (user, stashes,cityMultiplier)=>{
       return { [name]: amountCanBuy };
     });
   return Object.assign({}, ...max);
-}
+};
 
 const objectIsEmpty = (obj) => {
-  return Object.values(obj).every(val=> val === 0)
-}
+  return Object.values(obj).every((val) => val === 0);
+};
 
 export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const [shopStash, setShopStash] = useState([]);
   const [loading, setLoading] = useState(true);
   const [transactionState, setTransactionState] = useState({
-    "Cables": 0,
-    "Computer": 0,
+    Cables: 0,
     "EyeSpy Digital Spy Recorder": 0,
-    "HackRf One": 0,
-    "Keylogger": 0,
+    Keylogger: 0,
     "Linux for dummies": 0,
     "Lock pick set": 0,
-    "Magspoof": 0,
+    Magspoof: 0,
     "Mini Hidden Camera": 0,
-    "Proxmark3 Kit": 0,
     "Raspberry Pi": 0,
     "Rubber Ducky": 0,
     "Ubertooth One": 0,
+    "Proxmark3 Kit": 0,
     "WiFi Pineapple": 0,
-  })
-
+    "HackRf One": 0,
+    Computer: 0,
+  });
 
   const getStashColor = (index) => {
-    // todo. color should be consistent
-    // extract to helper
-    const defaultColors = ["red", "blue", "orange", "green"];
-      return defaultColors[index % defaultColors.length];
+    return defaultColors[index % defaultColors.length];
   };
-  
 
-  const handleTransactionChange = (event)=> {
+  const handleTransactionChange = (event) => {
     setTransactionState({
       ...transactionState,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const handleSell = async () => {
-    if (objectIsEmpty(transactionState))return
+    if (objectIsEmpty(transactionState)) return;
     let data;
     try {
       data = await api.sellStashes(transactionState);
     } catch (err) {
-      console.error('error',err);
-      updateGlobalValues(err,true,true);
+      console.error("error", err);
+      updateGlobalValues(err, true, true);
       return;
     }
-    
     updateGlobalValues(data, true, true);
-    resetTransactionState();
+    setTransactionState(defaultValues);
   };
 
-  const handleBuy = async ()=> {
+  const handleBuy = async () => {
     if (objectIsEmpty(transactionState)) return;
-    let data
+    let data;
     try {
       data = await api.buyStashes(transactionState);
-    }catch (err){
-      updateGlobalValues(err)
-      return
+    } catch (err) {
+      updateGlobalValues(err);
+      return;
     }
     updateGlobalValues(data);
-    resetTransactionState();
-  }
+    setTransactionState(defaultValues);
+  };
 
-  const resetTransactionState = () => {
-    setTransactionState({
-      Cables: 0,
-      Computer: 0,
-      "EyeSpy Digital Spy Recorder": 0,
-      "HackRf One": 0,
-      Keylogger: 0,
-      "Linux for dummies": 0,
-      "Lock pick set": 0,
-      Magspoof: 0,
-      "Mini Hidden Camera": 0,
-      "Proxmark3 Kit": 0,
-      "Raspberry Pi": 0,
-      "Rubber Ducky": 0,
-      "Ubertooth One": 0,
-      "WiFi Pineapple": 0,
-    });
-  }
   useEffect(() => {
     const getStashes = async () => {
       let data;
@@ -127,12 +131,9 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         data = await api.getStashes();
       } catch (err) {
         console.error(err, "err");
-        updateGlobalValues(err);
-        return;
+        return updateGlobalValues(err);
       }
-
       setShopStash(data.stashes);
-
       setLoading(false);
       updateGlobalValues(data);
     };
@@ -152,7 +153,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         <tr key={name}>
           <td className="d-flex align-items-center">
             <img
-              style={{ maxHeight:"30px",maxWidth: "30px", width: "100%" }}
+              style={{ maxHeight: "30px", maxWidth: "30px", width: "100%" }}
               src={`/stashPics/${name}/${getStashColor(i)}.png`}
               title={name}
               alt={name}
@@ -161,7 +162,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
           </td>
           <td>{userStashAmount ? userStashAmount : "--"}</td>
           <td>
-            <span style={{ color: "#F08F18" }}>&#8383;</span>
+            <span className="bitcoinColor">&#8383;</span>
             {(price * stashPriceMultiplier).toFixed(2)}
           </td>
           <td>
@@ -185,8 +186,8 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
     });
 
   const buttonGroup = (
-    <tr className="" style={{ height:"10vh", backgroundColor: "#696b78" }}>
-      <td style={{verticalAlign: "middle"}}>
+    <tr className="" style={{ height: "10vh", backgroundColor: "#696b78" }}>
+      <td style={{ verticalAlign: "middle" }}>
         <Button
           onClick={() => setTransactionState(user.stash)}
           color="outline-danger"
@@ -194,13 +195,17 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
           Sell all
         </Button>{" "}
       </td>
-      <td style={{verticalAlign: "middle"}}>
-        <Button onClick={()=>handleSell()} color="danger">Sell</Button>{" "}
+      <td style={{ verticalAlign: "middle" }}>
+        <Button onClick={() => handleSell()} color="danger">
+          Sell
+        </Button>{" "}
       </td>
-      <td style={{verticalAlign: "middle"}}>
-        <Button onClick={()=>handleBuy()} color="success">Buy</Button>{" "}
+      <td style={{ verticalAlign: "middle" }}>
+        <Button onClick={() => handleBuy()} color="success">
+          Buy
+        </Button>{" "}
       </td>
-      <td style={{verticalAlign: "middle"}}>
+      <td style={{ verticalAlign: "middle" }}>
         <Button
           onClick={() =>
             setTransactionState(
@@ -222,7 +227,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const tableOverview = (
     <Container className="p-2">
       <Row className="d-flex justify-content-center">
-        <Col sm="12" md="10" className="p-0" >
+        <Col sm="12" md="10" className="p-0">
           <Table className="" size={"sm"} dark>
             <thead>
               <tr>
@@ -245,9 +250,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
     <div className="fence-page-container">
       <h1>Fence</h1>
       <h6>{city}</h6>
-      <div className="content">
-        {tableOverview}
-      </div>
+      <div className="content">{tableOverview}</div>
     </div>
   );
 };

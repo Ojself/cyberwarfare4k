@@ -2,27 +2,26 @@ const { calculateNetworth } = require('./_helpers');
 const Currency = require('../models/Currency');
 const Alliance = require('../models/Alliance');
 
-const checkCreateAllianceCriteria = (user, alliance, createCost) => {
-  if (!user) {
-    return 'ùser not found';
-  }
-  if (!alliance) {
-    return 'alliance already exist';
+const checkCreateAllianceCriteria = (user, alliance, createCost, city) => {
+  if (!user || !alliance || !city) {
+    return 'Something went wrong';
   }
   if (user.alliance || user.allianceRole) {
     return 'You are already in an alliance';
+  }
+  if (user.playerStats.rank < 4) {
+    return 'You are too unexperienced to create your own alliance...';
   }
   const allianceMembers = alliance.members();
   if (allianceMembers.length) {
     return 'This alliance already have members';
   }
-  if (user.playerStats.rank < 4) {
-    return 'You are too unexperienced to create your own alliance...';
+  if (city.allianceOwner) {
+    return 'This city have already been claimed';
   }
   if (user.playerStats.bitCoins < createCost) {
     return 'Insufficent bitcoins...';
   }
-
   return null;
 };
 

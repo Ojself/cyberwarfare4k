@@ -8,13 +8,24 @@
     width: 100%;
     margin: 0 auto;
     margin-top: 3rem;
-    
+  }
+}
+
+
+.crimeTerminalResultWrapper {
+  margin: auto;
+  width: 50%;
+  padding-left: 0.5rem;
+  p,
+  h5 {
+    text-align: center;
+    font-size: 0.75;
   }
 }
 @media only screen and (max-width: 600px) {
   .crimes-page-container {
-    .content{
-      width:100%;
+    .content {
+      width: 100%;
     }
   }
 }

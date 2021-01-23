@@ -54,7 +54,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
                 Heals <span style={{ color: "red" }}>&#9829;</span> 20%
               </p>
               <p>
-                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                <span className="bitcoinColor">&#8383;</span>
                 {Math.round((user.playerStats.repairCost * 20) / 100)}
               </p>
               <Button color="success" onClick={() => handlePartial()}>
@@ -74,7 +74,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
               </p>
 
               <p>
-                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                <span className="bitcoinColor">&#8383;</span>
                 {Math.round(user.playerStats.repairCost)}
               </p>
               <Button color="success" onClick={() => handleFull()}>
@@ -93,7 +93,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
                 Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
               </p>
               <p>
-                <span style={{ color: "#F08F18" }}>&#8383;</span>
+                <span className="bitcoinColor">&#8383;</span>
                 {Math.round(user.playerStats.bodyguards.price)}
               </p>
               <Button color="success" onClick={() => handleBodyguard()}>

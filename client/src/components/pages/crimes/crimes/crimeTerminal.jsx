@@ -39,12 +39,14 @@ const CrimeTerminal = ({ result }) => {
   };
 
   const giveLostString = () => {
-    return `ERROR: ${errorMessages[getRandomNumber(errorMessages)]}`;
+    return `ERROR: ${errorMessages[getRandomElementFromArray(errorMessages)]}`;
   };
   const giveWonString = () => {
-    return `SUCCESS ${randomCrimeString[getRandomNumber(randomCrimeString)]}`;
+    return `SUCCESS ${
+      randomCrimeString[getRandomElementFromArray(randomCrimeString)]
+    }`;
   };
-  const getRandomNumber = (array) => {
+  const getRandomElementFromArray = (array) => {
     return Math.floor(Math.random() * array.length);
   };
 
@@ -71,7 +73,9 @@ const CrimeTerminal = ({ result }) => {
       } crimeTerminalResultWrapper`}
     >
       <p>
-        <span style={{ fontSize: "1rem", color: "#F08F18" }}>&#8383;</span>{" "}
+        <span classname="bitcoinColor" style={{ fontSize: "1rem" }}>
+          &#8383;
+        </span>{" "}
         {result.playerGains.bitCoins}
       </p>
       <p>XP: {result.playerGains.exp}</p>
