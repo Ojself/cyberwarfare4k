@@ -1,6 +1,5 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
-const mongoose = require('mongoose');
 const City = require('../models/City');
 require('../configs/database');
 
@@ -38,20 +37,17 @@ const cities = [
     residents: ['5fca3b4a86e77b5c8e58b67d', '5fca3b4a86e77b5c8e58b682', '5fca3b4a86e77b5c8e58b683'],
   },
 ];
+const citySeeds = async () => {
+  await City.deleteMany();
+  let citiesCreated;
+  try {
+    citiesCreated = await City.create(cities);
+  } catch (err) {
+    console.error('City seeds error: ', err);
+    throw err;
+  }
+  console.info(citiesCreated.length, ' cities created');
+};
 
-City.deleteMany()
-  .then(() => City.create(cities))
-  .then((citiesCreated) => {
-    console.log(
-      `${citiesCreated.length} cities created`,
-    );
-  })
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error(err);
-    process.exit(1);
-  });
+// citySeeds();
+module.exports = { citySeeds };

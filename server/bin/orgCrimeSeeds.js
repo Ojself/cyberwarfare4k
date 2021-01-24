@@ -101,16 +101,16 @@ const orgCrimes = [
     ],
   },
 ];
+const orgCrimeSeeds = async () => {
+  await OrgCrime.deleteMany();
+  let crimesCreated;
+  try {
+    crimesCreated = await OrgCrime.create(orgCrimes);
+  } catch (err) {
+    console.error('Org crime seed error: ', err);
+    throw err;
+  }
+  console.info(crimesCreated.length, 'org crimes created');
+};
 
-OrgCrime.deleteMany()
-  .then(() => OrgCrime.create(orgCrimes))
-  .then((crimesCreated) => console.info(`${crimesCreated.length} crimes created`))
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error(err);
-    process.exit(1);
-  });
+module.exports = { orgCrimeSeeds };

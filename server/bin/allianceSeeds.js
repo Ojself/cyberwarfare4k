@@ -37,17 +37,16 @@ const alliances = [
   },
 ];
 
-Alliance.deleteMany()
-  .then(() => Alliance.create(alliances))
-  .then((alliancesCreated) => {
-    console.info(`${alliancesCreated.length} alliances created`);
-  })
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error('Error: ', err);
-    process.exit(1);
-  });
+const allianceSeeds = async () => {
+  await Alliance.deleteMany();
+  let alliancesCreated;
+  try {
+    alliancesCreated = await Alliance.create(alliances);
+  } catch (err) {
+    console.error('Alliance seeds error: ', err);
+    throw err;
+  }
+  console.info(alliancesCreated.length, ' alliances created');
+};
+
+module.exports = { allianceSeeds };

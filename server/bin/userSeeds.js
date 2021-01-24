@@ -377,16 +377,15 @@ const users = [
     },
   },
 ];
-
-User.deleteMany()
-  .then(() => User.create(users))
-  .then((usersCreated) => {
-    console.info(`Success! ${usersCreated.length} users created!`);
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error('Error: ', err);
-    process.exit(1);
-  });
+const userSeeds = async () => {
+  await User.deleteMany();
+  let usersCreated;
+  try {
+    usersCreated = await User.create(users);
+  } catch (err) {
+    console.error('User seeds error: ', err);
+    throw err;
+  }
+  console.info(usersCreated.length, 'users created');
+};
+module.exports = { userSeeds };

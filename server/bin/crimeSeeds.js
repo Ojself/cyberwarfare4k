@@ -220,21 +220,14 @@ const crimes = [
     difficultyString: 'impossible',
   },
 ];
-
-Crime.deleteMany()
-  .then(() => Crime.create(crimes))
-  .then((crimesCreated) => {
-    console.log(
-      `${crimesCreated.length} crimes created with the following id:`,
-    );
-    console.log(crimesCreated.map((u) => u._id));
-  })
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error(err);
-    process.exit(1);
-  });
+const crimeSeeds = async () => {
+  await Crime.deleteMany();
+  let crimesCreated;
+  try {
+    crimesCreated = await Crime.create(crimes);
+  } catch (err) {
+    console.error('Crime seeds error: ', err);
+  }
+  console.info(crimesCreated.length, ' crimes created');
+};
+module.exports = { crimeSeeds };

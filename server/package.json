@@ -6,6 +6,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "debug": "DEBUG=server:* nodemon ./bin/www",
+    "seed": "node ./bin/_seedAll.js",
     "test": "mocha --timeout 3000"
   },
   "dependencies": {
@@ -18,7 +19,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
-    "dotenv": "^6.2.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.3",
     "express-session": "^1.17.1",

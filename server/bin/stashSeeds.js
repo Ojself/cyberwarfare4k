@@ -17,7 +17,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // https://game-icons.net/1x1/delapouite/raspberry.html
 // https://game-icons.net/1x1/delapouite/video-camera.html
 
-const mongoose = require('mongoose');
 const Stash = require('../models/Stash');
 
 require('../configs/database');
@@ -111,16 +110,16 @@ const stash = [
     price: 1007.51,
   },
 ];
+const stashSeeds = async () => {
+  await Stash.deleteMany();
+  let stashCreated;
+  try {
+    stashCreated = await Stash.create(stash);
+  } catch (err) {
+    console.error('Stash seeds error: ', err);
+    throw err;
+  }
+  console.info(stashCreated.length, ' stash created');
+};
 
-Stash.deleteMany()
-  .then(() => Stash.create(stash))
-  .then((stashCreated) => console.log(`${stashCreated.length} stash created`))
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error('Error: ', err);
-    process.exit(1);
-  });
+module.exports = { stashSeeds };

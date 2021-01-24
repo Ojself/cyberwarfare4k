@@ -176,18 +176,16 @@ const items = [
     bonus: 100,
   },
 ];
-
-Item.deleteMany()
-  .then(() => Item.create(items))
-  .then((itemsCreated) => {
-    console.log(`${itemsCreated.length} items created`);
-  })
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error(err);
-    process.exit(1);
-  });
+const itemSeeds = async () => {
+  await Item.deleteMany();
+  let itemsCreated;
+  try {
+    itemsCreated = await Item.create(items);
+  } catch (err) {
+    console.error('Item seeds error: ', err);
+    throw err;
+  }
+  console.info(itemsCreated.length, 'items created');
+};
+// itemSeeds(true);
+module.exports = { itemSeeds };

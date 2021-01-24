@@ -2,7 +2,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const mongoose = require('mongoose');
-const BetaForum = require('../models/BetaForum');
+const Funeral = require('../models/Funeral');
 
 require('../configs/database');
 
@@ -22,16 +22,7 @@ const comments = [{
   }],
 }];
 
-BetaForum.deleteMany()
-
-  .then(() => BetaForum.create(deadMembers))
+Funeral.deleteMany
+  .then(() => Funeral.create(deadMembers))
   .then((commentsCreated) => console.log(`${commentsCreated.length} funerals created`))
-  .then(() => {
-    console.log('disconnecting from mongoose');
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    throw err;
-  });
+  .catch((err) => console.error('Funeral seeds error: ', err));

@@ -136,16 +136,16 @@ const currency = [
     marketCap: 0
   } */
 ];
-
-Currency.deleteMany()
-  .then(() => Currency.create(currency))
-  .then((currencyCreated) => console.log(`${currencyCreated.length} currency created`))
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error('Error: ', err);
-    process.exit(1);
-  });
+const currencySeeds = async () => {
+  await Currency.deleteMany();
+  let currencyCreated;
+  try {
+    currencyCreated = await Currency.create(currency);
+  } catch (err) {
+    console.error('Currency seeds error: ', err);
+    throw err;
+  }
+  console.info(currencyCreated.length, 'currency created');
+};
+// currencySeeds(true);
+module.exports = { currencySeeds };

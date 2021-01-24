@@ -27,9 +27,11 @@ const generateRandomText = () => {
   return texts[Math.floor(Math.random() * texts.length)];
 };
 
-Message.deleteMany()
-  .then(() => getUserIds())
-  .then(() => {
+const messageSeeds = async () => {
+  await Message.deleteMany();
+  let messagesCreated;
+  try {
+    await getUserIds();
     for (let i = 0; i < 10; i += 1) {
       messages.push({
         from: getRandomUserId(),
@@ -39,17 +41,11 @@ Message.deleteMany()
         text: generateRandomText(),
       });
     }
-  })
-  .then(() => Message.create(messages))
-  .then((messagesCreated) => {
-    console.log(`${messagesCreated.length} messages created`);
-  })
-  .then(() => {
-    mongoose.disconnect();
-    process.exit(0);
-  })
-  .catch((err) => {
-    mongoose.disconnect();
-    console.error(err);
-    process.exit(1);
-  });
+    messagesCreated = await Message.create(messages);
+  } catch (err) {
+    console.error('Message seed error: ', err);
+    throw new Error(err);
+  }
+  console.info(messagesCreated.length, 'messages created');
+};
+module.exports = { messageSeeds };

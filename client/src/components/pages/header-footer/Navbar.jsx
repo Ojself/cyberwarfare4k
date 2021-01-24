@@ -56,7 +56,12 @@ const NavbarComp = ({
           href="/my-profile"
           className="mr-auto display-none-when-mobile"
         >
-          <Clock />
+          <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
+            Current phase: <strong>testing</strong>
+          </p>
+          <p className="text-light" style={{ fontSize: "0.75rem" }}>
+            (Jan 2021)
+          </p>
         </NavbarBrand>
 
         <Nav className="m-auto" navbar>

@@ -5,7 +5,7 @@ const timeZone = 'Europe/Oslo';
 
 const uri = process.env.MONGODB_URI
   || 'mongodb://localhost/please-set-process-env-mongodb-uri';
-
+console.log(uri, 'uri');
 const stashPriceInterval = require('../cronjobs/stashPriceInterval');
 const batteryInterval = require('../cronjobs/batteryInterval');
 const bonusBatteryInterval = require('../cronjobs/bonusBatteryInterval');
