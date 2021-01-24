@@ -4,7 +4,7 @@ import hackerComments from "../_helpers/hackerComments";
 import hackerNames from "../_helpers/hackerNames";
 import images from "../_helpers/images";
 import api from "../../../api";
-import {Container, Row, Col} from "reactstrap"
+import { Container, Row, Col } from "reactstrap";
 import Login from "./Login";
 import Signup from "./Signup";
 
@@ -32,7 +32,8 @@ const Home = (props) => {
     redirectToCorrectPage().then(() => {});
   }, []);
 
-  const redirectToCorrectPage = async () => { // move to backcend TODO
+  const redirectToCorrectPage = async () => {
+    // move to backcend TODO
     const reDirectInformation = await api.getRedirectInfo();
     const status = reDirectInformation.status;
 
@@ -49,7 +50,6 @@ const Home = (props) => {
     props.history.push(url);
   };
 
-  
   return (
     <div className="w-100">
       <div className="w-100">
@@ -90,7 +90,7 @@ const Home = (props) => {
             </p>
           </div>
           <Container className="p-0">
-            <Row className="d-flex h-100 justify-content-around">
+            <Row className="d-flex h-100 justify-content-around w-100 mx-0">
               <Col md="5" sm="12" className="p-0">
                 <Login />
               </Col>

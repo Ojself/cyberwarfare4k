@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { Tooltip } from "reactstrap";
 
 const SubscriptionIcon = ({ subscription }) => {
+  const [subIconToolTip, setSubIconToolTip] = useState(false);
+  const toggleSubIconTOolTip = () => setSubIconToolTip(!subIconToolTip);
   const subIcons = {
     Bronze: "🥉",
     Silver: "🥈",
@@ -11,13 +14,23 @@ const SubscriptionIcon = ({ subscription }) => {
     return false;
   }
   return (
-    <span
-      title={`${subscription} supporter!`}
-      role="img"
-      aria-label="subscription-icon"
-    >
-      {subIcons[subscription]}
-    </span>
+    <>
+      <span
+        id={"tooltipDesc-" + subIcons[subscription]}
+        role="img"
+        aria-label="subscription-icon"
+      >
+        {subIcons[subscription]}
+      </span>
+      <Tooltip
+        placement="top"
+        isOpen={subIconToolTip}
+        target={"tooltipDesc-" + subIcons[subscription]}
+        toggle={toggleSubIconTOolTip}
+      >
+        {`${subscription} supporter!`}
+      </Tooltip>
+    </>
   );
 };
 

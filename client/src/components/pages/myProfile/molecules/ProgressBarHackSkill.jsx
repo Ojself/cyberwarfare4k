@@ -35,8 +35,6 @@ const ProgressBarHackSkill = (props) => {
     skillWithoutBonus = props.value;
   }
 
-  console.log(props, "pr");
-
   return (
     <div
       name={props.name}
