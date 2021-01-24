@@ -1,7 +1,6 @@
 const {
   batteryCheck,
   checkOccuranceLimit,
-  generateNotification,
 } = require('./_helpers');
 
 const config = {

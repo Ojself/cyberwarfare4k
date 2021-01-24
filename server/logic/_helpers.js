@@ -1,7 +1,8 @@
-const Session = require('../models/Session');
+const Currency = require('../models/Currency');
+const Funeral = require('../models/Funeral');
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
-const Currency = require('../models/Currency');
+const Session = require('../models/Session');
 
 const monthsOverview = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dev',
@@ -258,22 +259,40 @@ const calculateNetworth = (user, dbCurrencies) => {
   return networth;
 };
 
+/**
+ * Creates a new Funeral
+ * @param {String} name - name of the user who was shutdown
+ * @param {String} text - Avatar path
+ * @param {ObjectId} userId - userId of the user who was shutdown
+ * @param {ObjectId} allianceId - allianceId of the user who was shutdown
+ */
+const generateFuneral = async (name, avatar, userId, allianceId = null) => {
+  const funeral = new Funeral({
+    name,
+    avatar,
+    user: userId,
+    alliance: allianceId,
+  });
+  await funeral.save();
+};
+
 module.exports = {
-  stash,
+  batteryCheck,
   calculateNetworth,
-  getOnlineUsers,
-  getInbox,
-  getOpponentInformation,
-  saveAndUpdateUser,
+  checkFunds,
+  checkOccuranceLimit,
+  existingValue,
   generateMessage,
   generateNotification,
-  checkFunds,
-  stashDropChance,
-  skillDropChance,
-  batteryCheck,
-  existingValue,
-  checkOccuranceLimit,
+  generateFuneral,
+  getInbox,
+  getNotifications,
+  getOnlineUsers,
+  getOpponentInformation,
   removeBlankValuesFromObject,
   randomNumberMinMax,
-  getNotifications,
+  saveAndUpdateUser,
+  skillDropChance,
+  stash,
+  stashDropChance,
 };

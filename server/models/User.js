@@ -6,6 +6,8 @@ const Alliance = require('./Alliance');
 const City = require('./City');
 const DataCenter = require('./DataCenter');
 
+const { generateFuneral } = require('../logic/_helpers');
+
 const ranks = [
   {
     expToNewRank: 10000,
@@ -685,7 +687,7 @@ userSchema.methods.die = async function () {
     try {
       await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
     } catch (err) {
-      console.error('error:', err);
+      console.error('Removing datacenters error :', err);
     }
   }
   if (this.alliance) {
@@ -697,6 +699,9 @@ userSchema.methods.die = async function () {
       console.error('Error: ', err);
     }
   }
+
+  await generateFuneral(this.name, this.account.avatar, this._id, this.alliance);
+
   this.name = `UnconfirmedPlayer${Math.random()}`;
   this.account.isSetup = false;
   this.alliance = null;
@@ -738,6 +743,7 @@ userSchema.methods.die = async function () {
     battery: 100,
     bitCoins: 1000,
     ledger: 1500,
+    vault: 0,
     bounty: 0,
     bountyDonors: [],
     rank: 0,
@@ -772,10 +778,13 @@ userSchema.methods.die = async function () {
 
   this.fightInformation = {
     gracePeriod: Date.now(),
+    equippedWeapon: 'CPU',
+    activeSpies: [],
     shutdowns: 0,
     attacksInitiated: 0,
     attacksVictim: 0,
     crimesInitiated: 0,
+    pettyCrimesInitiated: 0,
     vpnChanges: 0,
     currencyPurchases: 0,
   };

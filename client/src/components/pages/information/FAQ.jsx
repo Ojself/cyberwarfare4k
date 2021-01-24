@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
+import {
+  Collapse,
+  Button,
+  CardBody,
+  CardTitle,
+  Card,
+  Col,
+  Row,
+  Container,
+} from "reactstrap";
 
 const FAQ = () => {
   const [statPointOpen, setStatPointOpen] = useState(false);
@@ -10,7 +19,7 @@ const FAQ = () => {
   const statPoints = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="success"
         onClick={() => setStatPointOpen(!statPointOpen)}
         style={{ marginBottom: "1rem" }}
@@ -33,10 +42,13 @@ const FAQ = () => {
             <CardTitle tag="h3">Hack skills</CardTitle>
             There are 3 hack skills: CPU, AntiVirus and Encryption. These skills
             determines your hit/miss chance when going into battle with an
-            opponent hacker. CPU is effective versus AntiVirus, AntiVirus is
-            good versus Encryption and Encryption is effective versus CPU. Make
-            sure to have the right equipped weapon when going into battle - or
-            when suspecting an incoming attack. You can buy components in the
+            opponent hacker.{" "}
+            <strong>
+              CPU is effective versus AntiVirus, AntiVirus is effective versus
+              Encryption and Encryption is effective versus CPU.{" "}
+            </strong>{" "}
+            Make sure to have the right equipped weapon when going into battle -
+            or when suspecting an incoming attack. You can buy components in the
             market place if you have the bitcoins
           </CardBody>
         </Card>
@@ -64,7 +76,7 @@ const FAQ = () => {
   const moneyMakingSystem = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="success"
         onClick={() => setMoneyOpen(!moneyOpen)}
         style={{ marginBottom: "1rem" }}
@@ -123,7 +135,7 @@ const FAQ = () => {
   const earnBatterySystem = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="success"
         onClick={() => setBatteryOpen(!batteryOpen)}
         style={{ marginBottom: "1rem" }}
@@ -187,7 +199,7 @@ const FAQ = () => {
   const combatSystem = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="success"
         onClick={() => setAttackOpen(!attackOpen)}
         style={{ marginBottom: "1rem" }}
@@ -224,18 +236,18 @@ const FAQ = () => {
           <CardBody>
             <CardTitle tag="h3">Attack</CardTitle>
             If you need to get someone out of the way for good, then attacking
-            is your best option. The CPU and AntiVirus will determine your
-            hit/miss and damage infliction.
+            is your best option. The equipped weapon of both you and your
+            opponent will determine the hit/miss chance.
             <br />
-            <br /> Chance for getting through the defense ={" "}
-            <strong>attackers CPU / (defenders AntiVirus * 1.125)</strong>
+            CPU is effective versus AntiVirus. AntiVirus is effective versus
+            Encryption. And Encryption is efective versus CPU.
             <br />
-            Damage inflication = <strong>(CPU * 0.1) + (rank level * 2)</strong>
+            Damage inflication ={" "}
+            <strong>
+              (Weapon Skill * effect bonus * 0.1) + (rank level * 1.5)
+            </strong>
             <br />
-            EG: (130 * 0.1) + (7 * 2) = <strong>27</strong> damage
-            <br />
-            NB! A small random number generator (rng) is applied to every
-            attack.
+            EG: (130 * 1.5 * 0.1) + (7 * 1.5) = <strong>34,5</strong> damage
             <br />
             <br /> An attack, successful or not, will grace the player for 60 or
             5 minutes depending on their online status. If you manage to bring a
@@ -259,10 +271,28 @@ const FAQ = () => {
   return (
     <div>
       <h1>FAQ</h1>
-      {statPoints}
-      {moneyMakingSystem}
-      {combatSystem}
-      {earnBatterySystem}
+      <Container>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {statPoints}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {moneyMakingSystem}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {combatSystem}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {earnBatterySystem}
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

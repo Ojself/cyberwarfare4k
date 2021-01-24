@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWifi } from "@fortawesome/free-solid-svg-icons";
-import { Collapse, Button, CardBody, CardTitle, Card } from "reactstrap";
+import {
+  Collapse,
+  Button,
+  CardBody,
+  CardTitle,
+  Card,
+  Row,
+  Col,
+  Container,
+} from "reactstrap";
 import FAQ from "./FAQ";
 
 const Information = ({ updateGlobalValues, user }) => {
@@ -14,7 +23,7 @@ const Information = ({ updateGlobalValues, user }) => {
   const infoSection = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="primary"
         onClick={() => setInfoOpen(!infoOpen)}
         style={{ marginBottom: "1rem" }}
@@ -73,7 +82,7 @@ const Information = ({ updateGlobalValues, user }) => {
   const communicationSection = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="primary"
         onClick={() => setCommunicationOpen(!communicationOpen)}
         style={{ marginBottom: "1rem" }}
@@ -107,7 +116,7 @@ const Information = ({ updateGlobalValues, user }) => {
   const allianceSection = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="primary"
         onClick={() => setAllianceOpen(!allianceOpen)}
         style={{ marginBottom: "1rem" }}
@@ -148,7 +157,7 @@ const Information = ({ updateGlobalValues, user }) => {
   const citySection = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="primary"
         onClick={() => setCityOpen(!cityOpen)}
         style={{ marginBottom: "1rem" }}
@@ -219,7 +228,7 @@ const Information = ({ updateGlobalValues, user }) => {
   const hackSection = (
     <div>
       <Button
-        className="w-50"
+        className="w-75"
         color="primary"
         onClick={() => setHackOpen(!hackOpen)}
         style={{ marginBottom: "1rem" }}
@@ -262,9 +271,9 @@ const Information = ({ updateGlobalValues, user }) => {
         <Card className="mb-2">
           <CardBody>
             <CardTitle tag="h3">Espionage</CardTitle>
-            The espionage is your personal intelligence center. You buy spies and send
-            it to whomever. If the money you spend is more than what the
-            opponent have in their vault, you will be notified with precious
+            The espionage is your personal intelligence center. You buy spies
+            and send it to whomever. If the money you spend is more than what
+            the opponent have in their vault, you will be notified with precious
             information. If it's less however, their vault will be lowered with
             the amount you spent, and they will be notified that you tried to
             spy on them.
@@ -283,22 +292,42 @@ const Information = ({ updateGlobalValues, user }) => {
   );
 
   return (
-    <div className="page-container d-flex justify-content-center">
-      <div className="w-75">
-        <h6>
-          Current Round: <strong>3</strong>
-        </h6>
-        <h6>
-          Round ends: <strong>01.03</strong>
-        </h6>
-        <FAQ />
-        <h1>SITE MAP</h1>
-        {infoSection}
-        {hackSection}
-        {allianceSection}
-        {citySection}
-        {communicationSection}
-      </div>
+    <div className="page-container d-flex flex-column justify-content-center">
+      <h6>
+        Current Round: <strong>3</strong>
+      </h6>
+      <h6>
+        Round ends: <strong>01.03</strong>
+      </h6>
+      <FAQ />
+      <h1>SITE MAP</h1>
+      <Container>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {infoSection}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {hackSection}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {allianceSection}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {citySection}
+          </Col>
+        </Row>
+        <Row className="d-flex justify-content-center">
+          <Col md="8" sm="12">
+            {communicationSection}
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
