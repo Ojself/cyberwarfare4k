@@ -74,6 +74,9 @@ router.get('/ladder', async (req, res) => {
     .populate('secondLead', memberPopulateValues)
     .populate('firstMonkeys', memberPopulateValues)
     .populate('secondMonkeys', memberPopulateValues);
+  const allianceIds = alliances.map((alliance) => alliance._id);
+  const cities = await City.find({ allianceOwner: allianceIds });
+  console.log(cities, 'cities');
   const totStats = await findAllianceStats(alliances);
   res.status(200).json({
     success: true,

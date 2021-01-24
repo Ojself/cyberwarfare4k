@@ -20,6 +20,7 @@ import ForumThread from "./pages/globalForum/ForumThread";
 */
 import Espionage from "./pages/espionage/Espionage";
 import EarnBattery from "./pages/earnBattery/EarnBattery";
+import Funeral from "./pages/funeral/Funeral";
 import HallOfFame from "./pages/HallOfFame";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HackCrimes from "./pages/crimes/crimes/HackCrimes";
@@ -37,6 +38,7 @@ import OrgCrimes from "./pages/orgCrimes/OrgCrimes";
 import Petty from "./pages/crimes/petty/Petty";
 import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
+import TermsOfSale from "./pages/earnBattery/TermsOfSale";
 import VPN from "./pages/VPN/VPN";
 import WantedList from "./pages/WantedList";
 
@@ -227,7 +229,27 @@ const App = () => {
             />
           )}
         />
-
+        <Route
+          path="/espionage"
+          render={() => (
+            <Espionage
+              updateGlobalValues={updateGlobalValues}
+              globalLoading={loading}
+              user={user}
+              setUnreadNotification={setUnreadNotification}
+            />
+          )}
+        />
+        <Route
+          path="/funeral"
+          render={() => (
+            <Funeral
+              updateGlobalValues={updateGlobalValues}
+              globalLoading={loading}
+              user={user}
+            />
+          )}
+        />
         <Route
           path="/hack-crimes"
           render={() => (
@@ -330,15 +352,8 @@ const App = () => {
           )}
         />
         <Route
-          path="/espionage"
-          render={() => (
-            <Espionage
-              updateGlobalValues={updateGlobalValues}
-              globalLoading={loading}
-              user={user}
-              setUnreadNotification={setUnreadNotification}
-            />
-          )}
+          path="/terms-of-sale"
+          render={() => <TermsOfSale user={user} />}
         />
         <Route
           path="/vpn"

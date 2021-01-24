@@ -302,27 +302,19 @@ const Information = ({ updateGlobalValues, user }) => {
       <FAQ />
       <h1>SITE MAP</h1>
       <Container>
-        <Row className="d-flex justify-content-center">
+        <Row xs="1" className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {infoSection}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {hackSection}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {allianceSection}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {citySection}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {communicationSection}
           </Col>

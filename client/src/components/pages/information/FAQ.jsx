@@ -272,22 +272,19 @@ const FAQ = () => {
     <div>
       <h1>FAQ</h1>
       <Container>
-        <Row className="d-flex justify-content-center">
+        <Row xs="1" className="d-flex justify-content-center">
           <Col md="8" sm="12">
             {statPoints}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
+
           <Col md="8" sm="12">
             {moneyMakingSystem}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
+
           <Col md="8" sm="12">
             {combatSystem}
           </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
+
           <Col md="8" sm="12">
             {earnBatterySystem}
           </Col>

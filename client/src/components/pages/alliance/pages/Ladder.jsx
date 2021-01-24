@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import api from "../../../../api";
-/* todo styling */
-const Ladder = ({user, updateGlobalValues}) => {
+
+const Ladder = ({}) => {
   const [ladderState, setLadderState] = useState({
     alliances: [],
     message: null,
@@ -77,7 +77,6 @@ const Ladder = ({user, updateGlobalValues}) => {
   return (
     <div className="page-container ">
       <h1>Alliance Ladder</h1>
-      <h6>Average</h6>
       <Table striped dark className="content">
         <thead>
           <tr>
@@ -95,9 +94,15 @@ const Ladder = ({user, updateGlobalValues}) => {
             </th>
             <th
               style={{ cursor: "pointer" }}
+              onClick={(e) => handleSort(e, "members")}
+            >
+              City
+            </th>
+            <th
+              style={{ cursor: "pointer" }}
               onClick={(e) => handleSort(e, "totRank")}
             >
-              Highest ranked
+              Avg Rank
             </th>
             <th
               style={{ cursor: "pointer" }}
@@ -107,39 +112,9 @@ const Ladder = ({user, updateGlobalValues}) => {
             </th>
             <th
               style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "totSkills")}
-            >
-              Skills
-            </th>
-            <th
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "totAttacksInitiated")}
-            >
-              Most aggressive
-            </th>
-            <th
-              style={{ cursor: "pointer" }}
               onClick={(e) => handleSort(e, "totShutdowns")}
             >
-              Most shutdowns
-            </th>
-            <th
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "totVpnChanges")}
-            >
-              Most on the move
-            </th>
-            <th
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "totCurrencies")}
-            >
-              Most CC holders
-            </th>
-            <th
-              style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "totCurrencyPurchases")}
-            >
-              Most CC purchases
+              Shutdowns
             </th>
             <th
               style={{ cursor: "pointer" }}
