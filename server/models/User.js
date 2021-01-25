@@ -73,6 +73,7 @@ const userSchema = new Schema(
       password: String,
       ip: [String],
       confirmationCode: { type: String, default: `${Math.random()}` },
+      confirmed: { type: Boolean, default: false },
       isSetup: {
         type: Boolean,
         default: false,

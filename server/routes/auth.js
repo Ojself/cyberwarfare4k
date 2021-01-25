@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const User = require('../models/User');
 
-const cityIds = ['5fae62409cbf7d270f23470b',
+const cityIds = [
+  '5fae62409cbf7d270f23470b',
   '5fae62409cbf7d270f23470c',
   '5fae62409cbf7d270f23470d',
   '5fae62409cbf7d270f23470e',
@@ -14,7 +15,6 @@ const cityIds = ['5fae62409cbf7d270f23470b',
 // const { sendConfirmation } = require('../configs/nodemailer');
 const bcryptSalt = 10;
 
-// TODO: Change email to email.
 router.post('/signup', (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -85,7 +85,6 @@ router.post('/login', async (req, res, next) => {
     next(err);
   }
 });
-// todo add ip when logging in. req.ip
 router.post('/login-with-passport-local-strategy', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     if (err) {
@@ -119,16 +118,14 @@ router.get('/logout', (req, res) => {
 router.get('/confirm/:confirmCode', (req, res) => {
   User.findOneAndUpdate(
     { confirmationCode: req.params.confirmCode },
-    { $set: { status: 'Active' } },
+    { $set: { 'account.confirmed': true } },
   )
     .then((user) => {
       res.status(200).json({
         message: 'success',
       });
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 });
 
 /* router.post('/forgot', (req, res) => {
