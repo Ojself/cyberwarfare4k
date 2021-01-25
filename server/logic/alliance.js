@@ -1,5 +1,4 @@
 const { calculateNetworth } = require('./_helpers');
-const Currency = require('../models/Currency');
 const Alliance = require('../models/Alliance');
 
 const checkCreateAllianceCriteria = (user, alliance, createCost, city) => {
@@ -25,66 +24,30 @@ const checkCreateAllianceCriteria = (user, alliance, createCost, city) => {
   return null;
 };
 
-const findAllianceStats = async (alliances) => {
-  const currencies = await Currency.find();
+const findAllianceStats = async (alliances, cities, currencies) => {
   const result = [];
   alliances.forEach((alliance) => {
     const allianceStats = {
       name: alliance.name,
       members: alliance.members(true),
       _id: alliance._id,
-      totSkills: 0,
-      totCurrencies: 0,
+      city: cities.find((city) => city.allianceOwner.toString() === alliance._id.toString()),
       totWealth: 0,
       totBounty: 0,
       totRank: 0,
       totShutdowns: 0,
-      totAttacksInitiated: 0,
-      totAttacksVictim: 0,
-      totCrimesInitiated: 0,
-      totVpnChanges: 0,
-      totCurrencyPurchases: 0,
     };
     const currentMembers = alliance.members();
     currentMembers.forEach((mem) => {
-      allianceStats.totSkills += Object.values(
-        mem.hackSkill,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totSkills += Object.values(
-        mem.crimeSkill,
-      ).reduce((t, n) => t + n);
-
-      allianceStats.totCurrencies += Object.values(
-        mem.currencies,
-      ).reduce((t, n) => t + n);
       allianceStats.totWealth += calculateNetworth(mem, currencies);
-
       allianceStats.totBounty += mem.playerStats.bounty;
-
       allianceStats.totRank += mem.playerStats.rank;
-
-      allianceStats.totShutdowns
-      += mem.fightInformation.shutdowns;
-
-      allianceStats.totAttacksInitiated
-      += mem.fightInformation.attacksInitiated;
-
-      allianceStats.totAttacksVictim
-      += mem.fightInformation.attacksVictim;
-
-      allianceStats.totCrimesInitiated
-        += mem.fightInformation.crimesInitiated;
-
-      allianceStats.totVpnChanges
-        += mem.fightInformation.vpnChanges;
-
-      allianceStats.totCurrencyPurchases
-        += mem.fightInformation.currencyPurchases;
+      allianceStats.totShutdowns += mem.fightInformation.shutdowns;
     });
 
     result.push(allianceStats);
   });
+  console.log(result, 'result');
   return result;
 };
 

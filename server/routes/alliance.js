@@ -5,6 +5,8 @@ const User = require('../models/User');
 const Alliance = require('../models/Alliance');
 const City = require('../models/City');
 const Message = require('../models/Message');
+const Currency = require('../models/Currency');
+
 const {
   checkCreateAllianceCriteria, saveAndUpdateUser, getInbox, findAllianceByIdAndPopulate,
   findAllianceStats, inviteSendCriteria, answerCriterias, promoteCriterias,
@@ -74,10 +76,11 @@ router.get('/ladder', async (req, res) => {
     .populate('secondLead', memberPopulateValues)
     .populate('firstMonkeys', memberPopulateValues)
     .populate('secondMonkeys', memberPopulateValues);
-  const allianceIds = alliances.map((alliance) => alliance._id);
-  const cities = await City.find({ allianceOwner: allianceIds });
-  console.log(cities, 'cities');
-  const totStats = await findAllianceStats(alliances);
+  const currencies = await Currency.find().lean();
+  const cities = await City.find({ allianceOwner: { $ne: null } })
+    .select({ name: 1, allianceOwner: 1 })
+    .lean();
+  const totStats = await findAllianceStats(alliances, cities, currencies);
   res.status(200).json({
     success: true,
     message: 'alliances ladder loaded...',

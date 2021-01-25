@@ -1,6 +1,6 @@
 /* https://www.patreon.com/cyberhackerwarfare4000 */
 import React, { useState } from "react";
-import GlobalIncome from './GlobalIncome'
+import GlobalIncome from "./GlobalIncome";
 import api from "../../../api";
 import {
   Card,
@@ -16,7 +16,6 @@ import {
   InputGroupAddon,
   Input,
   InputGroupText,
-  
 } from "reactstrap";
 
 const batteryBonuses = {
@@ -25,7 +24,7 @@ const batteryBonuses = {
   Bronze: 1,
   Silver: 2,
   Gold: 3,
-}
+};
 
 const URLS = {
   chw4k: "https://github.com/Ojself/cyberwarfare4k",
@@ -60,7 +59,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   const handlePostGithubUsername = async (event) => {
     const game = event.target.value;
     const data = await api.postGithubUsername(game);
-    updateGlobalValues(data,false);
+    updateGlobalValues(data, false);
   };
   const [githubName, setGithubName] = useState("");
   const handleChange = (event) => {
@@ -74,15 +73,15 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
 
   const userHasGithub = globalLoading || !!user.earnBattery.githubUserName;
   const userHasStarred = globalLoading ? false : user.earnBattery.githubStar;
-  const userHasSubscribed = globalLoading ? false : !!user.account.subscription
+  const userHasSubscribed = globalLoading ? false : !!user.account.subscription;
 
   const getButton = (game) => {
     if (!user || globalLoading) return;
-    let onclick = () => console.log('Click..');
+    let onclick = () => console.log("Click..");
     let innerText;
     let disabled = false;
     let cursor = "pointer";
-    let width = "100%"
+    let width = "100%";
 
     const currentGame = user.earnBattery[game];
     if (currentGame) {
@@ -92,16 +91,16 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     } else {
       onclick = () => {};
       disabled = true;
-      width = "85%"
+      width = "85%";
       cursor = "default";
       innerText = "New code tomorrow";
-    } 
+    }
     return (
       <InputGroup>
         <Button
           name={game}
           disabled={disabled}
-          style={{ cursor: cursor, width:width }}
+          style={{ cursor: cursor, width: width }}
           value={game}
           onClick={onclick}
         >
@@ -292,8 +291,6 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     </CardDeck>
   );
 
-  
-  
   return (
     <div
       className="display-flex justify-content-center mx-5 h-100"
@@ -301,15 +298,15 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     >
       <div className="d-flex justify-content-between">
         <div className="w-25"></div>
-        <h1 className="w-25">Earn battery</h1>
-        {!globalLoading && user &&(
-        <GlobalIncome
-        user = {user}
-        updateGlobalValues={updateGlobalValues}
-          batteryBonuses={batteryBonuses}
-          userHasStarred={userHasStarred}
-          userSubscription={user.account.subscription}
-        />
+        <h1 className="w-50">Earn battery</h1>
+        {!globalLoading && user && (
+          <GlobalIncome
+            user={user}
+            updateGlobalValues={updateGlobalValues}
+            batteryBonuses={batteryBonuses}
+            userHasStarred={userHasStarred}
+            userSubscription={user.account.subscription}
+          />
         )}
       </div>
       {cardDeck}

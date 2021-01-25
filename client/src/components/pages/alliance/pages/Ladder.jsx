@@ -28,12 +28,8 @@ const Ladder = ({}) => {
     members: false,
     rank: false,
     totWealth: false,
-    totSkills: false,
-    totAttacksInitiated: false,
+    cityName: false,
     totShutdowns: false,
-    totVpnChanges: false,
-    totCurrencies: false,
-    totCurrencyPurchases: false,
     totBounty: false,
   });
 
@@ -54,6 +50,14 @@ const Ladder = ({}) => {
           return ("" + a.name).localeCompare(b.name);
         } else {
           return ("" + b.name).localeCompare(a.name);
+        }
+      });
+    } else if (sort === "cityName") {
+      sortedAlliances = ladderState.alliances.sort((a, b) => {
+        if (sortState.alliance) {
+          return ("" + a.city.name).localeCompare(b.city.name);
+        } else {
+          return ("" + b.city.name).localeCompare(a.city.name);
         }
       });
     } else {
@@ -94,7 +98,7 @@ const Ladder = ({}) => {
             </th>
             <th
               style={{ cursor: "pointer" }}
-              onClick={(e) => handleSort(e, "members")}
+              onClick={(e) => handleSort(e, "cityName")}
             >
               City
             </th>
@@ -102,7 +106,7 @@ const Ladder = ({}) => {
               style={{ cursor: "pointer" }}
               onClick={(e) => handleSort(e, "totRank")}
             >
-              Avg Rank
+              Avg. Rank
             </th>
             <th
               style={{ cursor: "pointer" }}
@@ -120,7 +124,7 @@ const Ladder = ({}) => {
               style={{ cursor: "pointer" }}
               onClick={(e) => handleSort(e, "totBounty")}
             >
-              Most Bounty
+              Bounty
             </th>
           </tr>
         </thead>
@@ -135,42 +139,17 @@ const Ladder = ({}) => {
 
               <td>{alliance.members}</td>
 
-              <td>{getAverageScore(alliance.totRank, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totWealth, alliance.members)}</td>
-              <td>{getAverageScore(alliance.totSkills, alliance.members)}</td>
-              <td>
-                {getAverageScore(
-                  alliance.totAttacksInitiated,
-                  alliance.members
-                )}
-              </td>
-              <td>
-                {getAverageScore(alliance.totShutdowns, alliance.members)}
-              </td>
-              <td>
-                {getAverageScore(alliance.totVpnChanges, alliance.members)}
-              </td>
-              <td>
-                {getAverageScore(alliance.totCurrencies, alliance.members)}
-              </td>
-              <td>
-                {getAverageScore(
-                  alliance.totCurrencyPurchases,
-                  alliance.members
-                )}
-              </td>
-              <td>{getAverageScore(alliance.totBounty, alliance.members)}</td>
+              <td>{alliance.city.name}</td>
+              <td>{Math.round(alliance.totRank / alliance.members)}</td>
+              <td>{alliance.totWealth}</td>
+              <td>{alliance.totShutdowns}</td>
+              <td>{alliance.totBounty}</td>
             </tr>
           ))}
         </tbody>
       </Table>
     </div>
   );
-};
-
-const getAverageScore = (x, y) => {
-  const result = Math.round(x / y);
-  return result ? result : 0;
 };
 
 export default Ladder;

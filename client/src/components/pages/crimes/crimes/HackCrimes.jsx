@@ -48,8 +48,8 @@ const HackCrimes = ({ updateGlobalValues, user }) => {
     <div className="crimes-page-container">
       <h1>Hack Crimes</h1>
       <Container className="mt-2">
-        <Row>
-          <Col sm="12" md="6">
+        <Row sm="1" md="2">
+          <Col sm="12" md="7">
             <Table dark striped>
               <thead>
                 <tr>
@@ -90,7 +90,7 @@ const HackCrimes = ({ updateGlobalValues, user }) => {
               </tbody>
             </Table>
           </Col>
-          <Col className="display-none-when-mobile" md="6">
+          <Col className="display-none-when-mobile" md="5">
             <CrimeTerminal
               updateGlobalValues={updateGlobalValues}
               user={user}

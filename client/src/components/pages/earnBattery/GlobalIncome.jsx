@@ -1,26 +1,21 @@
-import React, {useState} from "react"
-import {Button, ListGroupItem,
+import React, { useState } from "react";
+import {
+  Button,
+  ListGroupItem,
   ListGroup,
   Popover,
   PopoverHeader,
-  PopoverBody} from 'reactstrap'
+  PopoverBody,
+} from "reactstrap";
 
-
-
-const GlobalIncome = ({
-  batteryBonuses,
-  userHasStarred,
-  userSubscription,
-  updateGlobalValues,
-  user,
-}) => {
+const GlobalIncome = ({ batteryBonuses, userHasStarred, userSubscription }) => {
   const githubBonus = userHasStarred ? 1 : 0;
   const subscriptionBonus = batteryBonuses[userSubscription] || 0;
   const totalBonus = 6 + githubBonus + subscriptionBonus;
   const totalCheckMark = userHasStarred && !!userSubscription;
-const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
-const toggle = () => setPopoverOpen(!popoverOpen);
+  const toggle = () => setPopoverOpen(!popoverOpen);
   const getIcon = (active = false) => {
     return active ? <i className={`text-success fas fa-check`}></i> : "";
   };
@@ -28,7 +23,7 @@ const toggle = () => setPopoverOpen(!popoverOpen);
   return (
     <div className="w-25">
       <Button id="showIncome" color="primary" type="button">
-        See your active{" "}
+        Your active{" "}
         <span role="img" aria-label="battery">
           &#9889;
         </span>{" "}
@@ -79,4 +74,4 @@ const toggle = () => setPopoverOpen(!popoverOpen);
   );
 };
 
-export default GlobalIncome
+export default GlobalIncome;
