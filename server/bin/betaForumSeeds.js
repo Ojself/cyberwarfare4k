@@ -1,9 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const mongoose = require('mongoose');
 const BetaForum = require('../models/BetaForum');
-const User = require('../models/User');
 
 require('../configs/database');
 
@@ -39,7 +37,7 @@ const getRandomDate = () => {
   return new Date(now);
 };
 const comments = Array.from({ length: 30 }, (_, i) => ({
-  creator: users[Math.floor(Math.random() * users.length)]._id,
+  creator: users[Math.floor(Math.random() * users.length)],
   comment: generateRandomText(),
   allianceForum: i % 2 === 0,
   alliance: i % 2 === 0 ? '5fae6d7ee60018434108369c' : null,
