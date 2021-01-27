@@ -59,6 +59,7 @@ const Login = () => {
             type="email"
             value={loginState.email}
             name="email"
+            autoComplete="on"
             onChange={handleInputChange}
           />
         </FormGroup>
@@ -71,6 +72,7 @@ const Login = () => {
             type="password"
             value={loginState.password}
             name="password"
+            autoComplete="on"
             onChange={handleInputChange}
           />
         </FormGroup>

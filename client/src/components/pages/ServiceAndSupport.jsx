@@ -51,7 +51,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
                 alt="Partial Repari"
               />
               <p className="my-0">
-                Heals <span style={{ color: "red" }}>&#9829;</span> 20%
+                Heals <span style={{ color: "red" }}>&#9829;</span> 20
               </p>
               <p>
                 <span className="bitcoinColor">&#8383;</span>
@@ -70,7 +70,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
                 alt="Partial Repair"
               />
               <p className="my-0">
-                Heals <span style={{ color: "red" }}>&#9829;</span> 100%
+                Heals <span style={{ color: "red" }}>&#9829;</span> 100
               </p>
 
               <p>

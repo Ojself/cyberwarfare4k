@@ -530,9 +530,9 @@ export default {
       .catch(errHandler);
   },
 
-  createAlliance(allianceId,cityId) {
+  createAlliance(allianceId, cityId) {
     return service
-      .post("/alliance", { allianceId,cityId })
+      .post("/alliance", { allianceId, cityId })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -540,6 +540,12 @@ export default {
   sendAllianceInvitation(id) {
     return service
       .post("/alliance/invitation", { id })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  cancelAllianceInvitation(userId) {
+    return service
+      .delete(`/alliance/invitation/${userId}`)
       .then((res) => res.data)
       .catch(errHandler);
   },

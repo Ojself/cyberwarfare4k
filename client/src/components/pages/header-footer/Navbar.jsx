@@ -74,14 +74,21 @@ const NavbarComp = ({
               <DropdownItem href="/my-profile">My Profile</DropdownItem>
               <DropdownItem href="/ladder">Top Hackers</DropdownItem>
               <DropdownItem href="/wanted-list">Wanted Hackers</DropdownItem>
-              <DropdownItem href="/earn-battery">
-                Earn Battery{" "}
-                <span role="img" aria-label="battery">
-                  &#9889;
-                </span>
-              </DropdownItem>
               <DropdownItem href="/information">Information & FAQ</DropdownItem>
               <DropdownItem href="/hall-of-fame">Hall Of Fame</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem href="/earn-battery">
+                <span role="img" aria-label="battery">
+                  &#9889;
+                </span>{" "}
+                Earn Battery
+              </DropdownItem>
+              <DropdownItem href="/token-store">
+                <span role="img" aria-label="battery">
+                  &#9889;
+                </span>{" "}
+                Token store
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>

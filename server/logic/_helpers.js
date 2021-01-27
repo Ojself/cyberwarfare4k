@@ -122,11 +122,11 @@ const getOnlineUsers = async (userId) => {
 
 const getInbox = async (userId) => {
   const messages = await Message.find({ $or: [{ from: userId }, { to: userId }] })
-    .populate('from to', 'name')
+    .populate('from', 'name')
+    .populate('to', 'name')
     .sort({ createdAt: -1 });
-  const inbox = messages.filter((m) => JSON.stringify(m.to) === JSON.stringify(userId));
-  const sent = messages.filter((m) => JSON.stringify(m.from) === JSON.stringify(userId));
-
+  const inbox = messages.filter((m) => JSON.stringify(m.to._id) === JSON.stringify(userId));
+  const sent = messages.filter((m) => JSON.stringify(m.from._id) === JSON.stringify(userId));
   return { inbox, sent };
 };
 
@@ -142,7 +142,7 @@ const getNotifications = async (userId) => {
 
 /**
  * Creates a new message
- * @param {ObjectId} to - userId to who sent the message
+ * @param {ObjectId} from - userId to who sent the message
  * @param {ObjectId} to - userId to reciever of message
  * @param {String} text - Text to be sent
  * @param {ObjectId} allianceId - allianceId if it's an alliance invitation. Default is null
@@ -185,7 +185,7 @@ const generateNotification = (to, text, genre = 'General', read = false) => {
     genre,
     read,
   });
-  return newNotification.save();
+  newNotification.save();
 };
 
 const getOpponentInformation = async (opponentId, allUsers) => {

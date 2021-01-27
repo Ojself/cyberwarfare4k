@@ -1,46 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import api from "../api";
 import Typist from "react-typist";
-
-import AllianceLadder from "./pages/alliance/pages/Ladder";
+import api from "../api";
 import AllianceOverview from "./pages/alliance/pages/AllianceOverview";
-import BetaForum from "./pages/_molecules/BetaForum";
-import Fence from "./pages/fence/Fence";
-import CreateHacker from "./pages/createHacker/CreateHacker";
 import CreateAlliance from "./pages/alliance/pages/CreateAlliance";
-import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import Dashboard from "./pages/alliance/pages/Dashboard";
+import AllianceLadder from "./pages/alliance/pages/Ladder";
+import MessageCenter from "./pages/communication/MessageCenter";
+import Notifications from "./pages/communication/Notifications";
+import CreateHacker from "./pages/createHacker/CreateHacker";
+import HackCrimes from "./pages/crimes/crimes/HackCrimes";
+import Petty from "./pages/crimes/petty/Petty";
+import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import DataCenters from "./pages/DataCenters";
-import Footer from "./pages/header-footer/Footer";
-/* 
+import EarnBattery from "./pages/earnBattery/EarnBattery";
+import TermsOfSale from "./pages/earnBattery/TermsOfSale";
+/*
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
-import ForumThread from "./pages/globalForum/ForumThread"; 
+import ForumThread from "./pages/globalForum/ForumThread";
 */
 import Espionage from "./pages/espionage/Espionage";
-import EarnBattery from "./pages/earnBattery/EarnBattery";
+import Fence from "./pages/fence/Fence";
 import Funeral from "./pages/funeral/Funeral";
-import HallOfFame from "./pages/HallOfFame";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
-import HackCrimes from "./pages/crimes/crimes/HackCrimes";
+import HallOfFame from "./pages/HallOfFame";
+import Footer from "./pages/header-footer/Footer";
+import NavbarComp from "./pages/header-footer/Navbar";
+import StatusBar from "./pages/header-footer/Statusbar";
 import Home from "./pages/home/Home";
 import Information from "./pages/information/Information";
 import Ladder from "./pages/Ladder";
-import Locals from "./pages/Locals";
 import Ledger from "./pages/Ledger";
+import Locals from "./pages/Locals";
 import Marketplace from "./pages/marketplace/Marketplace";
 import MyProfile from "./pages/myProfile/MyProfile";
-import MessageCenter from "./pages/communication/MessageCenter";
-import NavbarComp from "./pages/header-footer/Navbar";
-import Notifications from "./pages/communication/Notifications";
 import OrgCrimes from "./pages/orgCrimes/OrgCrimes";
-import Petty from "./pages/crimes/petty/Petty";
-import StatusBar from "./pages/header-footer/Statusbar";
 import ServiceAndSupport from "./pages/ServiceAndSupport";
-import TermsOfSale from "./pages/earnBattery/TermsOfSale";
 import VPN from "./pages/VPN/VPN";
 import WantedList from "./pages/WantedList";
+import BetaForum from "./pages/_molecules/BetaForum";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -158,8 +157,9 @@ const App = () => {
         />
         <Route
           path="/alliance/dashboard"
-          render={() => (
+          render={(props) => (
             <Dashboard
+              {...props}
               updateGlobalValues={updateGlobalValues}
               globalLoading={loading}
             />

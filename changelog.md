@@ -5,27 +5,37 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 ## [0.2.0] - 2021-x-x
 
 - More mobile friendly view
-- Major file structuring overhaul
 - Styled navbar with icons
 - Sorted items in Fence
 - Sorted Datacenters by price
 - NordVPN affiliation
-- Minor changes to User db document
 - Change timezone to Europe/Oslo
-- Major cleanup of seed files
-- Change out all set timeouts in server with fixed times (crimes, datacenters)
-- Add Vault w/ espionage
+- Add Espionage feature
 - Changed combat system to a rock - paper - scissor system
 - New signup login form
 - Crypto currency doesn't change at night
 - NPC have data centers
 - Digital clock
 - Tabs in notification
-- Cables needed for upkeep of Datacenters
 - Organized Crimes
 - Alliances can claim cities
-- Taxes upon fence for alliances
+- Alliance can set fee for the local fence
 - Alliances have a safe
+- Taxes upon fence for alliances
+- Terms of sale page
+- FAQ and Information have more information
+- Players start with the lowest firewall item
+
+### Coming
+
+- Alliance boss options
+- Minor changes to User db document
+- Change out all set timeouts in server with fixed times (crimes, datacenters)
+- Major file structuring overhaul
+- Cleanup of seed files
+- Listen to return key when logging in
+- Funeral
+- Payment methods
 
 ## [0.1.6] - 2020-12-20
 

@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Progress, Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
-import "./statusbar.scss"
+import "./statusbar.scss";
 
 const StatusBar = ({ loading, user }) => {
   const [expTooltip, setExpTooltip] = useState(false);
@@ -35,7 +35,7 @@ const StatusBar = ({ loading, user }) => {
           </li>
 
           <li className="list-inline-item">
-            <span style={{ color: "#dc3546" }}>&#9829;</span>
+            <span style={{ color: "red" }}>&#9829;</span>
             {user.playerStats.currentFirewall.toFixed(0)}
           </li>
           <li className="list-inline-item ml-2">

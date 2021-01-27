@@ -12,16 +12,16 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import DashboardOverview from "./_molecules/DashboardOverview";
-import DashboardVault from "./_molecules/DashboardVault"
+import DashboardSafe from "./_molecules/DashboardSafe";
 import DashboardBoss from "./_molecules/DashboardBoss";
 import DashboardOrganize from "./_molecules/DashboardOrganize";
-import DashboardInvite from "./_molecules/DashboardInvite"
-import AllianceOverview from "./AllianceOverview"
+import DashboardInvite from "./_molecules/DashboardInvite";
+import AllianceOverview from "./AllianceOverview";
 
 const dataMassager = (userArray) => {
   return userArray.map((u) => {
     let allianceRole;
-    if (u.allianceRole) allianceRole = u.allianceRole
+    if (u.allianceRole) allianceRole = u.allianceRole;
     return {
       value: u._id,
       label: u.name,
@@ -30,47 +30,62 @@ const dataMassager = (userArray) => {
   });
 };
 
-const Dashboard = ({ updateGlobalValues }) => {
+const Dashboard = ({ updateGlobalValues, history }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [alliance, setAlliance] = useState([]);
   const [users, setUsers] = useState([]);
   const [members, setMembers] = useState([]);
-  const [invitedMembers, setInvitedMembers] = useState([])
-  const [selectedInvite, setSelectedInvite] = useState(null)
+  const [invitedMembers, setInvitedMembers] = useState([]);
+  const [selectedInvite, setSelectedInvite] = useState(null);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
-  const sendInvite = async (user)=> {
-    const userId= user.value
+  const sendInvite = async (user) => {
+    const userId = user.value;
     let data;
-    try { data = await api.sendAllianceInvitation(userId)
-    } catch (err){
-      console.error('err',err)
-      return updateGlobalValues(err)
+    try {
+      data = await api.sendAllianceInvitation(userId);
+    } catch (err) {
+      console.error("err", err);
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data);
-    const oldInvitedMembmers = invitedMembers.slice()
+    const oldInvitedMembmers = invitedMembers.slice();
     oldInvitedMembmers.unshift(data.invitedUser);
     setInvitedMembers(oldInvitedMembmers);
-  }
+  };
 
-  const promote = async ( userId, title)=> {
+  const rejectInvitation = async (userId) => {
     let data;
-    try {data = await api.promoteAllianceMember(userId, title)
-    }catch (err){
-      console.error('err',err)
-      return updateGlobalValues(err)
+    try {
+      data = await api.cancelAllianceInvitation(userId);
+      console.log(data, "data");
+    } catch (err) {
+      console.error("err", err);
+      return updateGlobalValues(err);
+    }
+    updateGlobalValues(data);
+    setInvitedMembers(data.alliance.invitedMembers);
+  };
+
+  const promote = async (userId, title) => {
+    let data;
+    try {
+      data = await api.promoteAllianceMember(userId, title);
+    } catch (err) {
+      console.error("err", err);
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data);
     const massagedAllianceMembers = dataMassager(data.allianceMembers);
     setMembers(massagedAllianceMembers);
-    
+
     //setSelectedPromotion(massagedPromotedUser)
-    return true
-  }
+    return true;
+  };
 
   const handleInviteChange = (selectedOption) => {
-    setSelectedInvite( selectedOption );
+    setSelectedInvite(selectedOption);
   };
   const handlePromotionChange = (selectedOption) => {
     setSelectedPromotion(selectedOption);
@@ -89,7 +104,7 @@ const Dashboard = ({ updateGlobalValues }) => {
         (user) => user.alliance === data.alliance._id
       );
       const members = dataMassager(allianceMembers);
-      setInvitedMembers(data.alliance.invitedMembers)
+      setInvitedMembers(data.alliance.invitedMembers);
       setAlliance(data.alliance);
       setUsers(massagedAllUsers);
       setMembers(members);
@@ -104,9 +119,15 @@ const Dashboard = ({ updateGlobalValues }) => {
   };
 
   const leaveAlliance = async () => {
-    const data = await api.leaveAlliance();
-    //setModal(!modal);
+    let data;
+    try {
+      data = await api.leaveAlliance();
+    } catch (err) {
+      console.error("Error: ", err);
+      return updateGlobalValues(err);
+    }
     updateGlobalValues(data);
+    history.push("/my-profile");
   };
 
   const tabContent = (
@@ -127,7 +148,7 @@ const Dashboard = ({ updateGlobalValues }) => {
         {!loading && <AllianceOverview allianceId={alliance._id} />}
       </TabPane>
       <TabPane tabId="3">
-        <DashboardVault />
+        <DashboardSafe alliance={alliance} />
       </TabPane>
       <TabPane tabId="4">
         <Row>
@@ -151,6 +172,7 @@ const Dashboard = ({ updateGlobalValues }) => {
               users={users}
               loading={loading}
               sendInvite={sendInvite}
+              rejectInvitation={rejectInvitation}
               invitedMembers={invitedMembers}
             />
           </Col>
@@ -168,29 +190,32 @@ const Dashboard = ({ updateGlobalValues }) => {
 
   const tabs = (
     <Nav tabs className="d-flex justify-content-center">
-        {["Overview","Hierarchy", "Vault", "Organize", "Invite", "Boss Options"].map(
-          (tabHeader, i) => {
-            return (
-              <NavItem key={i}>
-                <NavLink
-                  className={classnames({ active: activeTab === i + 1 + "" })}
-                  onClick={() => {
-                    toggleTab(i + 1 + "");
-                  }}
-                >
-                  {tabHeader}
-                </NavLink>
-              </NavItem>
-            );
-          }
-        )}
+      {[
+        "Overview",
+        "Hierarchy",
+        "Safe",
+        "Organize",
+        "Invite",
+        "Boss Options",
+      ].map((tabHeader, i) => {
+        return (
+          <NavItem key={i}>
+            <NavLink
+              className={classnames({ active: activeTab === i + 1 + "" })}
+              onClick={() => {
+                toggleTab(i + 1 + "");
+              }}
+            >
+              {tabHeader}
+            </NavLink>
+          </NavItem>
+        );
+      })}
       <div className="ml-5 w-100 ">{tabContent}</div>
     </Nav>
   );
   return (
-    <div
-       className="page-container d-flex flex-column "
-    >
+    <div className="page-container d-flex flex-column ">
       <h1>Dashboard</h1>
       <div className="content">{tabs}</div>
     </div>

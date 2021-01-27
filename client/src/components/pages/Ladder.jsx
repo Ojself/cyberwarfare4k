@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "reactstrap";
+import { Container, Col, Row, Table } from "reactstrap";
 import api from "../../api";
 import { Link } from "react-router-dom";
 
-/* Todo
-styling
-Math.flooring values
-slicing out user array in server side so there's not too many users?
-*/
+const displayNoneAttributes = ["Rank", "Shutdowns", "Crimes"];
 
 const Ladder = () => {
   const [ladderState, setLadderState] = useState({
@@ -44,9 +40,8 @@ const Ladder = () => {
     fetchUsers();
   }, []);
 
-  const handleSort = (e, sort) => {
+  const handleSort = (sort) => {
     sort = sort.toLowerCase();
-    //e.preventDefault();
     let sortedUsers = ladderState.users || [];
 
     switch (sort) {
@@ -133,63 +128,83 @@ const Ladder = () => {
     });
   };
 
+  const responsiveCheck = (attr) => {
+    if (displayNoneAttributes.includes(attr)) {
+      return "display-none-when-mobile";
+    }
+    return "";
+  };
+
   return (
     <div className="page-container">
       <h1>Ladder</h1>
-      <Table className="content " striped dark>
-        <thead>
-          <tr>
-            {[
-              "Hacker",
-              "Alliance",
-              "Rank",
-              "Shutdowns",
-              "Crimes",
-              "Networth",
-            ].map((s, i) => {
-              return (
-                <th
-                  key={i}
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => handleSort(e, s)}
-                >
-                  {s}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {ladderState.users.map((user) => (
-            <tr key={user._id}>
-              <th scope="row">
-                <Link className="text-light" to={`/hacker/${user._id}`}>
-                  {user.name}
-                </Link>
-              </th>
-              <td>
-                {user.alliance ? (
-                  <Link
-                    className="text-light"
-                    to={`/alliance/${user.alliance._id}`}
-                  >
-                    {user.alliance.name}
-                  </Link>
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td>{user.playerStats.rankName}</td>
-              <td>{user.fightInformation.shutdowns}</td>
-              <td>{user.fightInformation.crimesInitiated}</td>
-              <td>
-                {Math.round(user.playerStats.bitCoins)}
-                <span className="bitcoinColor">&#8383;</span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <Container className="">
+        <Row>
+          <Col md="12">
+            <Table responsive striped dark>
+              <thead>
+                <tr>
+                  {[
+                    "Hacker",
+                    "Alliance",
+                    "Rank",
+                    "Shutdowns",
+                    "Crimes",
+                    "Networth",
+                  ].map((s, i) => {
+                    return (
+                      <th
+                        key={i}
+                        className={responsiveCheck(s)}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleSort(s)}
+                      >
+                        {s}
+                      </th>
+                    );
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {ladderState.users.map((user) => (
+                  <tr key={user._id}>
+                    <th scope="row">
+                      <Link className="text-light" to={`/hacker/${user._id}`}>
+                        {user.name}
+                      </Link>
+                    </th>
+                    <td>
+                      {user.alliance ? (
+                        <Link
+                          className="text-light"
+                          to={`/alliance/${user.alliance._id}`}
+                        >
+                          {user.alliance.name}
+                        </Link>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td className="display-none-when-mobile">
+                      {user.playerStats.rankName}
+                    </td>
+                    <td className="display-none-when-mobile">
+                      {user.fightInformation.shutdowns}
+                    </td>
+                    <td className="display-none-when-mobile">
+                      {user.fightInformation.crimesInitiated}
+                    </td>
+                    <td>
+                      {Math.round(user.playerStats.bitCoins)}
+                      <span className="bitcoinColor">&#8383;</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

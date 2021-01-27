@@ -52,12 +52,7 @@ ForumComment.deleteMany()
     }
   })
   .then(() => ForumComment.create(comments))
-  .then((commentsCreated) => {
-    console.log(
-      `${commentsCreated.length} comments created with the following id:`,
-    );
-    console.log(commentsCreated.map((u) => u._id));
-  })
+  .then((commentsCreated) => console.log(`${commentsCreated.length} comments created`))
   .then(() => {
     console.log('disconnecting from mongoose');
     mongoose.disconnect();

@@ -23,11 +23,6 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 
-// todo message sent feedback
-// ban people for spamming
-// alternate background color for easier reading
-// todo, linking color of names
-
 const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
   const [activeTab, setActiveTab] = useState("1");
   const [users, setUsers] = useState([]);
@@ -55,9 +50,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
     if (!users.length || userName.toLowerCase() === "system") {
       return "";
     }
-    const user = users.find((u) => {
-      return u.label === userName;
-    });
+    const user = users.find((u) => u.label === userName);
     return user.value;
   };
 
@@ -85,6 +78,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
   useEffect(() => {
     const getMessages = async () => {
       let data = await api.getMessages();
+      console.log(data, "data");
       setMessages(data.messages);
     };
     const fetchHackerNames = async () => {

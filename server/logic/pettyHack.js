@@ -45,10 +45,19 @@ const pettyCrime = async (user, batteryCost) => {
     skillGained: null,
   };
 
-  let probabiltiy = (crimeSkillsSum / 53) + (Math.random() / 4);
-  if (crimeSkillsSum <= 5 || probabiltiy > 0.90) {
+  let probabiltiy = (crimeSkillsSum / 100) + (Math.random() / 3);
+  if (crimeSkillsSum <= 10 || probabiltiy > 0.90) {
     probabiltiy = 0.90;
   }
+  const newbieBonus = user.fightInformation.pettyCrimesInitiated < 3;
+  if (newbieBonus) {
+    probabiltiy = 1;
+  }
+  console.log('newbieBonus:', newbieBonus);
+  console.log('probabiltiy: ', probabiltiy);
+  console.log('decider', decider);
+  console.log('decider + (user.playerStats.rank / 13): ', decider + (user.playerStats.rank / 13));
+
   /* Checking for success */
   if (probabiltiy > decider) {
     pettyResult.won = true;

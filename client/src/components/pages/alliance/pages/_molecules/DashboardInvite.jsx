@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 import Select from "react-select";
 
-import {Button} from "reactstrap";
-import {Link} from "react-router-dom"
+import { Button } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const DashboardInvite = ({
   handleInviteChange,
@@ -11,6 +11,7 @@ const DashboardInvite = ({
   loading,
   sendInvite,
   invitedMembers,
+  rejectInvitation,
 }) => {
   return (
     !loading && (
@@ -20,10 +21,17 @@ const DashboardInvite = ({
           {invitedMembers && invitedMembers.length ? (
             invitedMembers.map((member) => {
               return (
-                <div className="d-flex justify-content-around w-50">
+                <div
+                  key={member._id}
+                  className="d-flex justify-content-around w-50"
+                >
                   <Link to={`/hacker/${member._id}`}>{member.name}</Link>
 
-                  <Button size="sm" disabled={true} color="outline-danger">
+                  <Button
+                    size="sm"
+                    onClick={() => rejectInvitation(member._id)}
+                    color="outline-danger"
+                  >
                     Reject
                   </Button>
                 </div>
@@ -58,4 +66,4 @@ const DashboardInvite = ({
   );
 };
 
-export default DashboardInvite
+export default DashboardInvite;

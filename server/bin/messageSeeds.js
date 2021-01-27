@@ -10,12 +10,12 @@ require('../configs/database');
 const userIds = [];
 const messages = [];
 
-async function getUserIds() {
+const getUserIds = async () => {
   const users = await User.find();
   users.forEach((u) => {
     userIds.push(u._id);
   });
-}
+};
 
 const getRandomUserId = () => userIds[Math.floor(Math.random() * userIds.length)];
 const generateRandomDate = () => {

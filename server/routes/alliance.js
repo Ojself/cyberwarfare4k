@@ -6,9 +6,9 @@ const Alliance = require('../models/Alliance');
 const City = require('../models/City');
 const Message = require('../models/Message');
 const Currency = require('../models/Currency');
-
+const { saveAndUpdateUser, getInbox } = require('../logic/_helpers');
 const {
-  checkCreateAllianceCriteria, saveAndUpdateUser, getInbox, findAllianceByIdAndPopulate,
+  checkCreateAllianceCriteria, findAllianceByIdAndPopulate,
   findAllianceStats, inviteSendCriteria, answerCriterias, promoteCriterias,
 } = require('../logic/alliance');
 
@@ -138,16 +138,8 @@ router.post('/invitation', async (req, res) => {
       message: disallowed,
     });
   }
-
-  const now = new Date(Date.now()).toString().slice(0, 21);
-  alliance.inviteMember(now, invitedUser);
+  alliance.inviteMember(invitedUser);
   await alliance.save();
-
-  // const allianceName = user.alliance;
-
-  //  const invitationText = `<p>${user.name} has invited you to join
-  // ${allianceName} hats.<a href="alliance/accept/${allianceName}">Accept</a> or
-  // <a href="alliance/decline/${allianceName}">decline</a></p>`;
 
   res.status(200).json({
     success: true,
@@ -200,14 +192,49 @@ router.patch('/invitation', async (req, res) => {
   });
 });
 
-// router.post('/kick', async (req, res) => {
-// const userId = req.user._id;
-// const user = await User.findById(userId);
-//
-// const { playerId, newRole } = req.body;
-// const player = await User.findById(playerId);
-// });
-//
+const cancelInvitationCriteria = (user, alliance, invitedUser) => {
+  if (!user || !alliance || !invitedUser) {
+    return 'Something went wrong';
+  }
+  if (user.allianceRole !== 'boss') {
+    return 'You don\'t have the privelige to do this';
+  }
+  if (!alliance.invitedMembers.includes(invitedUser._id)) {
+    return `${invitedUser.name} is not invited to your alliance`;
+  }
+  return null;
+};
+
+router.delete('/invitation/:id', async (req, res) => {
+  const userId = req.user._id;
+  const { id } = req.params; // user who's got the invitation rejected
+
+  const user = await User.findById(userId).lean();
+  const alliance = await Alliance.findById(user.alliance);
+  const invitedUser = await User.findById(id).lean();
+
+  const disallowed = cancelInvitationCriteria(user, alliance, invitedUser);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  // Deletes the message
+  await Message.deleteOne({ to: invitedUser._id, allianceInvitation: alliance._id });
+
+  alliance.declineInvitation(invitedUser._id);
+  const updatedAlliance = await alliance.save();
+
+  res.status(200).json({
+    success: true,
+    message: `${invitedUser.name} was rejected an invitation `,
+    alliance: updatedAlliance,
+  });
+});
+
 router.post('/promote', async (req, res) => {
   const userId = req.user._id;
   const { playerId, newTitle } = req.body;
@@ -286,17 +313,34 @@ router.get('/:allianceId', async (req, res) => {
   });
 });
 
+const leaveCriterias = (user, alliance) => {
+  if (!user || !alliance) {
+    return 'Soemthing went wrong';
+  }
+
+  return null;
+};
+
 router.patch('/leave', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
-  // todo criterias
   // todo send notification
   const alliance = await Alliance.findById(user.alliance);
-  alliance.leaveAlliance(req.user._id, user.allianceRole);
+
+  const disallowed = leaveCriterias(user, alliance);
+
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
   user.leaveAlliance();
+  const updatedUser = await saveAndUpdateUser(user);
   alliance.leaveAlliance(userId);
   await alliance.save();
-  const updatedUser = await saveAndUpdateUser(user);
+  console.log('done for real');
   res.status(200).json({
     success: true,
     message: `You left ${alliance.name}...`,

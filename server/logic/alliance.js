@@ -47,7 +47,6 @@ const findAllianceStats = async (alliances, cities, currencies) => {
 
     result.push(allianceStats);
   });
-  console.log(result, 'result');
   return result;
 };
 

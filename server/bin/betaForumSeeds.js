@@ -3,6 +3,8 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const BetaForum = require('../models/BetaForum');
 
+const hackerCommments = require('./consts/hackerComments.json');
+
 require('../configs/database');
 
 const users = [
@@ -19,7 +21,7 @@ const users = [
   '5fca3b4a86e77b5c8e58b683',
 ];
 
-const generateRandomText = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+const getRandomComment = () => hackerCommments[Math.floor(Math.random() * hackerCommments.length)];
 const randomBool = (x = 0.5) => Math.random() > x;
 const getCommentLikes = () => {
   if (randomBool()) {
@@ -38,7 +40,7 @@ const getRandomDate = () => {
 };
 const comments = Array.from({ length: 30 }, (_, i) => ({
   creator: users[Math.floor(Math.random() * users.length)],
-  comment: generateRandomText(),
+  comment: getRandomComment(),
   allianceForum: i % 2 === 0,
   alliance: i % 2 === 0 ? '5fae6d7ee60018434108369c' : null,
   edited: randomBool(0.75),
@@ -58,5 +60,7 @@ const betaForumSeeds = async () => {
   }
   console.info(betaForumsCreated.length, ' betaforums created');
 };
+
+betaForumSeeds();
 
 module.exports = { betaForumSeeds };

@@ -4,7 +4,6 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 // To execute this seed, run from the root of the project
 // $ node bin/orgCrimeSeeds.js
 
-const mongoose = require('mongoose');
 const Crime = require('../models/Crime');
 
 require('../configs/database');

@@ -2,10 +2,9 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 require('../configs/database');
 
-const mongoose = require('mongoose');
 const User = require('../models/User');
 
-const avatars = require('./avatars.json');
+const avatars = require('./consts/avatars.json');
 
 const equippedWeapons = ['CPU', 'AntiVirus', 'Encryption'];
 

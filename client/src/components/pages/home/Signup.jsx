@@ -63,22 +63,28 @@ const Signup = (props) => {
       <h2 className="text-left mb-4">Register</h2>
       <Form>
         <FormGroup>
-          <Label className="mb-0" for="Email">Email</Label>
+          <Label className="mb-0" for="Email">
+            Email
+          </Label>
           <Input
             className="w-100 mb-4"
             type="email"
             value={signupState.email}
             name="email"
+            autoComplete="on"
             onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
-          <Label className="mb-0" for="Password">Password</Label>
+          <Label className="mb-0" for="Password">
+            Password
+          </Label>
           <Input
             className="w-100"
             type="password"
             value={signupState.password}
             name="password"
+            autoComplete="on"
             onChange={handleInputChange}
           />
         </FormGroup>

@@ -15,7 +15,11 @@ const damageCalulator = (user, crime) => {
 const chanceCalculator = (user, crime) => {
   const userSkillNumber = user.crimeSkill[crime.crimeType];
   const crimeSkillNumber = crime.difficulty;
-  const probability = (userSkillNumber - crimeSkillNumber) / 100 + (Math.random() / 2);
+  let probability = (userSkillNumber - crimeSkillNumber) / 100 + (Math.random() / 2);
+  const newbieBonus = user.fightInformation.crimesInitiated < 2 && crime.difficulty <= 70;
+  if (newbieBonus) {
+    probability += 0.65;
+  }
   return probability;
 };
 

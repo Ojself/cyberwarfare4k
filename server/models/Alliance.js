@@ -2,6 +2,8 @@
 const mongoose = require('mongoose');
 const { generateMessage } = require('../logic/_helpers');
 
+const City = require('./City');
+
 const { Schema } = mongoose;
 
 const allianceSchema = new Schema({
@@ -39,9 +41,8 @@ allianceSchema.methods.claimAlliance = async function (userId) {
 };
 
 allianceSchema.methods.leaveAlliance = function (playerId) {
-  console.info(playerId, ' is leaving the alliance ', this.name);
+  const playerIdString = playerId.toString();
   // player.sendNotication
-
   [
     'firstMonkeys',
     'secondMonkeys',
@@ -49,14 +50,15 @@ allianceSchema.methods.leaveAlliance = function (playerId) {
     'organizePermission',
     'forumModeratorPermission',
   ].forEach((r) => {
-    const playerRoleIndex = this[r].indexOf(playerId);
+    // todo. string vs object?
+    const playerRoleIndex = this[r].indexOf(playerIdString);
     if (playerRoleIndex !== -1) {
       this[r].splice(playerRoleIndex, 1);
     }
   });
 
-  ['cto', 'analyst', 'firstLead', 'secondLead'].forEach((r) => {
-    if (this[r] === playerId) {
+  ['boss', 'cto', 'analyst', 'firstLead', 'secondLead'].forEach((r) => {
+    if (this[r] && this[r].toString() === playerIdString) {
       this[r] = null;
     }
   });
@@ -85,11 +87,11 @@ allianceSchema.methods.replaceBoss = function () {
       this.secondLead = null;
       break;
     case !!this.firstMonkeys.length:
-      [replacer] = this.firstMonkeys[0];
+      [replacer] = this.firstMonkeys;
       this.firstMonkeys.shift();
       break;
     case !!this.secondMonkeys.length:
-      [replacer] = this.secondMonkeys[0];
+      [replacer] = this.secondMonkeys;
       this.secondMonkeys.shift();
       break;
     default:
@@ -98,9 +100,8 @@ allianceSchema.methods.replaceBoss = function () {
   this.boss = replacer;
 };
 
-allianceSchema.methods.abandonAlliance = function () {
+allianceSchema.methods.abandonAlliance = async function () {
   this.active = false;
-
   this.boss = null;
   this.analyst = null;
   this.cto = null;
@@ -108,17 +109,22 @@ allianceSchema.methods.abandonAlliance = function () {
   this.secondLead = null;
   this.firstMonkeys = [];
   this.secondMonkeys = [];
+
+  const city = await City.findOne({ allianceOwner: this._id });
+  city.setNewOwner(null);
+  await city.save();
 };
 
-allianceSchema.methods.inviteMember = async function (now, playerId) {
+allianceSchema.methods.inviteMember = async function (playerId) {
   const text = `You have been invited to join the alliance ${this.name}`;
   this.invitedMembers.push(playerId);
-  await generateMessage(this.boss, playerId, text, 'Message', this._id);
+  await generateMessage(this.boss, playerId, text, this._id);
 };
 
 allianceSchema.methods.declineInvitation = function (playerId) {
-  const playerIndex = this.invitedMembers.indexOf(playerId);
-  this.invitedMembers.splice(playerIndex, 1);
+  const playerIdString = playerId.toString();
+  const oldArray = this.invitedMembers.filter((memberId) => memberId.toString() !== playerIdString);
+  this.invitedMembers = oldArray;
 };
 
 allianceSchema.methods.acceptInvitation = function (playerId, role) {

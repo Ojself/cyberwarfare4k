@@ -28,7 +28,6 @@ const crimeSchema = new Schema({
 });
 
 crimeSchema.methods.handleCrime = function (finalResult) {
-  console.log(finalResult.now, finalResult.now + (1000 * this.difficulty));
   this.gracePeriod = finalResult.now + (1000 * this.difficulty);
   if (finalResult.won) {
     this.defeatedBy.push(finalResult.user._id);

@@ -109,26 +109,28 @@ const Espionage = ({
           On hand: <span className="bitcoinColor">&#8383;</span>
           {Math.floor(user.playerStats.bitCoins)}
         </CardText>
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
-          <Input
-            type="number"
-            min={0}
-            max={user.playerStats.bitCoins}
-            step="10000"
-            placeholder="Amount"
-            value={depositAmount}
-            onChange={(e) => setDepositAmount(e.target.value)}
-          />
-        </InputGroup>
-        <Button
-          type="submit"
-          className="w-75 my-2 mx-auto"
-          color="outline-light"
-          onClick={() => deposit()}
-        >
-          Deposit
-        </Button>
+        <div className="w-100 d-flex flex-column align-items-center">
+          <InputGroup className="w-75">
+            <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
+            <Input
+              type="number"
+              min={0}
+              max={user.playerStats.bitCoins}
+              step="10000"
+              placeholder="Amount"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+            />
+          </InputGroup>
+          <Button
+            type="submit"
+            className="w-75 my-2 mx-auto"
+            color="outline-light"
+            onClick={() => deposit()}
+          >
+            Deposit
+          </Button>
+        </div>
       </Card>
     </div>
   );
