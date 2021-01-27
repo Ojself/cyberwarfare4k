@@ -61,6 +61,4 @@ const betaForumSeeds = async () => {
   console.info(betaForumsCreated.length, ' betaforums created');
 };
 
-betaForumSeeds();
-
 module.exports = { betaForumSeeds };
