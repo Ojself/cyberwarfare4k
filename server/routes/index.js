@@ -12,6 +12,24 @@ const Currency = require('../models/Currency');
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
 
+/**
+ * Creates a new Funeral
+ * @param {Object} object - object of what should be nullified
+ * @param {[string]} except - array of strings that should be kept
+ */
+
+const nullifyValues = (object, except) => {
+  if (!Array.isArray(except)) {
+    throw TypeError;
+  }
+  const objectKeys = Object.keys(object);
+  objectKeys.forEach((key) => {
+    if (!except.includes(key)) {
+      object[key] = null;
+    }
+  });
+};
+
 // might be written wrongly TODO
 const setupPlayer = async (user, name, city, avatar) => {
   const updatedUser = user;
@@ -167,21 +185,16 @@ router.get('/opponents/:id', async (req, res) => {
     allUsers,
   );
 
-  // stop hackers
-  opponentInformation.opponent.account.password = null;
+  /* Surely there's a nicer way to do this. */
+  nullifyValues(opponentInformation.opponent.account, ['avatar']);
   opponentInformation.opponent.hackSkill = null;
   opponentInformation.opponent.crimeSkill = null;
   opponentInformation.opponent.currencies = null;
-  opponentInformation.opponent.playerStats.bodyguards = null;
-  opponentInformation.opponent.playerStats.repairCost = null;
-  opponentInformation.opponent.playerStats.statPoints = null;
-  opponentInformation.opponent.playerStats.currentFirewall = null;
-  opponentInformation.opponent.playerStats.battery = null;
-  opponentInformation.opponent.playerStats.maxFirewall = null;
-  opponentInformation.opponent.playerStats.bitCoins = null;
-  opponentInformation.opponent.playerStats.city = null;
+  nullifyValues(opponentInformation.opponent.playerStats, ['bounty', 'bountyDonors', 'rank', 'rankName']);
+  opponentInformation.opponent.marketPlaceItems = null;
   opponentInformation.opponent.stash = null;
-  opponentInformation.opponent.fightInformation.gracePeriod = null;
+  nullifyValues(opponentInformation.opponent.fightInformation, ['shutdowns']);
+  opponentInformation.opponent.earnBattery = null;
 
   res.status(200).json({
     success: true,
@@ -344,5 +357,25 @@ router.get('/user-setup-status', async (req, res) => {
     status,
   });
 });
+
+/* router.post('/kill/', async (req, res) => {
+  const { opponentId } = req.body;
+  const opponent = await User.findById(opponentId);
+  console.log('start');
+  try {
+    await opponent.die();
+  } catch (err) {
+    console.err('error', err);
+  }
+  console.log('end');
+  const newOpponent = await opponent.save();
+  console.log('saved');
+
+  res.status(200).json({
+    success: true,
+    message: 'hacker killed..',
+    newOpponent,
+  });
+}); */
 
 module.exports = router;

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
+const flowers = ['picture', 'picture2'];
+
 const funeralSchema = new Schema({
   name: String,
   avatar: String,
@@ -19,5 +21,16 @@ const funeralSchema = new Schema({
     updatedAt: 'updatedAt',
   },
 });
+
+funeralSchema.methods.postComment = function (userId, comment, flower) {
+  const newComment = {
+    creator: userId,
+    comment,
+    flower: flowers[parseInt(flower, 10)],
+  };
+  const oldArray = this.comments;
+  oldArray.unshift(newComment);
+  this.comments = oldArray;
+};
 
 module.exports = mongoose.model('Funeral', funeralSchema);

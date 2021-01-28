@@ -163,6 +163,10 @@ const Espionage = ({
             onChange={(e) => setVaultAmount(e.target.value)}
           />
         </InputGroup>
+        <p style={{ fontSize: "0.75rem" }} className="text-muted">
+          {" "}
+          Minimum 100000
+        </p>
       </div>
       <div className="">
         <Button

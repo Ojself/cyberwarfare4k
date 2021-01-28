@@ -2,7 +2,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const mongoose = require('mongoose');
 const OrgCrime = require('../models/OrgCrime');
 
 require('../configs/database');
@@ -76,7 +75,7 @@ const orgCrimes = [
     name: 'JP Morgan',
     description: 'Trick employee to hand over login credentials, exploit heartbleed vulnerability, brute force firewall defense, hide identy behind dozens of shell companies and steal personal information from millions of users',
     batteryCost: 30,
-    image: 'security',
+    image: 'coding',
     roles: [
       {
         roleName: 'Technical',

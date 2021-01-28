@@ -8,7 +8,7 @@ const hackerCommments = require('./consts/hackerComments.json');
 require('../configs/database');
 
 const users = [
-  '5fae6d7ee60018434108369c',
+  '5fca3b4a86e77b5c8e58b66a',
   '5fca3b4a86e77b5c8e58b67a',
   '5fca3b4a86e77b5c8e58b67b',
   '5fca3b4a86e77b5c8e58b67c',

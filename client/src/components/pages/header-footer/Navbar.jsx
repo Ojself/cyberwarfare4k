@@ -143,6 +143,7 @@ const NavbarComp = ({
                 Crypto Currency
               </DropdownItem>
               <DropdownItem href="/marketplace">Marketplace</DropdownItem>
+              <DropdownItem href="/funeral">Funeral</DropdownItem>
               <DropdownItem href="/fence">Fence</DropdownItem>
               <DropdownItem href="/ledger">Ledger</DropdownItem>
             </DropdownMenu>

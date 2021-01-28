@@ -14,6 +14,7 @@ const { userSeeds } = require('./userSeeds');
 
 const seedAll = async () => {
   await Promise.all([
+    userSeeds(),
     allianceSeeds(),
     betaForumSeeds(),
     citySeeds(),
@@ -24,7 +25,6 @@ const seedAll = async () => {
     messageSeeds(),
     orgCrimeSeeds(),
     stashSeeds(),
-    userSeeds(),
   ]);
   mongoose.disconnect();
   process.exit(0);

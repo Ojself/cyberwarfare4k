@@ -8,6 +8,13 @@ const DataCenter = require('./DataCenter');
 
 const { generateFuneral } = require('../logic/_helpers');
 
+const cityIds = [
+  '5fae62409cbf7d270f23470b',
+  '5fae62409cbf7d270f23470c',
+  '5fae62409cbf7d270f23470d',
+  '5fae62409cbf7d270f23470e',
+  '5fae62409cbf7d270f23470f'];
+
 const ranks = [
   {
     expToNewRank: 10000,
@@ -68,6 +75,16 @@ const ranks = [
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      default: '',
+    },
+    alliance: {
+      type: Schema.Types.ObjectId,
+      ref: 'Alliance',
+    },
+    allianceRole: { type: String },
+
     account: {
       email: String,
       password: String,
@@ -96,16 +113,6 @@ const userSchema = new Schema(
         default: '',
       },
     },
-    name: {
-      type: String,
-      default: '',
-    },
-    alliance: {
-      type: Schema.Types.ObjectId,
-      ref: 'Alliance',
-    },
-    allianceRole: { type: String },
-
     hackSkill: {
       CPU: {
         type: Number,
@@ -160,6 +167,18 @@ const userSchema = new Schema(
         type: Number,
         default: 5,
       },
+      statPointsHistory: {
+        CPU: { type: Number, default: 0 },
+        AntiVirus: { type: Number, default: 0 },
+        Encryption: { type: Number, default: 0 },
+        Technical: { type: Number, default: 0 },
+        Forensics: { type: Number, default: 0 },
+        'Social Engineering': { type: Number, default: 0 },
+        Cryptography: { type: Number, default: 0 },
+        exp: { type: Number, default: 0 },
+        statPointsUsed: { type: Number, default: 0 },
+      },
+      statPointReset: { type: Boolean, default: false },
       maxFirewall: {
         type: Number,
         default: 100,
@@ -330,13 +349,39 @@ userSchema.methods.giveHackSkill = function (amount = 1, skill) {
 };
 
 userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
-  if (!this.crimeSkill[skill]) {
-    return;
-  }
   this.crimeSkill[skill] += amount;
   if (this.crimeSkill[skill] > 200) {
     this.crimeSkill[skill] = 200;
   }
+};
+userSchema.methods.pushStatPointsHistory = function (amount, attribute) {
+  console.log(attribute, 'attribute');
+  console.log(amount, 'amount');
+  this.playerStats.statPointsHistory.statPointsUsed += 1;
+  this.playerStats.statPointsHistory[attribute] += parseInt(amount, 10);
+};
+
+userSchema.methods.resetStatPoitns = function () {
+  this.playerStats.statPoints += this.playerStats.statPointsHistory.statPointsUsed;
+  Object.keys(this.hackSkill).forEach((skill) => {
+    this.hackSkill[skill] -= this.playerStats.statPointsHistory[skill];
+  });
+
+  Object.keys(this.crimeSkill).forEach((skill) => {
+    this.crimeSkill[skill] -= this.playerStats.statPointsHistory[skill];
+  });
+
+  this.playerStats.exp -= this.playerStats.statPointsHistory.exp;
+  let newRank = null;
+  for (let i = 0; i < ranks.length; i += 1) {
+    if (ranks[i].expToNewRank < this.playerStats.exp) {
+      newRank = ranks[i];
+    }
+    console.log('newRank', newRank);
+  }
+  this.playerStats.rank = newRank.rank;
+  this.playerStats.rankName = newRank.name;
+  this.playerStats.expToLevel = newRank.expToNewRank;
 };
 
 userSchema.methods.batteryDrain = function (battery) {
@@ -680,36 +725,31 @@ userSchema.methods.handleNewStatpoint = function (statName) {
 
 // todo remove from city and alliance and datacenters
 userSchema.methods.die = async function () {
+  // Remove from alliance
+  // Remove from city
+  // Remove all datacenters
+  // Clean from all orgcrimes ?
+
   console.info(`${this.name} is dead`);
   const city = await City.findById(this.playerStats.city);
   city.departure(this._id);
   await city.save();
-
   const dataCenters = await DataCenter.find({ owner: this._id });
   if (dataCenters) {
     dataCenters.forEach((dataCenter) => dataCenter.handleDestroyed());
-    try {
-      await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
-    } catch (err) {
-      console.error('Removing datacenters error :', err);
-    }
+    await Promise.all(dataCenters.map((dataCenter) => dataCenter.save()));
   }
   if (this.alliance) {
     const alliance = await Alliance.findById(this.alliance);
     alliance.leaveAlliance(this._id);
-    try {
-      await alliance.save();
-    } catch (err) {
-      console.error('Error: ', err);
-    }
+    await alliance.save();
   }
-
   await generateFuneral(this.name, this.account.avatar, this._id, this.alliance);
 
   this.name = `UnconfirmedPlayer${Math.random()}`;
-  this.account.isSetup = false;
   this.alliance = null;
   this.allianceRole = null;
+  this.account.isSetup = false;
 
   this.hackSkill = {
     CPU: 0,
@@ -734,7 +774,7 @@ userSchema.methods.die = async function () {
   };
 
   this.playerStats = {
-    city: null,
+    city: cityIds[Math.floor(Math.random() * cityIds.length)],
     repairCost: 50000,
     bodyguards: {
       alive: [],
@@ -742,9 +782,21 @@ userSchema.methods.die = async function () {
       price: 100000,
     },
     statPoints: 5,
+    statPointsHistory: {
+      CPU: 0,
+      AntiVirus: 0,
+      Encryption: 0,
+      Technical: 0,
+      Forensics: 0,
+      'Social Engineering': 0,
+      Cryptography: 0,
+      exp: 0,
+      statPointsUsed: 0,
+    },
+    statPointReset: false,
     maxFirewall: 100,
     currentFirewall: 0,
-    battery: 100,
+    battery: 150,
     bitCoins: 1000,
     ledger: 1500,
     vault: 0,
@@ -758,7 +810,7 @@ userSchema.methods.die = async function () {
 
   this.marketPlaceItems = {
     CPU: null,
-    Firewall: null,
+    Firewall: '5fc13fcf7e196b5b2c875e4d',
     AntiVirus: null,
     Encryption: null,
   };
@@ -781,7 +833,7 @@ userSchema.methods.die = async function () {
   };
 
   this.fightInformation = {
-    gracePeriod: Date.now(),
+    gracePeriod: Date.now() + (1000 * 60 * 60 * 24),
     equippedWeapon: 'CPU',
     activeSpies: [],
     shutdowns: 0,

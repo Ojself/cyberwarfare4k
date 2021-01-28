@@ -15,7 +15,7 @@ const rateLimit = require('express-rate-limit');
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 5,
 });
 
 const app = express();
@@ -64,6 +64,7 @@ app.use('/api/currency', require('./routes/currency'));
 app.use('/api/datacenter', require('./routes/datacenter'));
 app.use('/api/earnBattery', require('./routes/earnBattery'));
 app.use('/api/forum', require('./routes/forum'));
+app.use('/api/funeral', require('./routes/funeral'));
 app.use('/api/hack', require('./routes/hack'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/marketplace', require('./routes/marketplace'));

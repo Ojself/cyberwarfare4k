@@ -106,8 +106,32 @@ export default {
       .catch(errHandler);
   },
 
-  /* HACK */
-  /* HACK */
+  // FUNERAL
+  // FUNERAL
+
+  getFunerals() {
+    return service
+      .get("/funerals")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  getFuneral(id) {
+    return service
+      .get(`/funerals/${id}`)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  postFuneralComment(id, comment, flower) {
+    return service
+      .post(`/funerals${id}`, { comment, flower })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  // HACK
+  // HACK
 
   pettyHack() {
     return service
@@ -196,6 +220,9 @@ export default {
       .catch(errHandler);
   },
 
+  // SERVICE SUPPORT
+  // SERVICE SUPPORT
+
   repairPartial() {
     return service
       .post("/service/partial")
@@ -279,8 +306,8 @@ export default {
       .catch(errHandler);
   },
 
-  // espionage
-  // espionage
+  // ESPIONAGE
+  // ESPIONAGE
 
   getVaultInformation() {
     return service
@@ -340,6 +367,9 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+
+  // DATACENTER
+  // DATACENTER
 
   getDataCenters(params = {}) {
     return service
@@ -419,7 +449,8 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
-  /* BetaForum */
+  // BetaForum
+  // BetaForum
 
   getBetaForum(query) {
     return service
@@ -454,10 +485,11 @@ export default {
       .catch(errHandler);
   },
 
-  /* FORUM */
-  /* FORUM */
-  /* FORUM */
-  /* getForums() {
+  // FORUM
+  // FORUM
+  // FORUM
+  /* 
+   getForums()
     return service
       .get("/forum")
       .then((res) => res.data)
@@ -484,7 +516,7 @@ export default {
       .catch(errHandler);
   }, */
 
-  /* EARN ENERGY */
+  // EARN ENERGY
   postGithubUsername(githubUserName) {
     return service
       .post(`/earnBattery`, { githubUserName })

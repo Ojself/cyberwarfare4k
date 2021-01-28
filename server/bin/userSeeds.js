@@ -12,7 +12,7 @@ const getRandomFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const users = [
   {
-    _id: '5fae6d7ee60018434108369c',
+    _id: '5fca3b4a86e77b5c8e58b66a',
     fightInformation: {
       shutdowns: 0,
       attacksInitiated: Math.floor(Math.random() * 10),

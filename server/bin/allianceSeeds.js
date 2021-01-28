@@ -1,7 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const mongoose = require('mongoose');
 const Alliance = require('../models/Alliance');
 
 require('../configs/database');
@@ -32,7 +31,7 @@ const alliances = [
     cto: '5fca3b4a86e77b5c8e58b681',
     firstLead: '5fca3b4a86e77b5c8e58b67e',
     secondLead: '5fca3b4a86e77b5c8e58b680',
-    firstMonkeys: ['5fae6d7ee60018434108369c', '5fca3b4a86e77b5c8e58b67a', '5fca3b4a86e77b5c8e58b67b'],
+    firstMonkeys: ['5fca3b4a86e77b5c8e58b66a', '5fca3b4a86e77b5c8e58b67a', '5fca3b4a86e77b5c8e58b67b'],
     secondMonkeys: ['5fca3b4a86e77b5c8e58b67c', '5fca3b4a86e77b5c8e58b67d'],
   },
 ];

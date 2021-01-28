@@ -9,11 +9,11 @@ const config = {
     multiplier: 0.9,
   },
   med: {
-    chance: 0.65,
+    chance: 0.7,
     multiplier: 1.05,
   },
   high: {
-    chance: 0.75,
+    chance: 0.85,
     multiplier: 1.3,
   },
   maxDamage: 40,

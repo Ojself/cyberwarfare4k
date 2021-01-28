@@ -267,6 +267,7 @@ const calculateNetworth = (user, dbCurrencies) => {
  * @param {ObjectId} allianceId - allianceId of the user who was shutdown
  */
 const generateFuneral = async (name, avatar, userId, allianceId = null) => {
+  console.log('generating funeral');
   const funeral = new Funeral({
     name,
     avatar,

@@ -62,7 +62,7 @@ router.post('/buy', async (req, res) => {
 router.post('/sell', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId)
-    .populate('playerStats.city', 'stashPriceMultiplier', 'allianceFee', 'allianceOwner');
+    .populate('playerStats.city', ['stashPriceMultiplier', 'allianceFee', 'allianceOwner']);
   const dbStashes = await Stash.find().lean();
 
   const stashToSell = cleanObj(req.body);
@@ -87,7 +87,7 @@ router.post('/sell', async (req, res) => {
   user.handleSellStash(stashToSell, totalSum);
   const updatedUser = await saveAndUpdateUser(user);
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: `You sold stash for ${Math.round(totalSum)}`,
     user: updatedUser,
