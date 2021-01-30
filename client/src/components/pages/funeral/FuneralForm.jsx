@@ -38,7 +38,7 @@ const FuneralForm = ({
         <legend>Flower arrangement</legend>
         {flowers.map((flower, i) => {
           return (
-            <FormGroup className="d-flex flex-column" key={flower} check>
+            <FormGroup className="d-flex flex-column m-auto" key={flower} check>
               <Label check>
                 <Input
                   defaultChecked={i === 0}

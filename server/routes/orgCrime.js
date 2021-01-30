@@ -15,8 +15,8 @@ const findAndCatgeorizeOrgCrimes = async () => {
     .populate('ownerAlliance', 'name')
     .populate('roles.owner', 'name');
 
-  const orgCrimes = allOrgCrimes.filter((crime) => !crime.ownerAlliance);
-  const claimedOwnOrgCrimes = allOrgCrimes.filter((crime) => crime.ownerAlliance);
+  const orgCrimes = allOrgCrimes.filter((crime) => !crime.owner);
+  const claimedOwnOrgCrimes = allOrgCrimes.filter((crime) => crime.owner);
 
   return { orgCrimes, claimedOwnOrgCrimes };
 };

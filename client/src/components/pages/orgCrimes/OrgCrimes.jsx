@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 import api from "../../../api";
-import {Col, Container, Row} from "reactstrap";
-import OrgCrimeCard from './OrgCrimeCard'
+import { Col, Container, Row } from "reactstrap";
+import OrgCrimeCard from "./OrgCrimeCard";
 import OrgCrimeCardClaimed from "./OrgCrimeCardClaimed";
 
 function orgCrimes({ user, updateGlobalValues }) {
   const [orgCrimes, setOrgCrimes] = useState([]);
-  const [claimedOwnOrgCrimes, setClaimedOwnOrgCrimes] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [claimedOwnOrgCrimes, setClaimedOwnOrgCrimes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrgCrimes = async () => {
       const data = await api.getOrgCrimes();
       updateGlobalValues(data);
-      setOrgCrimes(data.orgCrimes)
+      setOrgCrimes(data.orgCrimes);
       setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
-      setLoading(false)
+      setLoading(false);
     };
     fetchOrgCrimes();
   }, []);
@@ -23,9 +23,9 @@ function orgCrimes({ user, updateGlobalValues }) {
     let data;
     try {
       data = await api.commitOrgCrime(crimeId);
-    } catch(e){
-      console.error('Error: ', e)
-      updateGlobalValues(e)
+    } catch (e) {
+      console.error("Error: ", e);
+      updateGlobalValues(e);
     }
     updateGlobalValues(data);
     setOrgCrimes(data.orgCrimes);
@@ -43,25 +43,26 @@ function orgCrimes({ user, updateGlobalValues }) {
     setOrgCrimes(data.orgCrimes);
     setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
   };
-  const claimCrime = async (crimeId)=> {
-      let data;
-      try {
-        data = await api.claimOrgCrime(crimeId);
-      } catch(e){
-        console.error('Error: ', e)
-        updateGlobalValues(e)
-      }
-      updateGlobalValues(data);
-      setOrgCrimes(data.orgCrimes)
-      setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
-  }
+  const claimCrime = async (crimeId) => {
+    let data;
+    try {
+      data = await api.claimOrgCrime(crimeId);
+    } catch (e) {
+      console.error("Error: ", e);
+      updateGlobalValues(e);
+    }
+    console.log(data, "data");
+    updateGlobalValues(data);
+    setOrgCrimes(data.orgCrimes);
+    setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);
+  };
 
   return (
     <div style={{ minHeight: "60vh" }}>
       <h1>Organized Crime</h1>
       <div>
         <Container>
-        <h5>Claimed</h5>
+          <h5>Claimed</h5>
           <Row>
             {!loading &&
               claimedOwnOrgCrimes.map((crime) => {
@@ -84,10 +85,7 @@ function orgCrimes({ user, updateGlobalValues }) {
                 return (
                   <Col key={crime._id}>
                     {" "}
-                    <OrgCrimeCard
-                      claimCrime={claimCrime}
-                      crime={crime}
-                    />
+                    <OrgCrimeCard claimCrime={claimCrime} crime={crime} />
                   </Col>
                 );
               })}
@@ -98,4 +96,4 @@ function orgCrimes({ user, updateGlobalValues }) {
   );
 }
 
-export default orgCrimes
+export default orgCrimes;

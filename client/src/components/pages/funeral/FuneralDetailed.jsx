@@ -39,7 +39,7 @@ const FuneralDetailed = ({ match, updateGlobalValues }) => {
       {loading && <p>Loading..</p>}
       {!!funeralMember && (
         <>
-          <h1>{`${funeralMember.name} funeral`}</h1>
+          <h1>{`${funeralMember.name}'s funeral`}</h1>
           <Card>
             <CardImg
               top
