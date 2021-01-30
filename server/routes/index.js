@@ -227,7 +227,7 @@ router.get('/ladder', async (req, res) => {
       .populate('alliance', 'name');
   } catch (e) {
     return res.status(400).json({
-      success: true,
+      success: false,
       message: JSON.stringify(e),
     });
   }
