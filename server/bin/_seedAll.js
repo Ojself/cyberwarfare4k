@@ -6,6 +6,7 @@ const { citySeeds } = require('./citySeeds');
 const { crimeSeeds } = require('./crimeSeeds');
 const { currencySeeds } = require('./currencySeeds');
 const { dataCenterSeeds } = require('./dataCenterSeeds');
+const { funeralSeeds } = require('./funeralSeeds');
 const { itemSeeds } = require('./itemSeeds');
 const { messageSeeds } = require('./messageSeeds');
 const { orgCrimeSeeds } = require('./orgCrimeSeeds');
@@ -21,6 +22,7 @@ const seedAll = async () => {
     crimeSeeds(),
     currencySeeds(),
     dataCenterSeeds(),
+    funeralSeeds(),
     itemSeeds(),
     messageSeeds(),
     orgCrimeSeeds(),

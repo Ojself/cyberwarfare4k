@@ -29,8 +29,10 @@ const Signup = (props) => {
     });
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleSignup = async () => {
+    console.log('signup')
+    const { email, password } = signupState;
+    if (!email || !password) return;
     const data = {
       email: signupState.email,
       password: signupState.password,
@@ -48,6 +50,7 @@ const Signup = (props) => {
       }, 5000);
       return;
     }
+    console.log(data,'data')
     try {
       await api.signup(data);
       props.redirect("/create-hacker/");
@@ -58,10 +61,16 @@ const Signup = (props) => {
     }
   };
 
+  const onKeyUp = (event) => {
+    if (event.key === "Enter") {
+      handleSignup();
+    }
+  };
+
   return (
     <div className="login-signup-card">
       <h2 className="text-left mb-4">Register</h2>
-      <Form>
+      <Form onKeyPress={(e) => onKeyUp(e)}>
         <FormGroup>
           <Label className="mb-0" for="Email">
             Email
@@ -92,7 +101,7 @@ const Signup = (props) => {
           disabled={false}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
-          onClick={(e) => handleClick(e)}
+          onClick={() => handleSignup()}
         >
           Sign up
         </Button>

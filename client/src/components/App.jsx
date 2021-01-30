@@ -23,6 +23,7 @@ import ForumThread from "./pages/globalForum/ForumThread";
 import Espionage from "./pages/espionage/Espionage";
 import Fence from "./pages/fence/Fence";
 import Funeral from "./pages/funeral/Funeral";
+import FuneralDetailed from "./pages/funeral/FuneralDetailed";
 import HackerProfile from "./pages/hackerProfile/HackerProfile";
 import HallOfFame from "./pages/HallOfFame";
 import Footer from "./pages/header-footer/Footer";
@@ -241,12 +242,21 @@ const App = () => {
           )}
         />
         <Route
+          path="/funeral/:id"
+          render={(props) => (
+            <FuneralDetailed
+              {...props}
+              updateGlobalValues={updateGlobalValues}
+              globalLoading={loading}
+              user={user}
+            />
+          )}
+        />
+        <Route
           path="/funeral"
           render={() => (
             <Funeral
               updateGlobalValues={updateGlobalValues}
-              globalLoading={loading}
-              user={user}
             />
           )}
         />

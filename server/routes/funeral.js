@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const funeralMember = await Funeral.findById(id)
     .populate('alliance', 'name')
-    .populate('comments.creator')
+    .populate('comments.creator', 'name')
     .lean();
 
   return res.status(200).json({
@@ -54,16 +54,15 @@ router.post('/:id', async (req, res) => {
   const { comment, flower } = req.body;
   const funeralMember = await Funeral.findById(id);
 
-  const disallowed = postFuneralCommentCriteria(user, funeralMember, comment, flower);
+  const flowerCost = 10;
+  const disallowed = postFuneralCommentCriteria(user, funeralMember, comment, flowerCost);
   if (disallowed) {
     return res.status(400).json({
       success: false,
       message: disallowed,
     });
   }
-  const flowerCost = 10;
   user.bitCoinDrain(flowerCost);
-
   const updatedUser = await saveAndUpdateUser(user);
 
   funeralMember.postComment(user._id, comment, flower);

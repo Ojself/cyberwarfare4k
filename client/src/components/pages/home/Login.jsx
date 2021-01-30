@@ -25,8 +25,9 @@ const Login = () => {
       window.location.href = "/create-hacker/";
     }
   };
+ 
 
-  const handleLogin = async (event) => {
+  const handleLogin = async () => {
     const { email, password } = loginState;
     if (!email || !password) return;
     let data;
@@ -46,10 +47,16 @@ const Login = () => {
     }
   };
 
+   const onKeyUp = (event) => {
+     if (event.key === "Enter") {
+       handleLogin()
+     }
+   };
+
   return (
     <div className="login-signup-card">
       <h2 className="text-left mb-4">Login</h2>
-      <Form>
+      <Form onKeyPress={(e) => onKeyUp(e)}>
         <FormGroup>
           <Label className="mb-0" for="Email">
             Email
@@ -80,7 +87,7 @@ const Login = () => {
           disabled={false}
           className="btn btn-outline w-100 mt-2"
           color="outline-success"
-          onClick={(e) => handleLogin(e)}
+          onClick={() => handleLogin()}
         >
           Login
         </Button>

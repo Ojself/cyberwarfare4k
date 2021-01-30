@@ -111,21 +111,21 @@ export default {
 
   getFunerals() {
     return service
-      .get("/funerals")
+      .get("/funeral")
       .then((res) => res.data)
       .catch(errHandler);
   },
 
   getFuneral(id) {
     return service
-      .get(`/funerals/${id}`)
+      .get(`/funeral/${id}`)
       .then((res) => res.data)
       .catch(errHandler);
   },
 
   postFuneralComment(id, comment, flower) {
     return service
-      .post(`/funerals${id}`, { comment, flower })
+      .post(`/funeral${id}`, { comment, flower })
       .then((res) => res.data)
       .catch(errHandler);
   },

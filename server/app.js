@@ -21,7 +21,7 @@ const apiLimiter = rateLimit({
 const app = express();
 require('./configs/database');
 
-app.use('/api/', apiLimiter);
+/* app.use('/api/', apiLimiter); */
 app.use(nocache());
 
 app.use(

@@ -9,6 +9,7 @@ const funeralSchema = new Schema({
   avatar: String,
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   alliance: { type: Schema.Types.ObjectId, ref: 'Alliance' },
+  bounty: Number,
   comments: [{
     creator: { type: Schema.Types.ObjectId, ref: 'User' },
     comment: { type: String, required: true },

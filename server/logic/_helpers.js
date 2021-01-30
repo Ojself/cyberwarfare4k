@@ -264,14 +264,15 @@ const calculateNetworth = (user, dbCurrencies) => {
  * @param {String} name - name of the user who was shutdown
  * @param {String} text - Avatar path
  * @param {ObjectId} userId - userId of the user who was shutdown
+ * @param {Number} bounty - What bounty was claimed upon shutdown
  * @param {ObjectId} allianceId - allianceId of the user who was shutdown
  */
-const generateFuneral = async (name, avatar, userId, allianceId = null) => {
-  console.log('generating funeral');
+const generateFuneral = async (name, avatar, userId, bounty = 0, allianceId = null) => {
   const funeral = new Funeral({
     name,
     avatar,
     user: userId,
+    bounty,
     alliance: allianceId,
   });
   await funeral.save();

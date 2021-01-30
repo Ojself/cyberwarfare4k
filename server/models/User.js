@@ -176,6 +176,7 @@ const userSchema = new Schema(
         'Social Engineering': { type: Number, default: 0 },
         Cryptography: { type: Number, default: 0 },
         exp: { type: Number, default: 0 },
+        firewall: { type: Number, default: 0 },
         statPointsUsed: { type: Number, default: 0 },
       },
       statPointReset: { type: Boolean, default: false },
@@ -354,6 +355,7 @@ userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
     this.crimeSkill[skill] = 200;
   }
 };
+/* TODO FIREWALL ISSUE WHENR RESETTING */
 userSchema.methods.pushStatPointsHistory = function (amount, attribute) {
   console.log(attribute, 'attribute');
   console.log(amount, 'amount');
@@ -370,6 +372,8 @@ userSchema.methods.resetStatPoitns = function () {
   Object.keys(this.crimeSkill).forEach((skill) => {
     this.crimeSkill[skill] -= this.playerStats.statPointsHistory[skill];
   });
+
+  this.playerStats.maxFirewall -= this.playerStats.statPointsHistory.firewall;
 
   this.playerStats.exp -= this.playerStats.statPointsHistory.exp;
   let newRank = null;
@@ -689,30 +693,39 @@ userSchema.methods.handleNewStatpoint = function (statName) {
     case 'Firewall':
       this.playerStats.maxFirewall += 10;
       this.playerStats.currentFirewall += 10;
+      this.pushStatPointsHistory(10, 'firewall');
       break;
     case 'CPU':
       this.giveHackSkill(5, 'CPU');
+      this.pushStatPointsHistory(5, 'CPU');
       break;
     case 'AntiVirus':
       this.giveHackSkill(5, 'AntiVirus');
+      this.pushStatPointsHistory(5, 'AntiVirus');
       break;
     case 'Encryption':
       this.giveHackSkill(5, 'Encryption');
+      this.pushStatPointsHistory(5, 'Encryption');
       break;
     case 'Technical':
       this.giveCrimeSkill(5, 'Technical');
+      this.pushStatPointsHistory(5, 'Technical');
       break;
     case 'Forensics':
       this.giveCrimeSkill(5, 'Forensics');
+      this.pushStatPointsHistory(5, 'Forensics');
       break;
     case 'Social Engineering':
       this.giveCrimeSkill(5, 'Social Engineering');
+      this.pushStatPointsHistory(5, 'Social Engineering');
       break;
     case 'Cryptography':
       this.giveCrimeSkill(5, 'Cryptography');
+      this.pushStatPointsHistory(5, 'Cryptography');
       break;
     case 'exp':
       this.giveExp(this.playerStats.expToLevel * 0.075);
+      this.pushStatPointsHistory(this.playerStats.expToLevel * 0.075, 'exp');
       break;
     default:
       // gives back statpoints if something went wrong
@@ -744,7 +757,7 @@ userSchema.methods.die = async function () {
     alliance.leaveAlliance(this._id);
     await alliance.save();
   }
-  await generateFuneral(this.name, this.account.avatar, this._id, this.alliance);
+  await generateFuneral(this.name, this.account.avatar, this._id, this.playerStats.bounty, this.alliance);
 
   this.name = `UnconfirmedPlayer${Math.random()}`;
   this.alliance = null;
