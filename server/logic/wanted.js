@@ -19,13 +19,7 @@ const addBountyCriteria = (user, opponent, bounty) => {
 };
 
 const getAllWantedUsers = async () => {
-  const dbSelectOptions = {
-    name: '1',
-    alliance: '1',
-    'playerStats.bounty': '1',
-    'playerStats.bountyDonors': '1',
-    'playerStats.rankName': '1',
-  };
+  const dbSelectOptions = 'name alliance playerStats.bounty playerStats.bountyDonors playerStats.rankName';
 
   const users = await User.find({ 'account.isSetup': true })
     .sort({ 'playerStats.bounty': -1 })

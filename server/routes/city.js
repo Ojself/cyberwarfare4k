@@ -15,11 +15,7 @@ const { getOnlineUsers, saveAndUpdateUser } = require('../logic/_helpers');
 // Retrives all cities
 
 router.get('/', async (req, res) => {
-  const dbSelectOptions = {
-    price: '1',
-    name: '1',
-  };
-  const cities = await City.find().select(dbSelectOptions);
+  const cities = await City.find().select('price name');
 
   const message = getCityRouteCriterias(cities);
   if (message) {

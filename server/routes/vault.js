@@ -15,9 +15,9 @@ const {
 // TODO sanitize route
 router.get('/', async (req, res) => {
   const userId = req.user._id;
-  const opponents = await User.find({ 'account.isSetup': true }).select({ name: '1' }).lean();
+  const opponents = await User.find({ 'account.isSetup': true }).select('name').lean();
   const user = await User.findById(userId)
-    .select({ 'fightInformation.activeSpies': 1 })
+    .select('fightInformation.activeSpies')
     .populate('fightInformation.activeSpies.target', 'name')
     .lean();
 

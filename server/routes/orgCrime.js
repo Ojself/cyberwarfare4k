@@ -27,7 +27,7 @@ const findAndCatgeorizeOrgCrimes = async () => {
 
 router.get('/', async (req, res) => {
   /* const userId = req.user._id;
-  const user = await User.findById(userId).select({ alliance: 1 }).lean(); */
+  const user = await User.findById(userId).select('alliance').lean(); */
   const allOrgCrimes = await findAndCatgeorizeOrgCrimes();
 
   /* IF active until is expired, clean it */
@@ -47,7 +47,7 @@ router.put('/', async (req, res) => {
   const now = Date.now();
   const userId = req.user._id;
   const { crimeId } = req.body;
-  const user = await User.findById(userId).select({ alliance: 1 }).lean();
+  const user = await User.findById(userId).select('alliance').lean();
   const orgCrime = await OrgCrime.findById(crimeId);
   orgCrime.claimOwner(user._id, user.alliance, now);
   await orgCrime.save();
@@ -68,7 +68,7 @@ router.put('/', async (req, res) => {
 router.patch('/', async (req, res) => {
   const userId = req.user._id;
   const { crimeId, roleName } = req.body;
-  const user = await User.findById(userId).select({ alliance: 1 }).lean();
+  const user = await User.findById(userId).select('alliance').lean();
   const orgCrime = await OrgCrime.findById(crimeId);
   orgCrime.claimRole(user._id, roleName);
   await orgCrime.save();

@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
   const alliances = await Alliance.find()
     .lean();
   const availableCities = await City.find({ allianceOwner: null })
-    .select({ name: 1 })
+    .select('name')
     .lean();
 
   res.status(200).json({
@@ -42,7 +42,7 @@ router.get('/dashboard', async (req, res) => {
   const alliance = await findAllianceByIdAndPopulate(user.alliance);
 
   const users = await User.find({ 'account.isSetup': true })
-    .select({ name: 1, alliance: 1, allianceRole: 1 })
+    .select('name alliance allianceRole')
     .sort({ name: 1 });
 
   res.status(200).json({
@@ -78,7 +78,7 @@ router.get('/ladder', async (req, res) => {
     .populate('secondMonkeys', memberPopulateValues);
   const currencies = await Currency.find().lean();
   const cities = await City.find({ allianceOwner: { $ne: null } })
-    .select({ name: 1, allianceOwner: 1 })
+    .select('name allianceOwner')
     .lean();
   const totStats = await findAllianceStats(alliances, cities, currencies);
   res.status(200).json({
@@ -269,7 +269,7 @@ router.post('/promote', async (req, res) => {
     alliance: alliance._id,
     'account.isSetup': true,
   })
-    .select({ name: 1, alliance: 1, allianceRole: 1 })
+    .select('name alliance allianceRole')
     .sort({ name: 1 });
 
   res.status(200).json({

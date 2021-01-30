@@ -157,7 +157,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 router.get('/opponents/', async (req, res) => {
   let users;
   try {
-    users = await User.find({ 'account.isSetup': true }).select({ name: '1' });
+    users = await User.find({ 'account.isSetup': true }).select('name');
   } catch (e) {
     res.status(400).json({
       success: false,
@@ -233,7 +233,7 @@ router.get('/ladder', async (req, res) => {
       message: JSON.stringify(err),
     });
   }
-  const databaseCurrencies = await Currency.find({}).select({ name: 1, price: 1 });
+  const databaseCurrencies = await Currency.find({}).select('name price');
   users.map((user) => {
     user.playerStats.bitCoins = calculateNetworth(user, databaseCurrencies);
     user.playerStats.ledger = null;

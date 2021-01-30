@@ -11,7 +11,7 @@ const { saveAndUpdateUser, generateNotification } = require('../logic/_helpers')
 // Retrives all users
 
 router.get('/', async (req, res) => {
-  const users = await User.find({ 'account.isSetup': true }).select({ name: '1' }).lean();
+  const users = await User.find({ 'account.isSetup': true }).select('name').lean();
   if (!users) {
     return res.status(400).json({
       success: false,

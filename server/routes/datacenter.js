@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     if (req.user._id.toString() === owner) {
       params = { owner: userId };
     } else {
-      const allianceUsers = await User.find({ alliance: owner }).select({ _id: 1 });
+      const allianceUsers = await User.find({ alliance: owner }).select('_id');
       params = { owner: allianceUsers };
     }
   }
