@@ -209,7 +209,7 @@ router.get('/opponents/:id', async (req, res) => {
 // Gets all users for the 'Top Hackers' page'
 
 router.get('/ladder', async (req, res) => {
-  const dbSelectOptions = {
+  /* const dbSelectOptions = {
     name: '1',
     alliance: '1',
     currencies: '1',
@@ -219,7 +219,8 @@ router.get('/ladder', async (req, res) => {
     'playerStats.ledger': '1',
     'fightInformation.shutdowns': '1',
     'fightInformation.crimesInitiated': '1',
-  };
+  }; */
+  const dbSelectOptions = 'name alliance currencies playerStats.rankName playerStats.rank playerStats.bitCoins playerStats.ledger fightInformation.shutdowns fightInformation.crimesInitiated ';
   let users;
   try {
     users = await User.find({ 'account.isSetup': true })
