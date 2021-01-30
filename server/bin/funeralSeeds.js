@@ -22,7 +22,7 @@ const deadMembers = [{
   }],
 }];
 const funeralSeeds = async () => {
-  await Funeral.deleteMany;
+  await Funeral.deleteMany();
   let funeralsCreated;
   try {
     funeralsCreated = await Funeral.create(deadMembers);
