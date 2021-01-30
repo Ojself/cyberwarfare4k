@@ -225,10 +225,11 @@ router.get('/ladder', async (req, res) => {
     users = await User.find({ 'account.isSetup': true })
       .select(dbSelectOptions)
       .populate('alliance', 'name');
-  } catch (e) {
+  } catch (err) {
+    console.error('Ladder error:', err);
     return res.status(400).json({
       success: false,
-      message: JSON.stringify(e),
+      message: JSON.stringify(err),
     });
   }
   const databaseCurrencies = await Currency.find({}).select({ name: 1, price: 1 });
