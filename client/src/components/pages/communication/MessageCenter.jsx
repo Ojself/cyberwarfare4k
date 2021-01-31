@@ -170,7 +170,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
                 <ListGroup>
                   {globalLoading ? (
                     "loading.."
-                  ) : messages.inbox.length ? (
+                  ) : messages.inbox && messages.inbox.length ? (
                     messages.inbox.map((m, i) => {
                       const name = m.from.name;
                       const id = m.from._id;
