@@ -4,7 +4,7 @@ import { Col, Container, Row } from "reactstrap";
 import OrgCrimeCard from "./OrgCrimeCard";
 import OrgCrimeCardClaimed from "./OrgCrimeCardClaimed";
 
-function orgCrimes({ user, updateGlobalValues }) {
+function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
   const [orgCrimes, setOrgCrimes] = useState([]);
   const [claimedOwnOrgCrimes, setClaimedOwnOrgCrimes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +23,10 @@ function orgCrimes({ user, updateGlobalValues }) {
     let data;
     try {
       data = await api.commitOrgCrime(crimeId);
+      setUnreadNotification(true);
     } catch (e) {
       console.error("Error: ", e);
-      updateGlobalValues(e);
+      return updateGlobalValues(e);
     }
     updateGlobalValues(data);
     setOrgCrimes(data.orgCrimes);
@@ -37,7 +38,7 @@ function orgCrimes({ user, updateGlobalValues }) {
       data = await api.claimOrgCrimeRole(crimeId, roleName);
     } catch (e) {
       console.error("Error: ", e);
-      updateGlobalValues(e);
+      return updateGlobalValues(e);
     }
     updateGlobalValues(data, false);
     setOrgCrimes(data.orgCrimes);
@@ -49,7 +50,7 @@ function orgCrimes({ user, updateGlobalValues }) {
       data = await api.claimOrgCrime(crimeId);
     } catch (e) {
       console.error("Error: ", e);
-      updateGlobalValues(e);
+      return updateGlobalValues(e);
     }
     console.log(data, "data");
     updateGlobalValues(data);
@@ -60,38 +61,38 @@ function orgCrimes({ user, updateGlobalValues }) {
   return (
     <div style={{ minHeight: "60vh" }}>
       <h1>Organized Crime</h1>
-      <div>
-        <Container>
-          <h5>Claimed</h5>
-          <Row>
-            {!loading &&
-              claimedOwnOrgCrimes.map((crime) => {
-                return (
-                  <Col key={crime._id}>
-                    {" "}
-                    <OrgCrimeCardClaimed
-                      claimRole={claimRole}
-                      commitOrgCrime={commitOrgCrime}
-                      crime={crime}
-                    />
-                  </Col>
-                );
-              })}
-          </Row>
-          <h5>Available</h5>
-          <Row>
-            {!loading &&
-              orgCrimes.map((crime) => {
-                return (
-                  <Col key={crime._id}>
-                    {" "}
-                    <OrgCrimeCard claimCrime={claimCrime} crime={crime} />
-                  </Col>
-                );
-              })}
-          </Row>
-        </Container>
-      </div>
+
+      <Container>
+        <h4>Claimed</h4>
+        <Row>
+          {!loading &&
+            claimedOwnOrgCrimes.map((crime) => {
+              return (
+                <Col key={crime._id}>
+                  {" "}
+                  <OrgCrimeCardClaimed
+                    user={user}
+                    claimRole={claimRole}
+                    commitOrgCrime={commitOrgCrime}
+                    crime={crime}
+                  />
+                </Col>
+              );
+            })}
+        </Row>
+        <h4>Available</h4>
+        <Row>
+          {!loading &&
+            orgCrimes.map((crime) => {
+              return (
+                <Col key={crime._id}>
+                  {" "}
+                  <OrgCrimeCard claimCrime={claimCrime} crime={crime} />
+                </Col>
+              );
+            })}
+        </Row>
+      </Container>
     </div>
   );
 }

@@ -75,16 +75,6 @@ router.patch('/:dataCenterId', async (req, res) => {
 
   const dataCenters = await findDataCenters(params, null, userId);
 
-  /* let dataCenters = await DataCenter.find(params)
-    .populate('requiredStash', ['name', 'price'])
-    .populate('city', ['name', 'residents'])
-    .populate('owner', ['name']);
-  // filter out the datacenters that don't belong to the city the user is in
-  dataCenters = dataCenters.filter((dc) => {
-    const stringifiedObjectId = JSON.stringify(dc.city.residents);
-    return stringifiedObjectId.includes(userId.toString());
-  }); */
-
   res.status(200).json({
     dataCenters,
     message: `You spent ${healCost} to heal ${dataCenter.name}`,
@@ -100,9 +90,10 @@ router.patch('/:dataCenterId', async (req, res) => {
 router.post('/purchase', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
+  console.log(req.body, 'req');
 
-  const { dataCenterName } = req.body;
-  const dataCenter = await DataCenter.findOne({ name: dataCenterName });
+  const { id } = req.body;
+  const dataCenter = await DataCenter.findById(id);
   const now = Date.now();
   const disallow = purchaseDataCenterCriterias(user, dataCenter, now);
 

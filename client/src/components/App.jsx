@@ -9,7 +9,7 @@ import AllianceLadder from "./pages/alliance/pages/Ladder";
 import MessageCenter from "./pages/communication/MessageCenter";
 import Notifications from "./pages/communication/Notifications";
 import CreateHacker from "./pages/createHacker/CreateHacker";
-import HackCrimes from "./pages/crimes/crimes/HackCrimes";
+import Crimes from "./pages/crimes/crimes/Crimes";
 import Petty from "./pages/crimes/petty/Petty";
 import CryptoCurrency from "./pages/cryptoCurrency/CryptoCurrency";
 import DataCenters from "./pages/DataCenters";
@@ -254,16 +254,12 @@ const App = () => {
         />
         <Route
           path="/funeral"
-          render={() => (
-            <Funeral
-              updateGlobalValues={updateGlobalValues}
-            />
-          )}
+          render={() => <Funeral updateGlobalValues={updateGlobalValues} />}
         />
         <Route
-          path="/hack-crimes"
+          path="/crimes"
           render={() => (
-            <HackCrimes user={user} updateGlobalValues={updateGlobalValues} />
+            <Crimes user={user} updateGlobalValues={updateGlobalValues} />
           )}
         />
         <Route
@@ -295,6 +291,7 @@ const App = () => {
               globalLoading={loading}
               user={user}
               updateGlobalValues={updateGlobalValues}
+              setUnreadNotification={setUnreadNotification}
             />
           )}
         />

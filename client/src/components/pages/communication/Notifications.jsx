@@ -53,30 +53,26 @@ const Notification = () => {
   };
 
   const NotificationList = ({ loading, notifications }) => {
-    return loading ? (
-      <p>Loading..</p>
-    ) : (
+    if (loading) {
+      return <p>Loading..</p>;
+    }
+    if (notifications.length === 0) {
+      <p>Empty</p>;
+    }
+    return (
       <ListGroup>
-        {notifications.length ? (
-          notifications.map((notification, i) => (
-            <ListGroupItem
-              className="mt-2 text-white"
-              key={notification._id}
-              active={!notification.read}
-            >
-              <ListGroupItemHeading>
-                {notification.dateSent}
-              </ListGroupItemHeading>
-              {notification.text.map((text, i) => (
-                <ListGroupItemText key={`${text}${i}`}>
-                  {text}
-                </ListGroupItemText>
-              ))}
-            </ListGroupItem>
-          ))
-        ) : (
-          <p>Empty</p>
-        )}
+        {notifications.map((notification, i) => (
+          <ListGroupItem
+            className="mt-2 text-white"
+            key={notification._id}
+            active={!notification.read}
+          >
+            <ListGroupItemHeading>{notification.dateSent}</ListGroupItemHeading>
+            {notification.text.map((text, i) => (
+              <ListGroupItemText key={`${text}${i}`}>{text}</ListGroupItemText>
+            ))}
+          </ListGroupItem>
+        ))}
       </ListGroup>
     );
   };

@@ -25,14 +25,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Terms of sale page
 - FAQ and Information have more information
 - Players start with the lowest firewall item
+- A notification is now issued when a bounty is placed for first time
 
 ### Coming
 
 - Alliance boss options
-- Minor changes to User db document
-- Change out all set timeouts in server with fixed times (crimes, datacenters)
 - Major file structuring overhaul
-- Cleanup of seed files
 - Listen to return key when logging in
 - Funeral
 - Payment methods

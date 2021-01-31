@@ -13,7 +13,7 @@ const Message = require('../models/Message');
 const Notification = require('../models/Notification');
 
 /**
- * Creates a new Funeral
+ * Sets values to null
  * @param {Object} object - object of what should be nullified
  * @param {[string]} except - array of strings that should be kept
  */
@@ -32,16 +32,14 @@ const nullifyValues = (object, except) => {
 
 // might be written wrongly TODO
 const setupPlayer = async (user, name, city, avatar) => {
-  const updatedUser = user;
-  const updatedCity = city;
-  updatedUser.playerStats.currentFirewall = 100;
-  updatedUser.account.isSetup = true;
-  updatedUser.name = name;
-  updatedUser.playerStats.city = city._id;
-  updatedUser.account.avatar = avatar;
-  await updatedUser.save();
-  updatedCity.residents.push(user._id);
-  await updatedCity.save();
+  user.playerStats.currentFirewall = 100;
+  user.account.isSetup = true;
+  user.name = name;
+  user.playerStats.city = city._id;
+  user.account.avatar = avatar;
+  await user.save();
+  city.arrival(user._id);
+  await city.save();
 };
 
 /* function ensureIsSetup(req, res, next) {

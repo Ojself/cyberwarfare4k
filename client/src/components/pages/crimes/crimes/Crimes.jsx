@@ -4,8 +4,7 @@ import CrimeTerminal from "./crimeTerminal";
 
 import { Table, UncontrolledTooltip, Container, Col, Row } from "reactstrap";
 
-// props will be deconstr in parameters ({nameOfProp})
-const HackCrimes = ({ updateGlobalValues, user }) => {
+const Crimes = ({ updateGlobalValues, user }) => {
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
 
@@ -47,10 +46,10 @@ const HackCrimes = ({ updateGlobalValues, user }) => {
   return (
     <div className="crimes-page-container">
       <h1>Hack Crimes</h1>
-      <Container className="mt-2">
+      <Container className="mt-2 w-100 m-auto">
         <Row sm="1" md="2">
-          <Col sm="12" md="7">
-            <Table dark striped>
+          <Col sm="12" md="6">
+            <Table dark>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -65,32 +64,40 @@ const HackCrimes = ({ updateGlobalValues, user }) => {
                 </tr>
               </thead>
               <tbody>
-                {crimes.map((cr, i) => (
-                  <tr key={i}>
-                    <th id={`toolTip${i}`} scope="row">
-                      {cr.name}
-                    </th>
-                    <UncontrolledTooltip placement="top" target={`toolTip${i}`}>
-                      {cr.description}
-                    </UncontrolledTooltip>
-                    <td>{cr.crimeType}</td>
-                    <td className={getDifficultyColor(cr.difficulty)}>
-                      {cr.difficultyString}
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-warning"
-                        onClick={(e) => handleClick(cr._id)}
+                {crimes.map((cr, i) => {
+                  /* const spaceBetweenCategories =
+                    i !== crimes.length - 1 &&
+                    cr.crimeType !== crimes[i + 1].crimeType; */
+                  return (
+                    <tr key={cr._id}>
+                      <th id={`toolTip${i}`} scope="row">
+                        {cr.name}
+                      </th>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target={`toolTip${i}`}
                       >
-                        Commit
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        {cr.description}
+                      </UncontrolledTooltip>
+                      <td>{cr.crimeType}</td>
+                      <td className={getDifficultyColor(cr.difficulty)}>
+                        {cr.difficultyString}
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleClick(cr._id)}
+                        >
+                          Commit
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </Table>
           </Col>
-          <Col className="display-none-when-mobile" md="5">
+          <Col className="display-none-when-mobile" md="6">
             <CrimeTerminal
               updateGlobalValues={updateGlobalValues}
               user={user}
@@ -103,4 +110,4 @@ const HackCrimes = ({ updateGlobalValues, user }) => {
   );
 };
 
-export default HackCrimes;
+export default Crimes;

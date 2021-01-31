@@ -64,6 +64,9 @@ router.post('/full', async (req, res) => {
   });
 });
 
+// @POST
+// PRIVATE
+// Lets user buy bodyguard
 router.post('/bodyguard', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
@@ -86,6 +89,43 @@ router.post('/bodyguard', async (req, res) => {
     user: updatedUser,
     message:
       'You successfuly hired a bodyuard..',
+  });
+});
+
+// @POST
+// PRIVATE
+// Lets user reset stat points
+const resetStatPointsCriterias = (user) => {
+  if (!user) {
+    return 'Something went wrong';
+  }
+  if (user.playerStats.statPointsHistory.statPointsUsed === 0) {
+    return 'You haven\'t used any statpoints';
+  }
+  if (user.playerStats.statPointResetPrice > user.playerStats.bitCoins) {
+    return 'Insufficent bitcoins';
+  }
+};
+router.post('/reset-stat-points', async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const disallowed = resetStatPointsCriterias(user);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  user.resetStatPoitns();
+  const updatedUser = await saveAndUpdateUser(user);
+
+  return res.status(200).json({
+    success: true,
+    user: updatedUser,
+    message: 'Your statpoints have been reset!',
   });
 });
 

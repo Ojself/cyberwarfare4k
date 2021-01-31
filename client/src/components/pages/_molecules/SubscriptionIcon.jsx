@@ -3,7 +3,7 @@ import { Tooltip } from "reactstrap";
 
 const SubscriptionIcon = ({ subscription }) => {
   const [subIconToolTip, setSubIconToolTip] = useState(false);
-  const toggleSubIconTOolTip = () => setSubIconToolTip(!subIconToolTip);
+  const toggleSubIconToolTip = () => setSubIconToolTip(!subIconToolTip);
   const subIcons = {
     Bronze: "🥉",
     Silver: "🥈",
@@ -26,7 +26,7 @@ const SubscriptionIcon = ({ subscription }) => {
         placement="top"
         isOpen={subIconToolTip}
         target={"tooltipDesc-" + subIcons[subscription]}
-        toggle={toggleSubIconTOolTip}
+        toggle={toggleSubIconToolTip}
       >
         {`${subscription} supporter!`}
       </Tooltip>

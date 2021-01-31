@@ -179,7 +179,7 @@ const userSchema = new Schema(
         firewall: { type: Number, default: 0 },
         statPointsUsed: { type: Number, default: 0 },
       },
-      statPointReset: { type: Boolean, default: false },
+      statPointResetPrice: { type: Number, default: 2500000 },
       maxFirewall: {
         type: Number,
         default: 100,
@@ -355,10 +355,8 @@ userSchema.methods.giveCrimeSkill = function (amount = 1, skill = 'Technical') {
     this.crimeSkill[skill] = 200;
   }
 };
-/* TODO FIREWALL ISSUE WHENR RESETTING */
+/* TODO FIREWALL ISSUE WHEN RESETTING */
 userSchema.methods.pushStatPointsHistory = function (amount, attribute) {
-  console.log(attribute, 'attribute');
-  console.log(amount, 'amount');
   this.playerStats.statPointsHistory.statPointsUsed += 1;
   this.playerStats.statPointsHistory[attribute] += parseInt(amount, 10);
 };
@@ -374,14 +372,23 @@ userSchema.methods.resetStatPoitns = function () {
   });
 
   this.playerStats.maxFirewall -= this.playerStats.statPointsHistory.firewall;
-
+  this.playerStats.currentFirewall -= this.playerStats.statPointsHistory.firewall;
+  if (this.playerStats.currentFirewall < 0) {
+    this.playerStats.currentFirewall = 1;
+  }
   this.playerStats.exp -= this.playerStats.statPointsHistory.exp;
+  this.playerStats.statPointResetPrice *= 2;
+
+  const historyKeys = Object.keys(this.playerStats.statPointsHistory);
+  historyKeys.forEach((key) => {
+    this.playerStats.statPointsHistory[key] = 0;
+  });
+
   let newRank = null;
   for (let i = 0; i < ranks.length; i += 1) {
     if (ranks[i].expToNewRank < this.playerStats.exp) {
       newRank = ranks[i];
     }
-    console.log('newRank', newRank);
   }
   this.playerStats.rank = newRank.rank;
   this.playerStats.rankName = newRank.name;
@@ -806,7 +813,7 @@ userSchema.methods.die = async function () {
       exp: 0,
       statPointsUsed: 0,
     },
-    statPointReset: false,
+    statPointResetPrice: 2500000,
     maxFirewall: 100,
     currentFirewall: 0,
     battery: 150,

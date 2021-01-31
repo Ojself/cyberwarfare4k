@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { addBountyCriteria, getAllWantedUsers } = require('../logic/wanted.js');
-const { saveAndUpdateUser } = require('../logic/_helpers');
+const { saveAndUpdateUser, generateNotification } = require('../logic/_helpers');
 
 // @GET
 // PRIVATE
@@ -34,18 +34,10 @@ router.get('/', async (req, res) => {
 router.post('/add-bounty', async (req, res) => {
   const { bountyTargetId, bounty } = req.body;
   const userId = req.user._id;
-  let user;
-  let bountyTarget;
 
-  try {
-    user = await User.findById(userId);
-    bountyTarget = await User.findById(bountyTargetId);
-  } catch (e) {
-    return res.status(400).json({
-      success: false,
-      message: JSON.stringify(e),
-    });
-  }
+  const user = await User.findById(userId);
+  const bountyTarget = await User.findById(bountyTargetId);
+
   const disallowed = addBountyCriteria(user, bountyTarget, bounty);
   if (disallowed) {
     return res.status(400).json({
@@ -56,7 +48,12 @@ router.post('/add-bounty', async (req, res) => {
 
   user.bitCoinDrain(bounty);
   const updatedUser = await saveAndUpdateUser(user);
+
+  if (bountyTarget.playerStats.bountyDonors.length === 0) {
+    await generateNotification(bountyTarget._id, 'Someone put a bounty on your head', 'General');
+  }
   bountyTarget.addBounty(user, bounty);
+
   await bountyTarget.save();
 
   let allUsers;

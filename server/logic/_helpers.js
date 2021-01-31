@@ -169,7 +169,7 @@ const generateMessage = (from, to, text, allianceId = null, read = false) => {
  * @param {ObjectId} to - userId to reciever of notification
  * @param {String} text - Text to be sent
  * @param {String} genre - Enum: ['General', 'Organized Crime', 'Spy Report', 'Logs'] - default 'General'
- * @param {Boolean} read - Will show as notification if true
+ * @param {Boolean} read - if false, the notification will glow red until it's read
  */
 
 const generateNotification = (to, text, genre = 'General', read = false) => {

@@ -98,7 +98,7 @@ const NavbarComp = ({
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem href="/petty-hacker">Petty</DropdownItem>
-              <DropdownItem href="/hack-crimes">Crime</DropdownItem>
+              <DropdownItem href="/crimes">Crime</DropdownItem>
               <DropdownItem href="/org-crimes">Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
               <DropdownItem href="/espionage">Espionage</DropdownItem>

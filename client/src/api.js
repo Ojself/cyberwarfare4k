@@ -168,8 +168,8 @@ export default {
       .catch(errHandler);
   },
 
-  // Organized Crime
-  // Organized Crime
+  // ORG CRIME
+  // ORG CRIME
 
   getOrgCrimes() {
     return service
@@ -239,6 +239,13 @@ export default {
   buyBodyguard() {
     return service
       .post("/service/bodyguard")
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  resetStatPoints() {
+    return service
+      .post("/service/reset-stat-points")
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -378,16 +385,16 @@ export default {
       .catch(errHandler);
   },
 
-  purchaseDataCenter(body) {
+  purchaseDataCenter(id) {
     return service
-      .post("/datacenter/purchase", body)
+      .post("/datacenter/purchase", { id })
       .then((res) => res.data)
       .catch(errHandler);
   },
 
-  attackDataCenter(body) {
+  attackDataCenter(id) {
     return service
-      .post("/datacenter/attack", body)
+      .post("/datacenter/attack", { id })
       .then((res) => res.data)
       .catch(errHandler);
   },

@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Badge,
   Card,
@@ -10,13 +10,12 @@ import {
   Tooltip,
   Button,
 } from "reactstrap";
-import "./orgCrimes.scss"
+import "./orgCrimes.scss";
 
-const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
+const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
   const [descriptionTooltip, setDescriptionTooltip] = useState(false);
 
   const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
-  console.log(crime,'crime')
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -40,8 +39,8 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
                 }}
                 className="fab fa-redhat"
               ></i>
-            </Link>
-            {" "}{crime.name}
+            </Link>{" "}
+            {crime.name}
           </CardTitle>
           <Tooltip
             placement="right"
@@ -51,46 +50,45 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime }) => {
           >
             {crime.description}
           </Tooltip>
-          {/* <CardSubtitle tag="h6" className="mb-2 text-muted">
-          </CardSubtitle> */}
           <CardText className="d-flex flex-column w-100">
-              {crime.roles.map((role) => {
-                const hackerName = role.owner ? (
-                  <strong>{role.owner.name}</strong>
-                ) : (
-                  <span
-                    id="org-crime-join"
-                    onClick={() => claimRole(crime._id, role.roleName)}
+            {crime.roles.map((role) => {
+              const hackerName = role.owner ? (
+                <strong>{role.owner.name}</strong>
+              ) : (
+                <span
+                  id="org-crime-join"
+                  onClick={() => claimRole(crime._id, role.roleName)}
+                >
+                  Join
+                </span>
+              );
+              return (
+                <div className="d-flex flex-row w-100">
+                  <Badge
+                    style={{
+                      width: "60%",
+                      marginTop: "0.15rem",
+                      paddingTop: "0.5rem",
+                    }}
+                    color="success"
                   >
-                    Join
-                  </span>
-                );
-                return (
-                  <div className="d-flex flex-row w-100">
-                    <Badge
-                      style={{
-                        width: "60%",
-                        marginTop: "0.15rem",
-                        paddingTop: "0.5rem",
-                      }}
-                      color="success"
-                    >
-                      {role.roleName}
-                    </Badge>
-                    <div
-                      style={{
-                        width: "40%",
-                        marginTop: "0.15rem",
-                        paddingTop: "0.5rem",
-                      }}
-                    >
-                      {hackerName}
-                    </div>
+                    {role.roleName}
+                  </Badge>
+                  <div
+                    style={{
+                      width: "40%",
+                      marginTop: "0.15rem",
+                      paddingTop: "0.5rem",
+                    }}
+                  >
+                    {hackerName}
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </CardText>
           <Button
+            disabled={user._id !== crime.owner._id}
             color="outline-danger"
             onClick={() => commitOrgCrime(crime._id)}
           >

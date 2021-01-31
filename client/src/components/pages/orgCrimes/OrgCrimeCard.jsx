@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Card,
   CardImg,
@@ -7,14 +7,14 @@ import {
   CardTitle,
   CardSubtitle,
   Button,
-  Tooltip
+  Tooltip,
 } from "reactstrap";
 
-const OrgCrimeCard = ({crime, claimCrime}) => {
-    const [descriptionTooltip, setDescriptionTooltip] = useState(false);
-    const [requiredHackersTooltip, setRequiredHackersTooltip] = useState(false);
-    const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
-    const toggleReq = () => setRequiredHackersTooltip(!requiredHackersTooltip);
+const OrgCrimeCard = ({ crime, claimCrime }) => {
+  const [descriptionTooltip, setDescriptionTooltip] = useState(false);
+  const [requiredHackersTooltip, setRequiredHackersTooltip] = useState(false);
+  const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
+  const toggleReq = () => setRequiredHackersTooltip(!requiredHackersTooltip);
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -63,11 +63,13 @@ const OrgCrimeCard = ({crime, claimCrime}) => {
           </Tooltip>
 
           {/* <CardText>{crime.description}</CardText> */}
-          <Button color="secondary" onClick={() => claimCrime(crime._id)}>Claim</Button>
+          <Button color="secondary" onClick={() => claimCrime(crime._id)}>
+            Claim
+          </Button>
         </CardBody>
       </Card>
     </div>
   );
 };
 
-export default OrgCrimeCard
+export default OrgCrimeCard;

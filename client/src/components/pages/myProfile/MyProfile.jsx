@@ -12,6 +12,7 @@ import {
   Table,
   TabContent,
   TabPane,
+  Tooltip,
 } from "reactstrap";
 
 import MiniDataCenterOverview from "./molecules/MiniDataCenterOverview";
@@ -26,8 +27,21 @@ import SubscriptionIcon from "../_molecules/SubscriptionIcon";
 import api from "../../../api";
 import classnames from "classnames";
 
+const getWeaponToolTip = (weapon) => {
+  const effectiveVersus = {
+    CPU: "AntiVirus",
+    AntiVirus: "Encryption",
+    Encryption: "CPU",
+  };
+  return `${weapon} is effective versus ${effectiveVersus[weapon]}`;
+};
+
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
+
+  const [equppiedWeaponToolTip, setequppiedWeaponToolTip] = useState(false);
+  const toggleEquippedWeaponToolTip = () =>
+    setequppiedWeaponToolTip(!equppiedWeaponToolTip);
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -39,8 +53,6 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   };
 
   const getStashColor = (index) => {
-    // todo. color should be consistent
-    // extract to helper
     const defaultColors = ["red", "blue", "orange", "green"];
     return defaultColors[index % defaultColors.length];
   };
@@ -189,7 +201,11 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
           {user.playerStats.bounty}
         </li>
         {/* todo clickable with bounty donor? module */}
-        <li className="list-group-item bg-dark mb-2">
+        <li
+          className={`list-group-item bg-dark mb-2 ${
+            user.playerStats.statPoints && "font-weight-bold"
+          }`}
+        >
           Available Statpoints: {user.playerStats.statPoints}
         </li>
       </ul>
@@ -215,10 +231,23 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
             );
           })}
         </ButtonGroup>
-
-        <p style={{ fontSize: "0.7rem" }} className="text-center text-light">
-          Equiped weapon: {user.fightInformation.equippedWeapon}
+        <p
+          style={{ fontSize: "0.7rem" }}
+          id="equippedWeaponToolTip"
+          className="text-center text-light"
+        >
+          Equiped weapon: <span>{user.fightInformation.equippedWeapon}</span>
         </p>
+        <Tooltip
+          placement="bottom"
+          isOpen={equppiedWeaponToolTip}
+          target={"equippedWeaponToolTip"}
+          toggle={toggleEquippedWeaponToolTip}
+        >
+          <p className="font-weight-bold">
+            {getWeaponToolTip(user.fightInformation.equippedWeapon)}
+          </p>
+        </Tooltip>
 
         <Nav className="mt-5" tabs>
           {["Items", "Crypto", "Stash", "DC"].map((t, i) => {

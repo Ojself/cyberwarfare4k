@@ -1,6 +1,16 @@
 import React from "react";
 import api from "../../api";
-import { Button, Row, Col, Container } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  Container,
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardSubtitle,
+} from "reactstrap";
 
 const ServiceAndSupport = ({ user, updateGlobalValues }) => {
   const handlePartial = async () => {
@@ -8,8 +18,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     try {
       data = await api.repairPartial();
     } catch (err) {
-      updateGlobalValues(err);
-      return;
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data);
   };
@@ -19,8 +28,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     try {
       data = await api.repairFull();
     } catch (err) {
-      updateGlobalValues(err);
-      return;
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data);
   };
@@ -30,76 +38,122 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     try {
       data = await api.buyBodyguard();
     } catch (err) {
-      updateGlobalValues(err);
-      return;
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data);
   };
 
-  const style = {
-    height: "30vh",
+  const handleResetStatPoints = async () => {
+    let data;
+    try {
+      data = await api.resetStatPoints();
+    } catch (err) {
+      return updateGlobalValues(err);
+    }
+    console.log(data, "data");
+    updateGlobalValues(data);
   };
+
   const serviceContent = user && (
     <div className="content d-flex justify-content-around">
       <Container>
         <Row>
-          <Col>
-            <div className="d-flex flex-column ">
-              <img
-                style={style}
+          <Col sm="1" md="3" className="mt-2">
+            <Card>
+              <CardImg
+                style={{ height: "22vh" }}
+                top
+                width="100%"
                 src="../../../utilPics/partialrepair.jpg"
-                alt="Partial Repari"
+                alt="Partial Repair"
               />
-              <p className="my-0">
-                Heals <span style={{ color: "red" }}>&#9829;</span> 20
-              </p>
-              <p>
-                <span className="bitcoinColor">&#8383;</span>
-                {Math.round((user.playerStats.repairCost * 20) / 100)}
-              </p>
-              <Button color="success" onClick={() => handlePartial()}>
-                Partial repair
-              </Button>
-            </div>
+              <CardBody>
+                {/* <CardTitle tag="h5">Card title</CardTitle> */}
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  Heals <span style={{ color: "red" }}>&#9829;</span> 20
+                </CardSubtitle>
+                <CardText>
+                  <span className="bitcoinColor">&#8383;</span>
+                  {Math.round((user.playerStats.repairCost * 20) / 100)}
+                </CardText>
+                <Button color="success" onClick={() => handlePartial()}>
+                  Partial repair
+                </Button>
+              </CardBody>
+            </Card>
           </Col>
-          <Col>
-            <div className="d-flex flex-column">
-              <img
-                style={style}
+          <Col sm="1" md="3" className="mt-2">
+            <Card>
+              <CardImg
+                style={{ height: "22vh" }}
+                top
+                width="100%"
                 src="../../../utilPics/fullrepair.jpg"
                 alt="Partial Repair"
               />
-              <p className="my-0">
-                Heals <span style={{ color: "red" }}>&#9829;</span> 100
-              </p>
+              <CardBody>
+                {/* <CardTitle tag="h5">Card title</CardTitle> */}
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  Heals <span style={{ color: "red" }}>&#9829;</span> 100
+                </CardSubtitle>
+                <CardText>
+                  <span className="bitcoinColor">&#8383;</span>
 
-              <p>
-                <span className="bitcoinColor">&#8383;</span>
-                {Math.round(user.playerStats.repairCost)}
-              </p>
-              <Button color="success" onClick={() => handleFull()}>
-                Full repair
-              </Button>
-            </div>
+                  {Math.round(user.playerStats.repairCost)}
+                </CardText>
+                <Button color="success" onClick={() => handleFull()}>
+                  Full repair
+                </Button>
+              </CardBody>
+            </Card>
           </Col>
-          <Col>
-            <div className="d-flex flex-column">
-              <img
-                style={style}
+          <Col sm="1" md="3" className="mt-2">
+            <Card>
+              <CardImg
+                style={{ height: "22vh" }}
+                top
+                width="100%"
                 src="../../../utilPics/bodyguard.png"
                 alt="Bodyguard"
               />
-              <p className="my-0">
-                Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
-              </p>
-              <p>
-                <span className="bitcoinColor">&#8383;</span>
-                {Math.round(user.playerStats.bodyguards.price)}
-              </p>
-              <Button color="success" onClick={() => handleBodyguard()}>
-                Hire!
-              </Button>
-            </div>
+              <CardBody>
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  Hire Bodyguard {user.playerStats.bodyguards.alive.length}/3
+                </CardSubtitle>
+                <CardText>
+                  <span className="bitcoinColor">&#8383;</span>
+
+                  {Math.round(user.playerStats.bodyguards.price)}
+                </CardText>
+                <Button color="success" onClick={() => handleBodyguard()}>
+                  Hire!
+                </Button>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm="1" md="3" className="mt-2">
+            <Card>
+              <CardImg
+                style={{ height: "22vh" }}
+                top
+                width="100%"
+                src="../../../utilPics/resetStats.jpg"
+                alt="Reset stats"
+              />
+              <CardBody>
+                {/* <CardTitle tag="h5">Card title</CardTitle> */}
+                <CardSubtitle tag="h6" className="mb-2 text-muted">
+                  Reset stats
+                </CardSubtitle>
+                <CardText>
+                  <span className="bitcoinColor">&#8383;</span>
+                  {user.playerStats.statPointResetPrice}
+                </CardText>
+                <Button color="success" onClick={() => handleResetStatPoints()}>
+                  Reset!
+                </Button>
+              </CardBody>
+            </Card>
           </Col>
         </Row>
       </Container>

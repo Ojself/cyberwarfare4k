@@ -52,13 +52,14 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
   }, []);
 
   const handleDataCenterPurchase = async (e) => {
-    const dataCenterName = e.target.name;
+    const dataCenterId = e.target.value;
     let data;
     try {
-      data = await api.purchaseDataCenter({ dataCenterName });
+      data = await api.purchaseDataCenter(dataCenterId);
     } catch (err) {
       return updateGlobalValues(err);
     }
+    updateGlobalValues(data);
     setDataCenterState({
       ...dataCenterState,
       dataCenters: data.dataCenters,
@@ -66,10 +67,10 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
   };
 
   const handleDataCenterAttack = async (e) => {
-    const dataCenterName = e.target.name;
+    const dataCenterId = e.target.value;
     let result;
     try {
-      result = await api.attackDataCenter({ dataCenterName });
+      result = await api.attackDataCenter(dataCenterId);
     } catch (err) {
       return updateGlobalValues(err);
     }
@@ -112,6 +113,7 @@ const DataCenter = ({ globalLoading, user, updateGlobalValues }) => {
         disabled={disabled}
         name={dc.name}
         onClick={onClick}
+        value={dc._id}
       >
         {innerText}
       </Button>
