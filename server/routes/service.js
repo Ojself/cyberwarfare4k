@@ -103,7 +103,7 @@ const resetStatPointsCriterias = (user) => {
     return 'You haven\'t used any statpoints';
   }
   if (user.playerStats.statPointResetPrice > user.playerStats.bitCoins) {
-    return 'Insufficent bitcoins';
+    return 'Insufficent funds';
   }
 };
 router.post('/reset-stat-points', async (req, res) => {

@@ -30,7 +30,6 @@ const Signup = (props) => {
   };
 
   const handleSignup = async () => {
-    console.log('signup')
     const { email, password } = signupState;
     if (!email || !password) return;
     const data = {
@@ -50,7 +49,6 @@ const Signup = (props) => {
       }, 5000);
       return;
     }
-    console.log(data,'data')
     try {
       await api.signup(data);
       props.redirect("/create-hacker/");

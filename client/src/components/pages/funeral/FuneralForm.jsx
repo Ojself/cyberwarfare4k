@@ -17,7 +17,6 @@ const FuneralForm = ({
   textArea,
   setTextArea,
 }) => {
-  console.log(flowerSelected, "flowerSelected");
   const handleTextAreaChange = (e) => {
     setTextArea(e.target.value);
   };
@@ -38,18 +37,21 @@ const FuneralForm = ({
         <legend>Flower arrangement</legend>
         {flowers.map((flower, i) => {
           return (
-            <FormGroup className="d-flex flex-column m-auto" key={flower} check>
+            <FormGroup key={flower} className="d-flex flex-column m-auto" check>
               <Label check>
                 <Input
                   defaultChecked={i === 0}
-                  onClick={() => setFlowerSelected(i)}
+                  onClick={() => setFlowerSelected(i + 1)}
                   value={flowerSelected === i + 1}
                   type="radio"
                   name="radio"
                 />
                 {flowerPrices[flower]}
               </Label>
-              <img src={`../flowerPics/${i + 1}.jpg`} alt="" srcset="" />
+              <img
+                src={`../flowerPics/${i + 1}.jpg`}
+                alt={`Flower Decoration ${i + 1}`}
+              />
             </FormGroup>
           );
         })}

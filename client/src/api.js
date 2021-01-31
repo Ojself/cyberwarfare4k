@@ -125,7 +125,7 @@ export default {
 
   postFuneralComment(id, comment, flower) {
     return service
-      .post(`/funeral${id}`, { comment, flower })
+      .post(`/funeral/${id}`, { comment, flower })
       .then((res) => res.data)
       .catch(errHandler);
   },
@@ -252,6 +252,7 @@ export default {
 
   // VPN
   // VPN
+
   getCities() {
     return service
       .get("/city")

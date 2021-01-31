@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
-import { Card, CardImg, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Card,
+  CardImg,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+} from "reactstrap";
 
 import FuneralForm from "./FuneralForm";
 import Condolence from "./Condolence";
@@ -30,55 +39,84 @@ const FuneralDetailed = ({ match, updateGlobalValues }) => {
   }, []);
 
   const handleNewCondolence = async () => {
-    console.log("New condolences");
-    console.log(textArea, flowerSelected);
+    let data;
+    try {
+      data = await api.postFuneralComment(
+        match.params.id,
+        textArea,
+        flowerSelected
+      );
+    } catch (err) {
+      console.error("Error: ", err);
+      return updateGlobalValues(err, true, true);
+    }
+    updateGlobalValues(data);
+    setFuneralMember(data.funeralMember);
+    setTextArea("");
+    setFlowerSelected(1);
   };
 
   return (
     <div>
       {loading && <p>Loading..</p>}
       {!!funeralMember && (
-        <>
-          <h1>{`${funeralMember.name}'s funeral`}</h1>
-          <Card>
-            <CardImg
-              top
-              width="100%"
-              src={funeralMember.avatar}
-              alt={funeralMember.name}
-            />
-            <CardBody>
-              <CardTitle tag="h5">
-                {funeralMember.name} was shutdown{" "}
-                {formatDateOfDeath(funeralMember.createdAt)}
-              </CardTitle>
-              {funeralMember.bounty && (
-                <CardSubtitle tag="h6" className="mb-2 text-muted">
-                  A bounty of was {funeralMember.bounty} claimed
-                </CardSubtitle>
-              )}
-            </CardBody>
-          </Card>
-          <h2>Condolences</h2>
-          {funeralMember.comments.map((comment) => {
-            return (
-              <Condolence
-                key={comment}
-                creator={comment.creator}
-                flower={comment.flower}
-                comment={comment.comment}
+        <Container>
+          <h1 className="mt-3">{`${funeralMember.name}'s funeral`}</h1>
+          <Row className="d-flex flex-column align-items-center">
+            <Col sm="10" md="4">
+              <Card className="mt-3">
+                <CardImg
+                  top
+                  width="100%"
+                  src={funeralMember.avatar}
+                  alt={funeralMember.name}
+                />
+                <CardBody>
+                  <CardTitle tag="h5">
+                    {funeralMember.name} was shutdown{" "}
+                    {formatDateOfDeath(funeralMember.createdAt)}
+                  </CardTitle>
+                  {funeralMember.bounty && (
+                    <CardSubtitle tag="h6" className="mb-2 text-muted">
+                      A bounty of was {funeralMember.bounty} claimed
+                    </CardSubtitle>
+                  )}
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          <h2 className="mt-5 mb-3">Condolences</h2>
+          <Row className="d-flex flex-column align-items-center">
+            {funeralMember.comments.map((comment, i) => {
+              return (
+                <Col
+                  key={`${comment.comment}${i}`}
+                  className="my-2 "
+                  sm="12"
+                  md="8"
+                >
+                  <Condolence
+                    creator={comment.creator}
+                    flower={comment.flower}
+                    comment={comment.comment}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
+          <h2 className="mt-5 mb-3">Pay your respect</h2>
+          <Row className="d-flex flex-column align-items-center">
+            <Col className="my-2 " sm="12" md="8">
+              <FuneralForm
+                handleNewCondolence={handleNewCondolence}
+                textArea={textArea}
+                setTextArea={setTextArea}
+                flowerSelected={flowerSelected}
+                setFlowerSelected={setFlowerSelected}
               />
-            );
-          })}
-          <h2>Pay Your Respect</h2>
-          <FuneralForm
-            handleNewCondolence={handleNewCondolence}
-            textArea={textArea}
-            setTextArea={setTextArea}
-            flowerSelected={flowerSelected}
-            setFlowerSelected={setFlowerSelected}
-          />
-        </>
+            </Col>
+          </Row>
+        </Container>
       )}
     </div>
   );

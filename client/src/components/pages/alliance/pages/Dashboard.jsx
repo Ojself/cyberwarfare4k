@@ -59,7 +59,6 @@ const Dashboard = ({ updateGlobalValues, history }) => {
     let data;
     try {
       data = await api.cancelAllianceInvitation(userId);
-      console.log(data, "data");
     } catch (err) {
       console.error("err", err);
       return updateGlobalValues(err);

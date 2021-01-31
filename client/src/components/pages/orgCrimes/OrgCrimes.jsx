@@ -52,7 +52,6 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
       console.error("Error: ", e);
       return updateGlobalValues(e);
     }
-    console.log(data, "data");
     updateGlobalValues(data);
     setOrgCrimes(data.orgCrimes);
     setClaimedOwnOrgCrimes(data.claimedOwnOrgCrimes);

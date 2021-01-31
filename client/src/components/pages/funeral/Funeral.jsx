@@ -15,7 +15,6 @@ const Funeral = ({ updateGlobalValues }) => {
         console.error("Error: ", err);
         updateGlobalValues(err);
       }
-      console.log(data, "data");
       setFuneralMembers(data.funerals);
       updateGlobalValues(updateGlobalValues);
       setLoading(false);

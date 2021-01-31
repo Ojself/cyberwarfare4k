@@ -78,7 +78,6 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
   useEffect(() => {
     const getMessages = async () => {
       let data = await api.getMessages();
-      console.log(data, "data");
       setMessages(data.messages);
     };
     const fetchHackerNames = async () => {

@@ -50,7 +50,6 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     } catch (err) {
       return updateGlobalValues(err);
     }
-    console.log(data, "data");
     updateGlobalValues(data);
   };
 
