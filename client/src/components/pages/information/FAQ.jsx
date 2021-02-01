@@ -9,6 +9,7 @@ import {
   Row,
   Container,
 } from "reactstrap";
+import infoCollection from "./infoCollection";
 
 const FAQ = () => {
   const [statPointOpen, setStatPointOpen] = useState(false);
@@ -29,44 +30,30 @@ const FAQ = () => {
       <Collapse isOpen={statPointOpen}>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Crime skills</CardTitle>
-            There are 4 crime skills: Technical, Forensics, Social Engineering
-            and Cryptography. These skills can be gained by doing petty crimes,
-            normal crimes or upgrading them with your stat points. The more
-            crime skills you have, the more chance of success you have for
-            commiting crimes and commiting fraud against other hackers!
+            <CardTitle tag="h3">
+              {infoCollection["Crime skills"].title}
+            </CardTitle>
+            {infoCollection["Crime skills"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Hack skills</CardTitle>
-            There are 3 hack skills: CPU, AntiVirus and Encryption. These skills
-            determines your hit/miss chance when going into battle with an
-            opponent hacker.{" "}
-            <strong>
-              CPU is effective versus AntiVirus, AntiVirus is effective versus
-              Encryption and Encryption is effective versus CPU.{" "}
-            </strong>{" "}
-            Make sure to have the right equipped weapon when going into battle -
-            or when suspecting an incoming attack. You can buy components in the
-            market place if you have the bitcoins
+            <CardTitle tag="h3">
+              {infoCollection["Hack skills"].title}
+            </CardTitle>
+            {infoCollection["Hack skills"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Firewall</CardTitle>
-            The firewall stat point represents your overall HP. You start off
-            with 100HP, but this can be upgraded with statpoints or in the
-            market place. Your Firewall might go down when attacked by others.
-            But you can repair yourself in the Service & Support.
+            <CardTitle tag="h3">{infoCollection["Firewall"].title}</CardTitle>
+            {infoCollection["Firewall"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Experience</CardTitle>
-            You gain experience by doing various crimes. The more experience you
-            get, the higher the rank of your hacker will be. With every new
-            rank, you get 5 stat points you can spend in your profile page.
+            <CardTitle tag="h3">{infoCollection["Experience"].title}</CardTitle>
+            {infoCollection["Experience"].text}
           </CardBody>
         </Card>
       </Collapse>
@@ -86,46 +73,36 @@ const FAQ = () => {
       <Collapse isOpen={moneyOpen}>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Crimes</CardTitle>
-            All sorts of crimes will give you both experience and bitcoins or
-            stash. The higher your crime skills, the more successful you are,
-            which results in more bitcoins and experience.
+            <CardTitle tag="h3">{infoCollection["Crimes2"].title}</CardTitle>
+            {infoCollection["Crimes2"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Frauds</CardTitle>
-            Why earn your own bitcoins when you can steal from others? Use your
-            crime skills and dig deep into the pockets of your enemies! Make
-            sure to protect yourself from other thiefs and secure your bitcoins
-            in your ledger.
+            <CardTitle tag="h3">{infoCollection["Frauds"].title}</CardTitle>
+            {infoCollection["Frauds"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Fence</CardTitle>
-            Gimmie the loot! The fence is always looking to buy your stolen
-            stash. Head over to the shop and sell whatever you got. The prices
-            varies from each hour and city. Also, the local alliance might take
-            a fee for selling your items in their city!
+            <CardTitle tag="h3">{infoCollection["Fence"].title}</CardTitle>
+            {infoCollection["Fence"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Data centers</CardTitle>
-            There are 5 data centers in each city throughout the world of
-            cyberhackerwarfare4000. Upon purchase, you will receive a small
-            income every minute. Make sure to stock up on cables as they are
-            required to recieve your income.
+            <CardTitle tag="h3">
+              {infoCollection["Data Centers"].title}
+            </CardTitle>
+            {infoCollection["Data Centers"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Crypto Currency</CardTitle>
-            Arguably the best way to get rich fast. The rules are simple, buy
-            low and sell high. Be careful, though, as your name will show as
-            most recent buyer after purchasing. Prices changes every hour
-            (except at night) and is the same for every city.
+            <CardTitle tag="h3">
+              {infoCollection["Crypto Currency"].title}
+            </CardTitle>
+            {infoCollection["Crypto Currency"].text}
           </CardBody>
         </Card>
       </Collapse>
@@ -145,51 +122,26 @@ const FAQ = () => {
       <Collapse isOpen={batteryOpen}>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Github</CardTitle>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/Ojself/cyberwarfare4k"
-            >
-              CyberhackerWarfare4000
-            </a>{" "}
-            is an open source project and can be found on Github. You will
-            receive an hourly battery bonus by entering your Github username in
-            the "earn-battery" page and giving the project a star on Github
+            <CardTitle tag="h3">{infoCollection["Github"].title}</CardTitle>
+            {infoCollection["Github"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Patreon</CardTitle>
-            Support the project at{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={
-                "https://www.patreon.com/cyberhackerwarfare4000?fan_landing=true"
-              }
-            >
-              {" "}
-              Patreon
-            </a>{" "}
-            and you will recieve an hourly battery bonus and a huge thank you
-            for supporting open source. The money will go to new features and
-            upkeeping the servers.
+            <CardTitle tag="h3">{infoCollection["Patreon"].title}</CardTitle>
+            {infoCollection["Patreon"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Megarpg</CardTitle>
-            Join the megarpg and type in the code to get a battery bonus. You
-            can do this once every day. The code is case sensitive!
+            <CardTitle tag="h3">{infoCollection["Megarpg"].title}</CardTitle>
+            {infoCollection["Megarpg"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Chessathor</CardTitle>
-            Play through the Chessathor game and insert the code (included the
-            #) in the player name input to get a battery bonus. You can do this
-            once every day. The code is case sensitive!
+            <CardTitle tag="h3">{infoCollection["Chessathor"].title}</CardTitle>
+            {infoCollection["Chessathor"].text}
           </CardBody>
         </Card>
       </Collapse>
@@ -209,59 +161,22 @@ const FAQ = () => {
       <Collapse isOpen={attackOpen}>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Fraud</CardTitle>
-            You can earn bitcoins by frauding other hackers in your city. The
-            chance of success is based upon the attackers total crime skills and
-            the defenders AntiVirus.
-            <br />
-            <br />
-            Chance for succesful fraud ={" "}
-            <strong>
-              attackers average crime skills / (defenders AntiVirus * 1.125){" "}
-            </strong>{" "}
-            <br />
-            Percentage of victim bitcoins stolen ={" "}
-            <strong>attacker rank / 100 * 4</strong>
-            <br />
-            NB! A small random number generator (rng) is applied to every
-            attack.
-            <br />
-            <br />
-            You can protect yourself from other hackers by having your bitcoins
-            stored in the ledger or upgrading your AntiVirus. A fraud will lead
-            to a 5 minute grace period.
+            <CardTitle tag="h3">{infoCollection["Frauds"].title}</CardTitle>
+            {infoCollection["Frauds"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Attack</CardTitle>
-            If you need to get someone out of the way for good, then attacking
-            is your best option. The equipped weapon of both you and your
-            opponent will determine the hit/miss chance.
-            <br />
-            CPU is effective versus AntiVirus. AntiVirus is effective versus
-            Encryption. And Encryption is efective versus CPU.
-            <br />
-            Damage inflication ={" "}
-            <strong>
-              (Weapon Skill * effect bonus * 0.1) + (rank level * 1.5)
-            </strong>
-            <br />
-            EG: (130 * 1.5 * 0.1) + (7 * 1.5) = <strong>34,5</strong> damage
-            <br />
-            <br /> An attack, successful or not, will grace the player for 60 or
-            5 minutes depending on their online status. If you manage to bring a
-            player down 0 or less firewall, the player is shutdown and is forced
-            to start over. You will get whatever crypto currency the player was
-            carrying at the time of a shutdown.
+            <CardTitle tag="h3">{infoCollection["Attacks"].title}</CardTitle>
+            {infoCollection["Attacks"].text}
           </CardBody>
         </Card>
         <Card className="mb-2">
           <CardBody>
-            <CardTitle tag="h3">Grace period</CardTitle>
-            When someone is attacked, a grace will protect the hacker for a
-            certain time. A fraud will result in a 5 minute grace, while attack
-            will be 5 or 60 minutes grace depending on the online status.
+            <CardTitle tag="h3">
+              {infoCollection["Grace period"].title}
+            </CardTitle>
+            {infoCollection["Grace period"].text}
           </CardBody>
         </Card>
       </Collapse>

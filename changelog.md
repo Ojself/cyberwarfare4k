@@ -22,17 +22,17 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Alliance can set fee for the local fence
 - Alliances have a safe
 - Taxes upon fence for alliances
+- Token store page
 - Terms of sale page
 - FAQ and Information have more information
 - Players start with the lowest firewall item
 - A notification is now issued when a bounty is placed for first time
+- Reset statpoints feature
 
 ### Coming
 
 - Alliance boss options
 - Major file structuring overhaul
-- Listen to return key when logging in
-- Funeral
 - Payment methods
 
 ## [0.1.6] - 2020-12-20

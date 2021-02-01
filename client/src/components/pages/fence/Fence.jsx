@@ -11,7 +11,7 @@ import {
   Col,
 } from "reactstrap";
 import "./fence.scss";
-
+import Tutorial from "../_molecules/Tutorial";
 const MAX_ALLOWED_STASH = 50;
 
 const defaultColors = ["red", "blue", "orange", "green"];
@@ -68,23 +68,9 @@ const objectIsEmpty = (obj) => {
 
 export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
   const [shopStash, setShopStash] = useState([]);
+  const [city, setCity] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [transactionState, setTransactionState] = useState({
-    Cables: 0,
-    "EyeSpy Digital Spy Recorder": 0,
-    Keylogger: 0,
-    "Linux for dummies": 0,
-    "Lock pick set": 0,
-    Magspoof: 0,
-    "Mini Hidden Camera": 0,
-    "Raspberry Pi": 0,
-    "Rubber Ducky": 0,
-    "Ubertooth One": 0,
-    "Proxmark3 Kit": 0,
-    "WiFi Pineapple": 0,
-    "HackRf One": 0,
-    Computer: 0,
-  });
+  const [transactionState, setTransactionState] = useState(defaultValues);
 
   const getStashColor = (index) => {
     return defaultColors[index % defaultColors.length];
@@ -133,20 +119,21 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         console.error(err, "err");
         return updateGlobalValues(err);
       }
+      console.log(data, "data");
+      setCity(data.city);
       setShopStash(data.stashes);
       setLoading(false);
       updateGlobalValues(data);
     };
     getStashes();
   }, []);
-  const city = globalLoading ? "" : user.playerStats.city.name;
 
   const tableBody =
     !loading &&
     !globalLoading &&
     shopStash.map((stash, i) => {
       const { name, price } = stash;
-      const { stashPriceMultiplier } = user.playerStats.city;
+      const { stashPriceMultiplier } = city;
       const userStashAmount = user.stash[name];
 
       return (
@@ -209,11 +196,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         <Button
           onClick={() =>
             setTransactionState(
-              getMaxBuyingVolume(
-                user,
-                shopStash,
-                user.playerStats.city.stashPriceMultiplier
-              )
+              getMaxBuyingVolume(user, shopStash, city.stashPriceMultiplier)
             )
           }
           color="outline-success"
@@ -246,10 +229,14 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
       </Row>
     </Container>
   );
+
   return (
     <div className="fence-page-container">
-      <h1>Fence</h1>
-      <h6>{city}</h6>
+      <div className="d-flex justify-content-center">
+        <h1>Fence</h1>
+        <Tutorial size={"md"} section={"Fence"} />
+      </div>
+      <h6>{city ? city.name : "City"}</h6>
       <div className="content">{tableOverview}</div>
     </div>
   );

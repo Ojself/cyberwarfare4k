@@ -5,6 +5,7 @@ const router = express.Router();
 const Stash = require('../models/Stash');
 const User = require('../models/User');
 const Alliance = require('../models/Alliance');
+const City = require('../models/City');
 const { saveAndUpdateUser } = require('../logic/_helpers');
 const {
   checkBuyStashCriteria, checkSellStashCriteria, cleanObj, summarizeStash,
@@ -16,10 +17,14 @@ const {
 
 router.get('/', async (req, res) => {
   const stashes = await Stash.find().sort({ price: 1 });
+  const city = await City.findOne({ residents: { $in: [req.user._id] } })
+    .populate('allianceOwner', 'name')
+    .lean();
 
   res.status(200).json({
     success: true,
     message: 'stash loaded..',
+    city,
     stashes,
   });
 });

@@ -179,7 +179,7 @@ const userSchema = new Schema(
         firewall: { type: Number, default: 0 },
         statPointsUsed: { type: Number, default: 0 },
       },
-      statPointResetPrice: { type: Number, default: 2500000 },
+      statPointResetPrice: { type: Number, default: 0 },
       maxFirewall: {
         type: Number,
         default: 100,
@@ -377,7 +377,7 @@ userSchema.methods.resetStatPoitns = function () {
     this.playerStats.currentFirewall = 1;
   }
   this.playerStats.exp -= this.playerStats.statPointsHistory.exp;
-  this.playerStats.statPointResetPrice *= 2;
+  this.playerStats.statPointResetPrice += 2500000;
 
   const historyKeys = Object.keys(this.playerStats.statPointsHistory);
   historyKeys.forEach((key) => {
