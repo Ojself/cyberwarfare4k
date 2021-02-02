@@ -104,10 +104,7 @@ const userSchema = new Schema(
         enum: ['', 'Bronze', 'Silver', 'Gold', 'Platinum'],
       },
       tokens: { type: Number, default: 0 },
-      banned: {
-        type: Boolean,
-        default: false,
-      },
+      banned: { type: Boolean, default: false },
       bannedReason: {
         type: String,
         default: '',
@@ -743,13 +740,19 @@ userSchema.methods.handleNewStatpoint = function (statName) {
   }
 };
 
-// todo remove from city and alliance and datacenters
-userSchema.methods.die = async function () {
-  // Remove from alliance
-  // Remove from city
-  // Remove all datacenters
-  // Clean from all orgcrimes ?
+/* TOKEN */
+/* TOKEN */
+/* TEMP */
+userSchema.methods.gainTokens = function (amount) {
+  this.account.tokens += parseInt(amount, 10);
+};
 
+userSchema.methods.redeemTokens = function (battery, tokenAmount) {
+  this.account.tokens -= parseInt(tokenAmount, 10);
+  this.batteryGain(battery);
+};
+
+userSchema.methods.die = async function () {
   console.info(`${this.name} is dead`);
   const city = await City.findById(this.playerStats.city);
   city.departure(this._id);

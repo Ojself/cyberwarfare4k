@@ -525,9 +525,26 @@ export default {
   }, */
 
   // EARN ENERGY
+  // EARN ENERGY
   postGithubUsername(githubUserName) {
     return service
       .post(`/earnBattery`, { githubUserName })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  // TOKEN STORE
+  // TOKEN STORE
+  redeemTokens(amount) {
+    return service
+      .post(`/tokens/redeem`, { amount })
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+
+  buyTokens(amount, handler) {
+    return service
+      .post(`/tokens/buy`, { amount, handler })
       .then((res) => res.data)
       .catch(errHandler);
   },
