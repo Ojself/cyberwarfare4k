@@ -1,8 +1,4 @@
-const {
-  batteryCheck,
-  checkFunds,
-  generateNotification,
-} = require('./_helpers');
+const { generateNotification } = require('./_helpers');
 const DataCenter = require('../models/DataCenter');
 
 const healDataCenterCriterias = (user, dataCenter) => {
@@ -12,7 +8,7 @@ const healDataCenterCriterias = (user, dataCenter) => {
   if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
-  if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
+  if (user.playerStats.bitCoins < dataCenter.price) {
     return 'Insufficient funds';
   }
   return null;
@@ -35,7 +31,7 @@ const purchaseDataCenterCriterias = (user, dataCenter, now) => {
   if (dataCenter.gracePeriod > now) {
     return 'This datacenter is not available at the moment';
   }
-  if (!checkFunds(user.playerStats.bitCoins, dataCenter.price)) {
+  if (user.playerStats.bitCoins < dataCenter.price) {
     return 'Insufficient funds';
   }
   return null;
@@ -49,7 +45,7 @@ const attackDataCenterCriterias = (user, dataCenter, batteryCost, now) => {
   if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
-  if (!batteryCheck(user, batteryCost)) {
+  if (user.playerStats.battery < batteryCost) {
     return 'Insufficent battery';
   }
   if (dataCenter.gracePeriod > now) {

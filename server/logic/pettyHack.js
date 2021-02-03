@@ -6,7 +6,7 @@ const {
 } = require('./_helpers');
 
 const pettyWinBitcoins = (multiplier) => {
-  const bonus = 1000 + (multiplier * 500);
+  const bonus = 1000 + (multiplier * 400);
   const rng = randomNumberMinMax(bonus / 2, bonus);
   return Math.round(rng);
 };
@@ -23,7 +23,7 @@ const pettyHackRouteCriterias = (user, batteryCost) => {
     return 'Something went wrong';
   }
   if (!batteryCheck(user, batteryCost)) {
-    return 'insufficent battery';
+    return 'Insufficent battery';
   }
   return null;
 };
@@ -53,10 +53,6 @@ const pettyCrime = async (user, batteryCost) => {
   if (newbieBonus) {
     probabiltiy = 1;
   }
-  console.log('newbieBonus:', newbieBonus);
-  console.log('probabiltiy: ', probabiltiy);
-  console.log('decider', decider);
-  console.log('decider + (user.playerStats.rank / 13): ', decider + (user.playerStats.rank / 13));
 
   /* Checking for success */
   if (probabiltiy > decider) {

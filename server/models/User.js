@@ -37,27 +37,27 @@ const ranks = [
     rank: 3,
   },
   {
-    expToNewRank: 420000,
+    expToNewRank: 520000,
     name: 'Jr. Web Dev',
     rank: 4,
   },
   {
-    expToNewRank: 1015000,
+    expToNewRank: 1215000,
     name: 'Sr. Web Dev',
     rank: 5,
   },
   {
-    expToNewRank: 2437500,
+    expToNewRank: 2837500,
     name: 'System Dev',
     rank: 6,
   },
   {
-    expToNewRank: 6093314,
+    expToNewRank: 6993314,
     name: 'Cyber Security Dev',
     rank: 7,
   },
   {
-    expToNewRank: 15231337,
+    expToNewRank: 18231337,
     name: 'Basement Dweller',
     rank: 8,
   },
@@ -146,7 +146,7 @@ const userSchema = new Schema(
     currencies: {
       Litecoin: { type: Number, default: 0 },
       Ethereum: { type: Number, default: 0 },
-      Ripple: { type: Number, default: 0 },
+      Doge: { type: Number, default: 0 },
       Monero: { type: Number, default: 0 },
       Zcash: { type: Number, default: 0 },
       Dash: { type: Number, default: 0 },
@@ -790,7 +790,7 @@ userSchema.methods.die = async function () {
   this.currencies = {
     Litecoin: 0,
     Ethereum: 0,
-    Ripple: 0,
+    Doge: 0,
     Monero: 0,
     Zcash: 0,
     Dash: 0,

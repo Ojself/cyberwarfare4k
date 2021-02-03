@@ -58,7 +58,7 @@ export default {
         <span className="text-success"> Cryptography</span>. These skills can be
         gained by doing petty crimes, normal crimes or upgrading them with your
         stat points. The more Crime Skills you have, the more chance of success
-        you have for commiting crimes and commiting fraud against other hackers!
+        you have for commiting crimes and frauding other hackers!
       </>
     ),
   },

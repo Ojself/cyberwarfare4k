@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import api from "../../../../api";
 import CrimeTerminal from "./crimeTerminal";
 
-import { Table, UncontrolledTooltip, Container, Col, Row } from "reactstrap";
+import { Container, Col, Row } from "reactstrap";
 import Tutorial from "../../_molecules/Tutorial";
+import CrimesTable from "./CrimesTable";
 
 const Crimes = ({ updateGlobalValues, user }) => {
   const [result, setResult] = useState(null);
@@ -12,7 +13,8 @@ const Crimes = ({ updateGlobalValues, user }) => {
   useEffect(() => {
     const fetchCrimes = async () => {
       const data = await api.getCrimes();
-      updateGlobalValues(data);
+      console.log(data);
+      updateGlobalValues(data, false);
       setCrimes(data.crimes);
     };
     fetchCrimes();
@@ -24,90 +26,65 @@ const Crimes = ({ updateGlobalValues, user }) => {
 
     try {
       data = await api.commitCrimes(crimeId);
-    } catch (err) {
       window.scrollTo({ top: 0, behavior: "smooth" });
-      return updateGlobalValues(err);
+    } catch (err) {
+      return updateGlobalValues(err, true, true);
     }
     updateGlobalValues(data, false);
     setCrimes(data.crimes);
     setResult(data.finalResult);
   };
 
-  const getDifficultyColor = (diff) => {
-    const lexi = {
-      30: "success",
-      50: "info",
-      70: "light",
-      90: "warning",
-      150: "danger",
-    };
-    return `text-${lexi[diff]}`;
-  };
-
   return (
-    <div className="crimes-page-container">
-      <div className="d-flex flex-row justify-content-center">
-        <h1>Hack Crimes</h1>
-        <Tutorial size={"md"} section="Crimes" />
-      </div>
-      <Container className="mt-2 w-100 m-auto">
-        <Row sm="1" md="2">
-          <Col sm="12" md="6">
-            <Table dark>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Difficulty</th>
-                  <th>
-                    <span role="img" aria-label="battery">
-                      &#9889;
-                    </span>
-                    5
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {crimes.map((cr, i) => {
-                  return (
-                    <tr key={cr._id}>
-                      <th id={`toolTip${i}`} scope="row">
-                        {cr.name}
-                      </th>
-                      <UncontrolledTooltip
-                        placement="top"
-                        target={`toolTip${i}`}
-                      >
-                        {cr.description}
-                      </UncontrolledTooltip>
-                      <td>{cr.crimeType}</td>
-                      <td className={getDifficultyColor(cr.difficulty)}>
-                        {cr.difficultyString}
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handleClick(cr._id)}
-                        >
-                          Commit
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Col>
-          <Col className="display-none-when-mobile" md="6">
-            <CrimeTerminal
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-              result={result}
-            />
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Container fluid className="w-100 ">
+      <Row>
+        <Col className="d-flex justify-content-center">
+          <h1>Hack Crimes</h1>
+          <Tutorial size={"md"} section="Crimes" />
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col sm="12" md="4">
+          <CrimesTable
+            crimes={crimes.filter(
+              (crime) => crime.crimeType === "Cryptography"
+            )}
+            type="Cryptography"
+            handleClick={handleClick}
+          />
+
+          <CrimesTable
+            crimes={crimes.filter((crime) => crime.crimeType === "Forensics")}
+            type="Forensics"
+            handleClick={handleClick}
+          />
+        </Col>
+
+        <Col className="display-none-when-mobile" md="4">
+          <CrimeTerminal
+            updateGlobalValues={updateGlobalValues}
+            user={user}
+            result={result}
+          />
+        </Col>
+
+        <Col sm="12" md="4">
+          <CrimesTable
+            crimes={crimes.filter(
+              (crime) => crime.crimeType === "Social Engineering"
+            )}
+            type="Social Engineering"
+            handleClick={handleClick}
+          />
+
+          <CrimesTable
+            crimes={crimes.filter((crime) => crime.crimeType === "Technical")}
+            type="Technical"
+            handleClick={handleClick}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

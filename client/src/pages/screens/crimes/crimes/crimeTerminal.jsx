@@ -4,6 +4,45 @@ import Typist from "react-typist";
 import { Progress } from "reactstrap";
 import { randomCrimeString, errorMessages } from "../../_helpers/combatStrings";
 
+const typistQuotes = [
+  {
+    first: "Ready to hca ",
+    count: 4,
+    second: "hack",
+  },
+  {
+    first: "sudo rm -rf .* ",
+    count: 15,
+    delay: 20,
+    second: "Terminal up and running!",
+  },
+  {
+    first: "ext4 /dev/sda1 ",
+    count: 15,
+    second: "Shell standing by",
+  },
+  {
+    first: "Compiler rdeay",
+    count: 5,
+    second: "ready",
+  },
+  {
+    first: "Shell ready for commnads",
+    count: 4,
+    second: "ands",
+  },
+  {
+    first: "Terminal standnig by ",
+    count: 7,
+    second: "ing by ",
+  },
+  {
+    first: 'Console.log(" ',
+    count: 7,
+    second: " is ready for pentest",
+  },
+];
+
 const CrimeTerminal = ({ result }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
@@ -99,12 +138,36 @@ const CrimeTerminal = ({ result }) => {
     borderLeft: `1px solid ${terminalState.decorationColor}`,
     borderRight: `1px solid ${terminalState.decorationColor}`,
     borderBottom: `3px solid ${terminalState.decorationColor}`,
+    minHeight: "50vh",
   };
+
+  const firstTypistView =
+    typistQuotes[Math.floor(Math.random() * typistQuotes.length)];
 
   return (
     <div className="col-12">
+      {!result && (
+        <div style={terminalBorder} className="w-100 ">
+          <div style={terminalHeader}>
+            <strong>Compiling Code</strong>
+          </div>
+          <div className="text-left">
+            <Typist
+              className="pl-2 pt-2 text-left terminalFont terminalStyle"
+              cursor={{ hideWhenDone: true }}
+            >
+              <span>{firstTypistView.first}</span>
+              <Typist.Backspace
+                count={firstTypistView.count}
+                delay={firstTypistView.delay || 200}
+              />
+              <span>{firstTypistView.second}</span>
+            </Typist>
+          </div>
+        </div>
+      )}
       {result && (
-        <div style={terminalBorder} className="w-100">
+        <div style={terminalBorder} className="w-100 ">
           <div style={terminalHeader}>
             <strong>Compiling Code</strong>
           </div>

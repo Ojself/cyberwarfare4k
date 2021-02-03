@@ -43,7 +43,12 @@ const randomNumberMinMax = (min, max) => Math.random() * (max - min) + min;
 
 const crimeSkillDropChance = (user) => {
   const givenCrimeSkill = crimeSkills[Math.floor(Math.random() * crimeSkills.length)];
-  return user.crimeSkill[givenCrimeSkill] >= 100 ? null : givenCrimeSkill;
+  return user.crimeSkill[givenCrimeSkill] >= 60 ? null : givenCrimeSkill;
+};
+
+const hackSkillDropChance = (user) => {
+  const givenHackSkill = hackSkills[Math.floor(Math.random() * hackSkills.length)];
+  return user.hackSkill[givenHackSkill] >= 60 ? null : givenHackSkill;
 };
 
 const skillDropChance = (user) => (Math.random() > 0.5 ? crimeSkillDropChance(user) : hackSkillDropChance(user));
@@ -64,11 +69,6 @@ const stashDropChance = (multiplier = 1) => {
     givenStash = stash[randomNumberMinMax(0, stash.length)];
   }
   return givenStash;
-};
-
-const hackSkillDropChance = (user) => {
-  const givenHackSkill = hackSkills[Math.floor(Math.random() * hackSkills.length)];
-  return user.hackSkill[givenHackSkill] >= 100 ? null : givenHackSkill;
 };
 
 const batteryCheck = (user, x) => user.playerStats.battery >= x;

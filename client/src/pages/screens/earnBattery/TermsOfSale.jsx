@@ -59,8 +59,8 @@ function TermsOfSale() {
         <div>
           <p>
             Selger er Flesjø Import, Gøteborggata 20, 0556 Oslo,
-            tormod.flesjo@gmail.com, +4798999898, 913423526, og betegnes i det
-            følgende som &nbsp;selger/selgeren.
+            tormod.flesjo@gmail.com, +4798999898, orgnr 913423526, og betegnes i
+            det følgende som &nbsp;selger/selgeren.
           </p>
           <p>
             Kjøper er den forbrukeren som foretar bestillingen, og betegnes i

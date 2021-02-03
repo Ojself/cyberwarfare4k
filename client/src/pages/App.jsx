@@ -16,8 +16,7 @@ import DataCenters from "./screens/DataCenters";
 import EarnBattery from "./screens/earnBattery/EarnBattery";
 import TermsOfSale from "./screens/earnBattery/TermsOfSale";
 import TokensStore from "./screens/tokens/TokenStore";
-import TokensBuy from "./screens/tokens/TokenBuy";
-import TokensTransfer from "./screens/tokens/TokensTransfer";
+
 /*
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
@@ -365,22 +364,7 @@ const App = () => {
           path="/terms-of-sale"
           render={() => <TermsOfSale user={user} />}
         />
-        <Route
-          exact
-          path="/tokens/buy"
-          render={() => (
-            <TokensBuy
-              globalLoading={loading}
-              updateGlobalValues={updateGlobalValues}
-              user={user}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/tokens/transfer"
-          render={() => <TokensTransfer user={user} />}
-        />
+
         <Route
           path="/tokens"
           render={() => (

@@ -1,31 +1,9 @@
 import React from "react";
-import BuyTokensCard from "../../../components/tokens/BuyTokenCard";
+
 import { Container, Col, Row } from "reactstrap";
 import api from "../../../api";
 
 const TokenBuy = ({ globalLoading, user, updateGlobalValues }) => {
-  const payWithStripe = async (amount) => {
-    let data;
-    try {
-      data = await api.buyTokens(amount, "Stripe");
-    } catch (err) {
-      console.error("err");
-      return updateGlobalValues(err);
-    }
-    console.log(data, "data");
-    updateGlobalValues(data);
-  };
-  const payWithVipps = async (amount) => {
-    let data;
-    try {
-      data = await api.buyTokens(amount, "Vipps");
-    } catch (err) {
-      console.error("err");
-      return updateGlobalValues(err);
-    }
-    console.log(data, "data");
-    updateGlobalValues(data);
-  };
   const userTokens = (!globalLoading && user.account.tokens) || 0;
   return (
     <Container>
@@ -63,32 +41,7 @@ const TokenBuy = ({ globalLoading, user, updateGlobalValues }) => {
         </Col>
       </Row>
 
-      <Row>
-        <Col md="4" sm="12">
-          <BuyTokensCard
-            payWithStripe={payWithStripe}
-            payWithVipps={payWithVipps}
-            tokensAmount="1000"
-            priceInEur="10"
-          />
-        </Col>
-        <Col md="4" sm="12">
-          <BuyTokensCard
-            payWithStripe={payWithStripe}
-            payWithVipps={payWithVipps}
-            tokensAmount="2100"
-            priceInEur="20"
-          />
-        </Col>
-        <Col md="4" sm="12">
-          <BuyTokensCard
-            payWithStripe={payWithStripe}
-            payWithVipps={payWithVipps}
-            tokensAmount="5000"
-            priceInEur="40"
-          />
-        </Col>
-      </Row>
+      <Row></Row>
     </Container>
   );
 };
