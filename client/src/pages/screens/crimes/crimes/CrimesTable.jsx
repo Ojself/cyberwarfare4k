@@ -33,10 +33,13 @@ const CrimesTable = ({ crimes, handleClick, type }) => {
           {crimes.map((cr, i) => {
             return (
               <tr key={cr._id}>
-                <th id={`toolTip${i}`} scope="row">
+                <th id={`toolTip${cr._id}`} scope="row">
                   {cr.name}
                 </th>
-                <UncontrolledTooltip placement="top" target={`toolTip${i}`}>
+                <UncontrolledTooltip
+                  placement="top"
+                  target={`toolTip${cr._id}`}
+                >
                   {cr.description}
                 </UncontrolledTooltip>
                 <td className={getDifficultyColor(cr.difficulty)}>

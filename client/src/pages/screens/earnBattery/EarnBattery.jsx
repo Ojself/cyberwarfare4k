@@ -3,12 +3,15 @@ import React, { useState } from "react";
 import GlobalIncome from "./GlobalIncome";
 import api from "../../../api";
 import {
+  Col,
+  CardDeck,
+  Container,
+  Row,
   Card,
   Button,
   CardImg,
   CardTitle,
   CardText,
-  CardDeck,
   CardSubtitle,
   CardBody,
   FormText,
@@ -162,8 +165,8 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
       )}
     </InputGroup>
   );
-  const cardDeck = (
-    <CardDeck className="d-flex justify-content-around h-100 mt-4">
+  const cardsDeck = (
+    <CardDeck>
       <Card>
         <CardImg
           top
@@ -189,6 +192,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
           {githubUsernameInput}
         </CardBody>
       </Card>
+
       <Card>
         <CardImg
           top
@@ -292,25 +296,24 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   );
 
   return (
-    <div
-      className="display-flex justify-content-center mx-5 h-100"
-      style={{ height: "60vh" }}
-    >
-      <div className="d-flex justify-content-between">
-        <div className="w-25"></div>
-        <h1 className="w-50">Earn battery</h1>
-        {!globalLoading && user && (
-          <GlobalIncome
-            user={user}
-            updateGlobalValues={updateGlobalValues}
-            batteryBonuses={batteryBonuses}
-            userHasStarred={userHasStarred}
-            userSubscription={user.account.subscription}
-          />
-        )}
-      </div>
-      {cardDeck}
-    </div>
+    <Container fluid className="">
+      <Row>
+        <Col className="d-flex">
+          <div className="w-25"></div>
+          <h1 className="w-50">Earn battery</h1>
+          {!globalLoading && user && (
+            <GlobalIncome
+              user={user}
+              updateGlobalValues={updateGlobalValues}
+              batteryBonuses={batteryBonuses}
+              userHasStarred={userHasStarred}
+              userSubscription={user.account.subscription}
+            />
+          )}
+        </Col>
+      </Row>
+      <Row>{cardsDeck}</Row>
+    </Container>
   );
 };
 

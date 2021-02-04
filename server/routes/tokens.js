@@ -11,7 +11,7 @@ const { saveAndUpdateUser } = require('../logic/_helpers');
 // Redeem item
 
 router.post('/redeem', async (req, res) => {
-  console.log(req.body);
+  console.log(req.body, 'req.body');
   const { amount } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
@@ -22,6 +22,7 @@ router.post('/redeem', async (req, res) => {
       message: 'Insufficent tokens.',
     });
   }
+  /* Battery: Tokens */
   const batteryOverview = {
     144: 500,
     55: 250,
@@ -46,6 +47,12 @@ router.post('/buy', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   user.gainTokens(amount);
+  if (process.env.FEATURE_TOKEN_STORE !== true) {
+    return res.status(400).json({
+      success: false,
+      message: 'This feature is disabled.',
+    });
+  }
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({

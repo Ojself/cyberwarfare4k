@@ -240,18 +240,32 @@ router.get('/ladder', async (req, res) => {
 // PRIVATE
 // Lets user upgrade his own stats whenever he levels up
 
-// extract route criterias and functionality
+const upgradeStatsCriteria = (user, statPoint) => {
+  if (!user || !statPoint) {
+    return 'Something went wrong';
+  }
+  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption', 'exp', 'Firewall'];
+
+  if (user.playerStats.statPoints <= 0) {
+    return 'Insufficent statpoints';
+  }
+  if (!possibleStatPoints.includes(statPoint)) {
+    return 'Invalid statpoint';
+  }
+
+  const statsWithMaxCap = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption'];
+
+  if (statsWithMaxCap.includes(statPoint) && user.playerStats.statPointsHistory[statPoint] > 100) {
+    return `${statPoint} is maxed out`;
+  }
+
+  return null;
+};
 
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const { statPoint } = req.body;
-  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'exp', 'Firewall', 'Encryption'];
-  if (!possibleStatPoints.includes(statPoint)) {
-    return res.status(400).json({
-      success: false,
-      message: 'Illegal upgrade',
-    });
-  }
+
   /* todo, criteria route */
   const user = await User.findById(userId)
     .populate('marketPlaceItems.CPU')
@@ -259,16 +273,17 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
     .populate('marketPlaceItems.AntiVirus')
     .populate('marketPlaceItems.Encryption');
 
-  if (user.playerStats.statPoints <= 0) {
+  const disallowed = upgradeStatsCriteria(user, statPoint);
+
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message: 'no more statpoints',
+      message: disallowed,
     });
   }
 
   await user.handleNewStatpoint(statPoint);
 
-  /* todo nullify user info */
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({
@@ -327,7 +342,7 @@ router.get('/user-setup-status', async (req, res) => {
       status,
     });
   }
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id).lean();
   status.playerIsDead = user.playerStats.currentFirewall <= 0;
 
   if (!user.account.isSetup) {

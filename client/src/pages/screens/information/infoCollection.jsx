@@ -356,8 +356,17 @@ export default {
         Token Store
       </>
     ),
-    text:
-      "In the Token Store you can buy or transfer tokens and make purchases with your existing tokens, such as energy boosters",
+    text: (
+      <>
+        Tokens are a virtual currency that allows you to purchase bonus items in
+        the game like extra battery.
+        <br />
+        <br />
+        After purchasing tokens with either Vipps or Stripe, you can buy various
+        items in the Token Store by clicking "Redeem Tokens" below the item you
+        would like to obtain.
+      </>
+    ),
   },
 
   "Top Hackers": {

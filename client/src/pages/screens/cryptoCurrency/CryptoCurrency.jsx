@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./cryptoStyle.scss";
 import {
+  Container,
+  Col,
+  Row,
   UncontrolledTooltip,
   InputGroup,
   InputGroupAddon,
@@ -17,7 +20,7 @@ import api from "../../../api";
 // todo: rename user and loading
 const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
   const [cryptoState, setCryptoState] = useState({
-    currencies: null,
+    currencies: [],
     loading: true,
     massagedCurrency: null,
     Litecoin: false,
@@ -60,7 +63,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
   };
 
   const handleBuy = async (e) => {
-    /* todo, some frontend check maybe? */
     const { name } = e.target;
     const amount = cryptoState[name];
 
@@ -114,190 +116,211 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     });
   };
 
-  /* const priceOverview = ()=> {
-    const {Litecoin,Ethereum,Ripple,Monero,Zcash,Dash} = cryptoState;
-    const buyingStarted = [
-      Litecoin,
-      Ethereum,
-      Ripple,
-      Monero,
-      Zcash,
-      Dash,
-    ].some(currency=> currency>0)
+  const allCharts = cryptoState.massagedCurrency && (
+    <>
+      <Row>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={0}
+            data={[cryptoState.massagedCurrency[0]]}
+          />
+        </Col>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={1}
+            data={[cryptoState.massagedCurrency[1]]}
+          />
+        </Col>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={2}
+            data={[cryptoState.massagedCurrency[2]]}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={3}
+            data={[cryptoState.massagedCurrency[3]]}
+          />
+        </Col>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={4}
+            data={[cryptoState.massagedCurrency[4]]}
+          />
+        </Col>
+        <Col
+          lg="4"
+          md="12"
+          style={{
+            width: "100%",
+            height: "40vh",
+          }}
+        >
+          <CryptoCurrenciesChart
+            key={5}
+            data={[cryptoState.massagedCurrency[5]]}
+          />
+        </Col>
+      </Row>
+    </>
+  );
 
-    return buyingStarted && ( <div>
-        {["Litecoin", "Ethereum", "Ripple", "Monero", "Zcash", "Dash"]
-          .map(currency=>{
-          return cryptoState[currency] > 0 && (
-            <h6 key={currency}>{currency}</h6>
-          )
-          }
-        )}
-        <h6>Total: </h6>
-        <h6>On hand: </h6>
-      </div>
-      )
-      }
-   */
+  const cryptoTable = cryptoState.currencies.length && (
+    <Table className="crypto-table" size="sm" responsive dark striped>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Market cap</th>
+          <th>Change last hour</th>
+          <th>Available</th>
+          <th>You have</th>
+          <th className="display-none-when-mobile">Last purchased by:</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {cryptoState.currencies.map((cu, i) => {
+          const prevPrice = cu.historyPrice[cu.historyPrice.length - 2];
+          const changeFromLastHour = ((cu.price - prevPrice) / prevPrice) * 100;
+          return (
+            <tr key={i}>
+              <th title={cu.initials} scope="row">
+                {cu.name}
+              </th>
+              <td>{cu.price}</td>
+              <td>{KFormatter(cu.marketCap)}</td>
+              <td
+                style={
+                  changeFromLastHour > 0
+                    ? { color: "#00b909" }
+                    : { color: "#c60606" }
+                }
+              >
+                {changeFromLastHour.toFixed(2)}%
+              </td>
+              {/* TODO icon  */}
+              <td>{KFormatter(Math.floor(cu.available))}</td>
+              <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
+              {cu.lastPurchasedBy ? (
+                <td className="display-none-when-mobile">
+                  <Link
+                    className="text-white"
+                    to={`hacker/${cu.lastPurchasedBy._id}`}
+                  >
+                    {cu.lastPurchasedBy.name}
+                  </Link>
+                </td>
+              ) : (
+                <td className="display-none-when-mobile"> - </td>
+              )}
+              <td>
+                <InputGroup id={`disableTip${i}`}>
+                  <Input
+                    step={10}
+                    min={0}
+                    placeholder={0}
+                    type="number"
+                    name={cu.name}
+                    value={cryptoState[cu.name]}
+                    onChange={handleInputChange}
+                    disabled={
+                      globalLoading || cu.levelReq >= user.playerStats.rank
+                    }
+                  />
 
-  return (
-    <div className="crypto-page-container">
-      <div className="d-flex flex-row justify-content-center">
-        <h1>Crypto Currency</h1>
-        <Tutorial section={"Crypto Currency"} />
-      </div>
-      {cryptoState.loading ? (
-        <p>loading...</p>
-      ) : (
-        <>
-          <Table className="crypto-table" size="sm" responsive dark striped>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Market cap</th>
-                <th>Change last hour</th>
-                <th>Available</th>
-                <th>You have</th>
-                <th className="display-none-when-mobile">Last purchased by:</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cryptoState.currencies.map((cu, i) => {
-                const prevPrice = cu.historyPrice[cu.historyPrice.length - 2];
-                const changeFromLastHour =
-                  ((cu.price - prevPrice) / prevPrice) * 100;
-                return (
-                  <tr key={i}>
-                    <th title={cu.initials} scope="row">
-                      {cu.name}
-                    </th>
-                    <td>{cu.price}</td>
-                    <td>{KFormatter(cu.marketCap)}</td>
-                    <td
-                      style={
-                        changeFromLastHour > 0
-                          ? { color: "#00b909" }
-                          : { color: "#c60606" }
+                  <InputGroupAddon
+                    className="d-flex flex-row"
+                    addonType="append"
+                  >
+                    <Button
+                      name={cu.name}
+                      onClick={(e) => handleBuy(e)}
+                      disabled={
+                        globalLoading || cu.levelReq >= user.playerStats.rank
                       }
                     >
-                      {changeFromLastHour.toFixed(2)}%
-                    </td>
-                    {/* TODO icon  */}
-                    <td>{KFormatter(Math.floor(cu.available))}</td>
-                    <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
-                    {cu.lastPurchasedBy ? (
-                      <td className="display-none-when-mobile">
-                        <Link
-                          className="text-white"
-                          to={`hacker/${cu.lastPurchasedBy._id}`}
-                        >
-                          {cu.lastPurchasedBy.name}
-                        </Link>
-                      </td>
-                    ) : (
-                      <td className="display-none-when-mobile"> - </td>
-                    )}
-                    <td>
-                      <InputGroup id={`disableTip${i}`}>
-                        <Input
-                          step={10}
-                          min={0}
-                          placeholder={0}
-                          type="number"
-                          name={cu.name}
-                          value={cryptoState[cu.name]}
-                          onChange={handleInputChange}
-                          disabled={
-                            globalLoading ||
-                            cu.levelReq >= user.playerStats.rank
-                          }
-                        />
+                      BUY
+                    </Button>
+                  </InputGroupAddon>
+                  {globalLoading ||
+                    (cu.levelReq >= user.playerStats.rank && (
+                      <UncontrolledTooltip
+                        placement="top"
+                        target={`disableTip${i}`}
+                      >
+                        You're too unexperineced to buy this currency
+                      </UncontrolledTooltip>
+                    ))}
+                  <InputGroupAddon addonType="append">
+                    <Button name={cu.name} onClick={(e) => handleSell(e)}>
+                      SELL
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
 
-                        <InputGroupAddon
-                          className="d-flex flex-row"
-                          addonType="append"
-                        >
-                          <Button
-                            name={cu.name}
-                            onClick={(e) => handleBuy(e)}
-                            disabled={
-                              globalLoading ||
-                              cu.levelReq >= user.playerStats.rank
-                            }
-                          >
-                            BUY
-                          </Button>
-                        </InputGroupAddon>
-                        {globalLoading ||
-                          (cu.levelReq >= user.playerStats.rank && (
-                            <UncontrolledTooltip
-                              placement="top"
-                              target={`disableTip${i}`}
-                            >
-                              You're too unexperineced too buy this currency
-                            </UncontrolledTooltip>
-                          ))}
-                        <InputGroupAddon addonType="append">
-                          <Button name={cu.name} onClick={(e) => handleSell(e)}>
-                            SELL
-                          </Button>
-                        </InputGroupAddon>
-                      </InputGroup>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-
-          {/* Charts */}
-          {/* possible issue is length of ccc array */}
-          <div className="chartsRow ">
-            <div className="chartContainer">
-              <CryptoCurrenciesChart
-                key={0}
-                data={[cryptoState.massagedCurrency[0]]}
-              />
-            </div>
-            <div className="chartContainer ">
-              <CryptoCurrenciesChart
-                key={1}
-                data={[cryptoState.massagedCurrency[1]]}
-              />
-            </div>
-            <div className="chartContainer">
-              <CryptoCurrenciesChart
-                key={2}
-                data={[cryptoState.massagedCurrency[2]]}
-              />
-            </div>
-          </div>
-          <div className="chartsRow ">
-            <div className="chartContainer">
-              <CryptoCurrenciesChart
-                key={3}
-                data={[cryptoState.massagedCurrency[3]]}
-              />
-            </div>
-            <div className="chartContainer">
-              <CryptoCurrenciesChart
-                key={4}
-                data={[cryptoState.massagedCurrency[4]]}
-              />
-            </div>
-            <div className="chartContainer">
-              <CryptoCurrenciesChart
-                key={5}
-                data={[cryptoState.massagedCurrency[5]]}
-              />
-            </div>
-          </div>
+  return (
+    <Container fluid>
+      <Row>
+        <Col className="d-flex justify-content-center">
+          <h1>Crypto Currency</h1>
+          <Tutorial section={"Crypto Currency"} />
+        </Col>
+      </Row>
+      {!cryptoState.loading && (
+        <>
+          <Row>
+            <Col>{cryptoTable}</Col>
+          </Row>
+          {allCharts}
         </>
       )}
-    </div>
+    </Container>
   );
 };
-
 export default CryptoCurrencies;

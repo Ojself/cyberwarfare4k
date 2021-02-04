@@ -3,6 +3,7 @@ import { Button, Container, Col, Row } from "reactstrap";
 import RedeemTokensCard from "../../../components/tokens/RedeemTokenCard";
 import BuyTokensCard from "../../../components/tokens/BuyTokenCard";
 import api from "../../../api";
+import Tutorial from "../_molecules/Tutorial";
 
 import { Link } from "react-router-dom";
 
@@ -111,7 +112,12 @@ const TokenStore = ({ globalLoading, user, updateGlobalValues }) => {
 
   return (
     <Container style={{ minHeight: "65vh" }}>
-      <h1>{title}</h1>
+      <Row>
+        <Col className="d-flex justify-content-center">
+          <h1>{title}</h1>
+          <Tutorial section="Token Store" />
+        </Col>
+      </Row>
       <Row>
         <Col md="3">
           <h3>

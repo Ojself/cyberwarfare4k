@@ -21,15 +21,14 @@ const Crimes = ({ updateGlobalValues, user }) => {
   }, []);
 
   const handleClick = async (crimeId) => {
-    setResult(null);
     let data;
-
     try {
       data = await api.commitCrimes(crimeId);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       return updateGlobalValues(err, true, true);
     }
+    setResult(null);
     updateGlobalValues(data, false);
     setCrimes(data.crimes);
     setResult(data.finalResult);

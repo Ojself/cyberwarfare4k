@@ -1,6 +1,20 @@
 const { generateNotification } = require('./_helpers');
 const DataCenter = require('../models/DataCenter');
 
+// checks if user has the required stash in order to attack a datacenter
+const hasRequiredStash = (userStash, requiredStash) => {
+  const requiredStashObj = requiredStash.reduce((a, b) => {
+    if (typeof a[b.name] === 'undefined') {
+      a[b.name] = 1;
+    } else {
+      a[b.name] += 1;
+    }
+    return a;
+  }, {});
+  const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => requiredStashObj[stash] <= userStash[stash]);
+  return userHasRequiredStash;
+};
+
 const healDataCenterCriterias = (user, dataCenter) => {
   if (!user) {
     return "User doesn't exist";
@@ -112,20 +126,6 @@ const attackDataCenter = async (
   return { result, user };
 };
 
-// checks if user has the required stash in order to attack a datacenter
-const hasRequiredStash = (userStash, requiredStash) => {
-  const requiredStashObj = requiredStash.reduce((a, b) => {
-    if (typeof a[b.name] === 'undefined') {
-      a[b.name] = 1;
-    } else {
-      a[b.name] += 1;
-    }
-    return a;
-  }, {});
-  const userHasRequiredStash = Object.keys(requiredStashObj).every((stash) => requiredStashObj[stash] <= userStash[stash]);
-  return userHasRequiredStash;
-};
-
 const attachDatacenterStatus = (dataCenters) => {
   const now = Date.now();
   const sixtySec = 1000 * 60;
@@ -152,7 +152,8 @@ const findDataCenters = async (params, owner, userId) => {
     .populate('city', ['name', 'residents'])
     .populate('owner', 'name')
     .populate('attacker', 'name')
-    .sort({ price: 1 });
+    .sort({ price: 1 })
+    .lean();
   // filter out the datacenters that don't belong to the city the user is in
   if (!owner) {
     dataCenters = dataCenters.filter((dc) => {

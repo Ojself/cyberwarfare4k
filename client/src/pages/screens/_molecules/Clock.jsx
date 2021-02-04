@@ -10,7 +10,7 @@ const getCurrentTime = () => {
     timeZone: "Europe/Oslo",
     hour12: false,
   });
-  return time.slice(11, 20);
+  return time.slice(10, 20);
 };
 
 const Clock = () => {
