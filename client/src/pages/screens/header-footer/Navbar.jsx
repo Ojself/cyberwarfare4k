@@ -57,11 +57,11 @@ const NavbarComp = ({
           className="mr-auto display-none-when-mobile"
         >
           <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
-            Current phase: <strong>testing</strong>
+            Current round: <strong>3</strong>
           </p>
-          <p className="text-light" style={{ fontSize: "0.75rem" }}>
+          {/* <p className="text-light" style={{ fontSize: "0.75rem" }}>
             (Feb 2021)
-          </p>
+          </p> */}
         </NavbarBrand>
 
         <Nav className="m-auto" navbar>

@@ -15,5 +15,13 @@
         "statusBar.foreground": "#15202b",
         "activityBar.activeBackground": "#1accff"
     },
-    "peacock.color": "#00b3e6"
+    "peacock.color": "#00b3e6",
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/tmp": true,
+        "package-lock.json":true,
+        "**/build":true
+    },
 }

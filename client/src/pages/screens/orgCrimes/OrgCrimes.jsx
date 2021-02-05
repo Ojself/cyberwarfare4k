@@ -67,8 +67,8 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
       </div>
 
       <Container>
-        <h4>Claimed</h4>
         <Row>
+          {claimedOwnOrgCrimes.length && <h4>Claimed</h4>}
           {!loading &&
             claimedOwnOrgCrimes.map((crime) => {
               return (
@@ -84,7 +84,7 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
               );
             })}
         </Row>
-        <h4>Available</h4>
+        {orgCrimes.length && <h4>Available</h4>}
         <Row>
           {!loading &&
             orgCrimes.map((crime) => {
