@@ -117,7 +117,7 @@ router.post('/', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: `${alliance.name} has been created!`,
+    message: `${alliance.name} alliance has been created!`,
     user: updatedUser,
   });
 });

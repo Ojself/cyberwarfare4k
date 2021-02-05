@@ -17,29 +17,29 @@ const typistQuotes = [
     second: "Terminal up and running!",
   },
   {
-    first: "ext4 /dev/sda1 ",
-    count: 15,
-    second: "Shell standing by",
+    first: "$alias cd='rm -rf ",
+    count: 18,
+    second: "Shell standing by!",
   },
   {
     first: "Compiler rdeay",
     count: 5,
-    second: "ready",
+    second: "ready!",
   },
   {
     first: "Shell ready for commnads",
     count: 4,
-    second: "ands",
+    second: "ands!",
   },
   {
     first: "Terminal standnig by ",
     count: 7,
-    second: "ing by ",
+    second: "ing by!",
   },
   {
     first: 'Console.log(" ',
     count: 7,
-    second: " is ready for pentest",
+    second: " is ready for pentest!",
   },
 ];
 

@@ -177,7 +177,8 @@ router.get('/opponents/:id', async (req, res) => {
   const opponentId = req.params.id;
   const allUsers = await User.find({ 'account.isSetup': true })
     .sort({ 'playerStats.exp': -1 })
-    .populate('alliance', 'name');
+    .populate('alliance', 'name')
+    .lean();
   const opponentInformation = await getOpponentInformation(
     JSON.stringify(opponentId),
     allUsers,
@@ -338,6 +339,7 @@ router.get('/user-setup-status', async (req, res) => {
     playerIsDead: false,
   };
   if (!req.user) {
+    console.log(JSON.stringify(status));
     return res.json({
       status,
     });

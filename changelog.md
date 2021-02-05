@@ -2,7 +2,14 @@
 
 All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
-## [0.2.0] - 2021-x-x
+## In Development
+
+- More alliance options
+- API tests
+- Tax overview in Fence
+- Easier transactions in crypto currency
+
+## [0.2.0] - 2021-02-04
 
 - More mobile friendly view
 - Styled navbar with icons
@@ -28,12 +35,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Players start with the lowest firewall item
 - A notification is now issued when a bounty is placed for first time
 - Reset statpoints feature
-
-### Coming
-
-- Alliance boss options
-- Major file structuring overhaul
-- Payment methods
+- Prototype payment options
 
 ## [0.1.6] - 2020-12-20
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../../api";
 import { Link } from "react-router-dom";
-import {  Card, CardBody, CardImg, CardSubtitle,  CardTitle} from "reactstrap"
+import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from "reactstrap";
 
 const AllianceOverview = (props) => {
   const [alliance, setAlliance] = useState({});
@@ -9,10 +9,10 @@ const AllianceOverview = (props) => {
 
   useEffect(() => {
     const getAlliance = async () => {
-      const allianceIdFromUrl = window.location.pathname.match(/[a-f\d]{24}/)
+      const allianceIdFromUrl = window.location.pathname.match(/[a-f\d]{24}/);
       const allianceId = allianceIdFromUrl
-      ? allianceIdFromUrl[0]
-      : props.allianceId
+        ? allianceIdFromUrl[0]
+        : props.allianceId;
       let data;
       try {
         data = await api.getAlliance(allianceId);
@@ -22,7 +22,7 @@ const AllianceOverview = (props) => {
         console.warn("error", err);
       }
     };
-      getAlliance();
+    getAlliance();
   }, []);
 
   const noAllianceFound = !loading && (
@@ -36,7 +36,9 @@ const AllianceOverview = (props) => {
     <div className="content">
       <div className="d-flex justify-content-center">
         {alliance.boss && (
-          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+          <Card
+            style={{ paddingTop: "2vh", width: "20%", backgroundColor: "#111" }}
+          >
             <CardTitle tag="h5">Boss</CardTitle>
             <CardImg
               style={{
@@ -60,7 +62,9 @@ const AllianceOverview = (props) => {
         <div></div>
 
         {alliance.analyst && (
-          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+          <Card
+            style={{ paddingTop: "2vh", width: "20%", backgroundColor: "#111" }}
+          >
             <CardTitle tag="h5">analyst</CardTitle>
             <CardImg
               style={{
@@ -81,7 +85,9 @@ const AllianceOverview = (props) => {
         )}
 
         {alliance.cto && (
-          <Card style={{paddingTop:"2vh", width: "20%", backgroundColor: "#111" }}>
+          <Card
+            style={{ paddingTop: "2vh", width: "20%", backgroundColor: "#111" }}
+          >
             <CardTitle tag="h5">CTO</CardTitle>
             <CardImg
               style={{
@@ -105,7 +111,13 @@ const AllianceOverview = (props) => {
       <div className="d-flex justify-content-around mb-5 ">
         <div>
           {alliance.firstLead && (
-            <Card style={{paddingTop:"2vh", width: "100%", backgroundColor: "#111" }}>
+            <Card
+              style={{
+                paddingTop: "2vh",
+                width: "100%",
+                backgroundColor: "#111",
+              }}
+            >
               <CardTitle tag="h5">Lead</CardTitle>
               <CardBody>
                 <CardSubtitle tag="h6" className="mb-2 text-muted">
@@ -119,7 +131,13 @@ const AllianceOverview = (props) => {
         </div>
         <div>
           {alliance.secondLead && (
-            <Card style={{paddingTop:"2vh", width: "100%", backgroundColor: "#111" }}>
+            <Card
+              style={{
+                paddingTop: "2vh",
+                width: "100%",
+                backgroundColor: "#111",
+              }}
+            >
               <CardTitle tag="h5">Lead</CardTitle>
               <CardBody>
                 <CardSubtitle tag="h6" className="mb-2 text-muted">
@@ -133,34 +151,35 @@ const AllianceOverview = (props) => {
         </div>
       </div>
       <div className="d-flex justify-content-around">
-        {!!alliance.firstMonkeys.length  && (
-        <div>
-          <h4>Code monkeys</h4>
-          {alliance.firstMonkeys.length ? (
-            alliance.firstMonkeys.map((monkey) => (
-              <div key={monkey.name}>
-                {" "}
-                <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
-              </div>
-            ))
-          ) : (
-            <h6>-</h6>
-          )}
-        </div>)}
-        {!!alliance.secondMonkeys.length  && (
-        <div>
-          <h4>Code monkeys</h4>
-          {alliance.secondMonkeys.length ? (
-            alliance.secondMonkeys.map((monkey) => (
-              <div key={monkey.name}>
-                {" "}
-                <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
-              </div>
-            ))
-          ) : (
-            <h6>-</h6>
-          )}
-        </div>
+        {!!alliance.firstMonkeys.length && (
+          <div>
+            <h4>Code monkeys</h4>
+            {alliance.firstMonkeys.length ? (
+              alliance.firstMonkeys.map((monkey) => (
+                <div key={monkey.name}>
+                  {" "}
+                  <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
+                </div>
+              ))
+            ) : (
+              <h6>-</h6>
+            )}
+          </div>
+        )}
+        {!!alliance.secondMonkeys.length && (
+          <div>
+            <h4>Code monkeys</h4>
+            {alliance.secondMonkeys.length ? (
+              alliance.secondMonkeys.map((monkey) => (
+                <div key={monkey.name}>
+                  {" "}
+                  <Link to={`/hacker/${monkey._id}`}> {monkey.name} </Link>
+                </div>
+              ))
+            ) : (
+              <h6>-</h6>
+            )}
+          </div>
         )}
       </div>
     </div>
@@ -168,7 +187,9 @@ const AllianceOverview = (props) => {
 
   return (
     <div className="page-container">
-      {props.enableHeader && <h1 className="">{loading ? "Alliance" : alliance.name}</h1>}
+      {props.enableHeader && (
+        <h1 className="">{loading ? "Alliance" : alliance.name}</h1>
+      )}
       {alliance ? hierarchyTree : noAllianceFound}
     </div>
   );

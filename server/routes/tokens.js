@@ -47,7 +47,8 @@ router.post('/buy', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
   user.gainTokens(amount);
-  if (process.env.FEATURE_TOKEN_STORE !== true) {
+
+  if (process.env.FEATURE_TOKEN_STORE !== 'true') {
     return res.status(400).json({
       success: false,
       message: 'This feature is disabled.',

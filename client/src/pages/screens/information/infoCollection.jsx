@@ -26,15 +26,16 @@ export default {
         <span className="text-primary">CPU</span>.
         <br />
         <br />
-        Damage = (Weapon Skill * effectiveness * 0.1) + (rank level * 1.5)
+        Damage = (Weapon Skill * effectiveness / 100) + (rank level * 1.5)
         <br />
-        EG: (130 * 1.5 * 0.1) + (7 * 1.5) = <strong>34,5</strong> damage
+        EG: (130 * 1.5 / 100) + (7 * 1.5) = <strong>34,5</strong> damage
         <br />
         <br /> An attack, successful or not, will grace the player for 60 or 5
         minutes depending on their online status. If you manage to bring a
-        hacker down to 0 or less firewall, the hacker is shutdown and is forced
-        to start over. You will get whatever crypto currency the player was
-        carrying at the time of a shutdown.
+        hacker down to 0 or less <span className="text-danger">Firewall</span>,
+        the hacker is shutdown and is forced to start over. You will get
+        whatever crypto currency the player was carrying at the time of a
+        shutdown.
       </>
     ),
   },
@@ -172,7 +173,7 @@ export default {
         protect yourself from other thiefs and secure your bitcoins in your
         ledger. A fraud will lead to a 5 minute grace period for your target.{" "}
         <br /> <br /> The success of a fraud is based upon the total of the
-        attackers crime skill.
+        attackers <span className="text-success">Crime Skill</span>.
       </>
     ),
   },

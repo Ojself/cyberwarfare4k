@@ -1,26 +1,37 @@
 import React from "react";
-/* import {Button, Input} from 'reactstrap' */
+import { Button, InputGroup, Input, InputGroupAddon } from "reactstrap";
 
-const DashboardSafe = ({ alliance }) => {
+const DashboardSafe = ({
+  alliance,
+  withdrawAmount,
+  handleWithdrawAmountChange,
+  withdrawFromSafe,
+  handleTaxChange,
+  taxAmount,
+  saveNewTax,
+}) => {
   return (
     <div>
-      {/* <h4> Here's the safe</h4>
-        <p> passowrd</p>
-        <p> When closed, deposit</p>
-        <p> When open, withdraw</p>
-        <p>
-          {" "}
-          To prevent bruteforce attacks, the safe have 3-5 second delay when
-          opening
-        </p> */}
-      <p>Work in progress</p>
       <p>Safe: {alliance.safe}</p>
-      {/* <Input placeholder={"password"} />
-        <Button color="outline-success">Open</Button>
-        
-          <Button color="outline-light">Depost</Button>
-          <Button color="outline-light"> Withdraw </Button>
-         */}
+      <InputGroup>
+        <InputGroupAddon addonType="prepend">&#8383;</InputGroupAddon>
+        <Input
+          type="number"
+          min={0}
+          step="1000"
+          placeholder="Amount"
+          value={withdrawAmount}
+          onChange={handleWithdrawAmountChange}
+        />
+      </InputGroup>
+      <Button
+        type="submit"
+        className="w-75 my-2 mx-auto"
+        color="outline-light"
+        onClick={withdrawFromSafe}
+      >
+        Withdraw
+      </Button>
     </div>
   );
 };

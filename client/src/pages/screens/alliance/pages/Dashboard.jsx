@@ -125,7 +125,7 @@ const Dashboard = ({ updateGlobalValues, history }) => {
       console.error("Error: ", err);
       return updateGlobalValues(err);
     }
-    updateGlobalValues(data);
+    updateGlobalValues(data, true, true);
     history.push("/my-profile");
   };
 
@@ -143,13 +143,13 @@ const Dashboard = ({ updateGlobalValues, history }) => {
           </Col>
         </Row>
       </TabPane>
+
       <TabPane tabId="2">
-        {!loading && <AllianceOverview allianceId={alliance._id} />}
+        {!loading && (
+          <AllianceOverview members={members} allianceId={alliance._id} />
+        )}
       </TabPane>
       <TabPane tabId="3">
-        <DashboardSafe alliance={alliance} />
-      </TabPane>
-      <TabPane tabId="4">
         <Row>
           <Col sm="12">
             <DashboardOrganize
@@ -162,6 +162,10 @@ const Dashboard = ({ updateGlobalValues, history }) => {
           </Col>
         </Row>
       </TabPane>
+      <TabPane tabId="4">
+        <DashboardSafe alliance={alliance} />
+      </TabPane>
+
       <TabPane tabId="5">
         <Row>
           <Col sm="12">
@@ -192,8 +196,8 @@ const Dashboard = ({ updateGlobalValues, history }) => {
       {[
         "Overview",
         "Hierarchy",
-        "Safe",
         "Organize",
+        "Safe",
         "Invite",
         "Boss Options",
       ].map((tabHeader, i) => {

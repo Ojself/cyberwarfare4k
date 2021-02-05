@@ -222,7 +222,7 @@ const getOpponentInformation = async (opponentId, allUsers) => {
     (a, b) => sumAllSkillValues(b.hackSkill) - sumAllSkillValues(a.hackSkill),
   );
   ranking.hackSkill = findPosition(allUsers, opponentId);
-  allUsers.sort((b, a) => a.playerStats.bitCoins - b.playerStats.ledger);
+  allUsers.sort((b, a) => a.playerStats.bitCoins - b.playerStats.bitCoins);
   ranking.networth = findPosition(allUsers, opponentId);
   const onlineUsers = await getOnlineUsers();
   ranking.online = onlineUsers.some((id) => JSON.stringify(id) === opponentId);
@@ -238,7 +238,6 @@ const getOpponentInformation = async (opponentId, allUsers) => {
 };
 
 const saveAndUpdateUser = async (user) => {
-  console.time('saveAndUpdateUser');
   const savedUser = await user.save();
   const populatedUser = await savedUser
     .populate('playerStats.city', ['name', 'stashPriceMultiplier'])
@@ -248,7 +247,7 @@ const saveAndUpdateUser = async (user) => {
     .populate('marketPlaceItems.AntiVirus')
     .populate('marketPlaceItems.Encryption')
     .execPopulate();
-  console.timeEnd('saveAndUpdateUser');
+
   return populatedUser;
 };
 
@@ -256,7 +255,7 @@ const saveAndUpdateUser = async (user) => {
 const calculateNetworth = (user, dbCurrencies) => {
   let networth = user.playerStats.bitCoins + user.playerStats.ledger;
   dbCurrencies.forEach((currency) => {
-    networth += user.currencies[currency.name] * currency.price;
+    networth += user.currencies[currency.name] || 0 * currency.price;
   });
   return networth;
 };

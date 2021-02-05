@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import SubscriptionIcon from "../_molecules/SubscriptionIcon";
 import AttackTerminal from "./AttackTerminal";
+import Tutorial from "../_molecules/Tutorial";
 
 import api from "../../../api";
 
@@ -215,23 +216,30 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   const opponentActions = !opponentState.loading && (
     <div className="d-flex flex-column w-100">
       <div className="d-flex justify-content-around w-100">
-        <Button color="outline-info" onClick={() => handleMessageClick()}>
-          Message
-        </Button>
-        <Button onClick={() => handleFraudClick()} color="outline-warning">
-          Fraud{" "}
-          <span role="img" aria-label="battery">
-            &#9889;
-          </span>
-          4
-        </Button>
-        <Button onClick={() => handleAttackClick()} color="outline-danger">
-          Attack{" "}
-          <span role="img" aria-label="battery">
-            &#9889;
-          </span>
-          6
-        </Button>
+        <div className="d-flex flex-column">
+          <Button color="outline-info" onClick={() => handleMessageClick()}>
+            Message
+          </Button>
+        </div>
+        <div className="d-flex flex-column">
+          <Button onClick={() => handleFraudClick()} color="outline-warning">
+            Fraud{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
+            4
+          </Button>
+          <Tutorial section="Frauds" />
+        </div>
+        <div className="d-flex flex-column">
+          <Button onClick={() => handleAttackClick()} color="outline-danger">
+            Attack{" "}
+            <span role="img" aria-label="battery">
+              &#9889;
+            </span>
+          </Button>
+          <Tutorial section="Attacks" />
+        </div>
       </div>
       <AttackTerminal message={message} result={attackResult} />
     </div>
