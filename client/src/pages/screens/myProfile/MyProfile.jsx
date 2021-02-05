@@ -316,7 +316,7 @@ const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
                     <tr>
                       <td>{getCurrency("Litecoin")}</td>
                       <td>{getCurrency("Ethereum")}</td>
-                      <td>{getCurrency("Ripple")}</td>
+                      <td>{getCurrency("Doge")}</td>
                     </tr>
                   </tbody>
 

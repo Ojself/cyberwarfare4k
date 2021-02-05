@@ -1,10 +1,12 @@
-# [PLAY CyberhackerWarfare4000](https://chw4k.herokuapp.com/)
+# [Play CyberhackerWarfare4000](https://chw4k.herokuapp.com/)
 
 CyberHackerWareFare4000 is a free multiplyer hacker role playing game.
 Experience the life of a modern tech-savvy hacker and raise through
 the ranks of the cyber world.
 
-<img src="./chw4kscreenshot.png" width="800" height="auto">
+[![DEMO (video)](https://img.youtube.com/vi/dwn6Jgx3rhw/0.jpg)](https://youtu.be/dwn6Jgx3rhw)
+
+[DEMO (video)](https://youtu.be/dwn6Jgx3rhw)
 
 ## Contributing
 
