@@ -16,6 +16,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Add placement position in Top Hackers page
 - Fix bug where you couldn't attack Datacenters
 - Fix bug where you could upgrade your stats too much
+- Change text for earn battery cards
 
 ## [0.2.0] - 2021-02-04
 
