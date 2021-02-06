@@ -245,7 +245,16 @@ const upgradeStatsCriteria = (user, statPoint) => {
   if (!user || !statPoint) {
     return 'Something went wrong';
   }
-  const possibleStatPoints = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption', 'exp', 'Firewall'];
+  const crimeSkills = [
+    "Technical",
+    "Forensics",
+    "Social Engineering",
+    "Cryptography",
+  ];
+  const hackSkills = ["CPU", "AntiVirus", "Encryption"];
+  const miscSkills = ["exp", "Firewall"];
+
+  const possibleStatPoints = miscSkills.concat(hackSkills, crimeSkills);
 
   if (user.playerStats.statPoints <= 0) {
     return 'Insufficent statpoints';
@@ -253,11 +262,23 @@ const upgradeStatsCriteria = (user, statPoint) => {
   if (!possibleStatPoints.includes(statPoint)) {
     return 'Invalid statpoint';
   }
+  
+  if (crimeSkills.includes(statPoint)) {
+    const itemBonus = user.marketPlaceItems[statPoint]
+      ? user.marketPlaceItems[statPoint].bonus
+      : 0;
+    if (user.crimeSkill[statPoint] - itemBonus > 100) {
+      return `You can't upgrade ${statPoint} any further`;
+    }
+  }
 
-  const statsWithMaxCap = ['Technical', 'Forensics', 'Social Engineering', 'Cryptography', 'CPU', 'AntiVirus', 'Encryption'];
-
-  if (statsWithMaxCap.includes(statPoint) && user.playerStats.statPointsHistory[statPoint] > 100) {
-    return `${statPoint} is maxed out`;
+  if (hackSkills.includes(statPoint)) {
+    const itemBonus = user.marketPlaceItems[statPoint]
+      ? user.marketPlaceItems[statPoint].bonus
+      : 0;
+    if (user.hackSkill[statPoint] - itemBonus > 100) {
+      return `You can't upgrade ${statPoint} any further`;
+    }
   }
 
   return null;

@@ -59,6 +59,9 @@ const NavbarComp = ({
           <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
             Current round: <strong>3</strong>
           </p>
+          {/* <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
+            <strong>Check out the Prizes</strong>
+          </p> */}
           {/* <p className="text-light" style={{ fontSize: "0.75rem" }}>
             (Feb 2021)
           </p> */}

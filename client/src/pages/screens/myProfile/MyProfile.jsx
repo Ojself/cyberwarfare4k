@@ -31,15 +31,21 @@ import classnames from "classnames";
 const MyProfile = ({ globalLoading, user, updateGlobalValues }) => {
   const [activeTab, setActiveTab] = useState("1");
 
-  const [equppiedWeaponToolTip, setequppiedWeaponToolTip] = useState(false);
-
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   const handleUpgrade = async (upgradeName) => {
-    const result = await api.upgradeStats(upgradeName);
-    updateGlobalValues(result);
+    let data;
+
+    try {
+      data = await api.upgradeStats(upgradeName);
+    } catch(err) {
+      console.err
+      return updateGlobalValues(err);
+    }
+    updateGlobalValues(data);
+
   };
 
   const getStashColor = (index) => {
