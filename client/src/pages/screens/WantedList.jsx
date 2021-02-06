@@ -3,6 +3,9 @@ import api from "../../api";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import {
+  Container,
+  Col,
+  Row,
   Button,
   Form,
   InputGroup,
@@ -12,7 +15,6 @@ import {
   PopoverBody,
   Table,
   UncontrolledPopover,
-  UncontrolledTooltip,
 } from "reactstrap";
 
 import Tutorial from "./_molecules/Tutorial";
@@ -94,10 +96,15 @@ const WantedList = ({ updateGlobalValues, user }) => {
 
   // select form
   const ComponentAddUnlistedPlayer = (
-    <div className="pt-4 w-100 flex-column d-flex justify-content-center align-items-center">
+    <Col
+      sm="12"
+      md="6"
+      lg="4"
+      className="pt-4 flex-column d-flex justify-content-center align-items-center"
+    >
       <h6>Add an unlisted player</h6>
 
-      <div className="w-25">
+      <div className="w-100">
         <Form>
           <Select
             className="text-dark "
@@ -107,10 +114,14 @@ const WantedList = ({ updateGlobalValues, user }) => {
           />
         </Form>
       </div>
-      <div className="w-25">
+      <div className="w-100">
         <InputGroup>
           <InputGroupAddon addonType="prepend">
-            <InputGroupText className="bitcoinColor">&#8383;</InputGroupText>
+            <InputGroupText
+              style={{ color: "#f08f18" }}
+            >
+              &#8383;
+            </InputGroupText>
           </InputGroupAddon>
           <Input
             type="number"
@@ -123,25 +134,22 @@ const WantedList = ({ updateGlobalValues, user }) => {
           />
         </InputGroup>
       </div>
-      <div className="m-3 mb-4 w-20" id="AddTopBountyToolTip">
-        <Button
-          disabled={checkDisabledAddTopButton()}
-          onClick={() =>
-            addBounty(selectedOption.value, wantedState.bountyTopInput)
-          }
-        >
-          ADD
-        </Button>
-      </div>
-      <UncontrolledTooltip placement="right" target="AddTopBountyToolTip">
-        Click to add bounty
-      </UncontrolledTooltip>
-    </div>
+
+      <Button
+        className="w-25"
+        disabled={checkDisabledAddTopButton()}
+        onClick={() =>
+          addBounty(selectedOption.value, wantedState.bountyTopInput)
+        }
+      >
+        ADD
+      </Button>
+    </Col>
   );
 
   // input field for bounty on targeted user
   const ComponentBountyUsersTable = (
-    <Table dark>
+    <Table responsive dark>
       <thead>
         <tr>
           {["Name", "Alliance", "Bank", "Donors", "Bounty", "Add Bounty"].map(
@@ -227,21 +235,21 @@ const WantedList = ({ updateGlobalValues, user }) => {
   );
 
   return (
-    <div className="page-container">
-      <div className="d-flex justify-content-center">
+    <Container>
+      <Row className="d-flex justify-content-center">
         <h1>Wanted</h1>
         <Tutorial section={"Wanted Hackers"} />
-      </div>
-      <h3>Cyber Criminals</h3>
+      </Row>
+      <h4>Cyber Criminals</h4>
       {wantedState.loading ? (
         <p>loading..</p>
       ) : (
         <>
-          <div> {ComponentAddUnlistedPlayer} </div>
-          <div className="content"> {ComponentBountyUsersTable} </div>
+          <Row className="justify-content-center mb-5"> {ComponentAddUnlistedPlayer} </Row>
+          <Row className="justify-content-center"> {ComponentBountyUsersTable} </Row>
         </>
       )}
-    </div>
+    </Container>
   );
 };
 export default WantedList;

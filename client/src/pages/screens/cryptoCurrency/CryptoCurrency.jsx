@@ -202,9 +202,44 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       </Row>
     </>
   );
+ 
+  const actionButtons = (
+    <tr className="" style={{ height: "10vh", backgroundColor: "#696b78" }}>
+      <td colspan="4" style="width:100%" style={{ verticalAlign: "middle" }}>
+        <Button
+          onClick={() => setTransactionState(user.stash)}
+          color="outline-danger"
+        >
+          Sell all
+        </Button>{" "}
+      </td>
+      <td colspan="1" style="width:100%" style={{ verticalAlign: "middle" }}>
+        <Button onClick={() => handleSell()} color="danger">
+          Sell
+        </Button>{" "}
+      </td>
+      <td colspan="1" style="width:100%" style={{ verticalAlign: "middle" }}>
+        <Button onClick={() => handleBuy()} color="success">
+          Buy
+        </Button>{" "}
+      </td>
+      <td colspan="3" style="width:100%" style={{ verticalAlign: "middle" }}>
+        <Button
+          onClick={() =>
+            setTransactionState(
+              getMaxBuyingVolume(user, shopStash, city.stashPriceMultiplier)
+            )
+          }
+          color="outline-success"
+        >
+          Max
+        </Button>{" "}
+      </td>
+    </tr>
+  );
 
   const cryptoTable = cryptoState.currencies.length && (
-    <Table className="crypto-table" size="sm" responsive dark striped>
+    <Table className="crypto-table mt-4" size="sm" responsive dark striped>
       <thead>
         <tr>
           <th>Name</th>
@@ -214,7 +249,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
           <th>Available</th>
           <th>You have</th>
           <th className="display-none-when-mobile">Last purchased by:</th>
-          <th>Action</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -237,7 +272,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
               >
                 {changeFromLastHour.toFixed(2)}%
               </td>
-              {/* TODO icon  */}
               <td>{KFormatter(Math.floor(cu.available))}</td>
               <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
               {cu.lastPurchasedBy ? (
@@ -267,7 +301,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     }
                   />
 
-                  <InputGroupAddon
+                    <InputGroupAddon
                     className="d-flex flex-row"
                     addonType="append"
                   >
@@ -300,6 +334,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
             </tr>
           );
         })}
+        {/* {actionButtons} */}
       </tbody>
     </Table>
   );
@@ -314,8 +349,10 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       </Row>
       {!cryptoState.loading && (
         <>
-          <Row>
-            <Col>{cryptoTable}</Col>
+          <Row className="d-flex justify-content-center mt-4">
+            <Col  lg="10" md="12">
+              {cryptoTable}
+            </Col>
           </Row>
           {allCharts}
         </>

@@ -92,6 +92,7 @@ const Ladder = ({}) => {
                 Alliance
               </th>
               <th
+                className="display-none-when-mobile"
                 style={{ cursor: "pointer" }}
                 onClick={(e) => handleSort(e, "members")}
               >
@@ -106,6 +107,7 @@ const Ladder = ({}) => {
               <th
                 style={{ cursor: "pointer" }}
                 onClick={(e) => handleSort(e, "totRank")}
+                className="display-none-when-mobile"
               >
                 Avg. Rank
               </th>
@@ -138,10 +140,12 @@ const Ladder = ({}) => {
                   </Link>
                 </th>
 
-                <td>{alliance.members}</td>
+                <td className="display-none-when-mobile">{alliance.members}</td>
 
                 <td>{alliance.city.name}</td>
-                <td>{Math.round(alliance.totRank / alliance.members)}</td>
+                <td className="display-none-when-mobile">
+                  {Math.round(alliance.totRank / alliance.members)}
+                </td>
                 <td>{alliance.totWealth}</td>
                 <td>{alliance.totShutdowns}</td>
                 <td>{alliance.totBounty}</td>

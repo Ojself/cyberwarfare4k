@@ -234,7 +234,7 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
     <div className="fence-page-container">
       <div className="d-flex justify-content-center">
         <h1>Fence</h1>
-        <Tutorial size={"md"} section={"Fence"} />
+        <Tutorial size="md" section="Fence" />
       </div>
       <h6>{city ? city.name : "City"}</h6>
       <div className="content">{tableOverview}</div>

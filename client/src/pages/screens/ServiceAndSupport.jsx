@@ -59,7 +59,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
     <div className="content d-flex justify-content-around">
       <Container>
         <Row>
-          <Col sm="1" md="3" className="mt-2">
+          <Col sm="1" md="6" lg="3" className="mt-2">
             <Card>
               <CardImg
                 style={{ height: "22vh" }}
@@ -83,7 +83,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
               </CardBody>
             </Card>
           </Col>
-          <Col sm="1" md="3" className="mt-2">
+          <Col sm="1" md="6" lg="3" className="mt-2">
             <Card>
               <CardImg
                 style={{ height: "22vh" }}
@@ -108,7 +108,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
               </CardBody>
             </Card>
           </Col>
-          <Col sm="1" md="3" className="mt-2">
+          <Col sm="1" md="6" lg="3" className="mt-2">
             <Card>
               <CardImg
                 style={{ height: "22vh" }}
@@ -132,7 +132,7 @@ const ServiceAndSupport = ({ user, updateGlobalValues }) => {
               </CardBody>
             </Card>
           </Col>
-          <Col sm="1" md="3" className="mt-2">
+          <Col sm="1" md="6" lg="3"  className="mt-2">
             <Card>
               <CardImg
                 style={{ height: "22vh" }}
