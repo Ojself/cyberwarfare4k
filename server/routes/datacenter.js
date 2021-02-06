@@ -90,7 +90,6 @@ router.patch('/:dataCenterId', async (req, res) => {
 router.post('/purchase', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
-  console.log(req.body, 'req');
 
   const { id } = req.body;
   const dataCenter = await DataCenter.findById(id);
@@ -125,10 +124,8 @@ router.post('/attack', async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  const { dataCenterName } = req.body;
-  const dataCenter = await DataCenter.findOne({
-    name: dataCenterName,
-  }).populate('requiredStash', ['name', 'price']);
+  const { id } = req.body;
+  const dataCenter = await DataCenter.findById(id).populate('requiredStash', ['name', 'price']);
   const dataCenterOwnerId = dataCenter.owner;
   const dataCenterOwner = await User.findById(dataCenterOwnerId);
 
