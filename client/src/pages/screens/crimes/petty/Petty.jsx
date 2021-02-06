@@ -60,7 +60,7 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
         hacking: false,
       });
       console.error(err, "err");
-      return;
+      return updateGlobalValues(err, true, true);
     }
     updateGlobalValues(data, false);
     if (data.success) {

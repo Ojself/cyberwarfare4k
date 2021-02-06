@@ -41,6 +41,7 @@ const Ladder = () => {
   }, []);
 
   const handleSort = (sort) => {
+    if (sort.includes("#"))return
     sort = sort.toLowerCase();
     let sortedUsers = ladderState.users || [];
 
@@ -145,6 +146,7 @@ const Ladder = () => {
               <thead>
                 <tr>
                   {[
+                    "#",
                     "Hacker",
                     "Alliance",
                     "Rank",
@@ -166,13 +168,16 @@ const Ladder = () => {
                 </tr>
               </thead>
               <tbody>
-                {ladderState.users.map((user) => (
+                {ladderState.users.map((user,i) => (
                   <tr key={user._id}>
                     <th scope="row">
+                      #{i +1 }
+                    </th>
+                    <td >
                       <Link className="text-light" to={`/hacker/${user._id}`}>
                         {user.name}
                       </Link>
-                    </th>
+                    </td>
                     <td>
                       {user.alliance ? (
                         <Link
