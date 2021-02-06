@@ -17,6 +17,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Fix bug where you couldn't attack Datacenters
 - Fix bug where you could upgrade your stats too much
 - Change text for earn battery cards
+- Add missing text for required battery for attacking other hackers
 
 ## [0.2.0] - 2021-02-04
 

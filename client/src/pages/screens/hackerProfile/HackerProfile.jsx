@@ -237,6 +237,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
             <span role="img" aria-label="battery">
               &#9889;
             </span>
+            6
           </Button>
           <Tutorial section="Attacks" />
         </div>

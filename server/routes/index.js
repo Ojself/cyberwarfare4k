@@ -246,13 +246,13 @@ const upgradeStatsCriteria = (user, statPoint) => {
     return 'Something went wrong';
   }
   const crimeSkills = [
-    "Technical",
-    "Forensics",
-    "Social Engineering",
-    "Cryptography",
+    'Technical',
+    'Forensics',
+    'Social Engineering',
+    'Cryptography',
   ];
-  const hackSkills = ["CPU", "AntiVirus", "Encryption"];
-  const miscSkills = ["exp", "Firewall"];
+  const hackSkills = ['CPU', 'AntiVirus', 'Encryption'];
+  const miscSkills = ['exp', 'Firewall'];
 
   const possibleStatPoints = miscSkills.concat(hackSkills, crimeSkills);
 
@@ -262,12 +262,9 @@ const upgradeStatsCriteria = (user, statPoint) => {
   if (!possibleStatPoints.includes(statPoint)) {
     return 'Invalid statpoint';
   }
-  
+
   if (crimeSkills.includes(statPoint)) {
-    const itemBonus = user.marketPlaceItems[statPoint]
-      ? user.marketPlaceItems[statPoint].bonus
-      : 0;
-    if (user.crimeSkill[statPoint] - itemBonus > 100) {
+    if (user.crimeSkill[statPoint] > 200) {
       return `You can't upgrade ${statPoint} any further`;
     }
   }

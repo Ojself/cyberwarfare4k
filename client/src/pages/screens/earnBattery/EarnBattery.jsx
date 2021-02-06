@@ -171,7 +171,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     </InputGroup>
   );
   const cardsDeck = (
-    <CardDeck>
+    <CardDeck className="w-100">
       <Card>
         <CardImg
           top
