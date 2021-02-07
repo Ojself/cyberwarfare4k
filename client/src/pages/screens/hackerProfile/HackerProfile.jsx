@@ -27,6 +27,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   });
   const [attackResult, setAttackResult] = useState(null);
   const [message, setMessage] = useState("");
+  const [tempData, setTempData] = useState(null);
 
   useEffect(() => {
     const opponentId = match.params.id;
@@ -55,12 +56,15 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       data = await api.attackOpponent(opponentId);
     } catch (err) {
       console.error("error: ", err);
-      updateGlobalValues(err);
-      return;
+      return updateGlobalValues(err);
     }
-    updateGlobalValues(data, false);
+    setTempData(data); // Stores the new user values temporarily so it doesn't spoil the result
     setAttackResult(data.finalResult);
     setMessage(data.message);
+  };
+
+  const updateGlobalUser = () => {
+    updateGlobalValues(tempData, false);
   };
 
   const handleFraudClick = async () => {
@@ -242,7 +246,11 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
           <Tutorial section="Attacks" />
         </div>
       </div>
-      <AttackTerminal message={message} result={attackResult} />
+      <AttackTerminal
+        message={message}
+        result={attackResult}
+        updateGlobalUser={updateGlobalUser}
+      />
     </div>
   );
 

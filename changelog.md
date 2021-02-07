@@ -18,6 +18,9 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Fix bug where you could upgrade your stats too much
 - Change text for earn battery cards
 - Add missing text for required battery for attacking other hackers
+- Lower required battery for petty hacks from 2 -> 1
+- Lower required battery for crimes from 5 -> 3
+- Add delay for updating results in statusbar when attacking or hacking
 
 ## [0.2.0] - 2021-02-04
 

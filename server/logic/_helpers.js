@@ -60,13 +60,13 @@ const stashDropChance = (multiplier = 1) => {
 
   if (decider > 750) {
     /* Give ultra  item */
-    givenStash = stash[randomNumberMinMax(stash.length - 3, stash.length)];
+    givenStash = stash[Math.floor(randomNumberMinMax(stash.length - 3, stash.length))];
   } else if (decider > 450) {
     /* Give rare item */
-    givenStash = stash[randomNumberMinMax(stash.length / 2, stash.length)];
+    givenStash = stash[Math.floor(randomNumberMinMax(stash.length / 2, stash.length))];
   } else {
     /* give common item */
-    givenStash = stash[randomNumberMinMax(0, stash.length)];
+    givenStash = stash[Math.floor(randomNumberMinMax(0, stash.length))];
   }
   return givenStash;
 };

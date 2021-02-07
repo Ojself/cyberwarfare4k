@@ -5,13 +5,13 @@ import { Progress } from "reactstrap";
 
 import { randomCrimeString, errorMessages } from "../_helpers/combatStrings";
 
-const AttackTerminal = ({ message, result }) => {
+const AttackTerminal = ({ message, result, updateGlobalUser }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
     progressValue: 0,
     round: 0,
     decorationColor: "#08fe00",
-    progressBarColor: "success"
+    progressBarColor: "success",
   });
   useEffect(() => {
     clearState();
@@ -27,22 +27,27 @@ const AttackTerminal = ({ message, result }) => {
     });
   };
 
+  const typingDone = () => {
+    setDecorationToDanger();
+    showResults();
+    updateGlobalUser();
+  };
+
   const showResults = () => {
     setTerminalState({
       ...terminalState,
       showResults: true,
     });
-    setDecorationToDanger();
   };
 
-  const giveResultString = (status)=>{
-      let result;
-      if (status === 'lost') result = giveLostString()
-      if (status === 'win') result = giveWonString()
-      if (status === "blocked") result = giveBlockedString();
+  const giveResultString = (status) => {
+    let result;
+    if (status === "lost") result = giveLostString();
+    if (status === "win") result = giveWonString();
+    if (status === "blocked") result = giveBlockedString();
 
-      return <p className={`pl-2 terminalText${status}`}>{result}</p>;
-  }
+    return <p className={`pl-2 terminalText${status}`}>{result}</p>;
+  };
 
   const giveLostString = () => {
     return `ERROR: ${errorMessages[getRandomNumber(errorMessages)]}`;
@@ -58,14 +63,14 @@ const AttackTerminal = ({ message, result }) => {
   };
 
   const updateProgressBarValues = () => {
-      let currentProgress = terminalState.progressValue
-      const status = result.roundResult[terminalState.round];
-      if (status === 'win'){
-          currentProgress += Math.floor(Math.random() * (25 - 10) + 25);
-          if (result.roundResult.length <= (terminalState.round + 1)){
-              currentProgress = 100
-          }
+    let currentProgress = terminalState.progressValue;
+    const status = result.roundResult[terminalState.round];
+    if (status === "win") {
+      currentProgress += Math.floor(Math.random() * (25 - 10) + 25);
+      if (result.roundResult.length <= terminalState.round + 1) {
+        currentProgress = 100;
       }
+    }
     setTerminalState({
       ...terminalState,
       round: terminalState.round + 1,
@@ -107,14 +112,19 @@ const AttackTerminal = ({ message, result }) => {
           <div style={terminalHeader}>
             <strong>Compiling Code</strong>
           </div>
-          <Progress animated color={terminalState.progressBarColor} value={terminalState.progressValue} max={100} />
+          <Progress
+            animated
+            color={terminalState.progressBarColor}
+            value={terminalState.progressValue}
+            max={100}
+          />
           {terminalState.showResults && resultsOverview}
           <Typist
             className="terminalFont terminalStyle"
             onLineTyped={() => {
               updateProgressBarValues();
             }}
-            onTypingDone={() => showResults()}
+            onTypingDone={() => typingDone()}
             avgTypingDelay={10}
             cursor={{ hideWhenDone: true }}
           >

@@ -43,7 +43,7 @@ const skillGained = (decider, rank, crimeType) => {
 };
 
 const crimeWinExp = (multiplier, userRank) => {
-  const max = (multiplier + (userRank * 2)) * 350;
+  const max = (multiplier + (userRank * 2)) * 325;
   const min = multiplier * 150;
   return Math.floor(Math.random() * (max - min) + min);
 };

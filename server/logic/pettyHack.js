@@ -12,7 +12,10 @@ const pettyWinBitcoins = (multiplier) => {
 };
 
 const pettyWinExp = (multiplier) => {
-  const bonus = 1000 + (multiplier * 750);
+  if (multiplier > 3){
+    multiplier = 3
+  }
+  const bonus = 1000 + (multiplier * 500);
   const rng = randomNumberMinMax(bonus / 2, bonus);
   return Math.round(rng);
 };
@@ -59,8 +62,10 @@ const pettyCrime = async (user, batteryCost) => {
     pettyResult.won = true;
     pettyResult.bitCoins = pettyWinBitcoins(user.playerStats.rank);
     pettyResult.exp = pettyWinExp(user.playerStats.rank);
-    if (probabiltiy > (decider + (user.playerStats.rank / 13))) {
+    if (probabiltiy > (decider + (user.playerStats.rank / 10))) {
       pettyResult.stashGained = stashDropChance(user, crimeSkillsSum);
+    }
+    if (probabiltiy > (decider + (user.playerStats.rank / 4))){
       pettyResult.skillGained = skillDropChance(user);
     }
   }

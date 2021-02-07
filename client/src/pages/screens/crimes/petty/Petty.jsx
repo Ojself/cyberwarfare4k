@@ -128,7 +128,16 @@ const PettyHack = ({ user, globalLoading, updateGlobalValues }) => {
   // Alters between start, stop and stopping depending on current status
   const getActionButton = (state) => {
     let buttonDisabled = false;
-    let buttonText = "Start hacking!";
+    let buttonText = (
+      <>
+        Start hacking!
+        <span role="img" aria-label="battery">
+          &#9889;
+        </span>
+        1
+      </>
+    ); ;
+
     if (state.hacking) {
       buttonText = "Stop!";
     }

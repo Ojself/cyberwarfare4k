@@ -25,12 +25,12 @@ const CrimesTable = ({ crimes, handleClick, type }) => {
               <span role="img" aria-label="battery">
                 &#9889;
               </span>
-              5
+              3
             </th>
           </tr>
         </thead>
         <tbody>
-          {crimes.map((cr, i) => {
+          {crimes.map((cr) => {
             return (
               <tr key={cr._id}>
                 <th id={`toolTip${cr._id}`} scope="row">

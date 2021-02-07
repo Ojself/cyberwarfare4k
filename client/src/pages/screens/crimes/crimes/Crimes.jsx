@@ -9,11 +9,11 @@ import CrimesTable from "./CrimesTable";
 const Crimes = ({ updateGlobalValues, user }) => {
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
+  const [tempData, setTempData] = useState(null);
 
   useEffect(() => {
     const fetchCrimes = async () => {
       const data = await api.getCrimes();
-      console.log(data);
       updateGlobalValues(data, false);
       setCrimes(data.crimes);
     };
@@ -29,9 +29,13 @@ const Crimes = ({ updateGlobalValues, user }) => {
       return updateGlobalValues(err, true, true);
     }
     setResult(null);
-    updateGlobalValues(data, false);
+    setTempData(data); // Doesn't render results before crime is done
     setCrimes(data.crimes);
     setResult(data.finalResult);
+  };
+
+  const updateGlobalUser = () => {
+    updateGlobalValues(tempData, false);
   };
 
   return (
@@ -64,6 +68,7 @@ const Crimes = ({ updateGlobalValues, user }) => {
             updateGlobalValues={updateGlobalValues}
             user={user}
             result={result}
+            updateGlobalUser={updateGlobalUser}
           />
         </Col>
 

@@ -43,7 +43,7 @@ const typistQuotes = [
   },
 ];
 
-const CrimeTerminal = ({ result }) => {
+const CrimeTerminal = ({ result, updateGlobalUser }) => {
   const [terminalState, setTerminalState] = useState({
     showResults: false,
     progressMaxHp: 100,
@@ -69,12 +69,17 @@ const CrimeTerminal = ({ result }) => {
     });
   };
 
+  const doneTyping = () => {
+    showResults();
+    decorateTerminalRed();
+    updateGlobalUser();
+  };
+
   const showResults = () => {
     setTerminalState({
       ...terminalState,
       showResults: true,
     });
-    decorateTerminalRed();
   };
 
   const giveLostString = () => {
@@ -183,7 +188,7 @@ const CrimeTerminal = ({ result }) => {
             onLineTyped={() => {
               updateProgressBarValues();
             }}
-            onTypingDone={() => showResults()}
+            onTypingDone={() => doneTyping()}
             avgTypingDelay={10}
             cursor={{ hideWhenDone: true }}
           >

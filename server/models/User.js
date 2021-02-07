@@ -42,12 +42,12 @@ const ranks = [
     rank: 4,
   },
   {
-    expToNewRank: 1215000,
+    expToNewRank: 1815000,
     name: 'Sr. Web Dev',
     rank: 5,
   },
   {
-    expToNewRank: 2837500,
+    expToNewRank: 3837500,
     name: 'System Dev',
     rank: 6,
   },
@@ -589,6 +589,7 @@ userSchema.methods.handleFraudDefense = function (result, gracePeriod) {
 
 userSchema.methods.handleAttack = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
+  this.giveExp(result.playerGains.exp);
   // steals all the currencies when opponent is dead
   if (result.victimDead) {
     Object.keys(result.opponent.currencies).forEach((currency) => {

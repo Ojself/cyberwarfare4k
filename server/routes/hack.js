@@ -1,16 +1,20 @@
-const express = require('express');
-const { getOnlineUsers, saveAndUpdateUser, generateNotification } = require('../logic/_helpers');
+const express = require("express");
+const {
+  getOnlineUsers,
+  saveAndUpdateUser,
+  generateNotification,
+} = require("../logic/_helpers");
 
 const router = express.Router();
 
-const { pettyCrime, pettyHackRouteCriterias } = require('../logic/pettyHack');
-const { crimeRouteCriterias, fightCrime } = require('../logic/crime');
+const { pettyCrime, pettyHackRouteCriterias } = require("../logic/pettyHack");
+const { crimeRouteCriterias, fightCrime } = require("../logic/crime");
 const {
   fraudHacker,
   fraudRouteCriteria,
   attackRouteCriterias,
   fightHacker,
-} = require('../logic/hack');
+} = require("../logic/hack");
 
 const getHackFeedback = (finalResult, opponent) => {
   let message;
@@ -29,30 +33,34 @@ const getHackFeedback = (finalResult, opponent) => {
     message = `SHUTDOWN! ${opponent.name} is dead`;
     notification = `You were shutdown by ${finalResult.user.name}`;
   }
+
+  if (finalResult.playerGains.exp) {
+    message += `-- ${finalResult.playerGains.exp} XP! `;
+  }
   return { message, notification };
 };
 
-const User = require('../models/User');
-const Crime = require('../models/Crime');
+const User = require("../models/User");
+const Crime = require("../models/Crime");
 
 // @POST
 // PRIVATE
 // User starts interval that calls this route every x sec and commit petty crime
 
-router.post('/pettyCrime', async (req, res) => {
+router.post("/pettyCrime", async (req, res) => {
   const userId = req.user._id;
   let user;
   try {
-    user = await User.findById(userId).populate('playerStats.city', 'name');
+    user = await User.findById(userId).populate("playerStats.city", "name");
   } catch (e) {
-    console.error('error: ', e);
+    console.error("error: ", e);
     res.status(400).json({
       success: false,
       message: JSON.stringify(e),
     });
   }
 
-  const batteryCost = 2;
+  const batteryCost = 1;
   const disallowed = pettyHackRouteCriterias(user, batteryCost);
 
   if (disallowed) {
@@ -66,7 +74,7 @@ router.post('/pettyCrime', async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'pettyCrime commited',
+    message: "pettyCrime commited",
     results: results.pettyResult,
     user: results.updatedUser,
   });
@@ -76,13 +84,16 @@ router.post('/pettyCrime', async (req, res) => {
 // PRIVATE
 // Retrieves all crimes that are available
 
-router.get('/crimes', async (req, res) => {
+router.get("/crimes", async (req, res) => {
   try {
     const now = Date.now();
-    const crimes = await Crime.find({ gracePeriod: { $lte: now } }).sort({ crimeType: 1, difficulty: 1 });
+    const crimes = await Crime.find({ gracePeriod: { $lte: now } }).sort({
+      crimeType: 1,
+      difficulty: 1,
+    });
     return res.status(200).json({
       success: true,
-      message: 'Crimes loaded..',
+      message: "Crimes loaded..",
       crimes,
     });
   } catch (err) {
@@ -97,10 +108,10 @@ router.get('/crimes', async (req, res) => {
 // PRIVATE
 // Commit crime route.
 
-router.post('/crimes', async (req, res) => {
+router.post("/crimes", async (req, res) => {
   const userId = req.user._id;
   const { crimeId } = req.body;
-  const batteryCost = 5;
+  const batteryCost = 3;
   const now = Date.now();
   const user = await User.findById(userId);
   const crime = await Crime.findById(crimeId);
@@ -116,11 +127,13 @@ router.post('/crimes', async (req, res) => {
 
   // commits crime and returns result object
   const finalResult = await fightCrime(user, crime, batteryCost, now);
-  const crimes = await Crime.find({ gracePeriod: { $lte: now } }).sort({ crimeType: 1, difficulty: 1 });
+  const crimes = await Crime.find({ gracePeriod: { $lte: now } })
+    .sort({ crimeType: 1, difficulty: 1 })
+    .lean();
 
   return res.status(200).json({
     success: true,
-    message: 'Crime commited..',
+    message: "Crime commited..",
     finalResult,
     user: finalResult.user,
     crimes,
@@ -130,7 +143,7 @@ router.post('/crimes', async (req, res) => {
 // @POST
 // PRIVATE
 // User can steal from other players.
-router.post('/fraud/:opponentId', async (req, res) => {
+router.post("/fraud/:opponentId", async (req, res) => {
   const userId = req.user._id;
   const { opponentId } = req.params;
   const batteryCost = 4;
@@ -160,14 +173,18 @@ router.post('/fraud/:opponentId', async (req, res) => {
   finalResult.now = null;
 
   const message = `You stole ${finalResult.playerGains.bitCoinStolen} from ${opponent.name}`;
-  await generateNotification(user._id, `${message} in ${updatedUser.playerStats.city.name}`, 'Logs', true);
+  await generateNotification(
+    user._id,
+    `${message} in ${updatedUser.playerStats.city.name}`,
+    "Logs",
+    true
+  );
   const success = !!finalResult.playerGains.bitCoinStolen;
   return res.status(200).json({
     success,
     message,
     finalResult,
     user: updatedUser,
-
   });
 });
 
@@ -175,7 +192,7 @@ router.post('/fraud/:opponentId', async (req, res) => {
 // PRIVATE
 // User can hack another plater.
 // /opponentId/attack
-router.post('/:opponentId', async (req, res) => {
+router.post("/:opponentId", async (req, res) => {
   const userId = req.user._id;
   const { opponentId } = req.params;
   const batteryCost = 6;
@@ -186,7 +203,12 @@ router.post('/:opponentId', async (req, res) => {
 
   const userIsOnline = await getOnlineUsers(opponent._id.toString());
 
-  const disallowed = await attackRouteCriterias(user, opponent, batteryCost, now);
+  const disallowed = await attackRouteCriterias(
+    user,
+    opponent,
+    batteryCost,
+    now
+  );
 
   if (disallowed) {
     return res.status(400).json({
@@ -195,7 +217,13 @@ router.post('/:opponentId', async (req, res) => {
     });
   }
 
-  const finalResult = await fightHacker(user, opponent, batteryCost, now, userIsOnline);
+  const finalResult = await fightHacker(
+    user,
+    opponent,
+    batteryCost,
+    now,
+    userIsOnline
+  );
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
 
@@ -203,7 +231,12 @@ router.post('/:opponentId', async (req, res) => {
 
   const feedback = getHackFeedback(finalResult, opponent);
   await generateNotification(finalResult.opponent._id, feedback.notification);
-  await generateNotification(finalResult.user._id, feedback.message, 'Logs', true);
+  await generateNotification(
+    finalResult.user._id,
+    feedback.message,
+    "Logs",
+    true
+  );
 
   finalResult.user = null;
   finalResult.now = null;
@@ -214,7 +247,6 @@ router.post('/:opponentId', async (req, res) => {
     message: feedback.message,
     finalResult,
     user: updatedUser,
-
   });
 });
 
