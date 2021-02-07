@@ -6,6 +6,8 @@ import { Container, Col, Row } from "reactstrap";
 import Tutorial from "../../_molecules/Tutorial";
 import CrimesTable from "./CrimesTable";
 
+import { isMobile } from "react-device-detect";
+
 const Crimes = ({ updateGlobalValues, user }) => {
   const [result, setResult] = useState(null);
   const [crimes, setCrimes] = useState([]);
@@ -24,13 +26,17 @@ const Crimes = ({ updateGlobalValues, user }) => {
     let data;
     try {
       data = await api.commitCrimes(crimeId);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
       return updateGlobalValues(err, true, true);
     }
-    setResult(null);
-    setTempData(data); // Doesn't render results before crime is done
     setCrimes(data.crimes);
+    if (isMobile) {
+      // Only renders a small message instead of showing terminal when mobile
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return updateGlobalValues(data);
+    }
+    setTempData(data); // Doesn't render results before crime is done
+    setResult(null);
     setResult(data.finalResult);
   };
 

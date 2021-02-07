@@ -117,7 +117,7 @@ const CrimeTerminal = ({ result, updateGlobalUser }) => {
       } crimeTerminalResultWrapper`}
     >
       <p>
-        <span classname="bitcoinColor" style={{ fontSize: "1rem" }}>
+        <span className="bitcoinColor" style={{ fontSize: "1rem" }}>
           &#8383;
         </span>{" "}
         {result.playerGains.bitCoins}
