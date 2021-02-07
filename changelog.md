@@ -22,6 +22,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Lower required battery for crimes from 5 -> 3
 - Add delay for updating results in statusbar when attacking or hacking
 - Add feedback message for doing crimes when on mobile
+- Cleaned up Top Hackers site to lower response time
 
 ## [0.2.0] - 2021-02-04
 

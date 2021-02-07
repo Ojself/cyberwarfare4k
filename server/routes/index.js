@@ -213,7 +213,8 @@ router.get('/ladder', async (req, res) => {
   try {
     users = await User.find({ 'account.isSetup': true })
       .select(dbSelectOptions)
-      .populate('alliance', 'name');
+      .populate('alliance', 'name')
+      .lean();
   } catch (err) {
     console.error('Ladder error:', err);
     return res.status(400).json({
