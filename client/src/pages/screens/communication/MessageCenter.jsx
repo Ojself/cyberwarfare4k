@@ -254,7 +254,7 @@ const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
                 <ListGroup>
                   {globalLoading ? (
                     "loading.."
-                  ) : messages.sent.length ? (
+                  ) : messages.sent && messages.sent.length ? (
                     messages.sent.map((m, i) => {
                       const name = m.to.name;
                       const id = m.to._id;

@@ -11,6 +11,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 ## [0.2.1] - 2021-02-06
 
+- Fix bug where you couldn't send messages to other hackers through profile page
 - Minor UI fixes for more responsive design
 - Add Feedback when insufficent battery in petty crimes
 - Add placement position in Top Hackers page

@@ -27,10 +27,10 @@ export const randomCrimeString = [
   "Installing bcrypt on enemy computer in order to mess him up for life.",
   "Accessing files... struct ip_config_file_uploader = function(password) {console.log(debug_report); return ip}...",
   "setting up listener to external api-point by Overtaking Justice Under New Alias",
+  "Setting up a fake WAP at the local café, luring dozens of hipster into your honeytrap",
   "Rehosting server to accesspoint... Function denied, relocating host point to ip...",
   "Ip config. 15.345.1.508 annihilating system software extras and extracting new data to disc. Reallocating new Malware to system disc.",
   "Typescript system activated and transferred to new directory encrypted with an IBAN number of 19029839.",
-  "Console logging that sucker to see if there is an end_result: var type_in_user = {aku += 10} to user: 'Some_basement_guy'. Response awaiting...",
   "Searching the depths of web to solve an algorithm by applying the known map, filter, reduce technique.",
   "Deploying repository and git commit -m 'Advanced Update': Functioning: 1002.10002. 333 updated!",
   "Userinterface activated by struct ip_hbs_active = resolution => return array[1223, 9532, 2846]. Looking for new updates to system-ware and hiking.",
@@ -41,7 +41,7 @@ export const randomCrimeString = [
   "Running around the house trying to find the battery charger, but it failed to commit... System reboots: external_battery_source = True",
   "Installing PassportJS on enemy computer in order to confuse him for a life time.... ",
   "let i = 0; while (i <=10) { document.write('your browser is about to crash<br />);} ",
-  "Setting Internet Explorer 6 as default browser on enemy computer "
+  "Setting Internet Explorer 6 as default browser on enemy computer ",
 ];
 
 export const errorMessages = [
@@ -66,10 +66,10 @@ export const errorMessages = [
   "Failure to Preserve Web Page Structure",
   "Failure to Preserve OS Command Structure",
   "EXT2-fs: warning: mounting unchecked file system",
-  "cannot open shared object file: No such file or directory"
+  "cannot open shared object file: No such file or directory",
 ];
 
 export default {
   randomCrimeString,
-  errorMessages
+  errorMessages,
 };
