@@ -25,7 +25,6 @@ const Login = () => {
       window.location.href = "/create-hacker/";
     }
   };
- 
 
   const handleLogin = async () => {
     const { email, password } = loginState;
@@ -36,8 +35,7 @@ const Login = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
       handleRedirect(data);
     } catch (err) {
-      console.error("Error: ", err);
-      setFailMessage(err);
+      setFailMessage(err.message);
       setLoginState({
         ...loginState,
         password: "",
@@ -47,11 +45,11 @@ const Login = () => {
     }
   };
 
-   const onKeyUp = (event) => {
-     if (event.key === "Enter") {
-       handleLogin()
-     }
-   };
+  const onKeyUp = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
 
   return (
     <div className="login-signup-card">

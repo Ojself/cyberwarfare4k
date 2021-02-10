@@ -12,6 +12,9 @@ const tranfserCriteria = (user, receiver, amount) => {
   if (amount > user.playerStats.ledger) {
     return 'Insufficent bitcoins in your ledger';
   }
+  if (amount <= 0) {
+    return 'This is not how you hack..';
+  }
   return null;
 };
 
@@ -25,6 +28,9 @@ const depositCriteria = (user, amount) => {
   if (amount > user.playerStats.bitCoins) {
     return 'You can\'t deposit money you don\'t have..';
   }
+  if (amount <= 0) {
+    return 'This is not how you hack the bank';
+  }
   return null;
 };
 
@@ -37,6 +43,9 @@ const withdrawCriteria = (user, amount) => {
   }
   if (amount > user.playerStats.ledger) {
     return 'You can\'t withdraw money you don\'t have..';
+  }
+  if (amount <= 0) {
+    return 'This is not how you hack the bank';
   }
   return null;
 };

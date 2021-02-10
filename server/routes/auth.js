@@ -68,12 +68,16 @@ router.post('/login', async (req, res, next) => {
   try {
     userDoc = await User.findOne({ 'account.email': email });
     if (!userDoc) {
-      res.status(403).json('Password or email is wrong');
-      next(new Error('Password or email is wrong'));
+      return res.status(403).json({
+        success: false,
+        message: 'Password or email is wrong',
+      });
     }
     if (!bcrypt.compareSync(password, userDoc.account.password)) {
-      res.status(403).json('Password or email is wrong');
-      next(new Error('Password or email is wrong'));
+      return res.status(403).json({
+        success: false,
+        message: 'Password or email is wrong',
+      });
     }
     req.logIn(userDoc, () => {
       userDoc.account.password = null;
@@ -102,7 +106,6 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
         res.status(500).json({ message: 'Something went wrong' });
         return;
       }
-      console.log('reqlogin', req.user);
 
       res.json(req.user);
     });

@@ -64,7 +64,7 @@ const App = () => {
       try {
         data = await api.getUser();
       } catch (err) {
-        console.error("error: ", err);
+        console.error("fetchUserData Error: ", err);
         return;
       }
       if (!data.user.account.isSetup && !userIsAtStarPage()) {

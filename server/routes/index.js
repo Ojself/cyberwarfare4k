@@ -1,7 +1,9 @@
 const express = require('express');
 const { isLoggedIn } = require('../logic/auth');
 const {
-  calculateNetworth, getOpponentInformation, saveAndUpdateUser,
+  calculateNetworth,
+  getOpponentInformation,
+  saveAndUpdateUser,
 } = require('../logic/_helpers');
 
 const router = express.Router();
@@ -130,13 +132,16 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     .populate('playerStats.city', ['name', 'stashPriceMultiplier']);
 
   const unreadMessageExist = await Message.exists({ to: userId, read: false });
-  const unreadNotificationExist = await Notification.exists({ to: userId, read: false });
+  const unreadNotificationExist = await Notification.exists({
+    to: userId,
+    read: false,
+  });
 
   const now = Date.now();
-  const userIsGracedMoreThanFiveMinuts = isGraced(user, (now + (1000 * 60 * 5)));
+  const userIsGracedMoreThanFiveMinuts = isGraced(user, now + 1000 * 60 * 5);
   if (userIsGracedMoreThanFiveMinuts) {
     // Sets the graceperiod to 5 minutes because the user logged on
-    user.setGracePeriod(now + (1000 * 60 * 5));
+    user.setGracePeriod(now + 1000 * 60 * 5);
     await user.save();
   }
   res.status(200).json({
@@ -189,7 +194,12 @@ router.get('/opponents/:id', async (req, res) => {
   opponentInformation.opponent.hackSkill = null;
   opponentInformation.opponent.crimeSkill = null;
   opponentInformation.opponent.currencies = null;
-  nullifyValues(opponentInformation.opponent.playerStats, ['bounty', 'bountyDonors', 'rank', 'rankName']);
+  nullifyValues(opponentInformation.opponent.playerStats, [
+    'bounty',
+    'bountyDonors',
+    'rank',
+    'rankName',
+  ]);
   opponentInformation.opponent.marketPlaceItems = null;
   opponentInformation.opponent.stash = null;
   nullifyValues(opponentInformation.opponent.fightInformation, ['shutdowns']);

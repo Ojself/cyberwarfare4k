@@ -9,6 +9,10 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Tax overview in Fence
 - Easier transactions in crypto currency
 
+## [0.2.2] - 2021-02-10
+
+- Hotfix of ledger bug where users could deposit, withdraw and transfer negative numbers
+
 ## [0.2.1] - 2021-02-06
 
 - Fix bug where you couldn't send messages to other hackers through profile page
