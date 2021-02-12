@@ -14,7 +14,7 @@ import infoJson from "../information/infoCollection";
 
 const Tutorial = ({ section, size, topPadding }) => {
   const [modal, setModal] = useState(false);
-  const [checkBoxSelected, setcheckBoxSelected] = useState(true);
+  const [checkBoxSelected, setcheckBoxSelected] = useState(false);
 
   const onCheckboxBtnClick = () => {
     setcheckBoxSelected(!checkBoxSelected);
@@ -71,7 +71,6 @@ const Tutorial = ({ section, size, topPadding }) => {
                   value={checkBoxSelected}
                   onClick={() => onCheckboxBtnClick()}
                   type="checkbox"
-                  defaultChecked
                 />{" "}
                 Never show again
               </Label>

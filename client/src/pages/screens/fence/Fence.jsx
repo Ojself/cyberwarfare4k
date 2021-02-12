@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
+import { Link } from "react-router-dom";
 import {
   Button,
   Form,
@@ -119,7 +120,6 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         console.error(err, "err");
         return updateGlobalValues(err);
       }
-      console.log(data, "data");
       setCity(data.city);
       setShopStash(data.stashes);
       setLoading(false);
@@ -230,6 +230,13 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
     </Container>
   );
 
+  const allianceFeeWithStyle = (fee) => {
+    let color = "success";
+    if (fee >= 10) color = "warning";
+    if (fee >= 25) color = "danger";
+    return <span className={`text-${color}`}>{fee}</span>;
+  };
+
   return (
     <div className="fence-page-container">
       <div className="d-flex justify-content-center">
@@ -237,6 +244,19 @@ export const Fence = ({ globalLoading, user, updateGlobalValues }) => {
         <Tutorial size="md" section="Fence" />
       </div>
       <h6>{city ? city.name : "City"}</h6>
+      {city && city.allianceOwner && (
+        <h5>
+          A {allianceFeeWithStyle(city.allianceFee * 100)}% tax on every sale
+          goes to the{" "}
+          <Link
+            className="text-light font-weight-bold"
+            to={`/alliance/${city.allianceOwner._id}`}
+          >
+            {city.allianceOwner.name}
+          </Link>{" "}
+          alliance
+        </h5>
+      )}
       <div className="content">{tableOverview}</div>
     </div>
   );

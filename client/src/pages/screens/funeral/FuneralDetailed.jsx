@@ -76,11 +76,11 @@ const FuneralDetailed = ({ match, updateGlobalValues }) => {
                     {funeralMember.name} was shutdown{" "}
                     {formatDateOfDeath(funeralMember.createdAt)}
                   </CardTitle>
-                  {funeralMember.bounty && (
-                    <CardSubtitle tag="h6" className="mb-2 text-muted">
-                      A bounty of was {funeralMember.bounty} claimed
-                    </CardSubtitle>
-                  )}
+                  <CardSubtitle tag="h6" className="mb-2 text-muted">
+                    {funeralMember.bounty
+                      ? `A bounty of was {funeralMember.bounty} claimed`
+                      : "-"}
+                  </CardSubtitle>
                 </CardBody>
               </Card>
             </Col>

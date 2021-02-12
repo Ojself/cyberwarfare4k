@@ -60,11 +60,11 @@ const handleSpy = async (userId, opponentId, id) => {
     const spyInformation = getSpyInfo(opponent);
     generateNotification(userId, spyInformation, 'Spy Report');
   } else {
-    const failMessage = `You failed to spy on ${opponent.name}`;
+    const failMessage = `You failed to spy on ${opponent.name} with ${spyInAction.bitCoinSpent} bitcoins`;
     generateNotification(userId, failMessage, 'Spy Report');
     const warningMessage = `${user.name} failed to spy on you with ${spyInAction.bitCoinSpent} bitcoins`;
-    generateNotification(opponentId, warningMessage, 'Spy Report');
     opponent.vaultDrain(spyInAction.bitCoinSpent);
+    generateNotification(opponentId, warningMessage, 'Spy Report');
     await opponent.save();
   }
 };

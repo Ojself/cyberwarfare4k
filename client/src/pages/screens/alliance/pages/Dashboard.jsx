@@ -39,6 +39,47 @@ const Dashboard = ({ updateGlobalValues, history }) => {
   const [selectedInvite, setSelectedInvite] = useState(null);
   const [selectedPromotion, setSelectedPromotion] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [withdrawAmount, setWithdrawAmount] = useState(false);
+  const [taxAmount, setTaxAmount] = useState(false);
+  const [homeCity, setHomeCity] = useState(false);
+
+  const handleTaxChange = (e) => {
+    let newValue = e.target.value;
+    if (newValue > 100) newValue = 100;
+    setTaxAmount(Math.round(newValue));
+  };
+
+  const saveNewTax = async () => {
+    let data;
+
+    const formattedTaxAmount = parseInt(taxAmount, 10);
+    try {
+      data = await api.saveCityTax({ taxAmount: formattedTaxAmount });
+    } catch (err) {
+      updateGlobalValues(err);
+      return;
+    }
+    updateGlobalValues(data);
+    setTaxAmount(false);
+    setHomeCity(data.city);
+  };
+
+  const handleWithdrawAmountChange = (e) => {
+    setWithdrawAmount(e.target.value);
+  };
+
+  const withdrawFromSafe = async () => {
+    let data;
+    try {
+      data = await api.withdrawFromSafe({ withdrawAmount });
+    } catch (err) {
+      updateGlobalValues(err);
+      return;
+    }
+    updateGlobalValues(data);
+    setWithdrawAmount(false);
+    setAlliance(data.alliance);
+  };
 
   const sendInvite = async (user) => {
     const userId = user.value;
@@ -107,8 +148,8 @@ const Dashboard = ({ updateGlobalValues, history }) => {
       setAlliance(data.alliance);
       setUsers(massagedAllUsers);
       setMembers(members);
+      setHomeCity(data.city);
       setLoading(false);
-      // massage
     };
     getAllianceDashBoard();
   }, []);
@@ -136,8 +177,9 @@ const Dashboard = ({ updateGlobalValues, history }) => {
           <Col sm="12">
             {!loading && (
               <DashboardOverview
-                allianceId={alliance._id}
+                alliance={alliance}
                 leaveAlliance={leaveAlliance}
+                homeCity={homeCity}
               />
             )}
           </Col>
@@ -146,7 +188,11 @@ const Dashboard = ({ updateGlobalValues, history }) => {
 
       <TabPane tabId="2">
         {!loading && (
-          <AllianceOverview members={members} allianceId={alliance._id} />
+          <AllianceOverview
+            homeCity={homeCity}
+            members={members}
+            allianceId={alliance._id}
+          />
         )}
       </TabPane>
       <TabPane tabId="3">
@@ -163,7 +209,17 @@ const Dashboard = ({ updateGlobalValues, history }) => {
         </Row>
       </TabPane>
       <TabPane tabId="4">
-        <DashboardSafe alliance={alliance} />
+        <DashboardSafe
+          loading={loading}
+          alliance={alliance}
+          withdrawAmount={withdrawAmount}
+          handleWithdrawAmountChange={handleWithdrawAmountChange}
+          withdrawFromSafe={withdrawFromSafe}
+          handleTaxChange={handleTaxChange}
+          taxAmount={taxAmount}
+          saveNewTax={saveNewTax}
+          homeCity={homeCity}
+        />
       </TabPane>
 
       <TabPane tabId="5">

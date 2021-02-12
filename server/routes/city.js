@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 // Retrives local players and reviels online status
 
 router.get('/locals', async (req, res) => {
-  const userId = req.user._id;
+  const userId = '5fca3b4a86e77b5c8e58b66a'; // req.user._id;
   const user = await User.findById(userId);
 
   const userCityId = user.playerStats.city;
@@ -48,6 +48,9 @@ router.get('/locals', async (req, res) => {
       select: 'name',
     },
     select: 'name playerStats.rankName',
+    options: {
+      sort: { name: -1 },
+    },
   };
   const cityLocals = await City.findById(userCityId).populate(populateOb);
 

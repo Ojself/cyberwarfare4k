@@ -64,7 +64,11 @@ const App = () => {
       try {
         data = await api.getUser();
       } catch (err) {
-        console.error("fetchUserData Error: ", err);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setGlobalMessage({
+          message: err.message,
+          success: err.success || false,
+        });
         return;
       }
       if (!data.user.account.isSetup && !userIsAtStarPage()) {

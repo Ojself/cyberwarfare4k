@@ -13,6 +13,7 @@ const { saveAndUpdateUser } = require('../logic/_helpers');
 router.get('/', async (req, res) => {
   const funerals = await Funeral.find()
     .populate('alliance', 'name')
+    .sort({ createdAt: -1 })
     .lean();
 
   res.status(200).json({

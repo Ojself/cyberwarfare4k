@@ -660,8 +660,9 @@ userSchema.methods.handleOrgCrime = function (result, amountMembers) {
 
 userSchema.methods.handleDataCenterAttack = function (dataCenter, result) {
   this.batteryDrain(result.batteryCost);
+
   dataCenter.requiredStash.forEach((stash) => {
-    this.stash[stash] -= 1;
+    this.stash[stash.name] -= 1;
   });
 };
 

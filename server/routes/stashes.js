@@ -83,7 +83,7 @@ router.post('/sell', async (req, res) => {
   if (user.playerStats.city.allianceOwner && user.playerStats.city.allianceFee) {
     const { allianceFee } = user.playerStats.city;
     const feeToAlliance = totalSum * allianceFee;
-    totalSum *= (1 - allianceFee);
+    totalSum *= (1 - allianceFee); // lowers the sum given to user based upon fee
     const alliance = await Alliance.findById(user.playerStats.city.allianceOwner);
     alliance.depositSafe(feeToAlliance);
     await alliance.save();

@@ -618,4 +618,16 @@ export default {
       .then((res) => res.data)
       .catch(errHandler);
   },
+  withdrawFromSafe(body) {
+    return service
+      .post("/alliance/withdraw", body)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
+  saveCityTax(body) {
+    return service
+      .post("/alliance/tax", body)
+      .then((res) => res.data)
+      .catch(errHandler);
+  },
 };

@@ -36,7 +36,7 @@ const NavbarComp = ({
     api.logout();
   };
 
-  const checkAllCommunication = () => {
+  const userHasUnreadNotification = () => {
     return userHasMail() || userHasNotification();
   };
   const userHasNotification = () => {
@@ -155,11 +155,16 @@ const NavbarComp = ({
             <DropdownToggle
               caret
               className={`dropdown-button ${
-                checkAllCommunication() && "text-danger"
+                userHasUnreadNotification() && "text-danger"
               }`}
               nav
             >
-              <FontAwesomeIcon className="text-light" icon={faComments} />
+              <FontAwesomeIcon
+                className={`text-light ${
+                  userHasUnreadNotification() && "text-danger"
+                }`}
+                icon={faComments}
+              />
               <span className="display-none-when-mobile"> Communication</span>
             </DropdownToggle>
             <DropdownMenu>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MiniDataCenterOverview from "../../../myProfile/molecules/MiniDataCenterOverview";
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-const DashboardOverview = ({ leaveAlliance, allianceId }) => {
+const DashboardOverview = ({ leaveAlliance, alliance, homeCity }) => {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
@@ -10,10 +10,18 @@ const DashboardOverview = ({ leaveAlliance, allianceId }) => {
     toggleModal();
     leaveAlliance();
   };
-
   return (
     <div className="my-5">
-      <MiniDataCenterOverview owner={allianceId} />
+      <div className="mb-5">
+        <h6>
+          <strong>{alliance.name}</strong> alliance
+        </h6>
+        <h6>
+          Home city: <strong>{homeCity.name}</strong>
+        </h6>
+      </div>
+
+      <MiniDataCenterOverview owner={alliance._id} />
       <Button className="mt-5" onClick={toggleModal} color="danger">
         Leave alliance
       </Button>

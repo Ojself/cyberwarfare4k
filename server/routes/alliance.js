@@ -40,6 +40,9 @@ router.get('/dashboard', async (req, res) => {
   const user = await User.findById(userId);
 
   const alliance = await findAllianceByIdAndPopulate(user.alliance);
+  const city = await City.findOne({ allianceOwner: alliance._id })
+    .select('allianceFee name')
+    .lean();
 
   const users = await User.find({ 'account.isSetup': true })
     .select('name alliance allianceRole')
@@ -50,6 +53,7 @@ router.get('/dashboard', async (req, res) => {
     message: 'Dashboard loaded...',
     alliance,
     users,
+    city,
 
   });
 });
@@ -278,6 +282,120 @@ router.post('/promote', async (req, res) => {
     allianceMembers,
   });
 });
+
+const withdrawCriteria = (user, withdrawAmount, alliance) => {
+  if (!user) {
+    return 'Something went wrong..';
+  }
+  if (!user.alliance) {
+    return 'You\'re not in an alliance..';
+  }
+  if (!withdrawAmount) {
+    return 'Missing input';
+  }
+  const allowedRoles = ['boss', 'analyst', 'cto'];
+  if (!allowedRoles.includes(user.allianceRole)) {
+    return 'You don\'t have permission to do this';
+  }
+  if (withdrawAmount <= 0) {
+    return "You can't deposit from the alliance safe";
+  }
+  if (alliance.safe < withdrawAmount) {
+    return 'You can\'t withdraw money you don\'t have..';
+  }
+
+  return null;
+};
+
+// @POST
+// PRIVATE
+// Withdraws money from safe to hand
+
+router.post('/withdraw', async (req, res) => {
+  // const fee = 1.05;
+  const { withdrawAmount } = req.body;
+  const userId = req.user._id;
+  const user = await User.findById(userId);
+
+  const alliance = await Alliance.findById(user.alliance);
+
+  const disallowed = withdrawCriteria(user, withdrawAmount, alliance);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  user.bitCoinGain(withdrawAmount);
+  const updatedUser = await saveAndUpdateUser(user);
+
+  alliance.withdrawSafe(withdrawAmount);
+  const updatedAlliance = await alliance.save();
+
+  return res.status(200).json({
+    success: true,
+    message: `${withdrawAmount} was withdrawed from the alliance safe`,
+    user: updatedUser,
+    alliance: updatedAlliance,
+  });
+});
+
+const setNewTaxCriteria = (user, city, taxAmount) => {
+  if (!user || !city) {
+    return 'Something went wrong..';
+  }
+  if (!user.alliance) {
+    return 'You\'re not in an alliance..';
+  }
+  if (!taxAmount) {
+    return 'Missing input';
+  }
+  const allowedRoles = ['boss', 'analyst', 'cto'];
+  if (!allowedRoles.includes(user.allianceRole)) {
+    return 'You don\'t have permission to do this';
+  }
+  if (taxAmount < 0) {
+    return 'A tax can\'t be below 0';
+  }
+  if (taxAmount > 100) {
+    return 'A tax can\'t be over 100';
+  }
+
+  return null;
+};
+
+// @POST
+// PRIVATE
+// Withdraws money from safe to hand
+
+router.post('/tax', async (req, res) => {
+  const { taxAmount } = req.body;
+  const userId = req.user._id;
+  const user = await User.findById(userId).lean();
+
+  const city = await City.findOne({ allianceOwner: user.alliance });
+  const disallowed = setNewTaxCriteria(user, city, taxAmount);
+
+  if (disallowed) {
+    return res.status(400).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+  const formattedTaxAmount = Math.round(taxAmount) / 100;
+  city.setFee(formattedTaxAmount);
+  const updatedCity = await city.save();
+
+  return res.status(200).json({
+    success: true,
+    message: `${city.name} now has ${taxAmount} % tax fee`,
+    city: updatedCity,
+
+  });
+});
+
 //
 // router.delete('/dissolve', async (req, res) => {
 // const userId = req.user._id;

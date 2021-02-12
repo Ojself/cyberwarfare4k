@@ -6,8 +6,19 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 - More alliance options
 - API tests
-- Tax overview in Fence
 - Easier transactions in crypto currency
+
+## [0.2.3] - 2021-02-12
+
+- Bug fix: Login feedback fix
+- Tax fee overview in fence
+- Alliance can now set taxes in their claimed city
+- Bug fix: Required stash for attacking DC is now removed from inventory when attacking
+- Default "Never show again" in Tutorial (?) are set to false
+- Change order of funeral members
+- Sort local users by name (and not by arrival time)
+- Communication navbar icon now glows red when there's unread notifications
+- Minor grammar mistakes
 
 ## [0.2.2] - 2021-02-10
 

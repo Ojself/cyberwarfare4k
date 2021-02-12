@@ -190,7 +190,6 @@ const FAQ = () => {
         className="w-75"
         color="success"
         onClick={() => {
-          console.log(ledgerVaultSafeOpen);
           setLedgerVaultSafeOpen(!ledgerVaultSafeOpen);
         }}
         style={{ marginBottom: "1rem" }}

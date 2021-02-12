@@ -118,7 +118,7 @@ export default {
   Espionage: {
     title: "Espionage",
     text:
-      "The espionage is your personal intelligence center. You buy spies and send it to whomever. If the money you spend is more than what the opponent have in their vault, you will be notified with precious information. If it's less however, their vault will be lowered with the amount you spent, and they will be notified that you tried to spy on them.",
+      "The espionage is your personal intelligence center. You buy spies and send them to whomever. If the money you spend is more than what the opponent has in their vault, you will be notified with precious information. If it's less however, their vault will be lowered with the amount you spent, and they will be notified that you tried to spy on them.",
   },
   "Equip Weapon": {
     title: "Equip Weapon",
@@ -380,7 +380,7 @@ export default {
     text: (
       <>
         Vault is only accessible and used in your Espioanage center and is used
-        to buy spy services. The Vault have two functions:
+        to buy spy services. The Vault has two functions:
         <br />
         <br />
         1: Defend yourself from other spies
@@ -388,7 +388,7 @@ export default {
         2. Assign spies to carry out espionage on enemies.
         <br />
         <br />
-        If you purchase a spy for 100k and the enemy have 150k in their vault,
+        If you purchase a spy for 100k and the enemy has 150k in their vault,
         your spy will fail and your enemy will be notified about your mischief.
       </>
     ),
@@ -397,7 +397,7 @@ export default {
     title: "VPN",
     text: (
       <>
-        Change your VPN status between several cities. Each city have their own
+        Change your VPN status between several cities. Each city has their own
         prices and datacenters. You can only hack others within the same city.
         <br />
         <br />

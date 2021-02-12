@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
   const user = await User.findById(userId)
     .select('fightInformation.activeSpies')
     .populate('fightInformation.activeSpies.target', 'name')
+    .sort({ name: 1 })
     .lean();
 
   const { activeSpies } = user.fightInformation;
