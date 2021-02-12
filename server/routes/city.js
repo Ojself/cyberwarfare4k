@@ -15,7 +15,7 @@ const { getOnlineUsers, saveAndUpdateUser } = require('../logic/_helpers');
 // Retrives all cities
 
 router.get('/', async (req, res) => {
-  const cities = await City.find().select('price name');
+  const cities = await City.find().select('price name').lean();
 
   const message = getCityRouteCriterias(cities);
   if (message) {
@@ -48,9 +48,6 @@ router.get('/locals', async (req, res) => {
       select: 'name',
     },
     select: 'name playerStats.rankName',
-    options: {
-      sort: { name: -1 },
-    },
   };
   const cityLocals = await City.findById(userCityId).populate(populateOb);
 

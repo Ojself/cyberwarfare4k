@@ -66,7 +66,7 @@ router.post('/login', async (req, res, next) => {
   // first check to see if there's a document with that email
   let userDoc;
   try {
-    userDoc = await User.findOne({ 'account.email': email });
+    userDoc = await User.findOne({ 'account.email': email }).lean();
     if (!userDoc) {
       return res.status(403).json({
         success: false,

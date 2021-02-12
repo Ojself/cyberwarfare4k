@@ -20,12 +20,12 @@ const users = [
       crimesInitiated: Math.floor(Math.random() * 10),
       vpnChanges: Math.floor(Math.random() * 5),
       currencyPurchases: Math.floor(Math.random() * 5),
+      equippedWeapon: getRandomFromArray(equippedWeapons),
     },
     hackSkill: {
       CPU: 1,
       AntiVirus: 25,
       Encryption: 25,
-      equippedWeapon: getRandomFromArray(equippedWeapons),
     },
     account: {
       email: 'alice@email.com',

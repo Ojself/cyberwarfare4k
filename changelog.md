@@ -12,6 +12,9 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 - Bug fix: Local Hackers did not match with the city user was in.
 - Minor ui fix in funeral
+- Small adjustment to crypto currency. The span between min- and max price are now slightly smaller
+- Attacks from datacenters are now calculated from Equipped weapon and overall crime skills
+- More information in Datacenter FAQ
 
 ## [0.2.3] - 2021-02-12
 

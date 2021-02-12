@@ -78,10 +78,10 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   const userHasStarred = globalLoading ? false : user.earnBattery.githubStar;
   const userHasSubscribed = globalLoading ? false : !!user.account.subscription;
 
-  const getCode = (game)=> {
-    if (!user || globalLoading)return
+  const getCode = (game) => {
+    if (!user || globalLoading) return;
     return user.earnBattery[game];
-  }
+  };
 
   const getButton = (game) => {
     if (!user || globalLoading) return;
@@ -91,7 +91,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
     let cursor = "pointer";
     let width = "100%";
 
-    const currentGame = getCode(game)
+    const currentGame = getCode(game);
     if (currentGame) {
       onclick = () => navigator.clipboard.writeText(currentGame);
       cursor = "copy";
@@ -294,8 +294,9 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
             <a target="_blank" rel="noopener noreferrer" href={URLS.chessathor}>
               Chessathor
             </a>{" "}
-            and input <strong>{getCode("chessathor") || "the personal code"}</strong> as a highscore
-            name to receive the battery bonus!
+            and input{" "}
+            <strong>{getCode("chessathor") || "the personal code"}</strong> as a
+            highscore name to receive the battery bonus!
           </CardText>
           {getButton("chessathor")}
         </CardBody>

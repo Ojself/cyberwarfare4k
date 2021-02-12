@@ -1,7 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const mongoose = require('mongoose');
 const Currency = require('../models/Currency');
 
 require('../configs/database');
@@ -20,8 +19,8 @@ const currency = [
     name: 'Litecoin',
     color: 'hsl(255, 70%, 75%)',
     initials: 'LTC',
-    lowerPrice: 35,
-    higherPrice: 66,
+    lowerPrice: 37,
+    higherPrice: 64,
     price: 35,
     levelReq: 5,
     historyPrice: getHistoryPrice(35, 66),
@@ -33,8 +32,8 @@ const currency = [
     name: 'Ethereum',
     color: 'hsl(197, 75%, 69%)',
     initials: 'ETH',
-    lowerPrice: 120,
-    higherPrice: 150,
+    lowerPrice: 122,
+    higherPrice: 148,
     price: 120,
     levelReq: 4,
     historyPrice: getHistoryPrice(120, 150),
@@ -59,8 +58,8 @@ const currency = [
     name: 'Monero',
     color: 'hsl(214, 98%, 75%)',
     initials: 'XMR',
-    lowerPrice: 48,
-    higherPrice: 71,
+    lowerPrice: 49,
+    higherPrice: 69,
     price: 50,
     levelReq: 3,
     historyPrice: getHistoryPrice(50, 70),
@@ -72,7 +71,7 @@ const currency = [
     name: 'Zcash',
     color: 'hsl(25, 94%, 72%)',
     initials: 'ZEC',
-    lowerPrice: 10,
+    lowerPrice: 11,
     higherPrice: 16,
     price: 10,
     levelReq: 2,
@@ -85,7 +84,7 @@ const currency = [
     name: 'Dash',
     color: 'hsl(283, 99%, 96%)',
     initials: 'DASH',
-    lowerPrice: 79,
+    lowerPrice: 81,
     higherPrice: 93,
     levelReq: 1,
     historyPrice: getHistoryPrice(80, 95),

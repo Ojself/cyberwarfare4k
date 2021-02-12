@@ -100,8 +100,19 @@ export default {
   },
   "Data Centers": {
     title: "Data Centers",
-    text:
-      "There are 5 data centers in each city throughout the world of cyberhackerwarfare4000. Upon purchase, you will receive a small income every minute. Be sure to keep them healthy by healing them if they get attacked.",
+    text: (
+      <>
+        There are 5 data centers in each city throughout the world of
+        cyberhackerwarfare4000. Upon purchase, you will receive a small income
+        every minute. Be sure to keep them healthy by healing them if they get
+        attacked.
+        <br />
+        When attacking a data center, be sure to have the right stash in your
+        inventory. The damage you inflict is calculated from your overall{" "}
+        <span className="text-success">Crime Skills</span> and your currently
+        equipped weapon
+      </>
+    ),
   },
   "Earn Battery": {
     title: (

@@ -88,13 +88,15 @@ const attackDataCenter = async (
   dataCenterOwner,
   batteryCost,
 ) => {
-  const userCpuSkill = user.hackSkill.CPU;
+  const { equippedWeapon } = user.fightInformation;
+  const weaponPower = user.hackSkill[equippedWeapon];
+
   const userCrimeSkillsAverage = Object.values(user.crimeSkill)
     .filter((skill) => typeof skill === 'number')
     .reduce((acc, cur) => acc + cur, 0) / 4;
 
   // Max 1
-  let probability = (userCpuSkill + userCrimeSkillsAverage) / 400;
+  let probability = (weaponPower + userCrimeSkillsAverage) / 400;
   if (probability < 0.05)probability = 0.05;
   if (probability > 0.95)probability = 0.95;
 
@@ -109,7 +111,7 @@ const attackDataCenter = async (
   };
 
   if (decider < probability) {
-    result.damageDealt = Math.round(Math.random() * (userCpuSkill * 0.15 - userCpuSkill * 0.10) + (userCpuSkill * 0.10));
+    result.damageDealt = Math.round(Math.random() * (userCrimeSkillsAverage * 0.15 - userCrimeSkillsAverage * 0.10) + (userCrimeSkillsAverage * 0.10));
     result.won = true;
     result.destroyed = dataCenter.currentFirewall - result.damageDealt <= 0;
   }
