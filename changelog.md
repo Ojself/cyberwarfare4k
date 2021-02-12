@@ -15,6 +15,7 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Small adjustment to crypto currency. The span between min- and max price are now slightly smaller
 - Attacks from datacenters are now calculated from Equipped weapon and overall crime skills
 - More information in Datacenter FAQ
+- Crypto currency is now open at night!
 
 ## [0.2.3] - 2021-02-12
 

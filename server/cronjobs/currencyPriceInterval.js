@@ -7,7 +7,8 @@ const calculatePrice = (min, max) => {
 
 const currencyPriceInterval = async () => {
   const currentHour = new Date().getHours();
-  const isNightTime = currentHour < 6;
+  /* const isNightTime = currentHour < 6; */
+  const isNightTime = false; // uncomment comment above to close crypto currency at night
   const currencies = await Currency.find({});
   currencies.forEach((c) => {
     // No new price at night

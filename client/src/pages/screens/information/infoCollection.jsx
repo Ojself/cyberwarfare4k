@@ -84,8 +84,8 @@ export default {
       <>
         Arguably the best way to get rich fast. The rules are simple, buy low
         and sell high. Be careful, though, as your name will show as most recent
-        buyer after purchasing. Prices changes every hour (except at night) and
-        is the same for every city.
+        buyer after purchasing. Prices changes every hour{" "}
+        <del>(except at night)</del> and is the same for every city.
         <br />
         <br />
         All crypto currencies held by a hacker that are shutdown will be
