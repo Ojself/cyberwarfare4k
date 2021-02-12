@@ -8,6 +8,11 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.2.4] - 2021-02-12
+
+- Bug fix: Local Hackers did not match with the city user was in.
+- Minor ui fix in funeral
+
 ## [0.2.3] - 2021-02-12
 
 - Bug fix: Login feedback fix

@@ -78,7 +78,7 @@ const FuneralDetailed = ({ match, updateGlobalValues }) => {
                   </CardTitle>
                   <CardSubtitle tag="h6" className="mb-2 text-muted">
                     {funeralMember.bounty
-                      ? `A bounty of was {funeralMember.bounty} claimed`
+                      ? `A bounty of was ${funeralMember.bounty} claimed`
                       : "-"}
                   </CardSubtitle>
                 </CardBody>

@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
 // Retrives local players and reviels online status
 
 router.get('/locals', async (req, res) => {
-  const userId = '5fca3b4a86e77b5c8e58b66a'; // req.user._id;
+  const userId = req.user._id;
   const user = await User.findById(userId);
 
   const userCityId = user.playerStats.city;
