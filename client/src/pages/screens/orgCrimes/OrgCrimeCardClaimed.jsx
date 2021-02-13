@@ -88,7 +88,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
             })}
           </CardText>
           <Button
-            disabled={crime.owner && user._id !== crime.owner._id}
+            /* disabled={user._id !== crime.owner._id} */
             color="outline-danger"
             onClick={() => commitOrgCrime(crime._id)}
           >
