@@ -374,14 +374,20 @@ userSchema.methods.resetStatPoitns = function () {
     this.playerStats.currentFirewall = 1;
   }
   this.playerStats.exp -= this.playerStats.statPointsHistory.exp;
-  this.playerStats.statPointResetPrice += 2500000;
+  if (this.playerStats.statPointResetPrice === 0) {
+    this.playerStats.statPointResetPrice += 2500000;
+  } else {
+    this.playerStats.statPointResetPrice *= 2;
+  }
 
   const historyKeys = Object.keys(this.playerStats.statPointsHistory);
   historyKeys.forEach((key) => {
     this.playerStats.statPointsHistory[key] = 0;
   });
 
-  let newRank = null;
+  // This snippet resets the rank as
+
+  /* let newRank = null;
   for (let i = 0; i < ranks.length; i += 1) {
     if (ranks[i].expToNewRank < this.playerStats.exp) {
       newRank = ranks[i];
@@ -389,7 +395,7 @@ userSchema.methods.resetStatPoitns = function () {
   }
   this.playerStats.rank = newRank.rank;
   this.playerStats.rankName = newRank.name;
-  this.playerStats.expToLevel = newRank.expToNewRank;
+  this.playerStats.expToLevel = newRank.expToNewRank; */
 };
 
 userSchema.methods.batteryDrain = function (battery) {

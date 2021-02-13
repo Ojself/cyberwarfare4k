@@ -458,7 +458,6 @@ router.patch('/leave', async (req, res) => {
   const updatedUser = await saveAndUpdateUser(user);
   alliance.leaveAlliance(userId);
   await alliance.save();
-  console.log('done for real');
   res.status(200).json({
     success: true,
     message: `You left ${alliance.name}...`,

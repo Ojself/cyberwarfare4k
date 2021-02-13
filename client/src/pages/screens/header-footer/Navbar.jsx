@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import api from "../../../api";
 import "./navbar.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,14 @@ import {
 import { faRedhat } from "@fortawesome/free-brands-svg-icons";
 import Clock from "../_molecules/Clock";
 
+import { Link } from "react-router-dom";
+
 import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -36,6 +43,12 @@ const NavbarComp = ({
     api.logout();
   };
 
+  const [prizeModal, setPrizeModal] = useState(false);
+  const togglePrizeModal = () => {
+    console.log("modal");
+    setPrizeModal(!prizeModal);
+  };
+
   const userHasUnreadNotification = () => {
     return userHasMail() || userHasNotification();
   };
@@ -52,20 +65,100 @@ const NavbarComp = ({
   return (
     <div>
       <Navbar color="dark" className="navbar-main" expand="xs">
-        <NavbarBrand
-          href="/my-profile"
-          className="mr-auto display-none-when-mobile"
-        >
-          <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
-            Current round: <strong>3</strong>
-          </p>
-          {/* <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
-            <strong>Check out the Prizes</strong>
-          </p> */}
-          {/* <p className="text-light" style={{ fontSize: "0.75rem" }}>
-            (Feb 2021)
-          </p> */}
-        </NavbarBrand>
+        <div>
+          <div style={{ cursor: "pointer" }}>
+            <p
+              onClick={togglePrizeModal}
+              className="text-success mb-0"
+              style={{ fontSize: "0.75rem" }}
+            >
+              <strong>PRIZES </strong>
+              <span role="img" aria-label="trophy-icon">
+                🏆
+              </span>
+            </p>
+            <Modal isOpen={prizeModal} toggle={togglePrizeModal}>
+              <ModalHeader toggle={togglePrizeModal}>
+                <p className="text-warning font-weight-bold">PRIZES</p>
+              </ModalHeader>
+              <ModalBody>
+                <strong>WEALTHIEST HACKERS </strong>
+
+                <span role="img" aria-label="Gold medal">
+                  🏅
+                </span>
+
+                <p>
+                  The top 3 hackers will be awarded with profile decoration and{" "}
+                  <Link className="text-light font-weight-bold" to="/tokens">
+                    tokens
+                  </Link>{" "}
+                  for he or she to use in the next round!
+                </p>
+                <ul style={{ listStyleType: "none" }}>
+                  <li>
+                    <span role="img" aria-label="1st medal">
+                      🥇
+                    </span>
+                    2000 tokens
+                  </li>
+                  <li>
+                    <span role="img" aria-label="2nd medal">
+                      🥈
+                    </span>
+                    750 tokens
+                  </li>
+                  <li>
+                    <span role="img" aria-label="3rd medal">
+                      🥉
+                    </span>
+                    250 tokens
+                  </li>
+                </ul>
+                <strong>WEALTHIEST ALLIANCE </strong>
+                <span role="img" aria-label="Hat emoji">
+                  🎩
+                </span>
+                <p>
+                  The wealthiest alliance by the end of the round will be
+                  awarded with{" "}
+                  <Link className="text-light font-weight-bold" to="/tokens">
+                    tokens
+                  </Link>
+                  .
+                </p>
+                <ul style={{ listStyleType: "none" }}>
+                  <li>
+                    <span role="img" aria-label="Computer Laptop">
+                      💻 300 tokens for each member
+                    </span>
+                  </li>
+                </ul>
+              </ModalBody>
+              <ModalFooter>
+                <div>
+                  <p className="my-0">The round will end 7th of March</p>
+                  <p style={{ fontSize: "0.75rem" }}>
+                    Terms and conditions will be announced
+                  </p>
+                </div>
+              </ModalFooter>
+              <ModalFooter>
+                <Button color="primary" onClick={togglePrizeModal}>
+                  Take me back!
+                </Button>
+              </ModalFooter>
+            </Modal>
+          </div>
+          <NavbarBrand
+            href="/my-profile"
+            className="mr-auto display-none-when-mobile"
+          >
+            <p className="text-warning mb-0" style={{ fontSize: "0.75rem" }}>
+              Current round: <strong>3</strong>
+            </p>
+          </NavbarBrand>
+        </div>
 
         <Nav className="m-auto" navbar>
           <UncontrolledDropdown nav inNavbar>

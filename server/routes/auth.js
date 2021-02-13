@@ -128,7 +128,7 @@ router.get('/confirm/:confirmCode', (req, res) => {
         message: 'success',
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 });
 
 /* router.post('/forgot', (req, res) => {

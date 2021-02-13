@@ -232,7 +232,7 @@ router.get('/ladder', async (req, res) => {
       message: JSON.stringify(err),
     });
   }
-  const databaseCurrencies = await Currency.find({}).select('name price');
+  const databaseCurrencies = await Currency.find({}).select('name price').lean();
   users.map((user) => {
     user.playerStats.bitCoins = calculateNetworth(user, databaseCurrencies);
     user.playerStats.ledger = null;
@@ -368,7 +368,6 @@ router.get('/user-setup-status', async (req, res) => {
     playerIsDead: false,
   };
   if (!req.user) {
-    console.log(JSON.stringify(status));
     return res.json({
       status,
     });

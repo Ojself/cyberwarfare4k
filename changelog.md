@@ -10,6 +10,8 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 ## [0.2.4] - 2021-02-12
 
+- Added Prizes in navbar
+- Bug fix: Reset of stat points does not reset rank name (to avoid double gifting stat poitns)
 - Bug fix: Local Hackers did not match with the city user was in.
 - Minor ui fix in funeral
 - Small adjustment to crypto currency. The span between min- and max price are now slightly smaller

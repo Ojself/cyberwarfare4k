@@ -95,12 +95,14 @@ const attackDataCenter = async (
     .filter((skill) => typeof skill === 'number')
     .reduce((acc, cur) => acc + cur, 0) / 4;
 
+  const totalPower = (weaponPower + userCrimeSkillsAverage) / 2;
+
   // Max 1
-  let probability = (weaponPower + userCrimeSkillsAverage) / 400;
+  let probability = ((totalPower) / 400) + Math.random() / 4;
   if (probability < 0.05)probability = 0.05;
   if (probability > 0.95)probability = 0.95;
 
-  let decider = (dataCenter.difficulty / 200) + Math.random() / 2;
+  let decider = (dataCenter.difficulty / 200) + Math.random() / 3;
   if (decider < 0.05)decider = 0.05;
   if (decider > 0.95)decider = 0.95;
   const result = {
@@ -110,8 +112,11 @@ const attackDataCenter = async (
     destroyed: false,
   };
 
+  const maxDamage = totalPower * 0.16;
+  const minDamage = totalPower * 0.10;
+
   if (decider < probability) {
-    result.damageDealt = Math.round(Math.random() * (userCrimeSkillsAverage * 0.15 - userCrimeSkillsAverage * 0.10) + (userCrimeSkillsAverage * 0.10));
+    result.damageDealt = Math.round(Math.random() * (maxDamage - minDamage) + (minDamage));
     result.won = true;
     result.destroyed = dataCenter.currentFirewall - result.damageDealt <= 0;
   }

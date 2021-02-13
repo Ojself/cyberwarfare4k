@@ -107,6 +107,7 @@ export default {
         every minute. Be sure to keep them healthy by healing them if they get
         attacked.
         <br />
+        <br />
         When attacking a data center, be sure to have the right stash in your
         inventory. The damage you inflict is calculated from your overall{" "}
         <span className="text-success">Crime Skills</span> and your currently
