@@ -155,6 +155,16 @@ router.patch('/', async (req, res) => {
   });
 });
 
+const commitCrimeCriterias = (userId, orgCrime) => {
+  if (!userId || !orgCrime) {
+    return 'something went wrong';
+  }
+  if (orgCrime.owner.toString() !== userId.toString()) {
+    return 'Only the owner can carry out organized crimes';
+  }
+  return null;
+};
+
 // @PATCH
 // PRIVATE
 // Carries out organized crime
@@ -163,7 +173,16 @@ router.post('/', async (req, res) => {
   const { crimeId } = req.body;
   const orgCrime = await OrgCrime.findById(crimeId).populate('roles.owner');
 
-  const finalResult = await commitOrginaziedCrime(orgCrime);
+  const disallowed = commitCrimeCriterias(userId, orgCrime);
+
+  if (disallowed) {
+    return res.status(403).json({
+      success: false,
+      message: disallowed,
+    });
+  }
+
+  await commitOrginaziedCrime(orgCrime);
   orgCrime.cleanCrime();
   await orgCrime.save();
 
