@@ -239,8 +239,6 @@ router.post('/:opponentId', async (req, res) => {
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
 
-  await finalResult.opponent.save();
-
   const feedback = getHackFeedback(finalResult, opponent);
   await generateNotification(finalResult.opponent._id, feedback.notification);
   await generateNotification(
@@ -249,6 +247,7 @@ router.post('/:opponentId', async (req, res) => {
     'Logs',
     true,
   );
+  await finalResult.opponent.save();
 
   finalResult.user = null;
   finalResult.now = null;

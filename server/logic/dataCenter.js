@@ -15,14 +15,14 @@ const hasRequiredStash = (userStash, requiredStash) => {
   return userHasRequiredStash;
 };
 
-const healDataCenterCriterias = (user, dataCenter) => {
+const healDataCenterCriterias = (user, dataCenter, healCost) => {
   if (!user) {
     return "User doesn't exist";
   }
   if (!dataCenter) {
     return "Datacenter doesn't exist";
   }
-  if (user.playerStats.bitCoins < dataCenter.price) {
+  if (user.playerStats.bitCoins < healCost) {
     return 'Insufficient funds';
   }
   return null;

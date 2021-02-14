@@ -171,16 +171,10 @@ const NavbarComp = ({
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
-            <DropdownToggle
-              caret
-              className={`dropdown-button ${
-                userHasUnreadNotification() && "text-danger"
-              }`}
-              nav
-            >
+            <DropdownToggle caret nav>
               <FontAwesomeIcon
-                className={`text-light ${
-                  userHasUnreadNotification() && "text-danger"
+                className={`${
+                  userHasUnreadNotification() ? "text-danger" : "text-light"
                 }`}
                 icon={faComments}
               />
@@ -192,7 +186,7 @@ const NavbarComp = ({
                 className={userHasMail() ? "text-danger" : null}
                 href="/messages"
               >
-                <span className="display-none-when-mobile"> Messages</span>
+                <span> Messages</span>
               </DropdownItem>
               <DropdownItem
                 className={userHasNotification() ? "text-danger" : null}

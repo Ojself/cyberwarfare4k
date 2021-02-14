@@ -8,6 +8,13 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.2.5] - 2021-02-14
+
+- Bug fix: Messages are now visible and glowing red on mobile
+- Bug fix: Data centers heal (insufficent funds) is fixed
+- Bug fix: Wrong naming of users being shutdown in terminal feedback
+- UI: Messagecenter now looks slighly better in phone view
+
 ## [0.2.4] - 2021-02-12
 
 - Added Prizes in navbar
