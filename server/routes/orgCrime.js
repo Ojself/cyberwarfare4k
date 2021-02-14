@@ -128,7 +128,7 @@ router.patch('/', async (req, res) => {
   const orgCrime = await OrgCrime.findById(crimeId);
   const now = Date.now();
 
-  const userAlreadyInCrime = orgCrime.roles.some((role) => role.owner.toString() === userId.toString());
+  const userAlreadyInCrime = orgCrime.roles.some((role) => JSON.stringify(role.owner) === JSON.stringify(userId));
 
   const batteryCost = userAlreadyInCrime ? 0 : 5;
   const disallowed = claimOrgCrimeRoleCriterias(user, orgCrime, batteryCost, now, roleName);
