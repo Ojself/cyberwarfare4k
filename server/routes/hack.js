@@ -228,6 +228,7 @@ router.post('/:opponentId', async (req, res) => {
       message: disallowed,
     });
   }
+  const opponentName = opponent.name.slice();
 
   const finalResult = await fightHacker(
     user,
@@ -239,7 +240,7 @@ router.post('/:opponentId', async (req, res) => {
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
 
-  const feedback = getHackFeedback(finalResult, opponent);
+  const feedback = getHackFeedback(finalResult, opponent, opponentName);
   await generateNotification(finalResult.opponent._id, feedback.notification);
   await generateNotification(
     finalResult.user._id,
