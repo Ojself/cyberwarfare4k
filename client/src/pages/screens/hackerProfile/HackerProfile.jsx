@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import SubscriptionIcon from "../_molecules/SubscriptionIcon";
 import AttackTerminal from "./AttackTerminal";
 import Tutorial from "../_molecules/Tutorial";
-
 import api from "../../../api";
 
 const HackerProfile = ({ history, match, updateGlobalValues }) => {

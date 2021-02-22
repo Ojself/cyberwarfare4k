@@ -16,21 +16,22 @@ const {
   fightHacker,
 } = require('../logic/hack');
 
-const getHackFeedback = (finalResult, opponent) => {
+const getHackFeedback = (finalResult, opponent, opponentName) => {
+  console.log({ finalResult }, { opponent }); // CITY
   let message;
   let notification;
   if (finalResult.bodyguardKilled) {
-    message = `You attacked ${opponent.name} and killed a bodyguard!`;
+    message = `You attacked ${opponentName} and killed a bodyguard!`;
     notification = `${finalResult.user.name} attacked you and killed a bodyguard}!`;
   } else if (finalResult.bodyguardAttacked) {
-    message = `You attacked ${opponent.name} and damaged a bodyguard!`;
+    message = `You attacked ${opponentName} and damaged a bodyguard!`;
     notification = `${finalResult.user.name} attacked you and wounded your bodyguard`;
   } else if (!finalResult.bodyguardAttacked && !finalResult.bodyguardKilled) {
-    message = `You attacked ${opponent.name} and dealt ${finalResult.damageDealt} damage`;
+    message = `You attacked ${opponentName} and dealt ${finalResult.damageDealt} damage`;
     notification = `${finalResult.user.name} attacked you and dealt ${finalResult.damageDealt} damage!`;
   }
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
-    message = `SHUTDOWN! ${opponent.name} is dead`;
+    message = `SHUTDOWN! ${opponentName} is dead`;
     notification = `You were shutdown by ${finalResult.user.name}`;
   }
 

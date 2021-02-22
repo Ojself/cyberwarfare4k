@@ -27,20 +27,22 @@ import classnames from "classnames";
 import Tutorial from "../_molecules/Tutorial";
 
 const AllianceInvitation = ({ answerAllianceInvitation }) => {
-  <div className="d-flex justify-content-around flex-row">
-    <Button
-      onClick={() => answerAllianceInvitation(allianceInvitation, false)}
-      color="danger"
-    >
-      Decline
-    </Button>
-    <Button
-      onClick={() => answerAllianceInvitation(allianceInvitation, true)}
-      color="success"
-    >
-      Accept
-    </Button>
-  </div>;
+  return (
+    <div className="d-flex justify-content-around flex-row">
+      <Button
+        onClick={() => answerAllianceInvitation(allianceInvitation, false)}
+        color="danger"
+      >
+        Decline
+      </Button>
+      <Button
+        onClick={() => answerAllianceInvitation(allianceInvitation, true)}
+        color="success"
+      >
+        Accept
+      </Button>
+    </div>
+  );
 };
 
 const MessageCenter = ({ updateGlobalValues, globalLoading, user }) => {
