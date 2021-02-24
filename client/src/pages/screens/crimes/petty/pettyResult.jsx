@@ -25,7 +25,7 @@ const PettyResult = (props) => {
   };
 
   const failStrings = [
-    "You failed at commiting a petty crime",
+    "You failed at committing a petty crime",
     "Your attack was unsuccessful",
     "You found noone to attack",
     "Your computer malfunctioned",
@@ -48,7 +48,7 @@ const PettyResult = (props) => {
   );
 
   const winStrings = [
-    "You succeeded at commiting a petty crime",
+    "You succeeded at committing a petty crime",
     "You scammed someone online",
     "You successfully committed an online crime",
   ];

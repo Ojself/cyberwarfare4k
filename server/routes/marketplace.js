@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
 
-  const item = await Item.findById(itemId);
+  const item = await Item.findById(itemId).lean();
   const user = await User.findById(userId);
 
   const disallowed = marketPlaceCriterias(user, item);
@@ -40,7 +40,8 @@ router.post('/', async (req, res) => {
       message: disallowed,
     });
   }
-  user.handleItemPurchase(item);
+
+  await user.handleItemPurchase(item);
   const updatedUser = await saveAndUpdateUser(user);
 
   return res.status(200).json({

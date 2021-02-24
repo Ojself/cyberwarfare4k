@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
+const Item = require('./Item');
 
 const { Schema } = mongoose;
 const Alliance = require('./Alliance');
@@ -310,16 +311,18 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.methods.handleItemPurchase = function (item) {
-  const currentItem = this.marketPlaceItems[item.type];
+userSchema.methods.handleItemPurchase = async function (item) {
+  const currentlyOwnedItemId = this.marketPlaceItems[item.type];
   // lower the stats so items doesn't stack
-  if (currentItem) {
-    if (['CPU', 'AntiVirus', 'Encryption'].includes(currentItem.type)) {
-      this.giveHackSkill(-currentItem.bonus, item.type);
+  if (currentlyOwnedItemId) {
+    const itemData = await Item.findById(currentlyOwnedItemId).lean();
+    if (['CPU', 'AntiVirus', 'Encryption'].includes(itemData.type)) {
+      this.giveHackSkill(-itemData.bonus, item.type);
     }
-    if (currentItem.type === 'Firewall') {
-      this.playerStats.maxFirewall -= currentItem.bonus;
-      this.playerStats.currentFirewall -= currentItem.bonus;
+
+    if (itemData.type === 'Firewall') {
+      this.playerStats.maxFirewall -= itemData.bonus;
+      this.playerStats.currentFirewall -= itemData.bonus;
     }
   }
 
@@ -329,6 +332,7 @@ userSchema.methods.handleItemPurchase = function (item) {
   if (['CPU', 'AntiVirus', 'Encryption'].includes(item.type)) {
     this.giveHackSkill(item.bonus, item.type);
   }
+
   if (item.type === 'Firewall') {
     this.playerStats.maxFirewall += item.bonus;
     this.playerStats.currentFirewall += item.bonus;
@@ -777,7 +781,9 @@ userSchema.methods.die = async function () {
   }
   await generateFuneral(this.name, this.account.avatar, this._id, this.playerStats.bounty, this.alliance);
 
-  this.name = `UnconfirmedPlayer${Math.random()}`;
+  // resets the name - turns out this is just annoying
+  // and breaks the ui kinda
+  // this.name = `UnconfirmedPlayer${Math.random()}`;
   this.alliance = null;
   this.allianceRole = null;
   this.account.isSetup = false;
