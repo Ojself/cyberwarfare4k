@@ -42,6 +42,8 @@ router.post('/signup', (req, res, next) => {
       const name = `unconfirmedplayer${Date.now()}`;
       const playerStats = {
         city: cityIds[Math.floor(Math.random() * cityIds.length)],
+      };
+      const fightInformation = {
         gracePeriod: Date.now() + (1000 * 60 * 60 * 24 * 4),
       };
 
@@ -49,6 +51,7 @@ router.post('/signup', (req, res, next) => {
         account,
         name,
         playerStats,
+        fightInformation,
       });
 
       return newUser.save();
