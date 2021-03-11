@@ -305,7 +305,6 @@ const userSchema = new Schema(
   },
   {
     timestamps: {
-      createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
   },
@@ -474,6 +473,7 @@ userSchema.methods.sendSpy = function (bitCoins, target, date) {
   const oldArray = this.fightInformation.activeSpies;
   oldArray.unshift(spy);
   this.fightInformation.activeSpies = oldArray;
+  this.fightInformation.spiesSent += 1;
   return id;
 };
 
@@ -781,9 +781,6 @@ userSchema.methods.die = async function () {
   }
   await generateFuneral(this.name, this.account.avatar, this._id, this.playerStats.bounty, this.alliance);
 
-  // resets the name - turns out this is just annoying
-  // and breaks the ui kinda
-  // this.name = `UnconfirmedPlayer${Math.random()}`;
   this.alliance = null;
   this.allianceRole = null;
   this.account.isSetup = false;
@@ -870,7 +867,7 @@ userSchema.methods.die = async function () {
   };
 
   this.fightInformation = {
-    gracePeriod: Date.now() + (1000 * 60 * 60 * 24),
+    gracePeriod: Date.now() + (1000 * 60 * 60 * 24 * 4),
     equippedWeapon: 'CPU',
     activeSpies: [],
     shutdowns: 0,

@@ -34,8 +34,11 @@ export default {
         minutes depending on their online status. If you manage to bring a
         hacker down to 0 or less <span className="text-danger">Firewall</span>,
         the hacker is shutdown and is forced to start over. You will get
-        whatever crypto currency the player was carrying at the time of a
-        shutdown.
+        whatever crypto currency (bought from the currency market) the player
+        was carrying at the time of a shutdown.
+        <br />
+        All users are granted 4 full days of 'newbie protection' when starting
+        out a fresh character
       </>
     ),
   },

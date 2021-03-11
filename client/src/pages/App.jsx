@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import Typist from "react-typist";
 import api from "../api";
-import AllianceOverview from "./screens/alliance/pages/AllianceOverview";
-import CreateAlliance from "./screens/alliance/pages/CreateAlliance";
-import Dashboard from "./screens/alliance/pages/Dashboard";
+
 import AllianceLadder from "./screens/alliance/pages/Ladder";
-import MessageCenter from "./screens/communication/MessageCenter";
-import Notifications from "./screens/communication/Notifications";
+import AllianceOverview from "./screens/alliance/pages/AllianceOverview";
+import BetaForum from "./screens/_molecules/BetaForum";
+import CreateAlliance from "./screens/alliance/pages/CreateAlliance";
 import CreateHacker from "./screens/createHacker/CreateHacker";
 import Crimes from "./screens/crimes/crimes/Crimes";
-import Petty from "./screens/crimes/petty/Petty";
 import CryptoCurrency from "./screens/cryptoCurrency/CryptoCurrency";
+import Dashboard from "./screens/alliance/pages/Dashboard";
 import DataCenters from "./screens/DataCenters";
 import EarnBattery from "./screens/earnBattery/EarnBattery";
-import TermsOfSale from "./screens/earnBattery/TermsOfSale";
-import TokensStore from "./screens/tokens/TokenStore";
+import MessageCenter from "./screens/communication/MessageCenter";
+import Notifications from "./screens/communication/Notifications";
+import Petty from "./screens/crimes/petty/Petty";
 
 /*
 import ThreadOverview from "./pages/globalForum/ThreadOverview";
@@ -27,7 +27,7 @@ import Fence from "./screens/fence/Fence";
 import Funeral from "./screens/funeral/Funeral";
 import FuneralDetailed from "./screens/funeral/FuneralDetailed";
 import HackerProfile from "./screens/hackerProfile/HackerProfile";
-import HallOfFame from "./screens/HallOfFame";
+import HallOfFame from "./screens/HallOfFame/HallOfFame";
 import Footer from "./screens/header-footer/Footer";
 import NavbarComp from "./screens/header-footer/Navbar";
 import StatusBar from "./screens/header-footer/Statusbar";
@@ -40,9 +40,10 @@ import Marketplace from "./screens/marketplace/Marketplace";
 import MyProfile from "./screens/myProfile/MyProfile";
 import OrgCrimes from "./screens/orgCrimes/OrgCrimes";
 import ServiceAndSupport from "./screens/ServiceAndSupport";
+import TermsOfSale from "./screens/earnBattery/TermsOfSale";
+import TokensStore from "./screens/tokens/TokenStore";
 import VPN from "./screens/VPN/VPN";
 import WantedList from "./screens/WantedList";
-import BetaForum from "./screens/_molecules/BetaForum";
 
 const App = () => {
   const [user, setUser] = useState(null);

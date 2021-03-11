@@ -42,6 +42,7 @@ router.post('/signup', (req, res, next) => {
       const name = `unconfirmedplayer${Date.now()}`;
       const playerStats = {
         city: cityIds[Math.floor(Math.random() * cityIds.length)],
+        gracePeriod: Date.now() + (1000 * 60 * 60 * 24 * 4),
       };
 
       const newUser = new User({

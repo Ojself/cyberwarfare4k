@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const OrgCrime = require('../models/OrgCrime');
-const Alliance = require('../models/Alliance');
 
 const { saveAndUpdateUser } = require('../logic/_helpers');
 const { commitOrginaziedCrime } = require('../logic/orgCrime');
@@ -159,9 +158,11 @@ const commitCrimeCriterias = (userId, orgCrime) => {
   if (!userId || !orgCrime) {
     return 'something went wrong';
   }
-  if (orgCrime.owner.toString() !== userId.toString()) {
+
+  if (orgCrime.roles.some((role) => role.owner && role.owner.toString() === userId.toString())) {
     return 'Only the owner can carry out organized crimes';
   }
+
   return null;
 };
 

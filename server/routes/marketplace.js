@@ -23,8 +23,6 @@ router.get('/', async (req, res) => {
 // PRIVATE
 // User purchase item from marketplace
 
-// todo check same value is not working
-
 router.post('/', async (req, res) => {
   const userId = req.user._id;
   const { itemId } = req.body;
@@ -50,5 +48,4 @@ router.post('/', async (req, res) => {
     user: updatedUser,
   });
 });
-// todo check if if messages actually return the res.json
 module.exports = router;

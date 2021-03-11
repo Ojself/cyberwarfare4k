@@ -8,6 +8,15 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.3.0] - 2021-03-11
+
+- Round reset
+- Added possibility for new forum post detection
+- Added newbie protection for fresh players (4 days)
+- Remove xp gain when attacking players
+- Updated npm packages and audit issues
+- Add hall of fame for previous round
+
 ## [0.2.6] - 2021-02-24
 
 - Bug fix: Marketplace exploit. It will now substract the values correctly when purchasing new item (Thanks community for pointing it out!)

@@ -177,7 +177,6 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
     <div className="w-100 d-flex flex-column ">
       <ListGroup className="text-center mb-5">
         <ListGroupItem className="justify-content-between bg-dark">
-          {" "}
           <SubscriptionIcon
             subscription={opponentState.opponent.account.subscription}
           />

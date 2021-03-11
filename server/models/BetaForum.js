@@ -7,6 +7,7 @@ const betaForumSchema = new Schema({
   comment: { type: String, required: true },
   allianceForum: { type: Boolean },
   alliance: { type: Schema.Types.ObjectId, ref: 'Alliance' },
+  seenBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 
   edited: {
     type: Boolean,

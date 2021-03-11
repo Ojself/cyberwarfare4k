@@ -151,8 +151,10 @@ const attackRecursiveBattle = (result) => {
         damageDealt = 1;
       }
 
-      // Don't give exp to noobs who shoots people at random
-      if (damageDealt > 6) {
+      // check if opponent is dead
+      newResult.victimDead = newResult.opponent.playerStats.currentFirewall - newResult.damageDealt <= 0;
+
+      if (newResult.victimDead) {
         const maxExp = (attackPower + newResult.opponent.playerStats.rank) * 5000;
         const minExp = maxExp * 0.85;
         const expGained = Math.round(
@@ -160,6 +162,7 @@ const attackRecursiveBattle = (result) => {
         );
         newResult.playerGains.exp = expGained;
       }
+
       newResult.damageDealt = damageDealt;
     }
     return newResult;
@@ -198,9 +201,6 @@ const fightHacker = async (user, opponent, batteryCost, now, userIsOnline) => {
     },
   };
   const finalResult = attackRecursiveBattle(result);
-
-  // check if opponent is dead
-  finalResult.victimDead = opponent.playerStats.currentFirewall - finalResult.damageDealt <= 0;
 
   user.handleAttack(finalResult);
   const gracePeriodExtra = userIsOnline ? 1000 * 60 * 5 : 1000 * 60 * 60;

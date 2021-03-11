@@ -62,8 +62,8 @@ const PrizesModal = ({ prizeModalOpen, togglePrizeModal }) => {
       </ModalBody>
       <ModalFooter>
         <div>
-          <p className="my-0">The round will end 7th of March</p>
-          <p style={{ fontSize: "0.75rem" }}>Terms and conditions tba</p>
+          <p className="my-0">The round will end 11th of April</p>
+          {/* <p style={{ fontSize: "0.75rem" }}>Terms and conditions tba</p> */}
         </div>
       </ModalFooter>
       <ModalFooter>
