@@ -12,6 +12,7 @@ const HallOfFame = ({}) => {
   const toggleRoundOne = () => setIsRoundOneOpen(!isRoundOneOpen);
   return (
     <div className="d-flex w-100 align-items-center justify-content-center flex-column">
+      <h1>Hall Of Fame</h1>
       <Button
         className="w-25"
         color="primary"

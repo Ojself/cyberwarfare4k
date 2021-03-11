@@ -20,7 +20,6 @@ const HallOfFameBody = ({ data, round }) => {
 
   return (
     <div className="page-container">
-      <h1>Hall Of Fame</h1>
       <div className="content">
         <h6>Round {round}</h6>
         <div className="my-4">

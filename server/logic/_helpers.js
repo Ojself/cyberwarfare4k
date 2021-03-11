@@ -255,7 +255,7 @@ const saveAndUpdateUser = async (user) => {
 const calculateNetworth = (user, dbCurrencies) => {
   let networth = user.playerStats.bitCoins + user.playerStats.ledger;
   dbCurrencies.forEach((currency) => {
-    networth += user.currencies[currency.name] || 0 * currency.price;
+    networth += (user.currencies[currency.name] || 0) * currency.price;
   });
   return networth;
 };
