@@ -66,7 +66,7 @@ const setupPlayer = async (user, name, city, avatar) => {
 // User setup. User is being sent here in order to put in name, set stats and city
 
 router.post('/createUser', isLoggedIn, async (req, res) => {
-  const { userId } = req;
+  const userId = req.user._id;
   const user = await User.findById(userId);
   const { name, cityString, avatar } = req.body;
   // todo craete criteria route
@@ -304,7 +304,7 @@ const upgradeStatsCriteria = (user, statPoint) => {
 };
 
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
-  const { userId } = req;
+  const userId = req.user._id;
   const { statPoint } = req.body;
 
   /* todo, criteria route */
@@ -339,7 +339,7 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
 // Lets user change weapon
 
 router.post('/changeWeapon', isLoggedIn, async (req, res) => {
-  const { userId } = req;
+  const userId = req.user._id;
   const { weapon } = req.body;
 
   const allowedWeapons = ['CPU', 'AntiVirus', 'Encryption'];
@@ -383,7 +383,7 @@ router.get('/user-setup-status', async (req, res) => {
       status,
     });
   }
-  const user = await User.findById(req.userId).lean();
+  const user = await User.findById(req.user._id).lean();
   status.playerIsDead = user.playerStats.currentFirewall <= 0;
 
   if (!user.account.isSetup) {
