@@ -9,6 +9,7 @@ const generateFakeComment = (userName) => [{
   edited: false,
   deleted: false,
   likes: [],
+  seenBy: [],
   creator: {
     _id: '5fca3b4a86e77b5c8e58b683',
     account: { avatar: '/hackerAvatars/Waifu/greenblack.png' },
@@ -36,7 +37,6 @@ const postBetaForumCriterias = (user, comment, params) => {
   if (comment.length > 250) {
     return 'Your post is too long...';
   }
-
   if (comment.length < 2) {
     return 'Your post is too short...';
   }
@@ -86,10 +86,12 @@ router.get('/', async (req, res) => {
 
   const comments = await BetaForum
     .find(params)
-    .lean()
     .sort({ createdAt: -1 })
     .populate('creator', ['name', 'account.avatar'])
     .populate('likes', 'name');
+
+  comments.forEach((n) => n.readMe(userId));
+  await Promise.all(comments.map((m) => m.save()));
 
   return res.status(200).json({
     success: true,
@@ -124,6 +126,7 @@ router.post('/', async (req, res) => {
   // createdAt might differ from server time
   const forumComment = new BetaForum({
     creator: user._id,
+    seenBy: [userId],
     comment,
     alliance: params.alliance,
     allianceForum: params.allianceForum,
@@ -145,7 +148,7 @@ router.put('/:commentId', async (req, res) => {
 
   const comment = await BetaForum.findById(commentId);
 
-  // criterias
+  // criterias?
   comment.addRemoveLike(userId);
   const savedComment = await comment.save();
   const populatedComment = await savedComment

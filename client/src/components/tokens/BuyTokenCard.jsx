@@ -12,7 +12,7 @@ const BuyTokenCard = ({
       <CardBody>
         <CardTitle tag="h5">
           <span role="img" aria-label="tokens">
-            &#129689;
+            &#128176;
           </span>{" "}
           <strong>{tokensAmount} Tokens</strong>
         </CardTitle>

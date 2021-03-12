@@ -122,7 +122,7 @@ const TokenStore = ({ globalLoading, user, updateGlobalValues }) => {
         <Col md="3">
           <h3>
             <span role="img" aria-label="tokens">
-              &#129689;
+              &#128176;
             </span>{" "}
             Balance
           </h3>

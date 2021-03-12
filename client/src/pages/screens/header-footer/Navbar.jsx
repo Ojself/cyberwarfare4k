@@ -30,8 +30,15 @@ const NavbarComp = ({
   globalLoading,
   unreadMessage,
   unreadNotification,
+  unreadForumComment,
+  unreadAllianceComment,
   user,
 }) => {
+  console.log(
+    unreadForumComment,
+    unreadAllianceComment,
+    " unreadForumComment unreadAllianceComment,"
+  );
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = () => {
@@ -43,8 +50,12 @@ const NavbarComp = ({
     setPrizeModalOpen(!prizeModalOpen);
   };
 
-  const userHasUnreadNotification = () => {
-    return userHasMail() || userHasNotification();
+  const userHasUnreadCommunication = () => {
+    return (
+      userHasMail() ||
+      userHasNotification() ||
+      userHasUnreadPublicForumComment()
+    );
   };
   const userHasNotification = () => {
     if (globalLoading) return false;
@@ -54,6 +65,16 @@ const NavbarComp = ({
   const userHasMail = () => {
     if (globalLoading) return false;
     return unreadMessage;
+  };
+
+  const userHasUnreadPublicForumComment = () => {
+    if (globalLoading) return false;
+    return unreadForumComment;
+  };
+
+  const userHasUnreadAllianceForumComment = () => {
+    if (globalLoading) return false;
+    return unreadAllianceComment;
   };
 
   return (
@@ -129,7 +150,14 @@ const NavbarComp = ({
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle caret className="dropdown-button" nav>
-              <FontAwesomeIcon className="text-light" icon={faRedhat} />
+              <FontAwesomeIcon
+                className={`${
+                  userHasUnreadAllianceForumComment()
+                    ? "text-danger"
+                    : "text-light"
+                }`}
+                icon={faRedhat}
+              />
               <span className="display-none-when-mobile"> Alliance</span>
             </DropdownToggle>
             <DropdownMenu>
@@ -137,6 +165,9 @@ const NavbarComp = ({
               {user && user.alliance ? (
                 <>
                   <DropdownItem
+                    className={
+                      userHasUnreadAllianceForumComment() ? "text-danger" : null
+                    }
                     href={`/alliance/${user.alliance._id}/beta-forum`}
                   >
                     Forum
@@ -174,14 +205,22 @@ const NavbarComp = ({
             <DropdownToggle caret nav>
               <FontAwesomeIcon
                 className={`${
-                  userHasUnreadNotification() ? "text-danger" : "text-light"
+                  userHasUnreadCommunication() ? "text-danger" : "text-light"
                 }`}
                 icon={faComments}
               />
               <span className="display-none-when-mobile"> Communication</span>
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem href="/beta-forum">Public Forum</DropdownItem>
+              <DropdownItem
+                className={
+                  userHasUnreadPublicForumComment() ? "text-danger" : null
+                }
+                href="/beta-forum"
+              >
+                Public Forum
+              </DropdownItem>
+
               <DropdownItem
                 className={userHasMail() ? "text-danger" : null}
                 href="/messages"

@@ -46,4 +46,11 @@ betaForumSchema.methods.addRemoveLike = function (userId) {
   }
 };
 
+betaForumSchema.methods.readMe = function (userId) {
+  const index = this.seenBy.indexOf(userId);
+  if (index === -1) {
+    this.seenBy.push(userId);
+  }
+};
+
 module.exports = mongoose.model('BetaForum', betaForumSchema);

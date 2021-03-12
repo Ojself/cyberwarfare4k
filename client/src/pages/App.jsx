@@ -13,6 +13,12 @@ import CryptoCurrency from "./screens/cryptoCurrency/CryptoCurrency";
 import Dashboard from "./screens/alliance/pages/Dashboard";
 import DataCenters from "./screens/DataCenters";
 import EarnBattery from "./screens/earnBattery/EarnBattery";
+import Espionage from "./screens/espionage/Espionage";
+import Fence from "./screens/fence/Fence";
+import Funeral from "./screens/funeral/Funeral";
+import FuneralDetailed from "./screens/funeral/FuneralDetailed";
+import HackerProfile from "./screens/hackerProfile/HackerProfile";
+import HallOfFame from "./screens/HallOfFame/HallOfFame";
 import MessageCenter from "./screens/communication/MessageCenter";
 import Notifications from "./screens/communication/Notifications";
 import Petty from "./screens/crimes/petty/Petty";
@@ -22,12 +28,7 @@ import ThreadOverview from "./pages/globalForum/ThreadOverview";
 import ForumOverview from "./pages/globalForum/ForumOverview";
 import ForumThread from "./pages/globalForum/ForumThread";
 */
-import Espionage from "./screens/espionage/Espionage";
-import Fence from "./screens/fence/Fence";
-import Funeral from "./screens/funeral/Funeral";
-import FuneralDetailed from "./screens/funeral/FuneralDetailed";
-import HackerProfile from "./screens/hackerProfile/HackerProfile";
-import HallOfFame from "./screens/HallOfFame/HallOfFame";
+
 import Footer from "./screens/header-footer/Footer";
 import NavbarComp from "./screens/header-footer/Navbar";
 import StatusBar from "./screens/header-footer/Statusbar";
@@ -49,6 +50,8 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [unreadMessage, setUnreadMessage] = useState(false);
   const [unreadNotification, setUnreadNotification] = useState(false);
+  const [unreadForumComment, setUnreadForumComment] = useState(false);
+  const [unreadAllianceComment, setUnreadAllianceComment] = useState(false);
   const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -78,6 +81,8 @@ const App = () => {
       setUser(data.user);
       setUnreadMessage(data.unreadMessageExist);
       setUnreadNotification(data.unreadNotificationExist);
+      setUnreadForumComment(data.unreadForumCommentExist);
+      setUnreadAllianceComment(data.unreadAllianceCommentExist);
       setLoading(false);
     };
     fetchUserData();
@@ -114,6 +119,8 @@ const App = () => {
             globalLoading={loading}
             unreadMessage={unreadMessage}
             unreadNotification={unreadNotification}
+            unreadAllianceComment={unreadAllianceComment}
+            unreadForumComment={unreadForumComment}
           />
           <StatusBar
             updateGlobalValues={updateGlobalValues}

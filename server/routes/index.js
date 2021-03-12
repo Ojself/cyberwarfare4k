@@ -13,6 +13,7 @@ const City = require('../models/City');
 const Currency = require('../models/Currency');
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
+const BetaForum = require('../models/BetaForum');
 
 /**
  * Sets values to null
@@ -40,7 +41,7 @@ const setupPlayer = async (user, name, city, avatar) => {
   user.playerStats.city = city._id;
   user.account.avatar = avatar;
   await user.save();
-  city.arrival(user._id);
+  city.arrival(user.id);
   await city.save();
 };
 
@@ -65,7 +66,7 @@ const setupPlayer = async (user, name, city, avatar) => {
 // User setup. User is being sent here in order to put in name, set stats and city
 
 router.post('/createUser', isLoggedIn, async (req, res) => {
-  const userId = req.user._id;
+  const { userId } = req;
   const user = await User.findById(userId);
   const { name, cityString, avatar } = req.body;
   // todo craete criteria route
@@ -136,6 +137,14 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     to: userId,
     read: false,
   });
+  let unreadAllianceCommentExist;
+
+  if (user && user.alliance) {
+    const lastAllianceComment = await BetaForum.findOne({ alliance: user.alliance }).sort({ $natural: -1 }).lean();
+    unreadAllianceCommentExist = !lastAllianceComment.seenBy.some((id) => id.toString() === userId.toString());
+  }
+  const lastGlobalComment = await BetaForum.findOne({ allianceForum: false }).sort({ $natural: -1 }).lean();
+  const unreadForumCommentExist = !lastGlobalComment.seenBy.some((id) => id.toString() === userId.toString());
 
   const now = Date.now();
   const userIsGracedMoreThanFiveMinuts = isGraced(user, now + 1000 * 60 * 5);
@@ -150,6 +159,8 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     user,
     unreadMessageExist,
     unreadNotificationExist,
+    unreadAllianceCommentExist,
+    unreadForumCommentExist,
   });
 });
 
@@ -293,7 +304,7 @@ const upgradeStatsCriteria = (user, statPoint) => {
 };
 
 router.post('/upgradeStats', isLoggedIn, async (req, res) => {
-  const userId = req.user._id;
+  const { userId } = req;
   const { statPoint } = req.body;
 
   /* todo, criteria route */
@@ -328,7 +339,7 @@ router.post('/upgradeStats', isLoggedIn, async (req, res) => {
 // Lets user change weapon
 
 router.post('/changeWeapon', isLoggedIn, async (req, res) => {
-  const userId = req.user._id;
+  const { userId } = req;
   const { weapon } = req.body;
 
   const allowedWeapons = ['CPU', 'AntiVirus', 'Encryption'];
@@ -372,7 +383,7 @@ router.get('/user-setup-status', async (req, res) => {
       status,
     });
   }
-  const user = await User.findById(req.user._id).lean();
+  const user = await User.findById(req.userId).lean();
   status.playerIsDead = user.playerStats.currentFirewall <= 0;
 
   if (!user.account.isSetup) {
@@ -395,15 +406,12 @@ router.get('/user-setup-status', async (req, res) => {
 /* router.post('/kill/', async (req, res) => {
   const { opponentId } = req.body;
   const opponent = await User.findById(opponentId);
-  console.log('start');
   try {
     await opponent.die();
   } catch (err) {
     console.err('error', err);
   }
-  console.log('end');
   const newOpponent = await opponent.save();
-  console.log('saved');
 
   res.status(200).json({
     success: true,

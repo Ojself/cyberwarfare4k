@@ -16,19 +16,20 @@ const {
   fightHacker,
 } = require('../logic/hack');
 
-const getHackFeedback = (finalResult, opponent, opponentName) => {
-  console.log({ finalResult }, { opponent }); // CITY
+const getHackFeedback = (finalResult, opponentName) => {
+  const currentCityName = finalResult.user.playerStats.city.name;
+  const cityNameMessage = `in ${currentCityName}`;
   let message;
   let notification;
   if (finalResult.bodyguardKilled) {
-    message = `You attacked ${opponentName} and killed a bodyguard!`;
-    notification = `${finalResult.user.name} attacked you and killed a bodyguard}!`;
+    message = `You attacked ${opponentName} and killed a bodyguard! ${cityNameMessage}`;
+    notification = `${finalResult.user.name} attacked you and killed a bodyguard ${cityNameMessage}!`;
   } else if (finalResult.bodyguardAttacked) {
-    message = `You attacked ${opponentName} and damaged a bodyguard!`;
-    notification = `${finalResult.user.name} attacked you and wounded your bodyguard`;
+    message = `You attacked ${opponentName} and damaged a bodyguard! ${cityNameMessage}`;
+    notification = `${finalResult.user.name} attacked you and wounded your bodyguard ${cityNameMessage}`;
   } else if (!finalResult.bodyguardAttacked && !finalResult.bodyguardKilled) {
-    message = `You attacked ${opponentName} and dealt ${finalResult.damageDealt} damage`;
-    notification = `${finalResult.user.name} attacked you and dealt ${finalResult.damageDealt} damage!`;
+    message = `You attacked ${opponentName} and dealt ${finalResult.damageDealt} damage ${cityNameMessage}`;
+    notification = `${finalResult.user.name} attacked you and dealt ${finalResult.damageDealt} damage ${cityNameMessage}!`;
   }
   if (finalResult.opponent.playerStats.currentFirewall <= 0) {
     message = `SHUTDOWN! ${opponentName} is dead`;
@@ -241,7 +242,7 @@ router.post('/:opponentId', async (req, res) => {
 
   const updatedUser = await saveAndUpdateUser(finalResult.user);
 
-  const feedback = getHackFeedback(finalResult, opponent, opponentName);
+  const feedback = getHackFeedback(finalResult, opponentName);
   await generateNotification(finalResult.opponent._id, feedback.notification);
   await generateNotification(
     finalResult.user._id,

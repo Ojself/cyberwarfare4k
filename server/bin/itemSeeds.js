@@ -54,8 +54,8 @@ const items = [
     _id: '5fc13fcf7e196b5b2c875e4b',
     name: 'Intel i9-7980 xe',
     type: 'CPU',
-    price: config.bonus.high,
-    bonus: config.price.high,
+    price: config.price.high,
+    bonus: config.bonus.high,
   },
 
   {
@@ -94,8 +94,8 @@ const items = [
     _id: '5fc13fcf7e196b5b2c875e50',
     name: 'Zyxel USG1100 UTM BDL',
     type: 'Firewall',
-    price: config.bonus.high,
-    bonus: config.price.high,
+    price: config.price.high,
+    bonus: config.bonus.high,
   },
 
   {
@@ -136,8 +136,8 @@ const items = [
     _id: '5fc13fcf7e196b5b2c875e55',
     name: 'AVG',
     type: 'AntiVirus',
-    price: config.bonus.high,
-    bonus: config.price.high,
+    price: config.price.high,
+    bonus: config.bonus.high,
   },
 
   {
@@ -177,8 +177,8 @@ const items = [
     _id: '5fc13fcf7e196b5b2c875e5a',
     name: 'CertainSafe',
     type: 'Encryption',
-    price: config.bonus.high,
-    bonus: config.price.high,
+    price: config.price.high,
+    bonus: config.bonus.high,
   },
 
   {

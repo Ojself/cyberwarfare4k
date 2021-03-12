@@ -8,6 +8,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.3.2] - 2021-03-12
+
+- Fix prices for marketplace
+- Add city name in attack logs
+- Add unread status for forum and alliance forum posts
+
 ## [0.3.1] - 2021-03-11
 
 - Currencies are now calculated in the Ladder

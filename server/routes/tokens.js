@@ -11,7 +11,6 @@ const { saveAndUpdateUser } = require('../logic/_helpers');
 // Redeem item
 
 router.post('/redeem', async (req, res) => {
-  console.log(req.body, 'req.body');
   const { amount } = req.body;
   const userId = req.user._id;
   const user = await User.findById(userId);
