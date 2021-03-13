@@ -17,7 +17,6 @@ const TokenStore = ({ globalLoading, user, updateGlobalValues }) => {
       console.error("err");
       return updateGlobalValues(err);
     }
-    console.log(data, "data");
     updateGlobalValues(data);
   };
   const payWithStripe = async (amount) => {
@@ -28,7 +27,6 @@ const TokenStore = ({ globalLoading, user, updateGlobalValues }) => {
       console.error("err");
       return updateGlobalValues(err);
     }
-    console.log(data, "data");
     updateGlobalValues(data);
   };
   const payWithVipps = async (amount) => {
@@ -39,7 +37,6 @@ const TokenStore = ({ globalLoading, user, updateGlobalValues }) => {
       console.error("err");
       return updateGlobalValues(err);
     }
-    console.log(data, "data");
     updateGlobalValues(data);
   };
 

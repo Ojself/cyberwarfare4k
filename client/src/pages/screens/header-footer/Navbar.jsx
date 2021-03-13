@@ -34,11 +34,6 @@ const NavbarComp = ({
   unreadAllianceComment,
   user,
 }) => {
-  console.log(
-    unreadForumComment,
-    unreadAllianceComment,
-    " unreadForumComment unreadAllianceComment,"
-  );
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
 
   const handleLogoutClick = () => {
