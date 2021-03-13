@@ -141,7 +141,9 @@ router.get('/profile', isLoggedIn, async (req, res) => {
 
   if (user && user.alliance) {
     const lastAllianceComment = await BetaForum.findOne({ alliance: user.alliance }).sort({ $natural: -1 }).lean();
-    unreadAllianceCommentExist = !lastAllianceComment.seenBy.some((id) => id.toString() === userId.toString());
+    if (lastAllianceComment) {
+      unreadAllianceCommentExist = !lastAllianceComment.seenBy.some((id) => id.toString() === userId.toString());
+    }
   }
   const lastGlobalComment = await BetaForum.findOne({ allianceForum: false }).sort({ $natural: -1 }).lean();
   const unreadForumCommentExist = !lastGlobalComment.seenBy.some((id) => id.toString() === userId.toString());
