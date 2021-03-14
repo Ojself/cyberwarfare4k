@@ -159,7 +159,7 @@ const commitCrimeCriterias = (userId, orgCrime) => {
     return 'something went wrong';
   }
 
-  if (orgCrime.roles.some((role) => role.owner && role.owner.toString() === userId.toString())) {
+  if (orgCrime.owner.toString() !== userId.toString()) {
     return 'Only the owner can carry out organized crimes';
   }
 
