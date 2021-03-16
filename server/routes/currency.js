@@ -35,7 +35,8 @@ router.post('/buy', isLoggedIn, async (req, res) => {
   const user = await User.findById(userId);
 
   if (user.account.flagged){
-    console.log("Headers: ",req.headers)
+    console.log("Headers: ", req.headers)
+    console.log("Name: ", user.name)
   }
 
   // const batteryCost = 5;

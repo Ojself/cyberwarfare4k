@@ -88,6 +88,7 @@ router.post('/login', async (req, res, next) => {
       userDoc.account.ip = null;
       if (req.user.account.flagged){
         console.log("Headers for flagged user: ",req.headers)
+        console.log("Name: ", userDoc.name)
         console.time("Flagged")
       }
       res.json(userDoc);
@@ -122,6 +123,7 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
 router.get('/logout', (req, res) => {
   if (req.user.account.flagged){
     console.log("Headers for flagged user: ", req.headers)
+    console.log("Name: ", user.name)
     console.timeEnd("Flagged")
   }
   req.logout();
