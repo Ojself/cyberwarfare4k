@@ -110,6 +110,11 @@ const userSchema = new Schema(
         type: String,
         default: '',
       },
+      /* For users under suspicion of cheating */
+      flagged: {
+        type: Boolean,
+        default: false
+      }
     },
     hackSkill: {
       CPU: {
