@@ -55,8 +55,7 @@ const BetaForum = ({ user, updateGlobalValues }) => {
     try {
       data = await api.likeBetaComment(id);
     } catch (err) {
-      updateGlobalValues(err);
-      return;
+      return updateGlobalValues(err);
     }
 
     const oldbetaForum = betaForum.slice();
@@ -68,6 +67,23 @@ const BetaForum = ({ user, updateGlobalValues }) => {
     }
     setBetaForum(oldbetaForum);
   };
+
+  const handleCommentDelete = async (commentId)=> {
+    let data;
+    try {
+      data = await api.deleteComment(commentId)
+    } catch (err){
+      return updateGlobalValues(err)
+    }
+    const oldbetaForum = betaForum.slice();
+    const commentIndex = oldbetaForum.findIndex((comment) => {
+      return comment._id === data.comment._id;
+    });
+    if (commentIndex !== -1) {
+      oldbetaForum.splice(commentIndex,1)
+    }
+    setBetaForum(oldbetaForum);
+  }
 
   const handleTextAreaChange = (e) => {
     setTextArea(e.target.value);
@@ -90,10 +106,12 @@ const BetaForum = ({ user, updateGlobalValues }) => {
             </Col>
           </Row>
         )}
-        {loading ? (
+        {loading || !user ? (
           <p>Loading..</p>
         ) : betaForum.length ? (
-          betaForum.map((c, i) => (
+          betaForum.map((c, i) => {
+            
+            return (
             <Row key={c._id}>
               <Col>
                 <Comment
@@ -106,12 +124,15 @@ const BetaForum = ({ user, updateGlobalValues }) => {
                   likes={JSON.stringify(c.likes)}
                   id={c._id}
                   i={i}
+                  commentOwnedByUser={user._id===c.creator._id}
                   hash={betaForum.length - i}
                   handleCommentLike={handleCommentLike}
+                  handleCommentDelete={handleCommentDelete}
                 />
               </Col>
             </Row>
-          ))
+          )}
+          )
         ) : (
           <p>No posts</p>
         )}

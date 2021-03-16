@@ -8,6 +8,10 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.3.3] - 2021-03-16
+
+- Add delete button for forum posts
+
 ## [0.3.2] - 2021-03-12
 
 - Fix prices for marketplace

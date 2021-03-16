@@ -142,6 +142,7 @@ router.post('/', async (req, res) => {
   });
 });
 
+/* Toggles comment like (thumbs up) */
 router.put('/:commentId', async (req, res) => {
   const userId = req.user._id;
   const { commentId } = req.params;
@@ -162,19 +163,29 @@ router.put('/:commentId', async (req, res) => {
     message: 'Comment liked/unliked!',
   });
 });
-/*
+
+const checkCommentDeleteCriteria = (comment, userId) => {
+  if (!comment || !userId){
+    return "Something went wrong.."
+  }
+  if (JSON.stringify(comment.creator) !== JSON.stringify(userId)){
+    return "You can only delete your own comment!"
+  }
+  return null
+}
+
 // deletes comment
-router.delete('/:id', async (req, res) => {
-  const { commentId } = req.body;
+router.delete('/:commentId', async (req, res) => {
+  const { commentId } = req.params
   // const { threadId,forumId } = req.body
   const userId = req.user._id;
   const comment = await BetaForum.findById(commentId);
 
-  const message = checkCommentDeleteCriteria(comment, userId);
-  if (message) {
+  const disallowed = checkCommentDeleteCriteria(comment, userId);
+  if (disallowed) {
     return res.status(400).json({
       success: false,
-      message,
+      message:disallowed,
     });
   }
   comment.deleteComment();
@@ -182,9 +193,10 @@ router.delete('/:id', async (req, res) => {
   return res.status(200).json({
     success: true,
     message: 'comment deleted',
+    comment
   });
 });
- */
+
 /* router.patch('/:id', async (req, res) => {
   const userId = req.user._id;
   const { commentId, newComment } = req.body;

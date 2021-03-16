@@ -12,6 +12,7 @@ import {
 
 const Comment = (props) => {
   const likes = JSON.parse(props.likes);
+  
 const borderColor =
   props.forumType === "global"
     ? "2px solid dimgrey"
@@ -48,7 +49,7 @@ const borderColor =
           <p>{props.comment}</p>
         </div>
 
-        <div className="commentInfoBottom">
+        <div className="bottomActions">
           <div className="likeInformation">
             <img
               onClick={() => props.handleCommentLike(props.id)}
@@ -80,9 +81,21 @@ const borderColor =
               </PopoverBody>
             </UncontrolledPopover>
           </div>
-          <div className="lastUpdate">
-            {props.edited && <p>Last updated: {props.updatedAt}</p>}
+          {props.commentOwnedByUser &&
+          
+          <div className="deleteButton">
+            <img
+              onClick={() => props.handleCommentDelete(props.id)}
+              style={{ cursor: "pointer" }}
+              src="../../forumIcons/white/icons8-trash-26.png"
+              alt="Like icon"
+              title={`${likes.length} likes`}
+            />
           </div>
+          }
+          {/* <div className="lastUpdate">
+            {props.edited && <p>Last updated: {props.updatedAt}</p>}
+          </div> */}
         </div>
       </div>
     </div>
