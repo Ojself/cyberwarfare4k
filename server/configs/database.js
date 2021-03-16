@@ -14,12 +14,12 @@ const cityPriceInterval = require('../cronjobs/cityPriceInterval');
 const earnBatteryInterval = require('../cronjobs/earnBatteryInterval');
 const lowerSupportPricesInterval = require('../cronjobs/lowerSupportPrices');
 
-const lowerSupportPricesIntervalJob = new CronJob('5 * 0 * * *', (() => {
+const lowerSupportPricesIntervalJob = new CronJob('5 0 0 * * *', (() => {
   console.info('lowerSupportPricesInterval started');
   // lowerSupportPricesInterval();
 }), null, true, timeZone);
 
-const earnBatteryIntervalJob = new CronJob('25 * 0 * * *', (() => {
+const earnBatteryIntervalJob = new CronJob('25 0 0 * * *', (() => {
   console.info('earnBatteryIntervalJob started');
   earnBatteryInterval(); // generates new megarpg and chessathor codes
 }), null, true, timeZone);
