@@ -54,6 +54,7 @@ const App = () => {
   const [unreadAllianceComment, setUnreadAllianceComment] = useState(false);
   const [globalMessage, setGlobalMessage] = useState({});
   const [loading, setLoading] = useState(true);
+  const [globalTimeoutId, setGlobalTimeoutId] = useState(0)
 
   const userIsAtStarPage = () => {
     const path = window.location.pathname;
@@ -88,6 +89,14 @@ const App = () => {
     fetchUserData();
   }, []);
 
+  const clearCurrentGlobalmessage = () => {
+    clearTimeout(globalTimeoutId)
+    setGlobalMessage({
+      message: "",
+      success: false,
+    });
+  }
+
   const updateGlobalValues = (
     data,
     renderMessage = true,
@@ -100,13 +109,16 @@ const App = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     if (renderMessage && data.message) {
+      clearCurrentGlobalmessage()
+      
       setGlobalMessage({
         message: data.message,
         success: data.success || false,
       });
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setGlobalMessage({ message: "", success: true });
       }, 5000);
+      setGlobalTimeoutId(timeoutId)
     }
   };
   return (

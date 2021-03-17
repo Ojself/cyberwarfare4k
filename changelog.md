@@ -8,6 +8,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+## [0.3.4] - 2021-03-17
+
+- Add copy bitcoins when clicking it in status bar
+- Add cronjob for lowering price of bg every midnight
+- Add clearing of global message when multilpe messages appears
+
 ## [0.3.3] - 2021-03-16
 
 - Add delete button for forum posts

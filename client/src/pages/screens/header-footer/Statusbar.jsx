@@ -3,10 +3,22 @@ import { Progress, Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./statusbar.scss";
 
+
 const StatusBar = ({ loading, user }) => {
   const [expTooltip, setExpTooltip] = useState(false);
+  const [activeBitcoins, setActiveBitcoins] = useState(false);
   const toggleExpTooltip = () => setExpTooltip(!expTooltip);
   const visibleStatusBar = !loading && !!user;
+  const blinkBitcoins = () => {
+    setActiveBitcoins(true)
+    setTimeout(() => {
+      setActiveBitcoins(false)
+    }, 250);
+  }
+  const copyToClipBoard = (value) => {
+    navigator.clipboard.writeText(value)
+    blinkBitcoins()
+  }
   return (
     <div className="status-bar">
       {visibleStatusBar && (
@@ -44,7 +56,7 @@ const StatusBar = ({ loading, user }) => {
             </span>
             {user.playerStats.battery}%
           </li>
-          <li className="list-inline-item ml-2">
+          <li style={{cursor: "pointer", color: activeBitcoins? "lime":"white"}} onClick={() => copyToClipBoard(Math.floor(user.playerStats.bitCoins))} className="list-inline-item ml-2">
             <span className="bitcoinColor">&#8383;</span>
 
             {Math.floor(user.playerStats.bitCoins)}
