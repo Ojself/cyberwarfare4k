@@ -86,10 +86,10 @@ router.post('/login', async (req, res, next) => {
     req.logIn(userDoc, () => {
       userDoc.account.password = null;
       userDoc.account.ip = null;
-      if (req.user.account.flagged){
-        console.log("Headers for flagged user: ",req.headers)
-        console.log("Name: ", userDoc.name)
-        console.time("Flagged")
+      if (req.user.account.flagged) {
+        console.log('Headers for flagged user: ', req.headers);
+        console.log('Name: ', userDoc.name);
+        console.time('Flagged');
       }
       res.json(userDoc);
     });
@@ -121,6 +121,14 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
+<<<<<<< HEAD
+=======
+  if (req.user.account.flagged) {
+    console.log('Headers for flagged user: ', req.headers);
+    console.log('Name: ', req.user.name);
+    console.timeEnd('Flagged');
+  }
+>>>>>>> fb121b768bb0930d1b48528e5ce4f7763a1e31b0
   req.logout();
   res.json({ message: 'You are out!' });
 });
