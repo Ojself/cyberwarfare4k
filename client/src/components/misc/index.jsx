@@ -13,7 +13,6 @@ const ClickAndCopy = ({ elementInnerText }) => {
     navigator.clipboard.writeText(value);
     blinkBitcoins();
   };
-
   const element = (
     <span
       style={{

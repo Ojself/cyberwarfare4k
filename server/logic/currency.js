@@ -13,7 +13,7 @@ const soldRouteCriterias = (user, currency, amount) => {
 };
 
 // Sees if everything is in order to buy currency
-const buyRouteCriterias = (user, currency, amount) => {
+const buyRouteCriterias = (user, currency, amount, batteryCost) => {
   if (!currency) {
     return "Currency doesn't exist";
   }
@@ -22,6 +22,9 @@ const buyRouteCriterias = (user, currency, amount) => {
   }
   if (!checkCurrencyfund(user, currency, amount)) {
     return 'Insufficent funds';
+  }
+  if (user.playerStats.battery < batteryCost){
+    return 'Insufficent battery'
   }
   if (checkCurrencyMarketCap(user, currency, amount)) {
     return `You can't buy OR hold more than 20% of the marketshare of ${currency.name}`;

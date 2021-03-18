@@ -5,12 +5,16 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 ## In Development
 
 - More alliance options
+- Funeral layout
 - API tests
-- Easier transactions in crypto currency
 
 ## [0.3.5] - 2021-03-18
 
 - Price adjustments for organized crime. 10 -> 15
+- OC ui changes, better overview of battey cost
+- Crypto currency purchase cost 2 battery
+- Crimes cost more battery, 3 -> 4
+- Easier to copy/paste values. Clicking amount in ledger, statusbar and cryptocurrency will copy. double clicking input will paste
 
 ## [0.3.4] - 2021-03-17
 

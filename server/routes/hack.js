@@ -123,7 +123,7 @@ const generateUserFeedback = (result) => {
 router.post('/crimes', async (req, res) => {
   const userId = req.user._id;
   const { crimeId } = req.body;
-  const batteryCost = 3;
+  const batteryCost = 4;
   const now = Date.now();
   const user = await User.findById(userId);
   const crime = await Crime.findById(crimeId);

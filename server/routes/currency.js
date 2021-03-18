@@ -34,18 +34,15 @@ router.post('/buy', isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = await User.findById(userId);
 
-  if (user.account.flagged){
-    console.log("Headers: ", req.headers)
-    console.log("Name: ", user.name)
-  }
-
-  // const batteryCost = 5;
+  const currentHour = new Date().getHours()
+  /* User pays 2 battery to be able to do purchases the current hour */
+  const batteryCost = currentHour === user.playerStats.currencyLastPurchaseHour ? 0 : 2
   const { name, amount } = req.body;
 
   const currency = await Currency.findOne({ name });
   const totalPrice = currency.price * amount;
 
-  const message = buyRouteCriterias(user, currency, amount);
+  const message = buyRouteCriterias(user, currency, amount,batteryCost);
   if (message) {
     return res.status(400).json({
       success: false,
@@ -53,7 +50,7 @@ router.post('/buy', isLoggedIn, async (req, res) => {
     });
   }
 
-  user.purchaseCurrency(currency, amount, totalPrice);
+  user.purchaseCurrency(currency, amount, totalPrice, currentHour);
   currency.purchaseHandle(amount, user._id);
   await currency.save();
 

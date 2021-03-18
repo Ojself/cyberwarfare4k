@@ -64,7 +64,10 @@ const OrgCrimeCard = ({ crime, claimCrime }) => {
 
           {/* <CardText>{crime.description}</CardText> */}
           <Button color="secondary" onClick={() => claimCrime(crime._id)}>
-            Claim
+            Claim   <span role="img" aria-label="battery">
+              &#9889; 
+            </span>
+            15
           </Button>
         </CardBody>
       </Card>

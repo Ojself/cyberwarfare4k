@@ -91,6 +91,11 @@ export default {
         <del>(except at night)</del> and is the same for every city.
         <br />
         <br />
+        Upon purchase, you use <b>2</b> battery <span role="img" aria-label="battery">
+          &#9889;
+        </span> for the hour you are currently in. Which means that if you buy currencies 7:14PM, you use 2 battery which allows you to buy as much crypto as you'd like until 7:59PM without using any more battery.
+        <br />
+        <br />
         All crypto currencies held by a hacker that are shutdown will be
         transfered to the attacker.
       </>

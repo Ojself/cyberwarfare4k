@@ -68,6 +68,11 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
     setLedgerState({ ...ledgerState, selectedOption });
   };
 
+  const handleDoubleClick = async () => {
+    const clipboardValue = await navigator.clipboard.readText()
+    setLedgerState({ ...ledgerState, depositWithdrawAmount: clipboardValue });
+  }
+
   const handleTransferAmountChange = (e) => {
     setLedgerState({ ...ledgerState, transferAmount: e.target.value });
   };
@@ -191,6 +196,7 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                     <Input
                       type="number"
                       min={0}
+                      onDoubleClick={()=> handleDoubleClick()}
                       step="1000"
                       placeholder="Amount"
                       value={ledgerState.depositWithdrawAmount}

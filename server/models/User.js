@@ -183,6 +183,7 @@ const userSchema = new Schema(
         statPointsUsed: { type: Number, default: 0 },
       },
       statPointResetPrice: { type: Number, default: 0 },
+      currencyLastPurchaseHour: {type: Number},
       maxFirewall: {
         type: Number,
         default: 100,
@@ -530,8 +531,10 @@ userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
   totalPrice,
+  currentHour
 ) {
   this.bitCoinDrain(totalPrice);
+  this.playerStats.currencyLastPurchaseHour = currentHour
   this.fightInformation.currencyPurchases += 1;
   this.currencies[currency.name] += parseInt(amount, 10);
 };

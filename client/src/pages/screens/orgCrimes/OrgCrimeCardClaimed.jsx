@@ -16,8 +16,18 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
   const [descriptionTooltip, setDescriptionTooltip] = useState(false);
 
   const toggleDesc = () => setDescriptionTooltip(!descriptionTooltip);
+  
+  const userIsAttendingCrime = user && !!crime.roles.find(role=> role.owner && role.owner._id === user._id)
+  const batteryCostOverview = (
+    <>
+      <span role="img" aria-label="battery">
+        &#9889;   
+      </span>
+      5
+    </>
+  );
   return (
-    <div>
+    <div >
       <Card style={{ width: "18rem" }}>
         <CardImg
           top
@@ -52,18 +62,23 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
           </Tooltip>
           <CardText className="d-flex flex-column w-100">
             {crime.roles.map((role) => {
+              
               const hackerName = role.owner ? (
                 <strong>{role.owner.name}</strong>
               ) : (
+                <div>
                 <span
                   id="org-crime-join"
                   onClick={() => claimRole(crime._id, role.roleName)}
                 >
                   Join
                 </span>
+                {!userIsAttendingCrime && batteryCostOverview}
+                </div>
+                
               );
               return (
-                <div className="d-flex flex-row w-100">
+                <div key={role._id} className="d-flex flex-row w-100">
                   <Badge
                     style={{
                       width: "60%",
@@ -88,7 +103,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
             })}
           </CardText>
           <Button
-            /* disabled={user._id !== crime.owner._id} */
+            disabled={user && user._id !== crime.owner._id}
             color="outline-danger"
             onClick={() => commitOrgCrime(crime._id)}
           >

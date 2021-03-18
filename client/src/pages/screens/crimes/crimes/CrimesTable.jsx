@@ -25,7 +25,7 @@ const CrimesTable = ({ crimes, handleClick, type }) => {
               <span role="img" aria-label="battery">
                 &#9889;
               </span>
-              3
+              4
             </th>
           </tr>
         </thead>

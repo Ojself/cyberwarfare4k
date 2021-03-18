@@ -118,6 +118,14 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     });
   };
 
+  const handleDoubleClick = async currencyName => {
+    const clipboardValue = await navigator.clipboard.readText()
+    setCryptoState({
+      ...cryptoState,
+      [currencyName]: clipboardValue
+    });    
+  }
+
   const allCharts = cryptoState.massagedCurrency && (
     <>
       <Row>
@@ -205,6 +213,8 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     </>
   );
 
+ 
+
   const actionButtons = (
     <tr className="" style={{ height: "10vh", backgroundColor: "#696b78" }}>
       <td colspan="4" style="width:100%" style={{ verticalAlign: "middle" }}>
@@ -239,6 +249,16 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       </td>
     </tr>
   );
+  
+  const time = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Oslo",
+    hour12: false,
+  });
+
+  const batteryCost = user && user.playerStats.currencyLastPurchaseHour !== time.slice(11,13)*1 && (<span role="img" aria-label="battery">
+  &#9889; 2
+</span>)
+
 
   const cryptoTable = cryptoState.currencies.length && (
     <Table className="crypto-table mt-4" size="sm" responsive dark striped>
@@ -251,7 +271,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
           <th>Available</th>
           <th>You have</th>
           <th className="display-none-when-mobile">Last purchased by:</th>
-          <th>Amount</th>
+          <th>Amount {batteryCost}</th>
         </tr>
       </thead>
       <tbody>
@@ -301,6 +321,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     min={0}
                     placeholder={0}
                     type="number"
+                    onDoubleClick={()=> handleDoubleClick(cu.name)}
                     name={cu.name}
                     value={cryptoState[cu.name]}
                     onChange={handleInputChange}
