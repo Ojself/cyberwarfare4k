@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-const claimOrgCrimeCriterias = (user, orgCrime, batteryCost, now) => {
+const claimOrgCrimeCriterias = (user, orgCrime, batteryCost, now, allCrimes) => {
   if (!user || !orgCrime) {
     return 'Something went wrong';
   }
@@ -49,6 +49,16 @@ const claimOrgCrimeCriterias = (user, orgCrime, batteryCost, now) => {
   if (!user.alliance) {
     return 'You need to be in an alliance to do organized crimes';
   }
+
+  const allianceAlreadyClaimedCrime = allCrimes.find((crime) => {
+    if (!crime.ownerAlliance || !user.alliance) return false;
+    return crime.ownerAlliance.toString() === user.alliance.toString();
+  });
+
+  if (allianceAlreadyClaimedCrime) {
+    return `Your alliance already claimed ${allianceAlreadyClaimedCrime.name}`;
+  }
+
   if (orgCrime.owner) {
     return 'This crime is already claimed by someone';
   }
@@ -67,10 +77,12 @@ router.put('/', async (req, res) => {
   const userId = req.user._id;
   const { crimeId } = req.body;
   const user = await User.findById(userId);
-  const orgCrime = await OrgCrime.findById(crimeId);
-  const batteryCost = 10;
+  const orgCrimes = await OrgCrime.find();
+  const orgCrime = orgCrimes.find((crime) => crime._id.toString() === crimeId);
 
-  const disallowed = claimOrgCrimeCriterias(user, orgCrime, batteryCost, now);
+  const batteryCost = 15;
+
+  const disallowed = claimOrgCrimeCriterias(user, orgCrime, batteryCost, now, orgCrimes);
 
   if (disallowed) {
     return res.status(403).json({
