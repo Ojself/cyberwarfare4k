@@ -8,9 +8,17 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - API tests
 - Easier transactions in crypto currency
 
+<<<<<<< HEAD
 ## [0.3.4] - 2021-03-18
 
 - Price adjustments for organized crime. 10 -> 15
+=======
+## [0.3.4] - 2021-03-17
+
+- Add copy bitcoins when clicking it in status bar
+- Add cronjob for lowering price of bg every midnight
+- Add clearing of global message when multilpe messages appears
+>>>>>>> e15f49fc3d8f19076ccc7f9f335a6ef1a2fa9a69
 
 ## [0.3.3] - 2021-03-16
 
