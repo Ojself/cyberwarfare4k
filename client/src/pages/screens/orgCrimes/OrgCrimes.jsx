@@ -67,8 +67,8 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
       </div>
 
       <Container>
+        {claimedOwnOrgCrimes.length ? <h4>Claimed</h4> : null}
         <Row>
-          {claimedOwnOrgCrimes.length ? <h4>Claimed</h4> : null}
           {!loading &&
             claimedOwnOrgCrimes.map((crime) => {
               return (

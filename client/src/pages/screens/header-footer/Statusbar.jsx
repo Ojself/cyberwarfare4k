@@ -2,23 +2,13 @@ import React, { useState } from "react";
 import { Progress, Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./statusbar.scss";
-
+import ClickAndCopy from "../../../components/misc";
 
 const StatusBar = ({ loading, user }) => {
   const [expTooltip, setExpTooltip] = useState(false);
-  const [activeBitcoins, setActiveBitcoins] = useState(false);
   const toggleExpTooltip = () => setExpTooltip(!expTooltip);
   const visibleStatusBar = !loading && !!user;
-  const blinkBitcoins = () => {
-    setActiveBitcoins(true)
-    setTimeout(() => {
-      setActiveBitcoins(false)
-    }, 250);
-  }
-  const copyToClipBoard = (value) => {
-    navigator.clipboard.writeText(value)
-    blinkBitcoins()
-  }
+
   return (
     <div className="status-bar">
       {visibleStatusBar && (
@@ -56,10 +46,22 @@ const StatusBar = ({ loading, user }) => {
             </span>
             {user.playerStats.battery}%
           </li>
-          <li style={{cursor: "pointer", color: activeBitcoins? "lime":"white"}} onClick={() => copyToClipBoard(Math.floor(user.playerStats.bitCoins))} className="list-inline-item ml-2">
+          <li className="list-inline-item ml-2">
             <span className="bitcoinColor">&#8383;</span>
-
-            {Math.floor(user.playerStats.bitCoins)}
+            {/* <span
+              style={{
+                cursor: "pointer",
+                color: activeBitcoins ? "lime" : "white",
+              }}
+              onClick={() =>
+                copyToClipBoard(Math.floor(user.playerStats.bitCoins))
+              }
+            >
+              
+            </span> */}
+            <ClickAndCopy
+              elementInnerText={Math.floor(user.playerStats.bitCoins)}
+            />
           </li>
           <li className="list-inline-item ml-2 display-none-when-mobile">
             {user.playerStats.rankName}

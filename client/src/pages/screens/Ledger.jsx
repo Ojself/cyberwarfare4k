@@ -3,6 +3,8 @@ import api from "../../api";
 import classnames from "classnames";
 import Select from "react-select";
 
+import ClickAndCopy from "../../components/misc";
+
 import Tutorial from "./_molecules/Tutorial";
 
 import {
@@ -164,11 +166,23 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                   {/* <CardTitle>0% admission fee </CardTitle> */}
                   <CardText>
                     In ledger: <span className="bitcoinColor">&#8383;</span>
-                    {globalLoading ? 0 : Math.floor(user.playerStats.ledger)}
+                    {globalLoading ? (
+                      0
+                    ) : (
+                      <ClickAndCopy
+                        elementInnerText={Math.floor(user.playerStats.ledger)}
+                      />
+                    )}
                   </CardText>
                   <CardText>
                     On hand: <span className="bitcoinColor">&#8383;</span>
-                    {globalLoading ? 0 : Math.floor(user.playerStats.bitCoins)}
+                    {globalLoading ? (
+                      0
+                    ) : (
+                      <ClickAndCopy
+                        elementInnerText={Math.floor(user.playerStats.bitCoins)}
+                      />
+                    )}
                   </CardText>
                   <InputGroup>
                     <InputGroupAddon addonType="prepend">

@@ -17,6 +17,8 @@ import KFormatter from "../_helpers/KFormatter";
 import CryptoCurrenciesChart from "./CryptoCurrencies";
 import api from "../../../api";
 
+import ClickAndCopy from "../../../components/misc";
+
 // todo: rename user and loading
 const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
   const [cryptoState, setCryptoState] = useState({
@@ -202,7 +204,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       </Row>
     </>
   );
- 
+
   const actionButtons = (
     <tr className="" style={{ height: "10vh", backgroundColor: "#696b78" }}>
       <td colspan="4" style="width:100%" style={{ verticalAlign: "middle" }}>
@@ -273,7 +275,13 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                 {changeFromLastHour.toFixed(2)}%
               </td>
               <td>{KFormatter(Math.floor(cu.available))}</td>
-              <td>{globalLoading ? 0 : user.currencies[cu.name]}</td>
+              <td>
+                {globalLoading ? (
+                  0
+                ) : (
+                  <ClickAndCopy elementInnerText={user.currencies[cu.name]} />
+                )}
+              </td>
               {cu.lastPurchasedBy ? (
                 <td className="display-none-when-mobile">
                   <Link
@@ -301,7 +309,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     }
                   />
 
-                    <InputGroupAddon
+                  <InputGroupAddon
                     className="d-flex flex-row"
                     addonType="append"
                   >
@@ -350,7 +358,7 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       {!cryptoState.loading && (
         <>
           <Row className="d-flex justify-content-center mt-4">
-            <Col  lg="10" md="12">
+            <Col lg="10" md="12">
               {cryptoTable}
             </Col>
           </Row>
