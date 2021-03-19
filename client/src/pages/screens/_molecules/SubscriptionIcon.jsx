@@ -15,13 +15,17 @@ const SubscriptionIcon = ({ subscription }) => {
   }
   return (
     <>
-      <span
+      <a
         id={"tooltipDesc-" + subIcons[subscription]}
         role="img"
         aria-label="subscription-icon"
+        style={{ cursor: "pointer" }}
+        target="_blank"
+        rel="noopener noreferrer"
+        href={"https://www.patreon.com/cyberhackerwarfare4000?fan_landing=true"}
       >
         {subIcons[subscription]}
-      </span>
+      </a>
       <Tooltip
         placement="top"
         isOpen={subIconToolTip}

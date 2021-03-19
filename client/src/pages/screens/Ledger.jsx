@@ -8,6 +8,11 @@ import ClickAndCopy from "../../components/misc";
 import Tutorial from "./_molecules/Tutorial";
 
 import {
+  Button,
+  Card,
+  CardTitle,
+  CardText,
+  Col,
   InputGroup,
   InputGroupAddon,
   Input,
@@ -16,12 +21,8 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
   Row,
-  Col,
+  InputGroupText,
 } from "reactstrap";
 
 const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
@@ -68,10 +69,10 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
     setLedgerState({ ...ledgerState, selectedOption });
   };
 
-  const handleDoubleClick = async () => {
-    const clipboardValue = await navigator.clipboard.readText()
+  const handlePasteToInput = async () => {
+    const clipboardValue = await navigator.clipboard.readText();
     setLedgerState({ ...ledgerState, depositWithdrawAmount: clipboardValue });
-  }
+  };
 
   const handleTransferAmountChange = (e) => {
     setLedgerState({ ...ledgerState, transferAmount: e.target.value });
@@ -196,12 +197,21 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                     <Input
                       type="number"
                       min={0}
-                      onDoubleClick={()=> handleDoubleClick()}
                       step="1000"
                       placeholder="Amount"
                       value={ledgerState.depositWithdrawAmount}
                       onChange={handleDespoitAmountChange}
                     />
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i
+                          onClick={() => handlePasteToInput()}
+                          className="fas fa-paste"
+                          aria-hidden="true"
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
                   </InputGroup>
                   <Button
                     type="submit"
@@ -263,8 +273,7 @@ const Ledger = ({ user, globalLoading, updateGlobalValues }) => {
                     onClick={() => {
                       handleTransfer(
                         ledgerState.transferAmount,
-                        ledgerState.selectedOption
-                          .value /* todo, value or _id? */
+                        ledgerState.selectedOption.value
                       );
                     }}
                   >

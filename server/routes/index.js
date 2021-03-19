@@ -45,22 +45,6 @@ const setupPlayer = async (user, name, city, avatar) => {
   await city.save();
 };
 
-/* function ensureIsSetup(req, res, next) {
-  if (req.user.account.status === 'Active') {
-    return next();
-  }
-  return res.redirect('/');
-} */
-
-// isSetup === true?
-/* function ensureIsSetup(req, res, next) {
-  if (req.user.isSetup()) {
-    return next();
-  } else {
-    res.redirect("/");
-  }
-} */
-
 // @POST
 // PRIVATE
 // User setup. User is being sent here in order to put in name, set stats and city
@@ -203,7 +187,7 @@ router.get('/opponents/:id', async (req, res) => {
   );
 
   /* Surely there's a nicer way to do this. */
-  nullifyValues(opponentInformation.opponent.account, ['avatar']);
+  nullifyValues(opponentInformation.opponent.account, ['avatar', 'subscription']);
   opponentInformation.opponent.hackSkill = null;
   opponentInformation.opponent.crimeSkill = null;
   opponentInformation.opponent.currencies = null;
@@ -404,22 +388,5 @@ router.get('/user-setup-status', async (req, res) => {
     status,
   });
 });
-
-/* router.post('/kill/', async (req, res) => {
-  const { opponentId } = req.body;
-  const opponent = await User.findById(opponentId);
-  try {
-    await opponent.die();
-  } catch (err) {
-    console.err('error', err);
-  }
-  const newOpponent = await opponent.save();
-
-  res.status(200).json({
-    success: true,
-    message: 'hacker killed..',
-    newOpponent,
-  });
-}); */
 
 module.exports = router;

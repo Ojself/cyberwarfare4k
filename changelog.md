@@ -8,6 +8,14 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Funeral layout
 - API tests
 
+## [0.3.6] - 2021-03-19
+
+- Bug fix: Shutdown stats are now counted for when shutting down players
+- Bug fix: Pasting from clipboard works by clicking the icon rather than double clicking input field
+- Wording fix: Naming of analyst -> Analyst
+- Add: Trying to claim more than one crime will result in a scroll-to-top to see the error message
+- Add: Supporter emoji for hacker profile
+
 ## [0.3.5] - 2021-03-18
 
 - Price adjustments for organized crime. 10 -> 15

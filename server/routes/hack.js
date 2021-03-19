@@ -37,7 +37,7 @@ const getHackFeedback = (finalResult, opponentName) => {
   }
 
   if (finalResult.playerGains.exp) {
-    message += `-- ${finalResult.playerGains.exp} XP! `;
+    message += ` -- ${finalResult.playerGains.exp} XP! `;
   }
   return { message, notification };
 };

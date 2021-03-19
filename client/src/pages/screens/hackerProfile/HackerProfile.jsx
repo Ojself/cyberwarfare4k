@@ -105,9 +105,9 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
       bountyInput: 0,
     });
   };
-
+  console.log(opponentState.opponent, "opponentState.opponent.");
   const playerName = !opponentState.loading && (
-    <div className="">
+    <div>
       <h3>{opponentState.opponent.name}</h3>
     </div>
   );
@@ -180,7 +180,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
           <SubscriptionIcon
             subscription={opponentState.opponent.account.subscription}
           />
-          {opponentState.opponent.playerStats.rankName}{" "}
+          {opponentState.opponent.playerStats.rankName}
         </ListGroupItem>
 
         {opponentState.ranking.online ? (

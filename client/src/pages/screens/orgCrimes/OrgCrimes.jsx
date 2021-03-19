@@ -38,9 +38,9 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
     let data;
     try {
       data = await api.claimOrgCrimeRole(crimeId, roleName);
-    } catch (e) {
-      console.error("Error: ", e);
-      return updateGlobalValues(e);
+    } catch (err) {
+      console.error("Error: ", err);
+      return updateGlobalValues(err);
     }
     updateGlobalValues(data, false);
     setOrgCrimes(data.orgCrimes);
@@ -50,9 +50,9 @@ function orgCrimes({ user, updateGlobalValues, setUnreadNotification }) {
     let data;
     try {
       data = await api.claimOrgCrime(crimeId);
-    } catch (e) {
-      console.error("Error: ", e);
-      return updateGlobalValues(e);
+    } catch (err) {
+      console.error("Error: ", err);
+      return updateGlobalValues(err, true, true);
     }
     updateGlobalValues(data);
     setOrgCrimes(data.orgCrimes);

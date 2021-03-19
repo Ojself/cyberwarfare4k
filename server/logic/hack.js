@@ -151,7 +151,7 @@ const attackRecursiveBattle = (result) => {
         damageDealt = 1;
       }
 
-      // check if opponent is dead
+      newResult.damageDealt = damageDealt;
       newResult.victimDead = newResult.opponent.playerStats.currentFirewall - newResult.damageDealt <= 0;
 
       if (newResult.victimDead) {
