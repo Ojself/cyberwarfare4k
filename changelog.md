@@ -10,6 +10,8 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 
 ## [0.3.6] - 2021-03-19
 
+- Bug fix: bounty is now given to player when opponent is shutdown
+- Remove decimals from top alliance ladder
 - Bug fix: Shutdown stats are now counted for when shutting down players
 - Bug fix: Pasting from clipboard works by clicking the icon rather than double clicking input field
 - Wording fix: Naming of analyst -> Analyst

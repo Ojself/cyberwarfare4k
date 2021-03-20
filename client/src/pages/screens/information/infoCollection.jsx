@@ -87,8 +87,8 @@ export default {
       <>
         Arguably the best way to get rich fast. The rules are simple, buy low
         and sell high. Be careful, though, as your name will show as most recent
-        buyer after purchasing. Prices changes every hour{" "}
-        <del>(except at night)</del> and is the same for every city.
+        buyer after purchasing. Prices change every hour{" "}
+        <del>(except at night)</del> and are the same for every city.
         <br />
         <br />
         Upon purchase, you use <b>2</b> battery <span role="img" aria-label="battery">

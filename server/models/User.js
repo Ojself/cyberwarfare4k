@@ -394,17 +394,6 @@ userSchema.methods.resetStatPoitns = function () {
     this.playerStats.statPointsHistory[key] = 0;
   });
 
-  // This snippet resets the rank as
-
-  /* let newRank = null;
-  for (let i = 0; i < ranks.length; i += 1) {
-    if (ranks[i].expToNewRank < this.playerStats.exp) {
-      newRank = ranks[i];
-    }
-  }
-  this.playerStats.rank = newRank.rank;
-  this.playerStats.rankName = newRank.name;
-  this.playerStats.expToLevel = newRank.expToNewRank; */
 };
 
 userSchema.methods.batteryDrain = function (battery) {
@@ -609,14 +598,13 @@ userSchema.methods.handleAttack = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
   this.giveExp(result.playerGains.exp);
   // steals all the currencies when opponent is dead
-  console.log(result.victimDead, 'result.victimDead');
   if (result.victimDead) {
-    console.log('if!');
     Object.keys(result.opponent.currencies).forEach((currency) => {
       if (!currency.startsWith('$')) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
       }
     });
+    this.bitcoinGain(result.opponent.playerStats.bounty)
     this.fightInformation.shutdowns += 1;
   }
   this.fightInformation.attacksInitiated += 1;

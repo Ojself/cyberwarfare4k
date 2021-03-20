@@ -257,7 +257,7 @@ const calculateNetworth = (user, dbCurrencies) => {
   dbCurrencies.forEach((currency) => {
     networth += (user.currencies[currency.name] || 0) * currency.price;
   });
-  return networth;
+  return Math.round(networth);
 };
 
 /**

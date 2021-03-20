@@ -371,7 +371,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
             </tr>
           );
         })}
-        {/* {actionButtons} */}
       </tbody>
     </Table>
   );
