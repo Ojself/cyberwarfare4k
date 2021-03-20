@@ -113,8 +113,8 @@ const userSchema = new Schema(
       /* For users under suspicion of cheating */
       flagged: {
         type: Boolean,
-        default: false
-      }
+        default: false,
+      },
     },
     hackSkill: {
       CPU: {
@@ -183,7 +183,7 @@ const userSchema = new Schema(
         statPointsUsed: { type: Number, default: 0 },
       },
       statPointResetPrice: { type: Number, default: 0 },
-      currencyLastPurchaseHour: {type: Number},
+      currencyLastPurchaseHour: { type: Number },
       maxFirewall: {
         type: Number,
         default: 100,
@@ -531,10 +531,10 @@ userSchema.methods.purchaseCurrency = function (
   currency,
   amount,
   totalPrice,
-  currentHour
+  currentHour,
 ) {
   this.bitCoinDrain(totalPrice);
-  this.playerStats.currencyLastPurchaseHour = currentHour
+  this.playerStats.currencyLastPurchaseHour = currentHour;
   this.fightInformation.currencyPurchases += 1;
   this.currencies[currency.name] += parseInt(amount, 10);
 };
@@ -609,7 +609,9 @@ userSchema.methods.handleAttack = function (result) {
   this.batteryDrain(result.playerGains.batteryCost);
   this.giveExp(result.playerGains.exp);
   // steals all the currencies when opponent is dead
+  console.log(result.victimDead, 'result.victimDead');
   if (result.victimDead) {
+    console.log('if!');
     Object.keys(result.opponent.currencies).forEach((currency) => {
       if (!currency.startsWith('$')) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);

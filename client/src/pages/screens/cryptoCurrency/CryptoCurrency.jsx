@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./cryptoStyle.scss";
 import {
-  Container,
+  Button,
   Col,
-  Row,
-  UncontrolledTooltip,
+  Container,
+  Input,
   InputGroup,
   InputGroupAddon,
-  Input,
-  Button,
+  InputGroupText,
+  Row,
   Table,
+  UncontrolledTooltip,
 } from "reactstrap";
 import Tutorial from "../_molecules/Tutorial";
 import KFormatter from "../_helpers/KFormatter";
@@ -118,13 +119,13 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     });
   };
 
-  const handleDoubleClick = async currencyName => {
-    const clipboardValue = await navigator.clipboard.readText()
+  const handlePasteToInput = async (currencyName) => {
+    const clipboardValue = await navigator.clipboard.readText();
     setCryptoState({
       ...cryptoState,
-      [currencyName]: clipboardValue
-    });    
-  }
+      [currencyName]: clipboardValue,
+    });
+  };
 
   const allCharts = cryptoState.massagedCurrency && (
     <>
@@ -213,8 +214,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
     </>
   );
 
- 
-
   const actionButtons = (
     <tr className="" style={{ height: "10vh", backgroundColor: "#696b78" }}>
       <td colspan="4" style="width:100%" style={{ verticalAlign: "middle" }}>
@@ -249,16 +248,18 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
       </td>
     </tr>
   );
-  
+
   const time = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Oslo",
     hour12: false,
   });
 
-  const batteryCost = user && user.playerStats.currencyLastPurchaseHour !== time.slice(11,13)*1 && (<span role="img" aria-label="battery">
-  &#9889; 2
-</span>)
-
+  const batteryCost = user &&
+    user.playerStats.currencyLastPurchaseHour !== time.slice(11, 13) * 1 && (
+      <span role="img" aria-label="battery">
+        &#9889; 2
+      </span>
+    );
 
   const cryptoTable = cryptoState.currencies.length && (
     <Table className="crypto-table mt-4" size="sm" responsive dark striped>
@@ -321,7 +322,6 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     min={0}
                     placeholder={0}
                     type="number"
-                    onDoubleClick={()=> handleDoubleClick(cu.name)}
                     name={cu.name}
                     value={cryptoState[cu.name]}
                     onChange={handleInputChange}
@@ -334,6 +334,14 @@ const CryptoCurrencies = ({ globalLoading, user, updateGlobalValues }) => {
                     className="d-flex flex-row"
                     addonType="append"
                   >
+                    <InputGroupText>
+                      <i
+                        onClick={() => handlePasteToInput(cu.name)}
+                        className="fas fa-paste"
+                        aria-hidden="true"
+                        style={{ cursor: "pointer" }}
+                      ></i>
+                    </InputGroupText>
                     <Button
                       name={cu.name}
                       onClick={(e) => handleBuy(e)}

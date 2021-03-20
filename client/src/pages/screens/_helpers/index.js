@@ -29,8 +29,8 @@ const getCorrectAllianceRoleName = (role) => {
     case "boss":
       output = "Boss";
       break;
-    case "analyst":
-      output = "Analyst";
+    case "Analyst":
+      output = "analyst";
       break;
     case "cto":
       output = "CTO";
@@ -50,8 +50,8 @@ const getCorrectAllianceRoleName = (role) => {
     case "Boss":
       output = "boss";
       break;
-    case "Analyst":
-      output = "analyst";
+    case "analyst":
+      output = "Analyst";
       break;
     case "CTO":
       output = "cto";

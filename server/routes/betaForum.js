@@ -165,18 +165,18 @@ router.put('/:commentId', async (req, res) => {
 });
 
 const checkCommentDeleteCriteria = (comment, userId) => {
-  if (!comment || !userId){
-    return "Something went wrong.."
+  if (!comment || !userId) {
+    return 'Something went wrong..';
   }
-  if (JSON.stringify(comment.creator) !== JSON.stringify(userId)){
-    return "You can only delete your own comment!"
+  if (JSON.stringify(comment.creator) !== JSON.stringify(userId)) {
+    return 'You can only delete your own comment!';
   }
-  return null
-}
+  return null;
+};
 
 // deletes comment
 router.delete('/:commentId', async (req, res) => {
-  const { commentId } = req.params
+  const { commentId } = req.params;
   // const { threadId,forumId } = req.body
   const userId = req.user._id;
   const comment = await BetaForum.findById(commentId);
@@ -185,7 +185,7 @@ router.delete('/:commentId', async (req, res) => {
   if (disallowed) {
     return res.status(400).json({
       success: false,
-      message:disallowed,
+      message: disallowed,
     });
   }
   comment.deleteComment();
@@ -193,7 +193,7 @@ router.delete('/:commentId', async (req, res) => {
   return res.status(200).json({
     success: true,
     message: 'comment deleted',
-    comment
+    comment,
   });
 });
 
