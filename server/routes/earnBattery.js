@@ -59,7 +59,6 @@ router.get('/', async (req, res) => {
 // this is being called from outside
 router.post('/redeem', async (req, res) => {
   const { code } = req.body;
-  console.info(req.body, '/redeem ');
   if (req.body.payload) {
     // check headers
     return handleGithubEvent(req.body.payload);

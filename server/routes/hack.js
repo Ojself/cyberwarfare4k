@@ -51,16 +51,8 @@ const Crime = require('../models/Crime');
 
 router.post('/pettyCrime', async (req, res) => {
   const userId = req.user._id;
-  let user;
-  try {
-    user = await User.findById(userId).populate('playerStats.city', 'name');
-  } catch (e) {
-    console.error('error: ', e);
-    res.status(400).json({
-      success: false,
-      message: JSON.stringify(e),
-    });
-  }
+  const user = await User.findById(userId).populate('playerStats.city', 'name');
+  
 
   const batteryCost = 1;
   const disallowed = pettyHackRouteCriterias(user, batteryCost);
