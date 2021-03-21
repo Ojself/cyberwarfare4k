@@ -19,7 +19,7 @@ import Footer from "./screens/header-footer/Footer";
 import Funeral from "./screens/funeral/Funeral";
 import FuneralDetailed from "./screens/funeral/FuneralDetailed";
 import HackerProfile from "./screens/hackerProfile/HackerProfile";
-import HallOfFame from "./screens/hallOfFame/HallOfFame";
+import HallOfFame from "./screens/HallOfFame/HallOfFame";
 import Home from "./screens/home/Home";
 import Information from "./screens/information/Information";
 import Ladder from "./screens/Ladder";
