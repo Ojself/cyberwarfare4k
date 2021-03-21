@@ -604,7 +604,7 @@ userSchema.methods.handleAttack = function (result) {
         this.currencies[currency] += parseInt(result.opponent.currencies[currency], 10);
       }
     });
-    this.bitcoinGain(result.opponent.playerStats.bounty)
+    this.bitCoinGain(result.opponent.playerStats.bounty)
     this.fightInformation.shutdowns += 1;
   }
   this.fightInformation.attacksInitiated += 1;
