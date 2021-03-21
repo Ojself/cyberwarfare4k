@@ -59,7 +59,10 @@ router.get('/', async (req, res) => {
 // this is being called from outside
 router.post('/redeem', async (req, res) => {
   const { code } = req.body;
-  console.log(req.body)
+  console.log(JSON.stringify(req.body))
+  console.log(req.body.secret, "secret")
+  console.log(process.env.cyberhackerSecret, "external secret")
+  
   if (req.body.payload) {
     // check headers
     return handleGithubEvent(req.body.payload);
@@ -81,6 +84,8 @@ router.post('/redeem', async (req, res) => {
   }
 
   /* process.env.cyberhackerSecret */
+
+  console.log(process.env.cyberhackerSecret === req.body.secret)
 
   const game = code.startsWith('#') ? 'chessathor' : 'megarpg';
   user.batteryGain(BATTERYGAIN[game]);
