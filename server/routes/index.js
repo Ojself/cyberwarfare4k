@@ -14,6 +14,7 @@ const Currency = require('../models/Currency');
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
 const BetaForum = require('../models/BetaForum');
+const OrgCrime = require('../models/OrgCrime');
 
 /**
  * Sets values to null
@@ -33,7 +34,24 @@ const nullifyValues = (object, except) => {
   });
 };
 
-// might be written wrongly TODO
+// Looks for Organized crimes that are ready to be commited
+const getOrganizedCrimeStatus = async (user)=> {
+  // enum ["available", "ready"]
+  let status = null
+
+  const orgCrime = await OrgCrime.findOne({ownerAlliance:user.alliance}).lean()
+  if (orgCrime){
+    if (orgCrime.roles.every(role=> !!role.owner)) {
+      status = "ready"
+    }
+    if (!orgCrime.roles.some(role=> role.owner && role.owner.toString() === user._id.toString())){
+      status = "available"
+    }
+  }
+  return status
+}
+
+// might be written wrongly
 const setupPlayer = async (user, name, city, avatar) => {
   user.playerStats.currentFirewall = 100;
   user.account.isSetup = true;
@@ -44,6 +62,8 @@ const setupPlayer = async (user, name, city, avatar) => {
   city.arrival(user.id);
   await city.save();
 };
+
+const isGraced = (user, now) => user.fightInformation.gracePeriod > now;
 
 // @POST
 // PRIVATE
@@ -71,11 +91,9 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   const city = await City.findOne({ name: cityString });
   const allUsers = await User.find();
 
-  if (
-    name.toLowerCase().startsWith('npc')
-    || name.toLowerCase().startsWith('unconfirmed')
-    || name.toLowerCase().startsWith('admin')
-  ) {
+  const disAllowedNames = ["npc", "unconfirmed","admin"]
+
+  if (disAllowedNames.some(disAllowedName=> disAllowedName.startsWith(name))) {
     return res.status(409).json({
       success: false,
       message: `${name} is not allowed`,
@@ -98,7 +116,7 @@ router.post('/createUser', isLoggedIn, async (req, res) => {
   });
 });
 
-const isGraced = (user, now) => user.fightInformation.gracePeriod > now;
+
 // @GET
 // PRIVATE
 // Retrives player profile
@@ -122,12 +140,14 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     read: false,
   });
   let unreadAllianceCommentExist;
+  let organizedCrimeStatus;
 
   if (user && user.alliance) {
     const lastAllianceComment = await BetaForum.findOne({ alliance: user.alliance }).sort({ $natural: -1 }).lean();
     if (lastAllianceComment) {
       unreadAllianceCommentExist = !lastAllianceComment.seenBy.some((id) => id.toString() === userId.toString());
     }
+    organizedCrimeStatus = await getOrganizedCrimeStatus(user)
   }
   const lastGlobalComment = await BetaForum.findOne({ allianceForum: false }).sort({ $natural: -1 }).lean();
   const unreadForumCommentExist = !lastGlobalComment.seenBy.some((id) => id.toString() === userId.toString());
@@ -139,6 +159,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     user.setGracePeriod(now + 1000 * 60 * 5);
     await user.save();
   }
+  console.log(organizedCrimeStatus,'organizedCrimeStatus')
   res.status(200).json({
     success: true,
     message: 'user loaded..',
@@ -147,6 +168,7 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     unreadNotificationExist,
     unreadAllianceCommentExist,
     unreadForumCommentExist,
+    organizedCrimeStatus
   });
 });
 
