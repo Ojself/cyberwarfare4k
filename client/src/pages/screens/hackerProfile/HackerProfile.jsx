@@ -253,7 +253,7 @@ const HackerProfile = ({ history, match, updateGlobalValues }) => {
   );
 
   const profilePage = (
-    <div className="mt-3">
+    <div className="page-container mt-3">
       {avatarImages}
       {playerName}
 

@@ -15,32 +15,25 @@ import DataCenters from "./screens/DataCenters";
 import EarnBattery from "./screens/earnBattery/EarnBattery";
 import Espionage from "./screens/espionage/Espionage";
 import Fence from "./screens/fence/Fence";
+import Footer from "./screens/header-footer/Footer";
 import Funeral from "./screens/funeral/Funeral";
 import FuneralDetailed from "./screens/funeral/FuneralDetailed";
 import HackerProfile from "./screens/hackerProfile/HackerProfile";
-import HallOfFame from "./screens/HallOfFame/HallOfFame";
-import MessageCenter from "./screens/communication/MessageCenter";
-import Notifications from "./screens/communication/Notifications";
-import Petty from "./screens/crimes/petty/Petty";
-
-/*
-import ThreadOverview from "./pages/globalForum/ThreadOverview";
-import ForumOverview from "./pages/globalForum/ForumOverview";
-import ForumThread from "./pages/globalForum/ForumThread";
-*/
-
-import Footer from "./screens/header-footer/Footer";
-import NavbarComp from "./screens/header-footer/Navbar";
-import StatusBar from "./screens/header-footer/Statusbar";
+import HallOfFame from "./screens/hallOfFame/HallOfFame";
 import Home from "./screens/home/Home";
 import Information from "./screens/information/Information";
 import Ladder from "./screens/Ladder";
 import Ledger from "./screens/Ledger";
 import Locals from "./screens/Locals";
 import Marketplace from "./screens/marketplace/Marketplace";
+import MessageCenter from "./screens/communication/MessageCenter";
 import MyProfile from "./screens/myProfile/MyProfile";
+import NavbarComp from "./screens/header-footer/Navbar";
+import Notifications from "./screens/communication/Notifications";
 import OrgCrimes from "./screens/orgCrimes/OrgCrimes";
+import Petty from "./screens/crimes/petty/Petty";
 import ServiceAndSupport from "./screens/ServiceAndSupport";
+import StatusBar from "./screens/header-footer/Statusbar";
 import TermsOfSale from "./screens/earnBattery/TermsOfSale";
 import TokensStore from "./screens/tokens/TokenStore";
 import VPN from "./screens/VPN/VPN";

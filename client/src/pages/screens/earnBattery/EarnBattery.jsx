@@ -305,7 +305,7 @@ const EarnBattery = ({ user, globalLoading, updateGlobalValues }) => {
   );
 
   return (
-    <Container fluid className="">
+    <Container fluid className="page-container">
       <Row>
         <Col className="d-flex">
           <div className="w-25"></div>

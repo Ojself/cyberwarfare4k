@@ -159,7 +159,6 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     user.setGracePeriod(now + 1000 * 60 * 5);
     await user.save();
   }
-  console.log(organizedCrimeStatus,'organizedCrimeStatus')
   res.status(200).json({
     success: true,
     message: 'user loaded..',
