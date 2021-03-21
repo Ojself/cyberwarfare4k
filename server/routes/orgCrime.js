@@ -166,15 +166,23 @@ router.patch('/', async (req, res) => {
   });
 });
 
-const commitCrimeCriterias = (userId, orgCrime) => {
-  if (!userId || !orgCrime) {
+const commitCrimeCriterias = (user, orgCrime) => {
+  if (!user || !orgCrime || !user.alliance) {
     return 'something went wrong';
   }
 
-  if (orgCrime.owner.toString() !== userId.toString()) {
-    return 'Only the owner can carry out organized crimes';
+  const userIsInSameAlliance = orgCrime.ownerAlliance.toString() === user.alliance.toString()
+  if (!userIsInSameAlliance){
+    return "This crime is claimed by another alliance"
   }
 
+  const amountMembersInCrime = orgCrime.roles.filter(role=> !!role.owner).length
+  const allRolesAreFilled = amountMembersInCrime === orgCrime.roles.length
+  const userIsOwner = orgCrime.owner.toString() === user._id.toString()
+
+  if (!allRolesAreFilled && !userIsOwner){
+    return "Only the owner can carry out this crime"
+  }
   return null;
 };
 
@@ -183,10 +191,11 @@ const commitCrimeCriterias = (userId, orgCrime) => {
 // Carries out organized crime
 router.post('/', async (req, res) => {
   const userId = req.user._id;
+  const user = await User.findById(userId).lean()
   const { crimeId } = req.body;
   const orgCrime = await OrgCrime.findById(crimeId).populate('roles.owner');
 
-  const disallowed = commitCrimeCriterias(userId, orgCrime);
+  const disallowed = commitCrimeCriterias(user, orgCrime);
 
   if (disallowed) {
     return res.status(403).json({

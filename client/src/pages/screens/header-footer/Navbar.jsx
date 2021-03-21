@@ -32,6 +32,7 @@ const NavbarComp = ({
   unreadNotification,
   unreadForumComment,
   unreadAllianceComment,
+  organizedCrimeStatus,
   user,
 }) => {
   const currentCity = globalLoading ? "City" : user.playerStats.city.name;
@@ -61,6 +62,9 @@ const NavbarComp = ({
     if (globalLoading) return false;
     return unreadMessage;
   };
+
+  /* Icon color based upon organized crime status */
+  const organizedCrimeNotificationColor = organizedCrimeStatus === "available" ? "text-warning" : organizedCrimeStatus === "ready" ? "text-success" : "text-light"
 
   const userHasUnreadPublicForumComment = () => {
     if (globalLoading) return false;
@@ -131,13 +135,13 @@ const NavbarComp = ({
           </UncontrolledDropdown>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle caret className="dropdown-button" nav>
-              <FontAwesomeIcon className="text-light" icon={faMoneyBillAlt} />
+              <FontAwesomeIcon  className={organizedCrimeNotificationColor} icon={faMoneyBillAlt} />
               <span className="display-none-when-mobile"> Hack</span>
             </DropdownToggle>
             <DropdownMenu>
               <DropdownItem href="/petty-hacker">Petty</DropdownItem>
               <DropdownItem href="/crimes">Crime</DropdownItem>
-              <DropdownItem href="/org-crimes">Organized Crime</DropdownItem>
+              <DropdownItem className={organizedCrimeNotificationColor}  href="/org-crimes">Organized Crime</DropdownItem>
               <DropdownItem href="/datacenters">Datacenters</DropdownItem>
               <DropdownItem href="/espionage">Espionage</DropdownItem>
               <DropdownItem href="/locals">Hack player</DropdownItem>

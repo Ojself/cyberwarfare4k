@@ -12,6 +12,19 @@ import {
 } from "reactstrap";
 import "./orgCrimes.scss";
 
+const isOcDisabled = (user,crime) => {
+  if (!user || !user.alliance || !crime){
+    return true
+  }
+  const amountMembersInCrime = crime.roles.filter(role=> !!role.owner).length
+
+  const userAndCrimeSameAlliance = user.alliance._id === crime.ownerAlliance._id 
+  const allRolesAreFilled = amountMembersInCrime === crime.roles.length
+  const userIsOwner = user._id === crime.owner._id
+
+  return !((userAndCrimeSameAlliance && allRolesAreFilled) || userIsOwner)
+}
+
 const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
   const [descriptionTooltip, setDescriptionTooltip] = useState(false);
 
@@ -26,6 +39,8 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
       5
     </>
   );
+
+ 
   return (
     <div >
       <Card style={{ width: "18rem" }}>
@@ -103,7 +118,7 @@ const OrgCrimeCardClaimed = ({ crime, claimRole, commitOrgCrime, user }) => {
             })}
           </CardText>
           <Button
-            disabled={user && user._id !== crime.owner._id}
+            disabled={isOcDisabled(user,crime)}
             color="outline-danger"
             onClick={() => commitOrgCrime(crime._id)}
           >

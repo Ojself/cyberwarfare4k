@@ -8,6 +8,12 @@ All notable changes to CyberhackerWarfare4000 will be documented in this file.
 - Funeral layout
 - API tests
 
+## [0.3.7] - 2021-03-21
+
+- Add: Authentication for redeem route
+- Organized crime are notified in navbar
+- OC can be carried out by anyone in the alliance if every position is filled out
+
 ## [0.3.6] - 2021-03-19
 
 - Bug fix: bounty is now given to player when opponent is shutdown

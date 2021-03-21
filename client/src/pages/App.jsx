@@ -41,13 +41,16 @@ import WantedList from "./screens/WantedList";
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [globalMessage, setGlobalMessage] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [globalTimeoutId, setGlobalTimeoutId] = useState(0)
+
+  /* Notifications */
   const [unreadMessage, setUnreadMessage] = useState(false);
   const [unreadNotification, setUnreadNotification] = useState(false);
   const [unreadForumComment, setUnreadForumComment] = useState(false);
   const [unreadAllianceComment, setUnreadAllianceComment] = useState(false);
-  const [globalMessage, setGlobalMessage] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [globalTimeoutId, setGlobalTimeoutId] = useState(0)
+  const [organizedCrimeStatus, setOrganizedCrimeStatus] = useState(false)
 
   const userIsAtStarPage = () => {
     const path = window.location.pathname;
@@ -77,6 +80,7 @@ const App = () => {
       setUnreadNotification(data.unreadNotificationExist);
       setUnreadForumComment(data.unreadForumCommentExist);
       setUnreadAllianceComment(data.unreadAllianceCommentExist);
+      setOrganizedCrimeStatus(data.organizedCrimeStatus)
       setLoading(false);
     };
     fetchUserData();
@@ -126,6 +130,7 @@ const App = () => {
             unreadNotification={unreadNotification}
             unreadAllianceComment={unreadAllianceComment}
             unreadForumComment={unreadForumComment}
+            organizedCrimeStatus={organizedCrimeStatus}
           />
           <StatusBar
             updateGlobalValues={updateGlobalValues}

@@ -41,11 +41,11 @@ const getOrganizedCrimeStatus = async (user)=> {
 
   const orgCrime = await OrgCrime.findOne({ownerAlliance:user.alliance}).lean()
   if (orgCrime){
-    if (orgCrime.roles.every(role=> !!role.owner)) {
-      status = "ready"
-    }
     if (!orgCrime.roles.some(role=> role.owner && role.owner.toString() === user._id.toString())){
       status = "available"
+    }
+    if (orgCrime.roles.every(role=> !!role.owner)) {
+      status = "ready"
     }
   }
   return status
